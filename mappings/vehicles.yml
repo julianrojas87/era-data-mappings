@@ -341,23 +341,23 @@ mappings:
         credentials: *credentials
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
-        query: SELECT VehicleTypes.ID, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.14.1'));
+        query: SELECT VehicleTypes.ID, REPLACE(LOWER(CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId))), ' ', '') AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.14.1'));
     s: http://era.europa.eu/implementation#V_$(ID)
     po:
       - p: era:trainDetectionSystem
-        o: http://era.europa.eu/concepts/train-detection#trackcircuits~iri
+        o: http://era.europa.eu/concepts/train-detection#trackcircuit~iri
         condition:
           function: idlab-fn:equal
           parameters:
             - [grel:valueParameter, $(ParameterValue)]
-            - [grel:valueParameter2, "track circuits"]
+            - [grel:valueParameter2, "trackcircuits"]
       - p: era:trainDetectionSystem
-        o: http://era.europa.eu/concepts/train-detection#axlecounter~iri
+        o: http://era.europa.eu/concepts/train-detection#wheeldetector~iri
         condition:
           function: idlab-fn:equal
           parameters:
             - [grel:valueParameter, $(ParameterValue)]
-            - [grel:valueParameter2, "axle counters"]
+            - [grel:valueParameter2, "axlecounters"]
       - p: era:trainDetectionSystem
         o: http://era.europa.eu/concepts/train-detection#loop~iri
         condition:
