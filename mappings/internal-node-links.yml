@@ -1,0 +1,29 @@
+prefixes:
+  rdfs: "http://www.w3.org/2000/01/rdf-schema#"
+  era: "http://era.europa.eu/ns#"
+  xsd: "http://www.w3.org/2001/XMLSchema#"
+variables:
+  connection: 
+    access: &host //10.10.160.21:1433
+    type: &typeMSSQL mssql
+    credentials: &credentials
+      username: SA
+      password: ChooChoo2020
+    queryFormulation: &queryFormulation sql2008 
+    referenceFormulation: &referenceFormulation csv
+
+mappings:
+  internal-node-link:
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT TRIM(UOPID) AS UOPID, LineEdges2.ID AS INCOMING, LineEdges1.ID AS OUTGOING, LineEdges1.VersionID FROM RINF.dbo.LineEdges AS LineEdges1, RINF.dbo.LineEdges AS LineEdges2, RINF.dbo.SectionOfLines, RINF.dbo.LineNodes, RINF.dbo.OperationalPoints WHERE LineEdgeID=LineEdges1.ID AND LineNodes.ID=LineEdges1.LineNodeStartID AND OperationalPointID=OperationalPoints.ID AND LineNodes.VersionID = OperationalPoints.VersionID AND LineEdges1.LineNodeStartID=LineEdges2.LineNodeEndID;
+    s: http://era.europa.eu/abstraction#INL_$(UOPID)_$(INCOMING)_$(OUTGOING)_$(VersionID)
+    po:
+      - [a, era:InternalNodeLink]
+      - [era:bidirectional, "true", xsd:boolean]
+      - [era:startPort, http://era.europa.eu/abstraction#NP_$(UOPID)_$(INCOMING)_$(VersionID)~iri]
+      - [era:endPort, http://era.europa.eu/abstraction#NP_$(UOPID)_$(OUTGOING)_$(VersionID)~iri]

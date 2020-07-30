@@ -1,0 +1,91 @@
+prefixes:
+  idlab-fn: "http://example.com/idlab/function/"
+  grel: "http://users.ugent.be/~bjdmeest/function/grel.ttl#"
+  wgs: "http://www.w3.org/2003/01/geo/wgs84_pos#"
+  geosparql: "http://www.opengis.net/ont/geosparql#"
+  rdfs: "http://www.w3.org/2000/01/rdf-schema#"
+  skos: "http://www.w3.org/2004/02/skos/core#"
+  era: "http://era.europa.eu/ns#"
+  era-op-types: "http://era.europa.eu/concepts/op-types#"
+  xsd: "http://www.w3.org/2001/XMLSchema#"
+variables:
+  connection: 
+    access: &host //10.10.160.21:1433
+    type: &typeMSSQL mssql
+    credentials: &credentials
+      username: SA
+      password: ChooChoo2020
+    queryFormulation: &queryFormulation sql2008 
+    referenceFormulation: &referenceFormulation csv
+
+mappings:
+  location:
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT LineNodes.Latitude, LineNodes.Longitude FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPoints.ID = LineNodes.OperationalPointID AND OperationalPoints.VersionID = LineNodes.VersionID;
+    s: http://era.europa.eu/location#GEO/$(Longitude)/$(Latitude)
+    po:
+      - [a, wgs:Point]
+      - [a, geosparql:Geometry]
+      - [wgs:latitude, $(Latitude), xsd:double]
+      - [wgs:longitude, $(Longitude), xsd:double]
+      - [geosparql:asWKT, POINT ($(Longitude) $(Latitude)), geosparql:wktLiteral]
+
+  micro-node:
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT TRIM(UOPID) AS UOPID, LookupValues.[Value] FROM RINF.dbo.OperationalPoints, RINF.dbo.LookupValues WHERE OperationalPoints.Type = LookupValues.ID;
+    s: http://era.europa.eu/abstraction#MN_$(UOPID)
+    po:
+      - [a, era:MicroNode]
+      - [era:hasImplementation, http://era.europa.eu/implementation#OP_$(UOPID)~iri]
+
+  operational-point:
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT TRIM(UOPID) AS UOPID, TRIM(OperationalPoints.Name) AS OPName, MemberStates.Code, MemberStates.Name AS country, LookupValues.[Value], LineNodes.Latitude, LineNodes.Longitude, OPTafTAPCodes.[Value] AS TafTapCode FROM RINF.dbo.OperationalPoints, RINF.dbo.MemberStates, RINF.dbo.MemberStateVersions, RINF.dbo.LookupValues, RINF.dbo.LineNodes, RINF.dbo.OPTafTAPCodes WHERE OperationalPoints.ID = LineNodes.OperationalPointID AND OperationalPoints.VersionID = LineNodes.VersionID AND OperationalPoints.Type = LookupValues.ID AND OperationalPoints.VersionID = MemberStateVersions.ID AND MemberStateVersions.MemberStateID = MemberStates.ID AND OperationalPoints.ID = OPTafTAPCodes.OperationalPointID AND OperationalPoints.VersionID = OPTafTAPCodes.VersionID;
+    s: http://era.europa.eu/implementation#OP_$(UOPID)
+    po:
+      - [a, era:OperationalPoint]
+      - [era:uopid, $(UOPID)]
+      - [rdfs:label, $(OPName)]
+      - [geosparql:hasGeometry, http://era.europa.eu/location#GEO/$(Longitude)/$(Latitude)~iri]
+      - [wgs:location, http://era.europa.eu/location#GEO/$(Longitude)/$(Latitude)~iri]
+      - [era:hasAbstraction, http://era.europa.eu/abstraction#MN_$(UOPID)~iri]
+      - [era:country, http://era.europa.eu/concepts/countries#$(Code)~iri]
+      - p: era:TafTAPCode
+        o: $(TafTapCode)
+        condition:
+          function: idlab-fn:notEqual
+          parameters:
+            - [grel:valueParameter, $(TafTapCode)]
+            - [grel:valueParameter2, "NULL"]
+      - p: era:opType
+        o:
+          - mapping: op-type
+            condition:
+              function: equal
+              parameters:
+                - [str1, $(Value)]
+                - [str2, $(label)]
+  
+  op-type:
+    sources:
+      - ["data/op_types.csv~csv"]
+    s: http://era.europa.eu/concepts/op-types#$(type)
+    po:
+      - [a, era-op-types:OperationalPointType]
+      - [skos:prefLabel, $(label), en~lang]
+      - [skos:definition, $(description), en~lang]

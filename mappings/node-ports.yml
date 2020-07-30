@@ -1,0 +1,32 @@
+prefixes:
+  wgs: "http://www.w3.org/2003/01/geo/wgs84_pos#"
+  geosparql: "http://www.opengis.net/ont/geosparql#"
+  rdfs: "http://www.w3.org/2000/01/rdf-schema#"
+  era: "http://era.europa.eu/ns#"
+  xsd: "http://www.w3.org/2001/XMLSchema#"
+variables:
+  connection: 
+    access: &host //10.10.160.21:1433
+    type: &typeMSSQL mssql
+    credentials: &credentials
+      username: SA
+      password: ChooChoo2020
+    queryFormulation: &queryFormulation sql2008 
+    referenceFormulation: &referenceFormulation csv
+
+mappings:
+  node-port:
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: (SELECT LineEdges.ID, LineEdges.VersionID, LineNodes.Latitude, LineNodes.Longitude, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS NODE FROM RINF.dbo.LineEdges, RINF.dbo.LineNodes WHERE LineEdges.LineNodeEndID = LineNodes.ID AND LineEdges.VersionID = LineNodes.VersionID) UNION (SELECT LineEdges.ID, LineEdges.VersionID, LineNodes.Latitude, LineNodes.Longitude, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS NODE FROM RINF.dbo.LineEdges, RINF.dbo.LineNodes WHERE LineEdges.LineNodeStartID = LineNodes.ID AND LineEdges.VersionID = LineNodes.VersionID);
+    s: http://era.europa.eu/abstraction#NP_$(NODE)_$(ID)_$(VersionID)
+    po:
+      - [a, era:NodePort]
+      - [wgs:latitude, $(Latitude), xsd:double]
+      - [wgs:longitude, $(Longitude), xsd:double]
+      - [geosparql:asWKT, POINT ($(Longitude) $(Latitude)), geosparql:wktLiteral]
+      - [era:belongsToNode, http://era.europa.eu/abstraction#MN_$(NODE)~iri]

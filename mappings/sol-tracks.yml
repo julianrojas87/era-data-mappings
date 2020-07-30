@@ -1,0 +1,1130 @@
+prefixes:
+  idlab-fn: "http://example.com/idlab/function/"
+  grel: "http://users.ugent.be/~bjdmeest/function/grel.ttl#"
+  rdfs: "http://www.w3.org/2000/01/rdf-schema#"
+  era: "http://era.europa.eu/ns#"
+  era-gaugings: "http://era.europa.eu/concepts/gaugings#"
+  xsd: "http://www.w3.org/2001/XMLSchema#"
+variables:
+  connection:
+    access: &host //10.10.160.21:1433
+    type: &typeMSSQL mssql
+    credentials: &credentials
+      username: SA
+      password: ChooChoo2020
+    queryFormulation: &queryFormulation sql2008
+    referenceFormulation: &referenceFormulation csv
+
+mappings:
+  sol-tracks:
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, SectionOfLines.Length, UICLines.UICCode FROM RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.UICLines WHERE SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SectionOfLines.UICLineID = UICLines.ID AND SectionOfLines.VersionID = UICLines.VersionID;
+    s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
+    po:
+      - [a, era:Track]
+      - [era:lineUICCode, $(UICCode)]
+      - [era:trackLength, $(Length), xsd:double]
+      - [era:hasAbstraction, http://era.europa.eu/abstraction#ML_$(ID)_$(VersionID)_$(TrackID)~iri]
+
+  tunnel-reference:
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, TrackTunnels.TunnelID FROM RINF.dbo.SectionOfLines, RINF.dbo.SOLTracks, RINF.dbo.TrackTunnels WHERE SectionOfLines.ID = SOLTracks.SectionOfLineID AND SectionOfLines.VersionID = SOLTracks.VersionID AND SOLTracks.TrackID = TrackTunnels.TrackID AND SOLTracks.VersionID = TrackTunnels.VersionID;
+    s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
+    po:
+      - [era:passesThroughTunnel, http://era.europa.eu/implementation#TN_$(VersionID)_$(TunnelID)~iri]
+
+
+  # ------------Traffic loads and load carrying capacity of infrastructure--------------
+
+  load-capability: # 1.1.1.1.2.4
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT(LookupValues.[Value], '/' , TrackParameters.Value) AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.LookupValues WHERE SOLTracks.TrackID = TrackParameters.TrackID  AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID  AND Parameters.[Index] IN ('1.1.1.1.2.4') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
+    po:
+      - [era:loadCapability, $(ParameterValue)]
+
+  national-load-capability: # 1.1.1.1.2.4.1
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.1.2.4.1') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
+    po:
+      - [era:nationalLoadCapability, $(ParameterValue)]
+
+  hslm-compliance: # 1.1.1.1.2.4.2
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.1.2.4.2') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
+    po:
+      - p: era:highSpeedLoadModelCompliance
+        o:
+          value: "true"
+          datatype: "xsd:boolean"
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(ParameterValue)]
+            - [grel:valueParameter2, "Y"]
+      - p: era:highSpeedLoadModelCompliance
+        o:
+          value: "false"
+          datatype: "xsd:boolean"
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(ParameterValue)]
+            - [grel:valueParameter2, "N"]
+
+  structure-check-locations: # 1.1.1.1.2.4.3 (no data!)
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.1.2.4.3') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
+    po:
+      - [era:structureCheckLocation, $(ParameterValue), xsd:double]
+
+  dynamic-compatibility-procedure-document: # 1.1.1.1.2.4.4 (no data!)
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.1.2.4.4') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
+    po:
+      - [era:dynamicCompatibilityProcedureDocument, $(ParameterValue)]
+
+  # -----------------Gauging--------------------
+
+  gauging: # 1.1.1.1.3.1.1
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.1.3.1.1') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
+    po:
+      - [era:gaugingProfile, http://era.europa.eu/concepts/gaugings#$(ParameterValue)~iri]
+
+  gauging-check-locations: # 1.1.1.1.3.1.2 (no data!)
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.1.3.1.2') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
+    po:
+      - [era:gaugingCheckLocation, $(ParameterValue), xsd:boolean]
+
+  gauging-transversal-document: # 1.1.1.1.3.1.3 (no data!)
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.1.3.1.3') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
+    po:
+      - [era:gaugingTransversalDocument, $(ParameterValue)]
+
+  # -----------------Vertical radius--------------------
+
+  minimum-vertical-curve: # 1.2.2.0.3.3 (no data!)
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.2.2.0.3.3') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
+    po:
+      - [era:minimumVerticalRadius, $(ParameterValue)]
+
+  # -----------------Train detection systems--------------------
+
+  train-detection-system-type: # 1.1.1.3.7.1.1
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, REPLACE(CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, ''), ' ', '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.3.7.1.1') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
+    po:
+      - [era:trainDetectionSystem, http://era.europa.eu/concepts/train-detection#$(ParameterValue)~iri]
+
+  detection-system-specific-checks: # 1.1.1.3.7.1.2 (no data! even in RINF guide says waiting for proposal of MSs)
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.3.7.1.2') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
+    po:
+      - [era:trainDetectionSystemSpecificCheck, $(ParameterValue)]
+
+  french-detection-limitation: # 1.1.1.3.7.1.4
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.3.7.1.4') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
+    po:
+      - [era:frenchTrainDetectionSystemLimitation, $(ParameterValue)]
+
+  # -----------------Hot axle box detection--------------------
+
+  hot-axle-box-detector-existence: # 1.1.1.1.7.4
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.1.7.4') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
+    po:
+      - p: era:hasHotAxleBoxDetector
+        o:
+          value: "true"
+          datatype: xsd:boolean
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(ParameterValue)]
+            - [grel:valueParameter2, "Y"]
+      - p: era:hasHotAxleBoxDetector
+        o:
+          value: "false"
+          datatype: xsd:boolean
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(ParameterValue)]
+            - [grel:valueParameter2, "N"]
+
+  hot-axle-box-detection-tsi-compliant: # 1.1.1.1.7.5
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.1.7.5') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
+    po:
+      - p: era:hotAxleBoxDetectorTSICompliant
+        o:
+          value: "true"
+          datatype: xsd:boolean
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(ParameterValue)]
+            - [grel:valueParameter2, "Y"]
+      - p: era:hotAxleBoxDetectorTSICompliant
+        o:
+          value: "false"
+          datatype: xsd:boolean
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(ParameterValue)]
+            - [grel:valueParameter2, "N"]
+
+  hot-axle-box-detector-identification: # 1.1.1.1.7.6 (no data! no explanation about data format in RINF's guide)
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.1.7.6') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
+    po:
+      - [era:hotAxleBoxDetectorIdentification, $(ParameterValue)]
+
+  hot-axle-box-detector-generation: # 1.1.1.1.7.7 (no data! no explanation about data format in RINF's guide)
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.1.7.7') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
+    po:
+      - [era:hotAxleBoxDetectorGeneration, $(ParameterValue)]
+
+  hot-axle-box-detector-location: # 1.1.1.1.7.8 (no data!)
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.1.7.8') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
+    po:
+      - [era:hotAxleBoxDetectorLocation, $(ParameterValue), xsd:double]
+
+  hot-axle-box-detector-direction: # 1.1.1.1.7.9 (no data!)
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.1.7.9') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
+    po:
+      - [era:hotAxleBoxDetectorDirection, $(ParameterValue)]
+
+  # -----------------Running characteristics--------------------
+
+  cant-deficiency: # 1.1.1.1.4.2
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.1.4.2') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
+    po:
+      - [era:cantDeficiency, $(ParameterValue)]
+
+  maximum-permitted-speed: # 1.1.1.1.2.5
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.1.2.5') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
+    po:
+      - [era:maximumSpeed, $(ParameterValue), xsd:integer]
+
+  rail-inclination: # 1.1.1.1.4.3
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.1.4.3') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
+    po:
+      - [era:railInclination, $(ParameterValue), xsd:integer]
+
+  # -----------------Wheelset--------------------
+
+  nominal-track-gauge: # 1.1.1.1.4.1
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.1.4.1') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
+    po:
+      - p: era:wheelSetGauge
+        o:
+          - value: $(ParameterValue)
+            datatype: xsd:integer
+        condition:
+          function: idlab-fn:notEqual
+          parameters:
+            - [grel:valueParameter, $(ParameterValue)]
+            - [grel:valueParameter2, "other"]
+
+  minimum-wheel-diameter: # 1.1.1.1.5.2
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.1.5.2') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
+    po:
+      - [era:minimumWheelDiameter, $(ParameterValue), xsd:integer]
+
+  # -----------------Minimum curve--------------------
+
+  minimum-horizontal-curve-radius: # 1.1.1.1.3.7
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.1.3.7') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
+    po:
+      - [era:minimumHorizontalRadius, $(ParameterValue), xsd:integer]
+
+  # -------------------Braking-----------------------
+
+  maximum-braking-distance: # 1.1.1.3.11.1
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.3.11.1') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
+    po:
+      - [era:maximumBrakingDistance, $(ParameterValue), xsd:integer]
+
+  gradient-profile: # 1.1.1.1.3.6
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.1.3.6') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
+    po:
+      - [era:gradientProfile, $(ParameterValue)]
+
+  maximum-train-deceleration: # 1.1.1.1.6.1
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.1.6.1') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
+    po:
+      - [era:maximumTrainDeceleration, $(ParameterValue), xsd:double]
+
+  additional-braking-information-available: # 1.1.1.3.11.2
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.3.11.2') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
+    po:
+      - p: era:additionalBrakingInformationAvailable
+        o:
+          value: "true"
+          datatype: xsd:boolean
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(ParameterValue)]
+            - [grel:valueParameter2, "Y"]
+      - p: era:additionalBrakingInformationAvailable
+        o:
+          value: "false"
+          datatype: xsd:boolean
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(ParameterValue)]
+            - [grel:valueParameter2, "N"]
+
+  additional-braking-information-document: # 1.1.1.3.11.3
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.3.11.3') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
+    po:
+      - [era:additionalBrakingInformationDocument, $(ParameterValue)]
+
+  # -------------------Magnetic track brake-----------------------
+
+  use-of-magnetic-brakes: # 1.1.1.1.6.3
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.1.6.3') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
+    po:
+      - p: era:magneticBraking
+        o:
+          value: "true"
+          datatype: xsd:boolean
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(ParameterValue)]
+            - [grel:valueParameter2, "allowed"]
+      - p: era:magneticBraking
+        o:
+          value: "false"
+          datatype: xsd:boolean
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(ParameterValue)]
+            - [grel:valueParameter2, "not allowed"]
+      - p: era:conditionalMagneticBraking
+        o:
+          value: "true"
+          datatype: xsd:boolean
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(ParameterValue)]
+            - [grel:valueParameter2, "allowed under conditions"]
+      - p: era:magneticBrakingEmergencyOnly
+        o:
+          value: "true"
+          datatype: "xsd:boolean"
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(ParameterValue)]
+            - [grel:valueParameter2, "allowed only for emergency brake"]
+      - p: era:conditionalMagneticBrakingEmergencyOnly
+        o:
+          value: "true"
+          datatype: "xsd:boolean"
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(ParameterValue)]
+            - [grel:valueParameter2, "allowed under conditions only for emergency brake"]
+  magnetic-braking-conditions-document: # 1.1.1.1.6.5 (no data!)
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.1.6.5') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
+    po:
+      - [era:magneticBrakingConditionsDocument, $(ParameterValue)]
+
+# -------------------Eddy current track brake-----------------------
+
+  use-of-eddy-current-brakes: # 1.1.1.1.6.2
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.1.6.2') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
+    po:
+      - p: era:eddyCurrentBraking
+        o:
+          value: "true"
+          datatype: xsd:boolean
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(ParameterValue)]
+            - [grel:valueParameter2, "allowed"]
+      - p: era:eddyCurrentBraking
+        o:
+          value: "false"
+          datatype: xsd:boolean
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(ParameterValue)]
+            - [grel:valueParameter2, "not allowed"]
+      - p: era:conditionalEddyCurrentBraking
+        o:
+          value: "true"
+          datatype: xsd:boolean
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(ParameterValue)]
+            - [grel:valueParameter2, "allowed under conditions"]
+      - p: era:eddyCurrentBrakingEmergencyOnly
+        o:
+          value: "true"
+          datatype: "xsd:boolean"
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(ParameterValue)]
+            - [grel:valueParameter2, "allowed only for emergency brake"]
+      - p: era:conditionaleddyCurrentBrakingEmergencyOnly
+        o:
+          value: "true"
+          datatype: "xsd:boolean"
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(ParameterValue)]
+            - [grel:valueParameter2, "allowed under conditions only for emergency brake"]
+  eddy-current-braking-conditions-document: # 1.1.1.1.6.4 (no data!)
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.1.6.4') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
+    po:
+      - [era:eddyCurrentBrakingConditionsDocument, $(ParameterValue)]
+
+  # -------------------Weather conditions-----------------------
+  
+  temperature-range: # 1.1.1.1.2.6
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, "Index", Parameters.Name, SUBSTRING(LookupValues.[Value], 5, 3) AS MinimumTemperature, SUBSTRING(LookupValues.[Value], 13, 2) AS MaximumTemperature FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.LookupValues WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID AND "Index" IN ('1.1.1.1.2.6') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
+    po:
+      - [era:minimumTemperature, $(MinimumTemperature), xsd:integer]
+      - [era:maximumTemperature, $(MaximumTemperature), xsd:integer]
+
+  severe-weather-conditions: # 1.1.1.1.2.8
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.1.2.8') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
+    po:
+      - p: era:severeWeatherConditions
+        o:
+          value: "true"
+          datatype: xsd:boolean
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(ParameterValue)]
+            - [grel:valueParameter2, "Y"]
+      - p: era:severeWeatherConditions
+        o:
+          value: "false"
+          datatype: xsd:boolean
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(ParameterValue)]
+            - [grel:valueParameter2, "N"]
+  
+  # -------------------Voltages and frequencies-----------------------
+
+  contact-line-system-type: # 1.1.1.2.2.1.1
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.2.2.1.1') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
+    po:
+      - [era:contactLineSystem, $(ParameterValue)]
+
+  energy-supply-system: # 1.1.1.2.2.1.2
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.2.2.1.2') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
+    po:
+      - [era:energySupplySystem, $(ParameterValue)]
+  
+  energy-supply-system-tsi-compliant: # 1.1.1.2.2.1.2.1 (no data!)
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.2.2.1.2.1') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
+    po:
+      - [era:energySupplySystemTSICompliant, $(ParameterValue)]
+
+  umax2: # 1.1.1.2.2.1.3
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.2.2.1.3') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
+    po:
+      - [era:umax2, $(ParameterValue)]
+
+  # -------------------Regenerative brake----------------------
+
+  regenerative-braking: # 1.1.1.2.2.4
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.2.2.4') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
+    po:
+      - p: era:regenerativeBrakeAllowed
+        o:
+          value: "true"
+          datatype: xsd:boolean
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(ParameterValue)]
+            - [grel:valueParameter2, "Y"]
+      - p: era:regenerativeBrakeAllowed
+        o:
+          value: "false"
+          datatype: xsd:boolean
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(ParameterValue)]
+            - [grel:valueParameter2, "N"]
+      - p: era:conditionalRegenerativeBrakeAllowed
+        o:
+          value: "true"
+          datatype: xsd:boolean
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(ParameterValue)]
+            - [grel:valueParameter2, "allowed under conditions"]
+  
+  # -------------------Current limitation----------------------
+
+  current-limitation: # 1.1.1.2.5.1
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.2.5.1') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
+    po:
+      - p: era:currentLimitationRequired
+        o:
+          value: "true"
+          datatype: xsd:boolean
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(ParameterValue)]
+            - [grel:valueParameter2, "Y"]
+      - p: era:currentLimitationRequired
+        o:
+          value: "false"
+          datatype: xsd:boolean
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(ParameterValue)]
+            - [grel:valueParameter2, "N"]
+
+  # -------------------Pantograph----------------------
+  
+  maximum-current-standstill: # 1.1.1.2.2.3
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.2.2.3') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
+    po:
+      - [era:maxCurrentStandstillPantograph, $(ParameterValue), xsd:integer]
+
+  maximum-wire-height: # 1.1.1.2.2.5
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.2.2.5') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
+    po:
+      - [era:maximumContactWireHeight, $(ParameterValue), xsd:double]
+
+  minimum-wire-height: # 1.1.1.2.2.6
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.2.2.6') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
+    po:
+      - [era:minimumContactWireHeight, $(ParameterValue), xsd:double]
+
+  pantograph-tsi-compliant: # 1.1.1.2.3.1
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.2.3.1') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
+    po:
+      - [era:pantographTSICompliant, $(ParameterValue)]
+  
+  other-accepted-pantographs: # 1.1.1.2.3.2
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.2.3.2') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
+    po:
+      - [era:otherAcceptedPantographs, $(ParameterValue)]
+  
+  contact-strip-material: # 1.1.1.2.3.4
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.2.3.4') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
+    po:
+      - [era:contactStripMaterial, $(ParameterValue)]
+
+  contact-force: # 1.1.1.2.5.2
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.2.5.2') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
+    po:
+      - [era:contactForce, $(ParameterValue)]
+  
+  raised-pantograph-distance-speed: # 1.1.1.2.3.3
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.2.3.3') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
+    po:
+      - [era:raisedPantographsDistanceAndSpeed, $(ParameterValue)]
+  
+  automatic-dropping-device-required: # 1.1.1.2.5.3
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.2.5.3') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
+    po:
+      - p: era:automaticDroppingDeviceRequired
+        o:
+          value: "true"
+          datatype: xsd:boolean
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(ParameterValue)]
+            - [grel:valueParameter2, "Y"]
+      - p: era:automaticDroppingDeviceRequired
+        o:
+          value: "false"
+          datatype: xsd:boolean
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(ParameterValue)]
+            - [grel:valueParameter2, "N"]
+  
+  # -------------------Tunnel----------------------
+  # Mappings for Tunnel parameters are in tunnels.yml file
+
+  # -------------------Train length----------------------
+  # TODO: Map Platforms and Sidings
+
+  # -----------Platform height and access and egress--------
+  # TODO: Map Platforms
+
+  # -----------------------ETCS--------------------------
+  
+  etcs-compatible: # 1.1.1.3.2.9 (no data!)
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.3.2.9') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
+    po:
+      - p: era:isETCSCompatible
+        o:
+          value: "true"
+          datatype: xsd:boolean
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(ParameterValue)]
+            - [grel:valueParameter2, "Y"]
+      - p: era:isETCSCompatible
+        o:
+          value: "false"
+          datatype: xsd:boolean
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(ParameterValue)]
+            - [grel:valueParameter2, "N"]
+
+  train-integrity-required: # 1.1.1.3.2.8 (no data!)
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.3.2.8') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
+    po:
+      - p: era:trainIntegrityOnBoardRequired
+        o:
+          value: "true"
+          datatype: xsd:boolean
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(ParameterValue)]
+            - [grel:valueParameter2, "Y"]
+      - p: era:trainIntegrityOnBoardRequired
+        o:
+          value: "false"
+          datatype: xsd:boolean
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(ParameterValue)]
+            - [grel:valueParameter2, "N"]
+
+  # -----------------------GSM-R--------------------------
+
+  gsm-r-network-coverage: # 1.1.1.3.3.5
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.3.3.5') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
+    po:
+      - [era:networkCoverage, $(ParameterValue)]
+
+  group-555-support: # 1.1.1.3.3.4
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.3.3.4') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
+    po:
+      - p: era:isGroup555Compatible
+        o:
+          value: "true"
+          datatype: xsd:boolean
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(ParameterValue)]
+            - [grel:valueParameter2, "Y"]
+      - p: era:isGroup555Compatible
+        o:
+          value: "false"
+          datatype: xsd:boolean
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(ParameterValue)]
+            - [grel:valueParameter2, "N"]
+  
+  voice-radio-compatible: # 1.1.1.3.3.9 (no data!)
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.3.3.9') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
+    po:
+      - p: era:voiceRadioCompatible
+        o:
+          value: "true"
+          datatype: xsd:boolean
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(ParameterValue)]
+            - [grel:valueParameter2, "Y"]
+      - p: era:voiceRadioCompatible
+        o:
+          value: "false"
+          datatype: xsd:boolean
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(ParameterValue)]
+            - [grel:valueParameter2, "N"]
+
+  data-radio-compatible: # 1.1.1.3.3.10 (no data!)
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.3.3.10') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
+    po:
+      - p: era:dataRadioCompatible
+        o:
+          value: "true"
+          datatype: xsd:boolean
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(ParameterValue)]
+            - [grel:valueParameter2, "Y"]
+      - p: era:dataRadioCompatible
+        o:
+          value: "false"
+          datatype: xsd:boolean
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(ParameterValue)]
+            - [grel:valueParameter2, "N"]
+  
+  # -----------------------Class B--------------------------
+
+  protection-legacy-system: # 1.1.1.3.5.3
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.3.5.3') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
+    po:
+      - [era:legacyProtectionSystem, $(ParameterValue)]
+
+  legacy-radio-system: # 1.1.1.3.6.1
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.3.6.1') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
+    po:
+      - p: era:hasLegacyRadioSystem
+        o:
+          value: "true"
+          datatype: xsd:boolean
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(ParameterValue)]
+            - [grel:valueParameter2, "Y"]
+      - p: era:hasLegacyRadioSystem
+        o:
+          value: "false"
+          datatype: xsd:boolean
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(ParameterValue)]
+            - [grel:valueParameter2, "N"]
