@@ -7,10 +7,14 @@
 @prefix rml: <http://semweb.mmlab.be/ns/rml#>.
 @prefix ql: <http://semweb.mmlab.be/ns/ql#>.
 @prefix : <http://mapping.example.com/>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
 @prefix idlab-fn: <http://example.com/idlab/function/>.
 @prefix grel: <http://users.ugent.be/~bjdmeest/function/grel.ttl#>.
+@prefix dct: <http://purl.org/dc/terms/>.
 @prefix era: <http://era.europa.eu/ns#>.
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix era-am: <http://era.europa.eu/concepts/axle-monitoring#>.
+@prefix era-tc: <http://era.europa.eu/concepts/thermal-capacity#>.
+@prefix era-ic: <http://era.europa.eu/concepts/ice-conditions#>.
 
 :map_vehicles_0 rml:logicalSource :source_0.
 :source_0 a rml:LogicalSource;
@@ -49,20 +53,17 @@
 :map_vehicles_0 rr:predicateObjectMap :pom_2.
 :pm_2 a rr:PredicateMap.
 :pom_2 rr:predicateMap :pm_2.
-:pm_2 rr:constant era:country.
+:pm_2 rr:constant era:manufacturer.
 :pom_2 rr:objectMap :om_2.
 :om_2 a rr:ObjectMap;
-    rr:template "http://era.europa.eu/concepts/countries#{CountryCode}";
+    rr:template "http://era.europa.eu/concepts/manufacturers#{Manufacturer}";
     rr:termType rr:IRI.
 :pom_3 a rr:PredicateObjectMap.
 :map_vehicles_0 rr:predicateObjectMap :pom_3.
 :pm_3 a rr:PredicateMap.
 :pom_3 rr:predicateMap :pm_3.
-:pm_3 rr:constant era:manufacturer.
+:pm_3 rr:constant dct:spatial.
 :pom_3 rr:objectMap :om_3.
-:om_3 a rr:ObjectMap;
-    rr:template "http://era.europa.eu/concepts/manufacturers#{Manufacturer}";
-    rr:termType rr:IRI.
 :pom_4 a rr:PredicateObjectMap.
 :map_vehicles_0 rr:predicateObjectMap :pom_4.
 :pm_4 a rr:PredicateMap.
@@ -1223,8 +1224,17 @@
 :om_103 a rr:ObjectMap;
     rr:constant "http://era.europa.eu/concepts/vehicles#hauledSpecialVehicle";
     rr:termType rr:IRI.
-:map_static-axle-load-in-working-order_0 rml:logicalSource :source_1.
+:map_geonames-country_0 rml:logicalSource :source_1.
 :source_1 a rml:LogicalSource;
+    rml:source "data/countries.csv";
+    rml:referenceFormulation ql:CSV.
+:map_geonames-country_0 a rr:TriplesMap;
+    rdfs:label "geonames-country".
+:s_1 a rr:SubjectMap.
+:map_geonames-country_0 rr:subjectMap :s_1.
+:s_1 rml:reference "geonames".
+:map_static-axle-load-in-working-order_0 rml:logicalSource :source_2.
+:source_2 a rml:LogicalSource;
     rml:source :database_1;
     rml:query "SELECT VehicleTypes.ID, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.5.3.1'));".
 :database_1 a d2rq:Database;
@@ -1232,12 +1242,12 @@
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_1 rml:referenceFormulation ql:CSV.
+:source_2 rml:referenceFormulation ql:CSV.
 :map_static-axle-load-in-working-order_0 a rr:TriplesMap;
     rdfs:label "static-axle-load-in-working-order".
-:s_1 a rr:SubjectMap.
-:map_static-axle-load-in-working-order_0 rr:subjectMap :s_1.
-:s_1 rr:template "http://era.europa.eu/implementation#V_{ID}".
+:s_2 a rr:SubjectMap.
+:map_static-axle-load-in-working-order_0 rr:subjectMap :s_2.
+:s_2 rr:template "http://era.europa.eu/implementation#V_{ID}".
 :pom_104 a rr:PredicateObjectMap.
 :map_static-axle-load-in-working-order_0 rr:predicateObjectMap :pom_104.
 :pm_104 a rr:PredicateMap.
@@ -1248,8 +1258,8 @@
     rml:reference "ParameterValue";
     rr:termType rr:Literal;
     rr:datatype xsd:double.
-:map_static-axle-load-under-normal-payload_0 rml:logicalSource :source_2.
-:source_2 a rml:LogicalSource;
+:map_static-axle-load-under-normal-payload_0 rml:logicalSource :source_3.
+:source_3 a rml:LogicalSource;
     rml:source :database_2;
     rml:query "SELECT VehicleTypes.ID, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.5.3.2'));".
 :database_2 a d2rq:Database;
@@ -1257,12 +1267,12 @@
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_2 rml:referenceFormulation ql:CSV.
+:source_3 rml:referenceFormulation ql:CSV.
 :map_static-axle-load-under-normal-payload_0 a rr:TriplesMap;
     rdfs:label "static-axle-load-under-normal-payload".
-:s_2 a rr:SubjectMap.
-:map_static-axle-load-under-normal-payload_0 rr:subjectMap :s_2.
-:s_2 rr:template "http://era.europa.eu/implementation#V_{ID}".
+:s_3 a rr:SubjectMap.
+:map_static-axle-load-under-normal-payload_0 rr:subjectMap :s_3.
+:s_3 rr:template "http://era.europa.eu/implementation#V_{ID}".
 :pom_105 a rr:PredicateObjectMap.
 :map_static-axle-load-under-normal-payload_0 rr:predicateObjectMap :pom_105.
 :pm_105 a rr:PredicateMap.
@@ -1273,8 +1283,8 @@
     rml:reference "ParameterValue";
     rr:termType rr:Literal;
     rr:datatype xsd:double.
-:map_static-axle-load-under-exceptional-payload_0 rml:logicalSource :source_3.
-:source_3 a rml:LogicalSource;
+:map_static-axle-load-under-exceptional-payload_0 rml:logicalSource :source_4.
+:source_4 a rml:LogicalSource;
     rml:source :database_3;
     rml:query "SELECT VehicleTypes.ID, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.5.3.3'));".
 :database_3 a d2rq:Database;
@@ -1282,12 +1292,12 @@
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_3 rml:referenceFormulation ql:CSV.
+:source_4 rml:referenceFormulation ql:CSV.
 :map_static-axle-load-under-exceptional-payload_0 a rr:TriplesMap;
     rdfs:label "static-axle-load-under-exceptional-payload".
-:s_3 a rr:SubjectMap.
-:map_static-axle-load-under-exceptional-payload_0 rr:subjectMap :s_3.
-:s_3 rr:template "http://era.europa.eu/implementation#V_{ID}".
+:s_4 a rr:SubjectMap.
+:map_static-axle-load-under-exceptional-payload_0 rr:subjectMap :s_4.
+:s_4 rr:template "http://era.europa.eu/implementation#V_{ID}".
 :pom_106 a rr:PredicateObjectMap.
 :map_static-axle-load-under-exceptional-payload_0 rr:predicateObjectMap :pom_106.
 :pm_106 a rr:PredicateMap.
@@ -1298,8 +1308,8 @@
     rml:reference "ParameterValue";
     rr:termType rr:Literal;
     rr:datatype xsd:double.
-:map_design-mass-in-working-order_0 rml:logicalSource :source_4.
-:source_4 a rml:LogicalSource;
+:map_design-mass-in-working-order_0 rml:logicalSource :source_5.
+:source_5 a rml:LogicalSource;
     rml:source :database_4;
     rml:query "SELECT VehicleTypes.ID, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.5.2.1'));".
 :database_4 a d2rq:Database;
@@ -1307,12 +1317,12 @@
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_4 rml:referenceFormulation ql:CSV.
+:source_5 rml:referenceFormulation ql:CSV.
 :map_design-mass-in-working-order_0 a rr:TriplesMap;
     rdfs:label "design-mass-in-working-order".
-:s_4 a rr:SubjectMap.
-:map_design-mass-in-working-order_0 rr:subjectMap :s_4.
-:s_4 rr:template "http://era.europa.eu/implementation#V_{ID}".
+:s_5 a rr:SubjectMap.
+:map_design-mass-in-working-order_0 rr:subjectMap :s_5.
+:s_5 rr:template "http://era.europa.eu/implementation#V_{ID}".
 :pom_107 a rr:PredicateObjectMap.
 :map_design-mass-in-working-order_0 rr:predicateObjectMap :pom_107.
 :pm_107 a rr:PredicateMap.
@@ -1323,8 +1333,8 @@
     rml:reference "ParameterValue";
     rr:termType rr:Literal;
     rr:datatype xsd:integer.
-:map_design-mass-under-normal-payload_0 rml:logicalSource :source_5.
-:source_5 a rml:LogicalSource;
+:map_design-mass-under-normal-payload_0 rml:logicalSource :source_6.
+:source_6 a rml:LogicalSource;
     rml:source :database_5;
     rml:query "SELECT VehicleTypes.ID, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.5.2.2'));".
 :database_5 a d2rq:Database;
@@ -1332,12 +1342,12 @@
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_5 rml:referenceFormulation ql:CSV.
+:source_6 rml:referenceFormulation ql:CSV.
 :map_design-mass-under-normal-payload_0 a rr:TriplesMap;
     rdfs:label "design-mass-under-normal-payload".
-:s_5 a rr:SubjectMap.
-:map_design-mass-under-normal-payload_0 rr:subjectMap :s_5.
-:s_5 rr:template "http://era.europa.eu/implementation#V_{ID}".
+:s_6 a rr:SubjectMap.
+:map_design-mass-under-normal-payload_0 rr:subjectMap :s_6.
+:s_6 rr:template "http://era.europa.eu/implementation#V_{ID}".
 :pom_108 a rr:PredicateObjectMap.
 :map_design-mass-under-normal-payload_0 rr:predicateObjectMap :pom_108.
 :pm_108 a rr:PredicateMap.
@@ -1348,8 +1358,8 @@
     rml:reference "ParameterValue";
     rr:termType rr:Literal;
     rr:datatype xsd:integer.
-:map_design-mass-under-exceptional-payload_0 rml:logicalSource :source_6.
-:source_6 a rml:LogicalSource;
+:map_design-mass-under-exceptional-payload_0 rml:logicalSource :source_7.
+:source_7 a rml:LogicalSource;
     rml:source :database_6;
     rml:query "SELECT VehicleTypes.ID, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.5.2.3'));".
 :database_6 a d2rq:Database;
@@ -1357,12 +1367,12 @@
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_6 rml:referenceFormulation ql:CSV.
+:source_7 rml:referenceFormulation ql:CSV.
 :map_design-mass-under-exceptional-payload_0 a rr:TriplesMap;
     rdfs:label "design-mass-under-exceptional-payload".
-:s_6 a rr:SubjectMap.
-:map_design-mass-under-exceptional-payload_0 rr:subjectMap :s_6.
-:s_6 rr:template "http://era.europa.eu/implementation#V_{ID}".
+:s_7 a rr:SubjectMap.
+:map_design-mass-under-exceptional-payload_0 rr:subjectMap :s_7.
+:s_7 rr:template "http://era.europa.eu/implementation#V_{ID}".
 :pom_109 a rr:PredicateObjectMap.
 :map_design-mass-under-exceptional-payload_0 rr:predicateObjectMap :pom_109.
 :pm_109 a rr:PredicateMap.
@@ -1373,8 +1383,8 @@
     rml:reference "ParameterValue";
     rr:termType rr:Literal;
     rr:datatype xsd:integer.
-:map_maximum-design-speed_0 rml:logicalSource :source_7.
-:source_7 a rml:LogicalSource;
+:map_maximum-design-speed_0 rml:logicalSource :source_8.
+:source_8 a rml:LogicalSource;
     rml:source :database_7;
     rml:query "SELECT VehicleTypes.ID, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.1.2.1'));".
 :database_7 a d2rq:Database;
@@ -1382,24 +1392,24 @@
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_7 rml:referenceFormulation ql:CSV.
+:source_8 rml:referenceFormulation ql:CSV.
 :map_maximum-design-speed_0 a rr:TriplesMap;
     rdfs:label "maximum-design-speed".
-:s_7 a rr:SubjectMap.
-:map_maximum-design-speed_0 rr:subjectMap :s_7.
-:s_7 rr:template "http://era.europa.eu/implementation#V_{ID}".
+:s_8 a rr:SubjectMap.
+:map_maximum-design-speed_0 rr:subjectMap :s_8.
+:s_8 rr:template "http://era.europa.eu/implementation#V_{ID}".
 :pom_110 a rr:PredicateObjectMap.
 :map_maximum-design-speed_0 rr:predicateObjectMap :pom_110.
 :pm_110 a rr:PredicateMap.
 :pom_110 rr:predicateMap :pm_110.
-:pm_110 rr:constant era:maximumSpeed.
+:pm_110 rr:constant era:maximumDesignSpeed.
 :pom_110 rr:objectMap :om_110.
 :om_110 a rr:ObjectMap;
     rml:reference "ParameterValue";
     rr:termType rr:Literal;
     rr:datatype xsd:integer.
-:map_vehicle-length_0 rml:logicalSource :source_8.
-:source_8 a rml:LogicalSource;
+:map_vehicle-length_0 rml:logicalSource :source_9.
+:source_9 a rml:LogicalSource;
     rml:source :database_8;
     rml:query "SELECT VehicleTypes.ID, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.8.1'));".
 :database_8 a d2rq:Database;
@@ -1407,12 +1417,12 @@
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_8 rml:referenceFormulation ql:CSV.
+:source_9 rml:referenceFormulation ql:CSV.
 :map_vehicle-length_0 a rr:TriplesMap;
     rdfs:label "vehicle-length".
-:s_8 a rr:SubjectMap.
-:map_vehicle-length_0 rr:subjectMap :s_8.
-:s_8 rr:template "http://era.europa.eu/implementation#V_{ID}".
+:s_9 a rr:SubjectMap.
+:map_vehicle-length_0 rr:subjectMap :s_9.
+:s_9 rr:template "http://era.europa.eu/implementation#V_{ID}".
 :pom_111 a rr:PredicateObjectMap.
 :map_vehicle-length_0 rr:predicateObjectMap :pom_111.
 :pm_111 a rr:PredicateMap.
@@ -1423,8 +1433,8 @@
     rml:reference "ParameterValue";
     rr:termType rr:Literal;
     rr:datatype xsd:double.
-:map_axle-spacing_0 rml:logicalSource :source_9.
-:source_9 a rml:LogicalSource;
+:map_axle-spacing_0 rml:logicalSource :source_10.
+:source_10 a rml:LogicalSource;
     rml:source :database_9;
     rml:query "SELECT VehicleTypes.ID, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.5.3.4'));".
 :database_9 a d2rq:Database;
@@ -1432,12 +1442,12 @@
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_9 rml:referenceFormulation ql:CSV.
+:source_10 rml:referenceFormulation ql:CSV.
 :map_axle-spacing_0 a rr:TriplesMap;
     rdfs:label "axle-spacing".
-:s_9 a rr:SubjectMap.
-:map_axle-spacing_0 rr:subjectMap :s_9.
-:s_9 rr:template "http://era.europa.eu/implementation#V_{ID}".
+:s_10 a rr:SubjectMap.
+:map_axle-spacing_0 rr:subjectMap :s_10.
+:s_10 rr:template "http://era.europa.eu/implementation#V_{ID}".
 :pom_112 a rr:PredicateObjectMap.
 :map_axle-spacing_0 rr:predicateObjectMap :pom_112.
 :pm_112 a rr:PredicateMap.
@@ -1447,8 +1457,8 @@
 :om_112 a rr:ObjectMap;
     rml:reference "ParameterValue";
     rr:termType rr:Literal.
-:map_permissible-payload_0 rml:logicalSource :source_10.
-:source_10 a rml:LogicalSource;
+:map_permissible-payload_0 rml:logicalSource :source_11.
+:source_11 a rml:LogicalSource;
     rml:source :database_10;
     rml:query "SELECT VehicleTypes.ID, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.5.1'));".
 :database_10 a d2rq:Database;
@@ -1456,12 +1466,12 @@
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_10 rml:referenceFormulation ql:CSV.
+:source_11 rml:referenceFormulation ql:CSV.
 :map_permissible-payload_0 a rr:TriplesMap;
     rdfs:label "permissible-payload".
-:s_10 a rr:SubjectMap.
-:map_permissible-payload_0 rr:subjectMap :s_10.
-:s_10 rr:template "http://era.europa.eu/implementation#V_{ID}".
+:s_11 a rr:SubjectMap.
+:map_permissible-payload_0 rr:subjectMap :s_11.
+:s_11 rr:template "http://era.europa.eu/implementation#V_{ID}".
 :pom_113 a rr:PredicateObjectMap.
 :map_permissible-payload_0 rr:predicateObjectMap :pom_113.
 :pm_113 a rr:PredicateMap.
@@ -1471,8 +1481,8 @@
 :om_113 a rr:ObjectMap;
     rml:reference "ParameterValue";
     rr:termType rr:Literal.
-:map_vehicle-gauge_0 rml:logicalSource :source_11.
-:source_11 a rml:LogicalSource;
+:map_vehicle-gauge_0 rml:logicalSource :source_12.
+:source_12 a rml:LogicalSource;
     rml:source :database_11;
     rml:query "SELECT VehicleTypes.ID, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.2.1'));".
 :database_11 a d2rq:Database;
@@ -1480,12 +1490,12 @@
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_11 rml:referenceFormulation ql:CSV.
+:source_12 rml:referenceFormulation ql:CSV.
 :map_vehicle-gauge_0 a rr:TriplesMap;
     rdfs:label "vehicle-gauge".
-:s_11 a rr:SubjectMap.
-:map_vehicle-gauge_0 rr:subjectMap :s_11.
-:s_11 rr:template "http://era.europa.eu/implementation#V_{ID}".
+:s_12 a rr:SubjectMap.
+:map_vehicle-gauge_0 rr:subjectMap :s_12.
+:s_12 rr:template "http://era.europa.eu/implementation#V_{ID}".
 :pom_114 a rr:PredicateObjectMap.
 :map_vehicle-gauge_0 rr:predicateObjectMap :pom_114.
 :pm_114 a rr:PredicateMap.
@@ -1495,8 +1505,8 @@
 :om_114 a rr:ObjectMap;
     rr:template "http://era.europa.eu/concepts/gaugings#{ParameterValue}";
     rr:termType rr:IRI.
-:map_minimum-vertical-convex-radius_0 rml:logicalSource :source_12.
-:source_12 a rml:LogicalSource;
+:map_minimum-vertical-convex-radius_0 rml:logicalSource :source_13.
+:source_13 a rml:LogicalSource;
     rml:source :database_12;
     rml:query "SELECT VehicleTypes.ID, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.8.5'));".
 :database_12 a d2rq:Database;
@@ -1504,12 +1514,12 @@
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_12 rml:referenceFormulation ql:CSV.
+:source_13 rml:referenceFormulation ql:CSV.
 :map_minimum-vertical-convex-radius_0 a rr:TriplesMap;
     rdfs:label "minimum-vertical-convex-radius".
-:s_12 a rr:SubjectMap.
-:map_minimum-vertical-convex-radius_0 rr:subjectMap :s_12.
-:s_12 rr:template "http://era.europa.eu/implementation#V_{ID}".
+:s_13 a rr:SubjectMap.
+:map_minimum-vertical-convex-radius_0 rr:subjectMap :s_13.
+:s_13 rr:template "http://era.europa.eu/implementation#V_{ID}".
 :pom_115 a rr:PredicateObjectMap.
 :map_minimum-vertical-convex-radius_0 rr:predicateObjectMap :pom_115.
 :pm_115 a rr:PredicateMap.
@@ -1520,8 +1530,8 @@
     rml:reference "ParameterValue";
     rr:termType rr:Literal;
     rr:datatype xsd:integer.
-:map_minimum-vertical-concave-radius_0 rml:logicalSource :source_13.
-:source_13 a rml:LogicalSource;
+:map_minimum-vertical-concave-radius_0 rml:logicalSource :source_14.
+:source_14 a rml:LogicalSource;
     rml:source :database_13;
     rml:query "SELECT VehicleTypes.ID, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.8.6'));".
 :database_13 a d2rq:Database;
@@ -1529,12 +1539,12 @@
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_13 rml:referenceFormulation ql:CSV.
+:source_14 rml:referenceFormulation ql:CSV.
 :map_minimum-vertical-concave-radius_0 a rr:TriplesMap;
     rdfs:label "minimum-vertical-concave-radius".
-:s_13 a rr:SubjectMap.
-:map_minimum-vertical-concave-radius_0 rr:subjectMap :s_13.
-:s_13 rr:template "http://era.europa.eu/implementation#V_{ID}".
+:s_14 a rr:SubjectMap.
+:map_minimum-vertical-concave-radius_0 rr:subjectMap :s_14.
+:s_14 rr:template "http://era.europa.eu/implementation#V_{ID}".
 :pom_116 a rr:PredicateObjectMap.
 :map_minimum-vertical-concave-radius_0 rr:predicateObjectMap :pom_116.
 :pm_116 a rr:PredicateMap.
@@ -1545,21 +1555,21 @@
     rml:reference "ParameterValue";
     rr:termType rr:Literal;
     rr:datatype xsd:integer.
-:map_train-detection-system-type_0 rml:logicalSource :source_14.
-:source_14 a rml:LogicalSource;
+:map_train-detection-system-type_0 rml:logicalSource :source_15.
+:source_15 a rml:LogicalSource;
     rml:source :database_14;
-    rml:query "SELECT VehicleTypes.ID, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.14.1'));".
+    rml:query "SELECT VehicleTypes.ID, REPLACE(LOWER(CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId))), ' ', '') AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.14.1'));".
 :database_14 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_14 rml:referenceFormulation ql:CSV.
+:source_15 rml:referenceFormulation ql:CSV.
 :map_train-detection-system-type_0 a rr:TriplesMap;
     rdfs:label "train-detection-system-type".
-:s_14 a rr:SubjectMap.
-:map_train-detection-system-type_0 rr:subjectMap :s_14.
-:s_14 rr:template "http://era.europa.eu/implementation#V_{ID}".
+:s_15 a rr:SubjectMap.
+:map_train-detection-system-type_0 rr:subjectMap :s_15.
+:s_15 rr:template "http://era.europa.eu/implementation#V_{ID}".
 :pom_117 a rr:PredicateObjectMap.
 :map_train-detection-system-type_0 rr:predicateObjectMap :pom_117.
 :pm_117 a rr:PredicateMap.
@@ -1569,7 +1579,7 @@
 :om_117 a fnml:FunctionTermMap;
     rr:termType rr:IRI;
     fnml:functionValue :fn_40.
-:fn_40 rml:logicalSource :source_14;
+:fn_40 rml:logicalSource :source_15;
     rr:predicateObjectMap :pomexec_40.
 :pomexec_40 rr:predicateMap :pmexec_40.
 :pmexec_40 rr:constant fno:executes.
@@ -1584,7 +1594,7 @@
 :pom_118 rr:objectMap :om_118.
 :om_118 a rr:ObjectMap, fnml:FunctionTermMap;
     fnml:functionValue :fn_41.
-:fn_41 rml:logicalSource :source_14;
+:fn_41 rml:logicalSource :source_15;
     rr:predicateObjectMap :pomexec_41.
 :pomexec_41 rr:predicateMap :pmexec_41.
 :pmexec_41 rr:constant fno:executes.
@@ -1607,7 +1617,7 @@
     rr:constant grel:valueParameter2.
 :pom_120 rr:objectMap :om_120.
 :om_120 a rr:ObjectMap;
-    rr:constant "track circuits";
+    rr:constant "trackcircuits";
     rr:termType rr:Literal.
 :fn_40 rr:predicateObjectMap :pom_121.
 :pom_121 a rr:PredicateObjectMap;
@@ -1616,7 +1626,7 @@
     rr:constant idlab-fn:str.
 :pom_121 rr:objectMap :om_121.
 :om_121 a rr:ObjectMap;
-    rr:constant "http://era.europa.eu/concepts/train-detection#trackcircuits";
+    rr:constant "http://era.europa.eu/concepts/train-detection#trackcircuit";
     rr:termType rr:IRI.
 :pom_122 a rr:PredicateObjectMap.
 :map_train-detection-system-type_0 rr:predicateObjectMap :pom_122.
@@ -1627,7 +1637,7 @@
 :om_122 a fnml:FunctionTermMap;
     rr:termType rr:IRI;
     fnml:functionValue :fn_42.
-:fn_42 rml:logicalSource :source_14;
+:fn_42 rml:logicalSource :source_15;
     rr:predicateObjectMap :pomexec_42.
 :pomexec_42 rr:predicateMap :pmexec_42.
 :pmexec_42 rr:constant fno:executes.
@@ -1642,7 +1652,7 @@
 :pom_123 rr:objectMap :om_123.
 :om_123 a rr:ObjectMap, fnml:FunctionTermMap;
     fnml:functionValue :fn_43.
-:fn_43 rml:logicalSource :source_14;
+:fn_43 rml:logicalSource :source_15;
     rr:predicateObjectMap :pomexec_43.
 :pomexec_43 rr:predicateMap :pmexec_43.
 :pmexec_43 rr:constant fno:executes.
@@ -1665,7 +1675,7 @@
     rr:constant grel:valueParameter2.
 :pom_125 rr:objectMap :om_125.
 :om_125 a rr:ObjectMap;
-    rr:constant "axle counters";
+    rr:constant "axlecounters";
     rr:termType rr:Literal.
 :fn_42 rr:predicateObjectMap :pom_126.
 :pom_126 a rr:PredicateObjectMap;
@@ -1674,7 +1684,7 @@
     rr:constant idlab-fn:str.
 :pom_126 rr:objectMap :om_126.
 :om_126 a rr:ObjectMap;
-    rr:constant "http://era.europa.eu/concepts/train-detection#axlecounter";
+    rr:constant "http://era.europa.eu/concepts/train-detection#wheeldetector";
     rr:termType rr:IRI.
 :pom_127 a rr:PredicateObjectMap.
 :map_train-detection-system-type_0 rr:predicateObjectMap :pom_127.
@@ -1685,7 +1695,7 @@
 :om_127 a fnml:FunctionTermMap;
     rr:termType rr:IRI;
     fnml:functionValue :fn_44.
-:fn_44 rml:logicalSource :source_14;
+:fn_44 rml:logicalSource :source_15;
     rr:predicateObjectMap :pomexec_44.
 :pomexec_44 rr:predicateMap :pmexec_44.
 :pmexec_44 rr:constant fno:executes.
@@ -1700,7 +1710,7 @@
 :pom_128 rr:objectMap :om_128.
 :om_128 a rr:ObjectMap, fnml:FunctionTermMap;
     fnml:functionValue :fn_45.
-:fn_45 rml:logicalSource :source_14;
+:fn_45 rml:logicalSource :source_15;
     rr:predicateObjectMap :pomexec_45.
 :pomexec_45 rr:predicateMap :pmexec_45.
 :pmexec_45 rr:constant fno:executes.
@@ -1734,21 +1744,21 @@
 :om_131 a rr:ObjectMap;
     rr:constant "http://era.europa.eu/concepts/train-detection#loop";
     rr:termType rr:IRI.
-:map_axle-bearing-condition-monitoring_0 rml:logicalSource :source_15.
-:source_15 a rml:LogicalSource;
+:map_axle-bearing-condition-monitoring_0 rml:logicalSource :source_16.
+:source_16 a rml:LogicalSource;
     rml:source :database_15;
-    rml:query "SELECT VehicleTypes.ID, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.9.2'));".
+    rml:query "SELECT VehicleTypes.ID, REPLACE((SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId), ' ', '_') AS UriName FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.9.2'));".
 :database_15 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_15 rml:referenceFormulation ql:CSV.
+:source_16 rml:referenceFormulation ql:CSV.
 :map_axle-bearing-condition-monitoring_0 a rr:TriplesMap;
     rdfs:label "axle-bearing-condition-monitoring".
-:s_15 a rr:SubjectMap.
-:map_axle-bearing-condition-monitoring_0 rr:subjectMap :s_15.
-:s_15 rr:template "http://era.europa.eu/implementation#V_{ID}".
+:s_16 a rr:SubjectMap.
+:map_axle-bearing-condition-monitoring_0 rr:subjectMap :s_16.
+:s_16 rr:template "http://era.europa.eu/implementation#V_{ID}".
 :pom_132 a rr:PredicateObjectMap.
 :map_axle-bearing-condition-monitoring_0 rr:predicateObjectMap :pom_132.
 :pm_132 a rr:PredicateMap.
@@ -1756,10 +1766,10 @@
 :pm_132 rr:constant era:axleBearingConditionMonitoring.
 :pom_132 rr:objectMap :om_132.
 :om_132 a rr:ObjectMap;
-    rml:reference "ParameterValue";
-    rr:termType rr:Literal.
-:map_maximum-speed-and-cant-deficiency_0 rml:logicalSource :source_16.
-:source_16 a rml:LogicalSource;
+    rr:template "http://era.europa.eu/concepts/axle-monitoring#{UriName}";
+    rr:termType rr:IRI.
+:map_maximum-speed-and-cant-deficiency_0 rml:logicalSource :source_17.
+:source_17 a rml:LogicalSource;
     rml:source :database_16;
     rml:query "SELECT VehicleTypes.ID, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.6.4'));".
 :database_16 a d2rq:Database;
@@ -1767,12 +1777,12 @@
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_16 rml:referenceFormulation ql:CSV.
+:source_17 rml:referenceFormulation ql:CSV.
 :map_maximum-speed-and-cant-deficiency_0 a rr:TriplesMap;
     rdfs:label "maximum-speed-and-cant-deficiency".
-:s_16 a rr:SubjectMap.
-:map_maximum-speed-and-cant-deficiency_0 rr:subjectMap :s_16.
-:s_16 rr:template "http://era.europa.eu/implementation#V_{ID}".
+:s_17 a rr:SubjectMap.
+:map_maximum-speed-and-cant-deficiency_0 rr:subjectMap :s_17.
+:s_17 rr:template "http://era.europa.eu/implementation#V_{ID}".
 :pom_133 a rr:PredicateObjectMap.
 :map_maximum-speed-and-cant-deficiency_0 rr:predicateObjectMap :pom_133.
 :pm_133 a rr:PredicateMap.
@@ -1782,8 +1792,8 @@
 :om_133 a rr:ObjectMap;
     rml:reference "ParameterValue";
     rr:termType rr:Literal.
-:map_rail-inclination_0 rml:logicalSource :source_17.
-:source_17 a rml:LogicalSource;
+:map_rail-inclination_0 rml:logicalSource :source_18.
+:source_18 a rml:LogicalSource;
     rml:source :database_17;
     rml:query "SELECT VehicleTypes.ID, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.6.5'));".
 :database_17 a d2rq:Database;
@@ -1791,23 +1801,24 @@
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_17 rml:referenceFormulation ql:CSV.
+:source_18 rml:referenceFormulation ql:CSV.
 :map_rail-inclination_0 a rr:TriplesMap;
     rdfs:label "rail-inclination".
-:s_17 a rr:SubjectMap.
-:map_rail-inclination_0 rr:subjectMap :s_17.
-:s_17 rr:template "http://era.europa.eu/implementation#V_{ID}".
+:s_18 a rr:SubjectMap.
+:map_rail-inclination_0 rr:subjectMap :s_18.
+:s_18 rr:template "http://era.europa.eu/implementation#V_{ID}".
 :pom_134 a rr:PredicateObjectMap.
 :map_rail-inclination_0 rr:predicateObjectMap :pom_134.
 :pm_134 a rr:PredicateMap.
 :pom_134 rr:predicateMap :pm_134.
-:pm_134 rr:constant era:maximumRailInclination.
+:pm_134 rr:constant era:railInclination.
 :pom_134 rr:objectMap :om_134.
 :om_134 a rr:ObjectMap;
     rml:reference "ParameterValue";
-    rr:termType rr:Literal.
-:map_wheelset-gauge_0 rml:logicalSource :source_18.
-:source_18 a rml:LogicalSource;
+    rr:termType rr:Literal;
+    rr:datatype xsd:integer.
+:map_wheelset-gauge_0 rml:logicalSource :source_19.
+:source_19 a rml:LogicalSource;
     rml:source :database_18;
     rml:query "SELECT VehicleTypes.ID, Parameters.Code, Parameters.Name AS ParameterName, REVERSE(SUBSTRING(REVERSE(CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId))), 3, 10)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.1.3'));".
 :database_18 a d2rq:Database;
@@ -1815,12 +1826,12 @@
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_18 rml:referenceFormulation ql:CSV.
+:source_19 rml:referenceFormulation ql:CSV.
 :map_wheelset-gauge_0 a rr:TriplesMap;
     rdfs:label "wheelset-gauge".
-:s_18 a rr:SubjectMap.
-:map_wheelset-gauge_0 rr:subjectMap :s_18.
-:s_18 rr:template "http://era.europa.eu/implementation#V_{ID}".
+:s_19 a rr:SubjectMap.
+:map_wheelset-gauge_0 rr:subjectMap :s_19.
+:s_19 rr:template "http://era.europa.eu/implementation#V_{ID}".
 :pom_135 a rr:PredicateObjectMap.
 :map_wheelset-gauge_0 rr:predicateObjectMap :pom_135.
 :pm_135 a rr:PredicateMap.
@@ -1831,8 +1842,8 @@
     rml:reference "ParameterValue";
     rr:termType rr:Literal;
     rr:datatype xsd:integer.
-:map_minimum-wheel-diameter_0 rml:logicalSource :source_19.
-:source_19 a rml:LogicalSource;
+:map_minimum-wheel-diameter_0 rml:logicalSource :source_20.
+:source_20 a rml:LogicalSource;
     rml:source :database_19;
     rml:query "SELECT VehicleTypes.ID, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.8.2'));".
 :database_19 a d2rq:Database;
@@ -1840,12 +1851,12 @@
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_19 rml:referenceFormulation ql:CSV.
+:source_20 rml:referenceFormulation ql:CSV.
 :map_minimum-wheel-diameter_0 a rr:TriplesMap;
     rdfs:label "minimum-wheel-diameter".
-:s_19 a rr:SubjectMap.
-:map_minimum-wheel-diameter_0 rr:subjectMap :s_19.
-:s_19 rr:template "http://era.europa.eu/implementation#V_{ID}".
+:s_20 a rr:SubjectMap.
+:map_minimum-wheel-diameter_0 rr:subjectMap :s_20.
+:s_20 rr:template "http://era.europa.eu/implementation#V_{ID}".
 :pom_136 a rr:PredicateObjectMap.
 :map_minimum-wheel-diameter_0 rr:predicateObjectMap :pom_136.
 :pm_136 a rr:PredicateMap.
@@ -1856,8 +1867,8 @@
     rml:reference "ParameterValue";
     rr:termType rr:Literal;
     rr:datatype xsd:integer.
-:map_wheelset-gauge-changeover-facility_0 rml:logicalSource :source_20.
-:source_20 a rml:LogicalSource;
+:map_wheelset-gauge-changeover-facility_0 rml:logicalSource :source_21.
+:source_21 a rml:LogicalSource;
     rml:source :database_20;
     rml:query "SELECT VehicleTypes.ID, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.1.11'));".
 :database_20 a d2rq:Database;
@@ -1865,12 +1876,12 @@
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_20 rml:referenceFormulation ql:CSV.
+:source_21 rml:referenceFormulation ql:CSV.
 :map_wheelset-gauge-changeover-facility_0 a rr:TriplesMap;
     rdfs:label "wheelset-gauge-changeover-facility".
-:s_20 a rr:SubjectMap.
-:map_wheelset-gauge-changeover-facility_0 rr:subjectMap :s_20.
-:s_20 rr:template "http://era.europa.eu/implementation#V_{ID}".
+:s_21 a rr:SubjectMap.
+:map_wheelset-gauge-changeover-facility_0 rr:subjectMap :s_21.
+:s_21 rr:template "http://era.europa.eu/implementation#V_{ID}".
 :pom_137 a rr:PredicateObjectMap.
 :map_wheelset-gauge-changeover-facility_0 rr:predicateObjectMap :pom_137.
 :pm_137 a rr:PredicateMap.
@@ -1880,8 +1891,8 @@
 :om_137 a rr:ObjectMap;
     rml:reference "ParameterValue";
     rr:termType rr:Literal.
-:map_minimum-horizontal-curve-radius_0 rml:logicalSource :source_21.
-:source_21 a rml:LogicalSource;
+:map_minimum-horizontal-curve-radius_0 rml:logicalSource :source_22.
+:source_22 a rml:LogicalSource;
     rml:source :database_21;
     rml:query "SELECT VehicleTypes.ID, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.8.4'));".
 :database_21 a d2rq:Database;
@@ -1889,12 +1900,12 @@
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_21 rml:referenceFormulation ql:CSV.
+:source_22 rml:referenceFormulation ql:CSV.
 :map_minimum-horizontal-curve-radius_0 a rr:TriplesMap;
     rdfs:label "minimum-horizontal-curve-radius".
-:s_21 a rr:SubjectMap.
-:map_minimum-horizontal-curve-radius_0 rr:subjectMap :s_21.
-:s_21 rr:template "http://era.europa.eu/implementation#V_{ID}".
+:s_22 a rr:SubjectMap.
+:map_minimum-horizontal-curve-radius_0 rr:subjectMap :s_22.
+:s_22 rr:template "http://era.europa.eu/implementation#V_{ID}".
 :pom_138 a rr:PredicateObjectMap.
 :map_minimum-horizontal-curve-radius_0 rr:predicateObjectMap :pom_138.
 :pm_138 a rr:PredicateMap.
@@ -1905,8 +1916,8 @@
     rml:reference "ParameterValue";
     rr:termType rr:Literal;
     rr:datatype xsd:integer.
-:map_emergency-braking_0 rml:logicalSource :source_22.
-:source_22 a rml:LogicalSource;
+:map_emergency-braking_0 rml:logicalSource :source_23.
+:source_23 a rml:LogicalSource;
     rml:source :database_22;
     rml:query "SELECT VehicleTypes.ID, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.7.5'));".
 :database_22 a d2rq:Database;
@@ -1914,12 +1925,12 @@
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_22 rml:referenceFormulation ql:CSV.
+:source_23 rml:referenceFormulation ql:CSV.
 :map_emergency-braking_0 a rr:TriplesMap;
     rdfs:label "emergency-braking".
-:s_22 a rr:SubjectMap.
-:map_emergency-braking_0 rr:subjectMap :s_22.
-:s_22 rr:template "http://era.europa.eu/implementation#V_{ID}".
+:s_23 a rr:SubjectMap.
+:map_emergency-braking_0 rr:subjectMap :s_23.
+:s_23 rr:template "http://era.europa.eu/implementation#V_{ID}".
 :pom_139 a rr:PredicateObjectMap.
 :map_emergency-braking_0 rr:predicateObjectMap :pom_139.
 :pm_139 a rr:PredicateMap.
@@ -1929,8 +1940,8 @@
 :om_139 a rr:ObjectMap;
     rml:reference "ParameterValue";
     rr:termType rr:Literal.
-:map_brake-weight-percentage_0 rml:logicalSource :source_23.
-:source_23 a rml:LogicalSource;
+:map_brake-weight-percentage_0 rml:logicalSource :source_24.
+:source_24 a rml:LogicalSource;
     rml:source :database_23;
     rml:query "SELECT VehicleTypes.ID, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.7.6'));".
 :database_23 a d2rq:Database;
@@ -1938,12 +1949,12 @@
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_23 rml:referenceFormulation ql:CSV.
+:source_24 rml:referenceFormulation ql:CSV.
 :map_brake-weight-percentage_0 a rr:TriplesMap;
     rdfs:label "brake-weight-percentage".
-:s_23 a rr:SubjectMap.
-:map_brake-weight-percentage_0 rr:subjectMap :s_23.
-:s_23 rr:template "http://era.europa.eu/implementation#V_{ID}".
+:s_24 a rr:SubjectMap.
+:map_brake-weight-percentage_0 rr:subjectMap :s_24.
+:s_24 rr:template "http://era.europa.eu/implementation#V_{ID}".
 :pom_140 a rr:PredicateObjectMap.
 :map_brake-weight-percentage_0 rr:predicateObjectMap :pom_140.
 :pm_140 a rr:PredicateMap.
@@ -1953,32 +1964,32 @@
 :om_140 a rr:ObjectMap;
     rml:reference "ParameterValue";
     rr:termType rr:Literal.
-:map_thermal-capacity-tsi-reference-case_0 rml:logicalSource :source_24.
-:source_24 a rml:LogicalSource;
+:map_thermal-capacity-tsi-reference-case_0 rml:logicalSource :source_25.
+:source_25 a rml:LogicalSource;
     rml:source :database_24;
-    rml:query "SELECT VehicleTypes.ID, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.7.2.1.1'));".
+    rml:query "SELECT VehicleTypes.ID, REPLACE(CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)), ' ', '_') AS UriName FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.7.2.1.1'));".
 :database_24 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_24 rml:referenceFormulation ql:CSV.
+:source_25 rml:referenceFormulation ql:CSV.
 :map_thermal-capacity-tsi-reference-case_0 a rr:TriplesMap;
     rdfs:label "thermal-capacity-tsi-reference-case".
-:s_24 a rr:SubjectMap.
-:map_thermal-capacity-tsi-reference-case_0 rr:subjectMap :s_24.
-:s_24 rr:template "http://era.europa.eu/implementation#V_{ID}".
+:s_25 a rr:SubjectMap.
+:map_thermal-capacity-tsi-reference-case_0 rr:subjectMap :s_25.
+:s_25 rr:template "http://era.europa.eu/implementation#V_{ID}".
 :pom_141 a rr:PredicateObjectMap.
 :map_thermal-capacity-tsi-reference-case_0 rr:predicateObjectMap :pom_141.
 :pm_141 a rr:PredicateMap.
 :pom_141 rr:predicateMap :pm_141.
-:pm_141 rr:constant era:thermalCapacityTSIReferenceCase.
+:pm_141 rr:constant era:thermalCapacityTSIReference.
 :pom_141 rr:objectMap :om_141.
 :om_141 a rr:ObjectMap;
-    rml:reference "ParameterValue";
-    rr:termType rr:Literal.
-:map_thermal-capacity-speed_0 rml:logicalSource :source_25.
-:source_25 a rml:LogicalSource;
+    rr:template "http://era.europa.eu/concepts/thermal-capacity#{UriName}";
+    rr:termType rr:IRI.
+:map_thermal-capacity-speed_0 rml:logicalSource :source_26.
+:source_26 a rml:LogicalSource;
     rml:source :database_25;
     rml:query "SELECT VehicleTypes.ID, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.7.2.1.2'));".
 :database_25 a d2rq:Database;
@@ -1986,12 +1997,12 @@
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_25 rml:referenceFormulation ql:CSV.
+:source_26 rml:referenceFormulation ql:CSV.
 :map_thermal-capacity-speed_0 a rr:TriplesMap;
     rdfs:label "thermal-capacity-speed".
-:s_25 a rr:SubjectMap.
-:map_thermal-capacity-speed_0 rr:subjectMap :s_25.
-:s_25 rr:template "http://era.europa.eu/implementation#V_{ID}".
+:s_26 a rr:SubjectMap.
+:map_thermal-capacity-speed_0 rr:subjectMap :s_26.
+:s_26 rr:template "http://era.europa.eu/implementation#V_{ID}".
 :pom_142 a rr:PredicateObjectMap.
 :map_thermal-capacity-speed_0 rr:predicateObjectMap :pom_142.
 :pm_142 a rr:PredicateMap.
@@ -2002,8 +2013,8 @@
     rml:reference "ParameterValue";
     rr:termType rr:Literal;
     rr:datatype xsd:double.
-:map_thermal-capacity-gradient_0 rml:logicalSource :source_26.
-:source_26 a rml:LogicalSource;
+:map_thermal-capacity-gradient_0 rml:logicalSource :source_27.
+:source_27 a rml:LogicalSource;
     rml:source :database_26;
     rml:query "SELECT VehicleTypes.ID, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.7.2.1.3'));".
 :database_26 a d2rq:Database;
@@ -2011,12 +2022,12 @@
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_26 rml:referenceFormulation ql:CSV.
+:source_27 rml:referenceFormulation ql:CSV.
 :map_thermal-capacity-gradient_0 a rr:TriplesMap;
     rdfs:label "thermal-capacity-gradient".
-:s_26 a rr:SubjectMap.
-:map_thermal-capacity-gradient_0 rr:subjectMap :s_26.
-:s_26 rr:template "http://era.europa.eu/implementation#V_{ID}".
+:s_27 a rr:SubjectMap.
+:map_thermal-capacity-gradient_0 rr:subjectMap :s_27.
+:s_27 rr:template "http://era.europa.eu/implementation#V_{ID}".
 :pom_143 a rr:PredicateObjectMap.
 :map_thermal-capacity-gradient_0 rr:predicateObjectMap :pom_143.
 :pm_143 a rr:PredicateMap.
@@ -2027,8 +2038,8 @@
     rml:reference "ParameterValue";
     rr:termType rr:Literal;
     rr:datatype xsd:double.
-:map_thermal-capacity-distance_0 rml:logicalSource :source_27.
-:source_27 a rml:LogicalSource;
+:map_thermal-capacity-distance_0 rml:logicalSource :source_28.
+:source_28 a rml:LogicalSource;
     rml:source :database_27;
     rml:query "SELECT VehicleTypes.ID, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.7.2.1.4'));".
 :database_27 a d2rq:Database;
@@ -2036,12 +2047,12 @@
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_27 rml:referenceFormulation ql:CSV.
+:source_28 rml:referenceFormulation ql:CSV.
 :map_thermal-capacity-distance_0 a rr:TriplesMap;
     rdfs:label "thermal-capacity-distance".
-:s_27 a rr:SubjectMap.
-:map_thermal-capacity-distance_0 rr:subjectMap :s_27.
-:s_27 rr:template "http://era.europa.eu/implementation#V_{ID}".
+:s_28 a rr:SubjectMap.
+:map_thermal-capacity-distance_0 rr:subjectMap :s_28.
+:s_28 rr:template "http://era.europa.eu/implementation#V_{ID}".
 :pom_144 a rr:PredicateObjectMap.
 :map_thermal-capacity-distance_0 rr:predicateObjectMap :pom_144.
 :pm_144 a rr:PredicateMap.
@@ -2052,8 +2063,8 @@
     rml:reference "ParameterValue";
     rr:termType rr:Literal;
     rr:datatype xsd:double.
-:map_thermal-capacity-time_0 rml:logicalSource :source_28.
-:source_28 a rml:LogicalSource;
+:map_thermal-capacity-time_0 rml:logicalSource :source_29.
+:source_29 a rml:LogicalSource;
     rml:source :database_28;
     rml:query "SELECT VehicleTypes.ID, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.7.2.1.5'));".
 :database_28 a d2rq:Database;
@@ -2061,12 +2072,12 @@
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_28 rml:referenceFormulation ql:CSV.
+:source_29 rml:referenceFormulation ql:CSV.
 :map_thermal-capacity-time_0 a rr:TriplesMap;
     rdfs:label "thermal-capacity-time".
-:s_28 a rr:SubjectMap.
-:map_thermal-capacity-time_0 rr:subjectMap :s_28.
-:s_28 rr:template "http://era.europa.eu/implementation#V_{ID}".
+:s_29 a rr:SubjectMap.
+:map_thermal-capacity-time_0 rr:subjectMap :s_29.
+:s_29 rr:template "http://era.europa.eu/implementation#V_{ID}".
 :pom_145 a rr:PredicateObjectMap.
 :map_thermal-capacity-time_0 rr:predicateObjectMap :pom_145.
 :pm_145 a rr:PredicateMap.
@@ -2077,8 +2088,8 @@
     rml:reference "ParameterValue";
     rr:termType rr:Literal;
     rr:datatype xsd:integer.
-:map_parking-brake-maximum-gradient_0 rml:logicalSource :source_29.
-:source_29 a rml:LogicalSource;
+:map_parking-brake-maximum-gradient_0 rml:logicalSource :source_30.
+:source_30 a rml:LogicalSource;
     rml:source :database_29;
     rml:query "SELECT VehicleTypes.ID, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.7.3.3'));".
 :database_29 a d2rq:Database;
@@ -2086,12 +2097,12 @@
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_29 rml:referenceFormulation ql:CSV.
+:source_30 rml:referenceFormulation ql:CSV.
 :map_parking-brake-maximum-gradient_0 a rr:TriplesMap;
     rdfs:label "parking-brake-maximum-gradient".
-:s_29 a rr:SubjectMap.
-:map_parking-brake-maximum-gradient_0 rr:subjectMap :s_29.
-:s_29 rr:template "http://era.europa.eu/implementation#V_{ID}".
+:s_30 a rr:SubjectMap.
+:map_parking-brake-maximum-gradient_0 rr:subjectMap :s_30.
+:s_30 rr:template "http://era.europa.eu/implementation#V_{ID}".
 :pom_146 a rr:PredicateObjectMap.
 :map_parking-brake-maximum-gradient_0 rr:predicateObjectMap :pom_146.
 :pm_146 a rr:PredicateMap.
@@ -2102,8 +2113,8 @@
     rml:reference "ParameterValue";
     rr:termType rr:Literal;
     rr:datatype xsd:double.
-:map_magnetic-brake-fitted_0 rml:logicalSource :source_30.
-:source_30 a rml:LogicalSource;
+:map_magnetic-brake-fitted_0 rml:logicalSource :source_31.
+:source_31 a rml:LogicalSource;
     rml:source :database_30;
     rml:query "SELECT VehicleTypes.ID, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.7.4.2.1'));".
 :database_30 a d2rq:Database;
@@ -2111,12 +2122,12 @@
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_30 rml:referenceFormulation ql:CSV.
+:source_31 rml:referenceFormulation ql:CSV.
 :map_magnetic-brake-fitted_0 a rr:TriplesMap;
     rdfs:label "magnetic-brake-fitted".
-:s_30 a rr:SubjectMap.
-:map_magnetic-brake-fitted_0 rr:subjectMap :s_30.
-:s_30 rr:template "http://era.europa.eu/implementation#V_{ID}".
+:s_31 a rr:SubjectMap.
+:map_magnetic-brake-fitted_0 rr:subjectMap :s_31.
+:s_31 rr:template "http://era.europa.eu/implementation#V_{ID}".
 :pom_147 a rr:PredicateObjectMap.
 :map_magnetic-brake-fitted_0 rr:predicateObjectMap :pom_147.
 :pm_147 a rr:PredicateMap.
@@ -2127,7 +2138,7 @@
     rr:termType rr:Literal;
     rr:datatype xsd:boolean;
     fnml:functionValue :fn_46.
-:fn_46 rml:logicalSource :source_30;
+:fn_46 rml:logicalSource :source_31;
     rr:predicateObjectMap :pomexec_46.
 :pomexec_46 rr:predicateMap :pmexec_46.
 :pmexec_46 rr:constant fno:executes.
@@ -2142,7 +2153,7 @@
 :pom_148 rr:objectMap :om_148.
 :om_148 a rr:ObjectMap, fnml:FunctionTermMap;
     fnml:functionValue :fn_47.
-:fn_47 rml:logicalSource :source_30;
+:fn_47 rml:logicalSource :source_31;
     rr:predicateObjectMap :pomexec_47.
 :pomexec_47 rr:predicateMap :pmexec_47.
 :pmexec_47 rr:constant fno:executes.
@@ -2186,7 +2197,7 @@
     rr:termType rr:Literal;
     rr:datatype xsd:boolean;
     fnml:functionValue :fn_48.
-:fn_48 rml:logicalSource :source_30;
+:fn_48 rml:logicalSource :source_31;
     rr:predicateObjectMap :pomexec_48.
 :pomexec_48 rr:predicateMap :pmexec_48.
 :pmexec_48 rr:constant fno:executes.
@@ -2201,7 +2212,7 @@
 :pom_153 rr:objectMap :om_153.
 :om_153 a rr:ObjectMap, fnml:FunctionTermMap;
     fnml:functionValue :fn_49.
-:fn_49 rml:logicalSource :source_30;
+:fn_49 rml:logicalSource :source_31;
     rr:predicateObjectMap :pomexec_49.
 :pomexec_49 rr:predicateMap :pmexec_49.
 :pmexec_49 rr:constant fno:executes.
@@ -2235,8 +2246,8 @@
 :om_156 a rr:ObjectMap;
     rr:constant "false";
     rr:termType rr:Literal.
-:map_magnetic-brake-prevention_0 rml:logicalSource :source_31.
-:source_31 a rml:LogicalSource;
+:map_magnetic-brake-prevention_0 rml:logicalSource :source_32.
+:source_32 a rml:LogicalSource;
     rml:source :database_31;
     rml:query "SELECT VehicleTypes.ID, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.7.4.2.2'));".
 :database_31 a d2rq:Database;
@@ -2244,12 +2255,12 @@
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_31 rml:referenceFormulation ql:CSV.
+:source_32 rml:referenceFormulation ql:CSV.
 :map_magnetic-brake-prevention_0 a rr:TriplesMap;
     rdfs:label "magnetic-brake-prevention".
-:s_31 a rr:SubjectMap.
-:map_magnetic-brake-prevention_0 rr:subjectMap :s_31.
-:s_31 rr:template "http://era.europa.eu/implementation#V_{ID}".
+:s_32 a rr:SubjectMap.
+:map_magnetic-brake-prevention_0 rr:subjectMap :s_32.
+:s_32 rr:template "http://era.europa.eu/implementation#V_{ID}".
 :pom_157 a rr:PredicateObjectMap.
 :map_magnetic-brake-prevention_0 rr:predicateObjectMap :pom_157.
 :pm_157 a rr:PredicateMap.
@@ -2260,7 +2271,7 @@
     rr:termType rr:Literal;
     rr:datatype xsd:boolean;
     fnml:functionValue :fn_50.
-:fn_50 rml:logicalSource :source_31;
+:fn_50 rml:logicalSource :source_32;
     rr:predicateObjectMap :pomexec_50.
 :pomexec_50 rr:predicateMap :pmexec_50.
 :pmexec_50 rr:constant fno:executes.
@@ -2275,7 +2286,7 @@
 :pom_158 rr:objectMap :om_158.
 :om_158 a rr:ObjectMap, fnml:FunctionTermMap;
     fnml:functionValue :fn_51.
-:fn_51 rml:logicalSource :source_31;
+:fn_51 rml:logicalSource :source_32;
     rr:predicateObjectMap :pomexec_51.
 :pomexec_51 rr:predicateMap :pmexec_51.
 :pmexec_51 rr:constant fno:executes.
@@ -2319,7 +2330,7 @@
     rr:termType rr:Literal;
     rr:datatype xsd:boolean;
     fnml:functionValue :fn_52.
-:fn_52 rml:logicalSource :source_31;
+:fn_52 rml:logicalSource :source_32;
     rr:predicateObjectMap :pomexec_52.
 :pomexec_52 rr:predicateMap :pmexec_52.
 :pmexec_52 rr:constant fno:executes.
@@ -2334,7 +2345,7 @@
 :pom_163 rr:objectMap :om_163.
 :om_163 a rr:ObjectMap, fnml:FunctionTermMap;
     fnml:functionValue :fn_53.
-:fn_53 rml:logicalSource :source_31;
+:fn_53 rml:logicalSource :source_32;
     rr:predicateObjectMap :pomexec_53.
 :pomexec_53 rr:predicateMap :pmexec_53.
 :pmexec_53 rr:constant fno:executes.
@@ -2368,8 +2379,8 @@
 :om_166 a rr:ObjectMap;
     rr:constant "false";
     rr:termType rr:Literal.
-:map_eddy-current-brake-fitted_0 rml:logicalSource :source_32.
-:source_32 a rml:LogicalSource;
+:map_eddy-current-brake-fitted_0 rml:logicalSource :source_33.
+:source_33 a rml:LogicalSource;
     rml:source :database_32;
     rml:query "SELECT VehicleTypes.ID, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.7.4.1.1'));".
 :database_32 a d2rq:Database;
@@ -2377,12 +2388,12 @@
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_32 rml:referenceFormulation ql:CSV.
+:source_33 rml:referenceFormulation ql:CSV.
 :map_eddy-current-brake-fitted_0 a rr:TriplesMap;
     rdfs:label "eddy-current-brake-fitted".
-:s_32 a rr:SubjectMap.
-:map_eddy-current-brake-fitted_0 rr:subjectMap :s_32.
-:s_32 rr:template "http://era.europa.eu/implementation#V_{ID}".
+:s_33 a rr:SubjectMap.
+:map_eddy-current-brake-fitted_0 rr:subjectMap :s_33.
+:s_33 rr:template "http://era.europa.eu/implementation#V_{ID}".
 :pom_167 a rr:PredicateObjectMap.
 :map_eddy-current-brake-fitted_0 rr:predicateObjectMap :pom_167.
 :pm_167 a rr:PredicateMap.
@@ -2393,7 +2404,7 @@
     rr:termType rr:Literal;
     rr:datatype xsd:boolean;
     fnml:functionValue :fn_54.
-:fn_54 rml:logicalSource :source_32;
+:fn_54 rml:logicalSource :source_33;
     rr:predicateObjectMap :pomexec_54.
 :pomexec_54 rr:predicateMap :pmexec_54.
 :pmexec_54 rr:constant fno:executes.
@@ -2408,7 +2419,7 @@
 :pom_168 rr:objectMap :om_168.
 :om_168 a rr:ObjectMap, fnml:FunctionTermMap;
     fnml:functionValue :fn_55.
-:fn_55 rml:logicalSource :source_32;
+:fn_55 rml:logicalSource :source_33;
     rr:predicateObjectMap :pomexec_55.
 :pomexec_55 rr:predicateMap :pmexec_55.
 :pmexec_55 rr:constant fno:executes.
@@ -2452,7 +2463,7 @@
     rr:termType rr:Literal;
     rr:datatype xsd:boolean;
     fnml:functionValue :fn_56.
-:fn_56 rml:logicalSource :source_32;
+:fn_56 rml:logicalSource :source_33;
     rr:predicateObjectMap :pomexec_56.
 :pomexec_56 rr:predicateMap :pmexec_56.
 :pmexec_56 rr:constant fno:executes.
@@ -2467,7 +2478,7 @@
 :pom_173 rr:objectMap :om_173.
 :om_173 a rr:ObjectMap, fnml:FunctionTermMap;
     fnml:functionValue :fn_57.
-:fn_57 rml:logicalSource :source_32;
+:fn_57 rml:logicalSource :source_33;
     rr:predicateObjectMap :pomexec_57.
 :pomexec_57 rr:predicateMap :pmexec_57.
 :pmexec_57 rr:constant fno:executes.
@@ -2501,8 +2512,8 @@
 :om_176 a rr:ObjectMap;
     rr:constant "false";
     rr:termType rr:Literal.
-:map_eddy-current-brake-prevention_0 rml:logicalSource :source_33.
-:source_33 a rml:LogicalSource;
+:map_eddy-current-brake-prevention_0 rml:logicalSource :source_34.
+:source_34 a rml:LogicalSource;
     rml:source :database_33;
     rml:query "SELECT VehicleTypes.ID, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.7.4.1.2'));".
 :database_33 a d2rq:Database;
@@ -2510,12 +2521,12 @@
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_33 rml:referenceFormulation ql:CSV.
+:source_34 rml:referenceFormulation ql:CSV.
 :map_eddy-current-brake-prevention_0 a rr:TriplesMap;
     rdfs:label "eddy-current-brake-prevention".
-:s_33 a rr:SubjectMap.
-:map_eddy-current-brake-prevention_0 rr:subjectMap :s_33.
-:s_33 rr:template "http://era.europa.eu/implementation#V_{ID}".
+:s_34 a rr:SubjectMap.
+:map_eddy-current-brake-prevention_0 rr:subjectMap :s_34.
+:s_34 rr:template "http://era.europa.eu/implementation#V_{ID}".
 :pom_177 a rr:PredicateObjectMap.
 :map_eddy-current-brake-prevention_0 rr:predicateObjectMap :pom_177.
 :pm_177 a rr:PredicateMap.
@@ -2526,7 +2537,7 @@
     rr:termType rr:Literal;
     rr:datatype xsd:boolean;
     fnml:functionValue :fn_58.
-:fn_58 rml:logicalSource :source_33;
+:fn_58 rml:logicalSource :source_34;
     rr:predicateObjectMap :pomexec_58.
 :pomexec_58 rr:predicateMap :pmexec_58.
 :pmexec_58 rr:constant fno:executes.
@@ -2541,7 +2552,7 @@
 :pom_178 rr:objectMap :om_178.
 :om_178 a rr:ObjectMap, fnml:FunctionTermMap;
     fnml:functionValue :fn_59.
-:fn_59 rml:logicalSource :source_33;
+:fn_59 rml:logicalSource :source_34;
     rr:predicateObjectMap :pomexec_59.
 :pomexec_59 rr:predicateMap :pmexec_59.
 :pmexec_59 rr:constant fno:executes.
@@ -2585,7 +2596,7 @@
     rr:termType rr:Literal;
     rr:datatype xsd:boolean;
     fnml:functionValue :fn_60.
-:fn_60 rml:logicalSource :source_33;
+:fn_60 rml:logicalSource :source_34;
     rr:predicateObjectMap :pomexec_60.
 :pomexec_60 rr:predicateMap :pmexec_60.
 :pmexec_60 rr:constant fno:executes.
@@ -2600,7 +2611,7 @@
 :pom_183 rr:objectMap :om_183.
 :om_183 a rr:ObjectMap, fnml:FunctionTermMap;
     fnml:functionValue :fn_61.
-:fn_61 rml:logicalSource :source_33;
+:fn_61 rml:logicalSource :source_34;
     rr:predicateObjectMap :pomexec_61.
 :pomexec_61 rr:predicateMap :pmexec_61.
 :pmexec_61 rr:constant fno:executes.
@@ -2634,8 +2645,8 @@
 :om_186 a rr:ObjectMap;
     rr:constant "false";
     rr:termType rr:Literal.
-:map_temperature-range_0 rml:logicalSource :source_34.
-:source_34 a rml:LogicalSource;
+:map_temperature-range_0 rml:logicalSource :source_35.
+:source_35 a rml:LogicalSource;
     rml:source :database_34;
     rml:query "SELECT * FROM (SELECT VehicleTypes.ID, SUBSTRING(REPLACE(CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)), ' ', ''), PATINDEX('%-[0-9][0-9]%', REPLACE(CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)), ' ', '')), 3) AS MinimumTemperature, SUBSTRING(REPLACE(CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)), ' ', ''), PATINDEX('%+[0-9][0-9]%', REPLACE(CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)), ' ', '')) + 1, 2) AS MaximumTemperature FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.3.1'))) VirtualTable WHERE PATINDEX('%[0-9]%', MinimumTemperature) > 0;".
 :database_34 a d2rq:Database;
@@ -2643,12 +2654,12 @@
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_34 rml:referenceFormulation ql:CSV.
+:source_35 rml:referenceFormulation ql:CSV.
 :map_temperature-range_0 a rr:TriplesMap;
     rdfs:label "temperature-range".
-:s_34 a rr:SubjectMap.
-:map_temperature-range_0 rr:subjectMap :s_34.
-:s_34 rr:template "http://era.europa.eu/implementation#V_{ID}".
+:s_35 a rr:SubjectMap.
+:map_temperature-range_0 rr:subjectMap :s_35.
+:s_35 rr:template "http://era.europa.eu/implementation#V_{ID}".
 :pom_187 a rr:PredicateObjectMap.
 :map_temperature-range_0 rr:predicateObjectMap :pom_187.
 :pm_187 a rr:PredicateMap.
@@ -2669,21 +2680,21 @@
     rml:reference "MaximumTemperature";
     rr:termType rr:Literal;
     rr:datatype xsd:integer.
-:map_snow-ice-hail-conditions_0 rml:logicalSource :source_35.
-:source_35 a rml:LogicalSource;
+:map_snow-ice-hail-conditions_0 rml:logicalSource :source_36.
+:source_36 a rml:LogicalSource;
     rml:source :database_35;
-    rml:query "SELECT VehicleTypes.ID, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.3.3'));".
+    rml:query "SELECT VehicleTypes.ID, REPLACE((SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId), ' ', '_') AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.3.3'));".
 :database_35 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_35 rml:referenceFormulation ql:CSV.
+:source_36 rml:referenceFormulation ql:CSV.
 :map_snow-ice-hail-conditions_0 a rr:TriplesMap;
     rdfs:label "snow-ice-hail-conditions".
-:s_35 a rr:SubjectMap.
-:map_snow-ice-hail-conditions_0 rr:subjectMap :s_35.
-:s_35 rr:template "http://era.europa.eu/implementation#V_{ID}".
+:s_36 a rr:SubjectMap.
+:map_snow-ice-hail-conditions_0 rr:subjectMap :s_36.
+:s_36 rr:template "http://era.europa.eu/implementation#V_{ID}".
 :pom_189 a rr:PredicateObjectMap.
 :map_snow-ice-hail-conditions_0 rr:predicateObjectMap :pom_189.
 :pm_189 a rr:PredicateMap.
@@ -2691,10 +2702,10 @@
 :pm_189 rr:constant era:snowIceHailConditions.
 :pom_189 rr:objectMap :om_189.
 :om_189 a rr:ObjectMap;
-    rml:reference "ParameterValue";
-    rr:termType rr:Literal.
-:map_energy-supply-system_0 rml:logicalSource :source_36.
-:source_36 a rml:LogicalSource;
+    rr:template "http://era.europa.eu/concepts/ice-conditions#{ParameterValue}";
+    rr:termType rr:IRI.
+:map_energy-supply-system_0 rml:logicalSource :source_37.
+:source_37 a rml:LogicalSource;
     rml:source :database_36;
     rml:query "SELECT VehicleTypes.ID, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.10.1'));".
 :database_36 a d2rq:Database;
@@ -2702,12 +2713,12 @@
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_36 rml:referenceFormulation ql:CSV.
+:source_37 rml:referenceFormulation ql:CSV.
 :map_energy-supply-system_0 a rr:TriplesMap;
     rdfs:label "energy-supply-system".
-:s_36 a rr:SubjectMap.
-:map_energy-supply-system_0 rr:subjectMap :s_36.
-:s_36 rr:template "http://era.europa.eu/implementation#V_{ID}".
+:s_37 a rr:SubjectMap.
+:map_energy-supply-system_0 rr:subjectMap :s_37.
+:s_37 rr:template "http://era.europa.eu/implementation#V_{ID}".
 :pom_190 a rr:PredicateObjectMap.
 :map_energy-supply-system_0 rr:predicateObjectMap :pom_190.
 :pm_190 a rr:PredicateMap.
@@ -2717,8 +2728,8 @@
 :om_190 a rr:ObjectMap;
     rml:reference "ParameterValue";
     rr:termType rr:Literal.
-:map_regenerative-brake-fitted_0 rml:logicalSource :source_37.
-:source_37 a rml:LogicalSource;
+:map_regenerative-brake-fitted_0 rml:logicalSource :source_38.
+:source_38 a rml:LogicalSource;
     rml:source :database_37;
     rml:query "SELECT VehicleTypes.ID, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.7.4.3.1'));".
 :database_37 a d2rq:Database;
@@ -2726,12 +2737,12 @@
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_37 rml:referenceFormulation ql:CSV.
+:source_38 rml:referenceFormulation ql:CSV.
 :map_regenerative-brake-fitted_0 a rr:TriplesMap;
     rdfs:label "regenerative-brake-fitted".
-:s_37 a rr:SubjectMap.
-:map_regenerative-brake-fitted_0 rr:subjectMap :s_37.
-:s_37 rr:template "http://era.europa.eu/implementation#V_{ID}".
+:s_38 a rr:SubjectMap.
+:map_regenerative-brake-fitted_0 rr:subjectMap :s_38.
+:s_38 rr:template "http://era.europa.eu/implementation#V_{ID}".
 :pom_191 a rr:PredicateObjectMap.
 :map_regenerative-brake-fitted_0 rr:predicateObjectMap :pom_191.
 :pm_191 a rr:PredicateMap.
@@ -2742,7 +2753,7 @@
     rr:termType rr:Literal;
     rr:datatype xsd:boolean;
     fnml:functionValue :fn_62.
-:fn_62 rml:logicalSource :source_37;
+:fn_62 rml:logicalSource :source_38;
     rr:predicateObjectMap :pomexec_62.
 :pomexec_62 rr:predicateMap :pmexec_62.
 :pmexec_62 rr:constant fno:executes.
@@ -2757,7 +2768,7 @@
 :pom_192 rr:objectMap :om_192.
 :om_192 a rr:ObjectMap, fnml:FunctionTermMap;
     fnml:functionValue :fn_63.
-:fn_63 rml:logicalSource :source_37;
+:fn_63 rml:logicalSource :source_38;
     rr:predicateObjectMap :pomexec_63.
 :pomexec_63 rr:predicateMap :pmexec_63.
 :pmexec_63 rr:constant fno:executes.
@@ -2801,7 +2812,7 @@
     rr:termType rr:Literal;
     rr:datatype xsd:boolean;
     fnml:functionValue :fn_64.
-:fn_64 rml:logicalSource :source_37;
+:fn_64 rml:logicalSource :source_38;
     rr:predicateObjectMap :pomexec_64.
 :pomexec_64 rr:predicateMap :pmexec_64.
 :pmexec_64 rr:constant fno:executes.
@@ -2816,7 +2827,7 @@
 :pom_197 rr:objectMap :om_197.
 :om_197 a rr:ObjectMap, fnml:FunctionTermMap;
     fnml:functionValue :fn_65.
-:fn_65 rml:logicalSource :source_37;
+:fn_65 rml:logicalSource :source_38;
     rr:predicateObjectMap :pomexec_65.
 :pomexec_65 rr:predicateMap :pmexec_65.
 :pmexec_65 rr:constant fno:executes.
@@ -2850,8 +2861,8 @@
 :om_200 a rr:ObjectMap;
     rr:constant "false";
     rr:termType rr:Literal.
-:map_prevent-regenerative-break_0 rml:logicalSource :source_38.
-:source_38 a rml:LogicalSource;
+:map_prevent-regenerative-break_0 rml:logicalSource :source_39.
+:source_39 a rml:LogicalSource;
     rml:source :database_38;
     rml:query "SELECT VehicleTypes.ID, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.7.4.3.1'));".
 :database_38 a d2rq:Database;
@@ -2859,12 +2870,12 @@
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_38 rml:referenceFormulation ql:CSV.
+:source_39 rml:referenceFormulation ql:CSV.
 :map_prevent-regenerative-break_0 a rr:TriplesMap;
     rdfs:label "prevent-regenerative-break".
-:s_38 a rr:SubjectMap.
-:map_prevent-regenerative-break_0 rr:subjectMap :s_38.
-:s_38 rr:template "http://era.europa.eu/implementation#V_{ID}".
+:s_39 a rr:SubjectMap.
+:map_prevent-regenerative-break_0 rr:subjectMap :s_39.
+:s_39 rr:template "http://era.europa.eu/implementation#V_{ID}".
 :pom_201 a rr:PredicateObjectMap.
 :map_prevent-regenerative-break_0 rr:predicateObjectMap :pom_201.
 :pm_201 a rr:PredicateMap.
@@ -2875,7 +2886,7 @@
     rr:termType rr:Literal;
     rr:datatype xsd:boolean;
     fnml:functionValue :fn_66.
-:fn_66 rml:logicalSource :source_38;
+:fn_66 rml:logicalSource :source_39;
     rr:predicateObjectMap :pomexec_66.
 :pomexec_66 rr:predicateMap :pmexec_66.
 :pmexec_66 rr:constant fno:executes.
@@ -2890,7 +2901,7 @@
 :pom_202 rr:objectMap :om_202.
 :om_202 a rr:ObjectMap, fnml:FunctionTermMap;
     fnml:functionValue :fn_67.
-:fn_67 rml:logicalSource :source_38;
+:fn_67 rml:logicalSource :source_39;
     rr:predicateObjectMap :pomexec_67.
 :pomexec_67 rr:predicateMap :pmexec_67.
 :pmexec_67 rr:constant fno:executes.
@@ -2934,7 +2945,7 @@
     rr:termType rr:Literal;
     rr:datatype xsd:boolean;
     fnml:functionValue :fn_68.
-:fn_68 rml:logicalSource :source_38;
+:fn_68 rml:logicalSource :source_39;
     rr:predicateObjectMap :pomexec_68.
 :pomexec_68 rr:predicateMap :pmexec_68.
 :pmexec_68 rr:constant fno:executes.
@@ -2949,7 +2960,7 @@
 :pom_207 rr:objectMap :om_207.
 :om_207 a rr:ObjectMap, fnml:FunctionTermMap;
     fnml:functionValue :fn_69.
-:fn_69 rml:logicalSource :source_38;
+:fn_69 rml:logicalSource :source_39;
     rr:predicateObjectMap :pomexec_69.
 :pomexec_69 rr:predicateMap :pmexec_69.
 :pmexec_69 rr:constant fno:executes.
@@ -2983,8 +2994,8 @@
 :om_210 a rr:ObjectMap;
     rr:constant "false";
     rr:termType rr:Literal.
-:map_current-limitation_0 rml:logicalSource :source_39.
-:source_39 a rml:LogicalSource;
+:map_current-limitation_0 rml:logicalSource :source_40.
+:source_40 a rml:LogicalSource;
     rml:source :database_39;
     rml:query "SELECT VehicleTypes.ID, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.10.14'));".
 :database_39 a d2rq:Database;
@@ -2992,12 +3003,12 @@
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_39 rml:referenceFormulation ql:CSV.
+:source_40 rml:referenceFormulation ql:CSV.
 :map_current-limitation_0 a rr:TriplesMap;
     rdfs:label "current-limitation".
-:s_39 a rr:SubjectMap.
-:map_current-limitation_0 rr:subjectMap :s_39.
-:s_39 rr:template "http://era.europa.eu/implementation#V_{ID}".
+:s_40 a rr:SubjectMap.
+:map_current-limitation_0 rr:subjectMap :s_40.
+:s_40 rr:template "http://era.europa.eu/implementation#V_{ID}".
 :pom_211 a rr:PredicateObjectMap.
 :map_current-limitation_0 rr:predicateObjectMap :pom_211.
 :pm_211 a rr:PredicateMap.
@@ -3008,7 +3019,7 @@
     rr:termType rr:Literal;
     rr:datatype xsd:boolean;
     fnml:functionValue :fn_70.
-:fn_70 rml:logicalSource :source_39;
+:fn_70 rml:logicalSource :source_40;
     rr:predicateObjectMap :pomexec_70.
 :pomexec_70 rr:predicateMap :pmexec_70.
 :pmexec_70 rr:constant fno:executes.
@@ -3023,7 +3034,7 @@
 :pom_212 rr:objectMap :om_212.
 :om_212 a rr:ObjectMap, fnml:FunctionTermMap;
     fnml:functionValue :fn_71.
-:fn_71 rml:logicalSource :source_39;
+:fn_71 rml:logicalSource :source_40;
     rr:predicateObjectMap :pomexec_71.
 :pomexec_71 rr:predicateMap :pmexec_71.
 :pmexec_71 rr:constant fno:executes.
@@ -3067,7 +3078,7 @@
     rr:termType rr:Literal;
     rr:datatype xsd:boolean;
     fnml:functionValue :fn_72.
-:fn_72 rml:logicalSource :source_39;
+:fn_72 rml:logicalSource :source_40;
     rr:predicateObjectMap :pomexec_72.
 :pomexec_72 rr:predicateMap :pmexec_72.
 :pmexec_72 rr:constant fno:executes.
@@ -3082,7 +3093,7 @@
 :pom_217 rr:objectMap :om_217.
 :om_217 a rr:ObjectMap, fnml:FunctionTermMap;
     fnml:functionValue :fn_73.
-:fn_73 rml:logicalSource :source_39;
+:fn_73 rml:logicalSource :source_40;
     rr:predicateObjectMap :pomexec_73.
 :pomexec_73 rr:predicateMap :pmexec_73.
 :pmexec_73 rr:constant fno:executes.
@@ -3116,8 +3127,8 @@
 :om_220 a rr:ObjectMap;
     rr:constant "false";
     rr:termType rr:Literal.
-:map_maximum-current-standstill_0 rml:logicalSource :source_40.
-:source_40 a rml:LogicalSource;
+:map_maximum-current-standstill_0 rml:logicalSource :source_41.
+:source_41 a rml:LogicalSource;
     rml:source :database_40;
     rml:query "SELECT VehicleTypes.ID, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.10.4'));".
 :database_40 a d2rq:Database;
@@ -3125,12 +3136,12 @@
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_40 rml:referenceFormulation ql:CSV.
+:source_41 rml:referenceFormulation ql:CSV.
 :map_maximum-current-standstill_0 a rr:TriplesMap;
     rdfs:label "maximum-current-standstill".
-:s_40 a rr:SubjectMap.
-:map_maximum-current-standstill_0 rr:subjectMap :s_40.
-:s_40 rr:template "http://era.europa.eu/implementation#V_{ID}".
+:s_41 a rr:SubjectMap.
+:map_maximum-current-standstill_0 rr:subjectMap :s_41.
+:s_41 rr:template "http://era.europa.eu/implementation#V_{ID}".
 :pom_221 a rr:PredicateObjectMap.
 :map_maximum-current-standstill_0 rr:predicateObjectMap :pom_221.
 :pm_221 a rr:PredicateMap.
@@ -3141,8 +3152,8 @@
     rml:reference "ParameterValue";
     rr:termType rr:Literal;
     rr:datatype xsd:double.
-:map_wire-contact-height_0 rml:logicalSource :source_41.
-:source_41 a rml:LogicalSource;
+:map_wire-contact-height_0 rml:logicalSource :source_42.
+:source_42 a rml:LogicalSource;
     rml:source :database_41;
     rml:query "SELECT VehicleTypes.ID, MinimumHeight = CASE WHEN ISNUMERIC(SUBSTRING(CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)), 0, 8)) = 1 THEN CASE WHEN CAST(SUBSTRING(CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)), 0, 8) AS float) > 10 THEN CAST(SUBSTRING(CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)), 0, 8) AS float) / 1000 ELSE CAST(SUBSTRING(CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)), 0, 8) AS float) END ELSE NULL END, MaximumHeight = CASE WHEN ISNUMERIC(SUBSTRING(CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)), 14, 8)) = 1 THEN CASE WHEN CAST(SUBSTRING(CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)), 14, 8) AS float) > 10 THEN CAST(SUBSTRING(CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)), 14, 8) AS float) / 1000 ELSE CAST(SUBSTRING(CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)), 14, 8) AS float) END ELSE NULL END FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.10.5'));".
 :database_41 a d2rq:Database;
@@ -3150,12 +3161,12 @@
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_41 rml:referenceFormulation ql:CSV.
+:source_42 rml:referenceFormulation ql:CSV.
 :map_wire-contact-height_0 a rr:TriplesMap;
     rdfs:label "wire-contact-height".
-:s_41 a rr:SubjectMap.
-:map_wire-contact-height_0 rr:subjectMap :s_41.
-:s_41 rr:template "http://era.europa.eu/implementation#V_{ID}".
+:s_42 a rr:SubjectMap.
+:map_wire-contact-height_0 rr:subjectMap :s_42.
+:s_42 rr:template "http://era.europa.eu/implementation#V_{ID}".
 :pom_222 a rr:PredicateObjectMap.
 :map_wire-contact-height_0 rr:predicateObjectMap :pom_222.
 :pm_222 a rr:PredicateMap.
@@ -3176,8 +3187,8 @@
     rml:reference "MinimumHeight";
     rr:termType rr:Literal;
     rr:datatype xsd:double.
-:map_pantograph-head_0 rml:logicalSource :source_42.
-:source_42 a rml:LogicalSource;
+:map_pantograph-head_0 rml:logicalSource :source_43.
+:source_43 a rml:LogicalSource;
     rml:source :database_42;
     rml:query "SELECT VehicleTypes.ID, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.10.6'));".
 :database_42 a d2rq:Database;
@@ -3185,23 +3196,23 @@
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_42 rml:referenceFormulation ql:CSV.
+:source_43 rml:referenceFormulation ql:CSV.
 :map_pantograph-head_0 a rr:TriplesMap;
     rdfs:label "pantograph-head".
-:s_42 a rr:SubjectMap.
-:map_pantograph-head_0 rr:subjectMap :s_42.
-:s_42 rr:template "http://era.europa.eu/implementation#V_{ID}".
+:s_43 a rr:SubjectMap.
+:map_pantograph-head_0 rr:subjectMap :s_43.
+:s_43 rr:template "http://era.europa.eu/implementation#V_{ID}".
 :pom_224 a rr:PredicateObjectMap.
 :map_pantograph-head_0 rr:predicateObjectMap :pom_224.
 :pm_224 a rr:PredicateMap.
 :pom_224 rr:predicateMap :pm_224.
-:pm_224 rr:constant era:pantographHead.
+:pm_224 rr:constant era:vehiclePantographHead.
 :pom_224 rr:objectMap :om_224.
 :om_224 a rr:ObjectMap;
     rml:reference "ParameterValue";
     rr:termType rr:Literal.
-:map_contact-strip-material_0 rml:logicalSource :source_43.
-:source_43 a rml:LogicalSource;
+:map_contact-strip-material_0 rml:logicalSource :source_44.
+:source_44 a rml:LogicalSource;
     rml:source :database_43;
     rml:query "SELECT VehicleTypes.ID, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.10.10'));".
 :database_43 a d2rq:Database;
@@ -3209,23 +3220,23 @@
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_43 rml:referenceFormulation ql:CSV.
+:source_44 rml:referenceFormulation ql:CSV.
 :map_contact-strip-material_0 a rr:TriplesMap;
     rdfs:label "contact-strip-material".
-:s_43 a rr:SubjectMap.
-:map_contact-strip-material_0 rr:subjectMap :s_43.
-:s_43 rr:template "http://era.europa.eu/implementation#V_{ID}".
+:s_44 a rr:SubjectMap.
+:map_contact-strip-material_0 rr:subjectMap :s_44.
+:s_44 rr:template "http://era.europa.eu/implementation#V_{ID}".
 :pom_225 a rr:PredicateObjectMap.
 :map_contact-strip-material_0 rr:predicateObjectMap :pom_225.
 :pm_225 a rr:PredicateMap.
 :pom_225 rr:predicateMap :pm_225.
-:pm_225 rr:constant era:contactStripMaterial.
+:pm_225 rr:constant era:vehicleContactStripMaterial.
 :pom_225 rr:objectMap :om_225.
 :om_225 a rr:ObjectMap;
     rml:reference "ParameterValue";
     rr:termType rr:Literal.
-:map_contact-force_0 rml:logicalSource :source_44.
-:source_44 a rml:LogicalSource;
+:map_contact-force_0 rml:logicalSource :source_45.
+:source_45 a rml:LogicalSource;
     rml:source :database_44;
     rml:query "SELECT VehicleTypes.ID, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.10.15'));".
 :database_44 a d2rq:Database;
@@ -3233,23 +3244,23 @@
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_44 rml:referenceFormulation ql:CSV.
+:source_45 rml:referenceFormulation ql:CSV.
 :map_contact-force_0 a rr:TriplesMap;
     rdfs:label "contact-force".
-:s_44 a rr:SubjectMap.
-:map_contact-force_0 rr:subjectMap :s_44.
-:s_44 rr:template "http://era.europa.eu/implementation#V_{ID}".
+:s_45 a rr:SubjectMap.
+:map_contact-force_0 rr:subjectMap :s_45.
+:s_45 rr:template "http://era.europa.eu/implementation#V_{ID}".
 :pom_226 a rr:PredicateObjectMap.
 :map_contact-force_0 rr:predicateObjectMap :pom_226.
 :pm_226 a rr:PredicateMap.
 :pom_226 rr:predicateMap :pm_226.
-:pm_226 rr:constant era:contactForce.
+:pm_226 rr:constant era:vehicleContactForce.
 :pom_226 rr:objectMap :om_226.
 :om_226 a rr:ObjectMap;
     rml:reference "ParameterValue";
     rr:termType rr:Literal.
-:map_pantograph-number_0 rml:logicalSource :source_45.
-:source_45 a rml:LogicalSource;
+:map_pantograph-number_0 rml:logicalSource :source_46.
+:source_46 a rml:LogicalSource;
     rml:source :database_45;
     rml:query "SELECT VehicleTypes.ID, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.10.7'));".
 :database_45 a d2rq:Database;
@@ -3257,12 +3268,12 @@
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_45 rml:referenceFormulation ql:CSV.
+:source_46 rml:referenceFormulation ql:CSV.
 :map_pantograph-number_0 a rr:TriplesMap;
     rdfs:label "pantograph-number".
-:s_45 a rr:SubjectMap.
-:map_pantograph-number_0 rr:subjectMap :s_45.
-:s_45 rr:template "http://era.europa.eu/implementation#V_{ID}".
+:s_46 a rr:SubjectMap.
+:map_pantograph-number_0 rr:subjectMap :s_46.
+:s_46 rr:template "http://era.europa.eu/implementation#V_{ID}".
 :pom_227 a rr:PredicateObjectMap.
 :map_pantograph-number_0 rr:predicateObjectMap :pom_227.
 :pm_227 a rr:PredicateMap.
@@ -3273,8 +3284,8 @@
     rml:reference "ParameterValue";
     rr:termType rr:Literal;
     rr:datatype xsd:integer.
-:map_shortest-distance-between-pantographs_0 rml:logicalSource :source_46.
-:source_46 a rml:LogicalSource;
+:map_shortest-distance-between-pantographs_0 rml:logicalSource :source_47.
+:source_47 a rml:LogicalSource;
     rml:source :database_46;
     rml:query "SELECT VehicleTypes.ID, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.10.8'));".
 :database_46 a d2rq:Database;
@@ -3282,12 +3293,12 @@
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_46 rml:referenceFormulation ql:CSV.
+:source_47 rml:referenceFormulation ql:CSV.
 :map_shortest-distance-between-pantographs_0 a rr:TriplesMap;
     rdfs:label "shortest-distance-between-pantographs".
-:s_46 a rr:SubjectMap.
-:map_shortest-distance-between-pantographs_0 rr:subjectMap :s_46.
-:s_46 rr:template "http://era.europa.eu/implementation#V_{ID}".
+:s_47 a rr:SubjectMap.
+:map_shortest-distance-between-pantographs_0 rr:subjectMap :s_47.
+:s_47 rr:template "http://era.europa.eu/implementation#V_{ID}".
 :pom_228 a rr:PredicateObjectMap.
 :map_shortest-distance-between-pantographs_0 rr:predicateObjectMap :pom_228.
 :pm_228 a rr:PredicateMap.
@@ -3298,8 +3309,8 @@
     rml:reference "ParameterValue";
     rr:termType rr:Literal;
     rr:datatype xsd:double.
-:map_ocl-type_0 rml:logicalSource :source_47.
-:source_47 a rml:LogicalSource;
+:map_ocl-type_0 rml:logicalSource :source_48.
+:source_48 a rml:LogicalSource;
     rml:source :database_47;
     rml:query "SELECT VehicleTypes.ID, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.10.9'));".
 :database_47 a d2rq:Database;
@@ -3307,12 +3318,12 @@
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_47 rml:referenceFormulation ql:CSV.
+:source_48 rml:referenceFormulation ql:CSV.
 :map_ocl-type_0 a rr:TriplesMap;
     rdfs:label "ocl-type".
-:s_47 a rr:SubjectMap.
-:map_ocl-type_0 rr:subjectMap :s_47.
-:s_47 rr:template "http://era.europa.eu/implementation#V_{ID}".
+:s_48 a rr:SubjectMap.
+:map_ocl-type_0 rr:subjectMap :s_48.
+:s_48 rr:template "http://era.europa.eu/implementation#V_{ID}".
 :pom_229 a rr:PredicateObjectMap.
 :map_ocl-type_0 rr:predicateObjectMap :pom_229.
 :pm_229 a rr:PredicateMap.
@@ -3322,8 +3333,8 @@
 :om_229 a rr:ObjectMap;
     rml:reference "ParameterValue";
     rr:termType rr:Literal.
-:map_automatic-dropping-device-fitted_0 rml:logicalSource :source_48.
-:source_48 a rml:LogicalSource;
+:map_automatic-dropping-device-fitted_0 rml:logicalSource :source_49.
+:source_49 a rml:LogicalSource;
     rml:source :database_48;
     rml:query "SELECT VehicleTypes.ID, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.10.11'));".
 :database_48 a d2rq:Database;
@@ -3331,12 +3342,12 @@
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_48 rml:referenceFormulation ql:CSV.
+:source_49 rml:referenceFormulation ql:CSV.
 :map_automatic-dropping-device-fitted_0 a rr:TriplesMap;
     rdfs:label "automatic-dropping-device-fitted".
-:s_48 a rr:SubjectMap.
-:map_automatic-dropping-device-fitted_0 rr:subjectMap :s_48.
-:s_48 rr:template "http://era.europa.eu/implementation#V_{ID}".
+:s_49 a rr:SubjectMap.
+:map_automatic-dropping-device-fitted_0 rr:subjectMap :s_49.
+:s_49 rr:template "http://era.europa.eu/implementation#V_{ID}".
 :pom_230 a rr:PredicateObjectMap.
 :map_automatic-dropping-device-fitted_0 rr:predicateObjectMap :pom_230.
 :pm_230 a rr:PredicateMap.
@@ -3347,7 +3358,7 @@
     rr:termType rr:Literal;
     rr:datatype xsd:boolean;
     fnml:functionValue :fn_74.
-:fn_74 rml:logicalSource :source_48;
+:fn_74 rml:logicalSource :source_49;
     rr:predicateObjectMap :pomexec_74.
 :pomexec_74 rr:predicateMap :pmexec_74.
 :pmexec_74 rr:constant fno:executes.
@@ -3362,7 +3373,7 @@
 :pom_231 rr:objectMap :om_231.
 :om_231 a rr:ObjectMap, fnml:FunctionTermMap;
     fnml:functionValue :fn_75.
-:fn_75 rml:logicalSource :source_48;
+:fn_75 rml:logicalSource :source_49;
     rr:predicateObjectMap :pomexec_75.
 :pomexec_75 rr:predicateMap :pmexec_75.
 :pmexec_75 rr:constant fno:executes.
@@ -3406,7 +3417,7 @@
     rr:termType rr:Literal;
     rr:datatype xsd:boolean;
     fnml:functionValue :fn_76.
-:fn_76 rml:logicalSource :source_48;
+:fn_76 rml:logicalSource :source_49;
     rr:predicateObjectMap :pomexec_76.
 :pomexec_76 rr:predicateMap :pmexec_76.
 :pmexec_76 rr:constant fno:executes.
@@ -3421,7 +3432,7 @@
 :pom_236 rr:objectMap :om_236.
 :om_236 a rr:ObjectMap, fnml:FunctionTermMap;
     fnml:functionValue :fn_77.
-:fn_77 rml:logicalSource :source_48;
+:fn_77 rml:logicalSource :source_49;
     rr:predicateObjectMap :pomexec_77.
 :pomexec_77 rr:predicateMap :pmexec_77.
 :pmexec_77 rr:constant fno:executes.
@@ -3455,8 +3466,8 @@
 :om_239 a rr:ObjectMap;
     rr:constant "false";
     rr:termType rr:Literal.
-:map_fire-safety-category_0 rml:logicalSource :source_49.
-:source_49 a rml:LogicalSource;
+:map_fire-safety-category_0 rml:logicalSource :source_50.
+:source_50 a rml:LogicalSource;
     rml:source :database_49;
     rml:query "SELECT VehicleTypes.ID, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.4.1'));".
 :database_49 a d2rq:Database;
@@ -3464,12 +3475,12 @@
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_49 rml:referenceFormulation ql:CSV.
+:source_50 rml:referenceFormulation ql:CSV.
 :map_fire-safety-category_0 a rr:TriplesMap;
     rdfs:label "fire-safety-category".
-:s_49 a rr:SubjectMap.
-:map_fire-safety-category_0 rr:subjectMap :s_49.
-:s_49 rr:template "http://era.europa.eu/implementation#V_{ID}".
+:s_50 a rr:SubjectMap.
+:map_fire-safety-category_0 rr:subjectMap :s_50.
+:s_50 rr:template "http://era.europa.eu/implementation#V_{ID}".
 :pom_240 a rr:PredicateObjectMap.
 :map_fire-safety-category_0 rr:predicateObjectMap :pom_240.
 :pm_240 a rr:PredicateMap.
@@ -3479,8 +3490,8 @@
 :om_240 a rr:ObjectMap;
     rml:reference "ParameterValue";
     rr:termType rr:Literal.
-:map_platform-height_0 rml:logicalSource :source_50.
-:source_50 a rml:LogicalSource;
+:map_platform-height_0 rml:logicalSource :source_51.
+:source_51 a rml:LogicalSource;
     rml:source :database_50;
     rml:query "SELECT VehicleTypes.ID, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.12.3.1'));".
 :database_50 a d2rq:Database;
@@ -3488,12 +3499,12 @@
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_50 rml:referenceFormulation ql:CSV.
+:source_51 rml:referenceFormulation ql:CSV.
 :map_platform-height_0 a rr:TriplesMap;
     rdfs:label "platform-height".
-:s_50 a rr:SubjectMap.
-:map_platform-height_0 rr:subjectMap :s_50.
-:s_50 rr:template "http://era.europa.eu/implementation#V_{ID}".
+:s_51 a rr:SubjectMap.
+:map_platform-height_0 rr:subjectMap :s_51.
+:s_51 rr:template "http://era.europa.eu/implementation#V_{ID}".
 :pom_241 a rr:PredicateObjectMap.
 :map_platform-height_0 rr:predicateObjectMap :pom_241.
 :pm_241 a rr:PredicateMap.
@@ -3503,8 +3514,8 @@
 :om_241 a rr:ObjectMap;
     rml:reference "ParameterValue";
     rr:termType rr:Literal.
-:map_etcs-compatible_0 rml:logicalSource :source_51.
-:source_51 a rml:LogicalSource;
+:map_etcs-compatible_0 rml:logicalSource :source_52.
+:source_52 a rml:LogicalSource;
     rml:source :database_51;
     rml:query "SELECT VehicleTypes.ID, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.13.1.8'));".
 :database_51 a d2rq:Database;
@@ -3512,12 +3523,12 @@
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_51 rml:referenceFormulation ql:CSV.
+:source_52 rml:referenceFormulation ql:CSV.
 :map_etcs-compatible_0 a rr:TriplesMap;
     rdfs:label "etcs-compatible".
-:s_51 a rr:SubjectMap.
-:map_etcs-compatible_0 rr:subjectMap :s_51.
-:s_51 rr:template "http://era.europa.eu/implementation#V_{ID}".
+:s_52 a rr:SubjectMap.
+:map_etcs-compatible_0 rr:subjectMap :s_52.
+:s_52 rr:template "http://era.europa.eu/implementation#V_{ID}".
 :pom_242 a rr:PredicateObjectMap.
 :map_etcs-compatible_0 rr:predicateObjectMap :pom_242.
 :pm_242 a rr:PredicateMap.
@@ -3528,7 +3539,7 @@
     rr:termType rr:Literal;
     rr:datatype xsd:boolean;
     fnml:functionValue :fn_78.
-:fn_78 rml:logicalSource :source_51;
+:fn_78 rml:logicalSource :source_52;
     rr:predicateObjectMap :pomexec_78.
 :pomexec_78 rr:predicateMap :pmexec_78.
 :pmexec_78 rr:constant fno:executes.
@@ -3543,7 +3554,7 @@
 :pom_243 rr:objectMap :om_243.
 :om_243 a rr:ObjectMap, fnml:FunctionTermMap;
     fnml:functionValue :fn_79.
-:fn_79 rml:logicalSource :source_51;
+:fn_79 rml:logicalSource :source_52;
     rr:predicateObjectMap :pomexec_79.
 :pomexec_79 rr:predicateMap :pmexec_79.
 :pmexec_79 rr:constant fno:executes.
@@ -3587,7 +3598,7 @@
     rr:termType rr:Literal;
     rr:datatype xsd:boolean;
     fnml:functionValue :fn_80.
-:fn_80 rml:logicalSource :source_51;
+:fn_80 rml:logicalSource :source_52;
     rr:predicateObjectMap :pomexec_80.
 :pomexec_80 rr:predicateMap :pmexec_80.
 :pmexec_80 rr:constant fno:executes.
@@ -3602,7 +3613,7 @@
 :pom_248 rr:objectMap :om_248.
 :om_248 a rr:ObjectMap, fnml:FunctionTermMap;
     fnml:functionValue :fn_81.
-:fn_81 rml:logicalSource :source_51;
+:fn_81 rml:logicalSource :source_52;
     rr:predicateObjectMap :pomexec_81.
 :pomexec_81 rr:predicateMap :pmexec_81.
 :pmexec_81 rr:constant fno:executes.
@@ -3636,8 +3647,8 @@
 :om_251 a rr:ObjectMap;
     rr:constant "false";
     rr:termType rr:Literal.
-:map_voice-gsm-r-home-network_0 rml:logicalSource :source_52.
-:source_52 a rml:LogicalSource;
+:map_voice-gsm-r-home-network_0 rml:logicalSource :source_53.
+:source_53 a rml:LogicalSource;
     rml:source :database_52;
     rml:query "SELECT VehicleTypes.ID, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.13.2.10'));".
 :database_52 a d2rq:Database;
@@ -3645,12 +3656,12 @@
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_52 rml:referenceFormulation ql:CSV.
+:source_53 rml:referenceFormulation ql:CSV.
 :map_voice-gsm-r-home-network_0 a rr:TriplesMap;
     rdfs:label "voice-gsm-r-home-network".
-:s_52 a rr:SubjectMap.
-:map_voice-gsm-r-home-network_0 rr:subjectMap :s_52.
-:s_52 rr:template "http://era.europa.eu/implementation#V_{ID}".
+:s_53 a rr:SubjectMap.
+:map_voice-gsm-r-home-network_0 rr:subjectMap :s_53.
+:s_53 rr:template "http://era.europa.eu/implementation#V_{ID}".
 :pom_252 a rr:PredicateObjectMap.
 :map_voice-gsm-r-home-network_0 rr:predicateObjectMap :pom_252.
 :pm_252 a rr:PredicateMap.
@@ -3660,8 +3671,8 @@
 :om_252 a rr:ObjectMap;
     rml:reference "ParameterValue";
     rr:termType rr:Literal.
-:map_data-gsm-r-home-network_0 rml:logicalSource :source_53.
-:source_53 a rml:LogicalSource;
+:map_data-gsm-r-home-network_0 rml:logicalSource :source_54.
+:source_54 a rml:LogicalSource;
     rml:source :database_53;
     rml:query "SELECT VehicleTypes.ID, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.13.2.11'));".
 :database_53 a d2rq:Database;
@@ -3669,12 +3680,12 @@
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_53 rml:referenceFormulation ql:CSV.
+:source_54 rml:referenceFormulation ql:CSV.
 :map_data-gsm-r-home-network_0 a rr:TriplesMap;
     rdfs:label "data-gsm-r-home-network".
-:s_53 a rr:SubjectMap.
-:map_data-gsm-r-home-network_0 rr:subjectMap :s_53.
-:s_53 rr:template "http://era.europa.eu/implementation#V_{ID}".
+:s_54 a rr:SubjectMap.
+:map_data-gsm-r-home-network_0 rr:subjectMap :s_54.
+:s_54 rr:template "http://era.europa.eu/implementation#V_{ID}".
 :pom_253 a rr:PredicateObjectMap.
 :map_data-gsm-r-home-network_0 rr:predicateObjectMap :pom_253.
 :pm_253 a rr:PredicateMap.
@@ -3684,8 +3695,8 @@
 :om_253 a rr:ObjectMap;
     rml:reference "ParameterValue";
     rr:termType rr:Literal.
-:map_group-555-support_0 rml:logicalSource :source_54.
-:source_54 a rml:LogicalSource;
+:map_group-555-support_0 rml:logicalSource :source_55.
+:source_55 a rml:LogicalSource;
     rml:source :database_54;
     rml:query "SELECT VehicleTypes.ID, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.13.2.12'));".
 :database_54 a d2rq:Database;
@@ -3693,12 +3704,12 @@
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_54 rml:referenceFormulation ql:CSV.
+:source_55 rml:referenceFormulation ql:CSV.
 :map_group-555-support_0 a rr:TriplesMap;
     rdfs:label "group-555-support".
-:s_54 a rr:SubjectMap.
-:map_group-555-support_0 rr:subjectMap :s_54.
-:s_54 rr:template "http://era.europa.eu/implementation#V_{ID}".
+:s_55 a rr:SubjectMap.
+:map_group-555-support_0 rr:subjectMap :s_55.
+:s_55 rr:template "http://era.europa.eu/implementation#V_{ID}".
 :pom_254 a rr:PredicateObjectMap.
 :map_group-555-support_0 rr:predicateObjectMap :pom_254.
 :pm_254 a rr:PredicateMap.
@@ -3708,8 +3719,8 @@
 :om_254 a rr:ObjectMap;
     rml:reference "ParameterValue";
     rr:termType rr:Literal.
-:map_protection-legacy-system_0 rml:logicalSource :source_55.
-:source_55 a rml:LogicalSource;
+:map_protection-legacy-system_0 rml:logicalSource :source_56.
+:source_56 a rml:LogicalSource;
     rml:source :database_55;
     rml:query "SELECT VehicleTypes.ID, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.13.1.5'));".
 :database_55 a d2rq:Database;
@@ -3717,12 +3728,12 @@
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_55 rml:referenceFormulation ql:CSV.
+:source_56 rml:referenceFormulation ql:CSV.
 :map_protection-legacy-system_0 a rr:TriplesMap;
     rdfs:label "protection-legacy-system".
-:s_55 a rr:SubjectMap.
-:map_protection-legacy-system_0 rr:subjectMap :s_55.
-:s_55 rr:template "http://era.europa.eu/implementation#V_{ID}".
+:s_56 a rr:SubjectMap.
+:map_protection-legacy-system_0 rr:subjectMap :s_56.
+:s_56 rr:template "http://era.europa.eu/implementation#V_{ID}".
 :pom_255 a rr:PredicateObjectMap.
 :map_protection-legacy-system_0 rr:predicateObjectMap :pom_255.
 :pm_255 a rr:PredicateMap.
@@ -3732,8 +3743,8 @@
 :om_255 a rr:ObjectMap;
     rml:reference "ParameterValue";
     rr:termType rr:Literal.
-:map_radio-legacy-system_0 rml:logicalSource :source_56.
-:source_56 a rml:LogicalSource;
+:map_radio-legacy-system_0 rml:logicalSource :source_57.
+:source_57 a rml:LogicalSource;
     rml:source :database_56;
     rml:query "SELECT VehicleTypes.ID, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.13.2.3'));".
 :database_56 a d2rq:Database;
@@ -3741,12 +3752,12 @@
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_56 rml:referenceFormulation ql:CSV.
+:source_57 rml:referenceFormulation ql:CSV.
 :map_radio-legacy-system_0 a rr:TriplesMap;
     rdfs:label "radio-legacy-system".
-:s_56 a rr:SubjectMap.
-:map_radio-legacy-system_0 rr:subjectMap :s_56.
-:s_56 rr:template "http://era.europa.eu/implementation#V_{ID}".
+:s_57 a rr:SubjectMap.
+:map_radio-legacy-system_0 rr:subjectMap :s_57.
+:s_57 rr:template "http://era.europa.eu/implementation#V_{ID}".
 :pom_256 a rr:PredicateObjectMap.
 :map_radio-legacy-system_0 rr:predicateObjectMap :pom_256.
 :pm_256 a rr:PredicateMap.
@@ -3756,3 +3767,8 @@
 :om_256 a rr:ObjectMap;
     rml:reference "ParameterValue";
     rr:termType rr:Literal.
+:om_3 a rr:ObjectMap;
+    rr:parentTriplesMap :map_geonames-country_0;
+    rr:joinCondition :jc_0.
+:jc_0 rr:child "CountryCode";
+    rr:parent "code".

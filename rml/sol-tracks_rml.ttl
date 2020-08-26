@@ -7,11 +7,18 @@
 @prefix rml: <http://semweb.mmlab.be/ns/rml#>.
 @prefix ql: <http://semweb.mmlab.be/ns/ql#>.
 @prefix : <http://mapping.example.com/>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
 @prefix idlab-fn: <http://example.com/idlab/function/>.
 @prefix grel: <http://users.ugent.be/~bjdmeest/function/grel.ttl#>.
 @prefix era: <http://era.europa.eu/ns#>.
+@prefix era-lc: <http://era.europa.eu/concepts/load-capabilities#>.
 @prefix era-gaugings: <http://era.europa.eu/concepts/gaugings#>.
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix era-tds: <http://era.europa.eu/concepts/train-detection#>.
+@prefix era-ftds: <http://era.europa.eu/concepts/french-train-detection#>.
+@prefix era-cls: <http://era.europa.eu/concepts/contact-line-systems#>.
+@prefix era-tph: <http://era.europa.eu/concepts/tsi-pantograph-heads#>.
+@prefix era-oph: <http://era.europa.eu/concepts/other-pantograph-heads#>.
+@prefix era-csm: <http://era.europa.eu/concepts/contact-strip-materials#>.
 
 :map_sol-tracks_0 rml:logicalSource :source_0.
 :source_0 a rml:LogicalSource;
@@ -92,7 +99,7 @@
 :map_load-capability_0 rml:logicalSource :source_2.
 :source_2 a rml:LogicalSource;
     rml:source :database_2;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT(LookupValues.[Value], '/' , TrackParameters.Value) AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.LookupValues WHERE SOLTracks.TrackID = TrackParameters.TrackID  AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID  AND Parameters.[Index] IN ('1.1.1.1.2.4') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT(LookupValues.[Value], '-' , TrackParameters.Value) AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.LookupValues WHERE SOLTracks.TrackID = TrackParameters.TrackID  AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID  AND Parameters.[Index] IN ('1.1.1.1.2.4') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
 :database_2 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -111,8 +118,8 @@
 :pm_5 rr:constant era:loadCapability.
 :pom_5 rr:objectMap :om_5.
 :om_5 a rr:ObjectMap;
-    rml:reference "ParameterValue";
-    rr:termType rr:Literal.
+    rr:template "http://era.europa.eu/concepts/load-capabilities#{ParameterValue}";
+    rr:termType rr:IRI.
 :map_national-load-capability_0 rml:logicalSource :source_3.
 :source_3 a rml:LogicalSource;
     rml:source :database_3;
@@ -295,7 +302,7 @@
     rml:reference "ParameterValue";
     rr:termType rr:Literal;
     rr:datatype xsd:double.
-:map_dynamic-compatibility-procedure-document_0 rml:logicalSource :source_6.
+:map_compatibility-procedure-document_0 rml:logicalSource :source_6.
 :source_6 a rml:LogicalSource;
     rml:source :database_6;
     rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.1.2.4.4') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
@@ -305,16 +312,16 @@
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
 :source_6 rml:referenceFormulation ql:CSV.
-:map_dynamic-compatibility-procedure-document_0 a rr:TriplesMap;
-    rdfs:label "dynamic-compatibility-procedure-document".
+:map_compatibility-procedure-document_0 a rr:TriplesMap;
+    rdfs:label "compatibility-procedure-document".
 :s_6 a rr:SubjectMap.
-:map_dynamic-compatibility-procedure-document_0 rr:subjectMap :s_6.
+:map_compatibility-procedure-document_0 rr:subjectMap :s_6.
 :s_6 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
 :pom_18 a rr:PredicateObjectMap.
-:map_dynamic-compatibility-procedure-document_0 rr:predicateObjectMap :pom_18.
+:map_compatibility-procedure-document_0 rr:predicateObjectMap :pom_18.
 :pm_18 a rr:PredicateMap.
 :pom_18 rr:predicateMap :pm_18.
-:pm_18 rr:constant era:dynamicCompatibilityProcedureDocument.
+:pm_18 rr:constant era:compatibilityProcedureDocument.
 :pom_18 rr:objectMap :om_18.
 :om_18 a rr:ObjectMap;
     rml:reference "ParameterValue";
@@ -467,7 +474,7 @@
 :map_french-detection-limitation_0 rml:logicalSource :source_13.
 :source_13 a rml:LogicalSource;
     rml:source :database_13;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.3.7.1.4') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, REPLACE(CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, ''), '+', '_') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.3.7.1.4') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
 :database_13 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -486,8 +493,8 @@
 :pm_25 rr:constant era:frenchTrainDetectionSystemLimitation.
 :pom_25 rr:objectMap :om_25.
 :om_25 a rr:ObjectMap;
-    rml:reference "ParameterValue";
-    rr:termType rr:Literal.
+    rr:template "http://era.europa.eu/concepts/french-train-detection#{ParameterValue}";
+    rr:termType rr:IRI.
 :map_hot-axle-box-detector-existence_0 rml:logicalSource :source_14.
 :source_14 a rml:LogicalSource;
     rml:source :database_14;
@@ -825,8 +832,7 @@
 :pom_48 rr:objectMap :om_48.
 :om_48 a rr:ObjectMap;
     rml:reference "ParameterValue";
-    rr:termType rr:Literal;
-    rr:datatype xsd:double.
+    rr:termType rr:Literal.
 :map_hot-axle-box-detector-direction_0 rml:logicalSource :source_19.
 :source_19 a rml:LogicalSource;
     rml:source :database_19;
@@ -894,7 +900,7 @@
 :map_maximum-permitted-speed_0 rr:predicateObjectMap :pom_51.
 :pm_51 a rr:PredicateMap.
 :pom_51 rr:predicateMap :pm_51.
-:pm_51 rr:constant era:maximumSpeed.
+:pm_51 rr:constant era:maximumPermittedSpeed.
 :pom_51 rr:objectMap :om_51.
 :om_51 a rr:ObjectMap;
     rml:reference "ParameterValue";
@@ -1123,7 +1129,7 @@
     rml:reference "ParameterValue";
     rr:termType rr:Literal;
     rr:datatype xsd:double.
-:map_additional-braking-information-available_0 rml:logicalSource :source_29.
+:map_has-additional-braking-information_0 rml:logicalSource :source_29.
 :source_29 a rml:LogicalSource;
     rml:source :database_29;
     rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.3.11.2') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
@@ -1133,16 +1139,16 @@
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
 :source_29 rml:referenceFormulation ql:CSV.
-:map_additional-braking-information-available_0 a rr:TriplesMap;
-    rdfs:label "additional-braking-information-available".
+:map_has-additional-braking-information_0 a rr:TriplesMap;
+    rdfs:label "has-additional-braking-information".
 :s_29 a rr:SubjectMap.
-:map_additional-braking-information-available_0 rr:subjectMap :s_29.
+:map_has-additional-braking-information_0 rr:subjectMap :s_29.
 :s_29 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
 :pom_63 a rr:PredicateObjectMap.
-:map_additional-braking-information-available_0 rr:predicateObjectMap :pom_63.
+:map_has-additional-braking-information_0 rr:predicateObjectMap :pom_63.
 :pm_63 a rr:PredicateMap.
 :pom_63 rr:predicateMap :pm_63.
-:pm_63 rr:constant era:additionalBrakingInformationAvailable.
+:pm_63 rr:constant era:hasAdditionalBrakingInformation.
 :pom_63 rr:objectMap :om_63.
 :om_63 a fnml:FunctionTermMap;
     rr:termType rr:Literal;
@@ -1198,10 +1204,10 @@
     rr:constant "true";
     rr:termType rr:Literal.
 :pom_68 a rr:PredicateObjectMap.
-:map_additional-braking-information-available_0 rr:predicateObjectMap :pom_68.
+:map_has-additional-braking-information_0 rr:predicateObjectMap :pom_68.
 :pm_68 a rr:PredicateMap.
 :pom_68 rr:predicateMap :pm_68.
-:pm_68 rr:constant era:additionalBrakingInformationAvailable.
+:pm_68 rr:constant era:hasAdditionalBrakingInformation.
 :pom_68 rr:objectMap :om_68.
 :om_68 a fnml:FunctionTermMap;
     rr:termType rr:Literal;
@@ -1476,7 +1482,7 @@
 :map_use-of-magnetic-brakes_0 rr:predicateObjectMap :pom_89.
 :pm_89 a rr:PredicateMap.
 :pom_89 rr:predicateMap :pm_89.
-:pm_89 rr:constant era:magneticBrakingEmergencyOnly.
+:pm_89 rr:constant era:emergencyOnlyMagneticBraking.
 :pom_89 rr:objectMap :om_89.
 :om_89 a fnml:FunctionTermMap;
     rr:termType rr:Literal;
@@ -1535,7 +1541,7 @@
 :map_use-of-magnetic-brakes_0 rr:predicateObjectMap :pom_94.
 :pm_94 a rr:PredicateMap.
 :pom_94 rr:predicateMap :pm_94.
-:pm_94 rr:constant era:conditionalMagneticBrakingEmergencyOnly.
+:pm_94 rr:constant era:conditionalEmergencyOnlyMagneticBraking.
 :pom_94 rr:objectMap :om_94.
 :om_94 a fnml:FunctionTermMap;
     rr:termType rr:Literal;
@@ -1810,7 +1816,7 @@
 :map_use-of-eddy-current-brakes_0 rr:predicateObjectMap :pom_115.
 :pm_115 a rr:PredicateMap.
 :pom_115 rr:predicateMap :pm_115.
-:pm_115 rr:constant era:eddyCurrentBrakingEmergencyOnly.
+:pm_115 rr:constant era:emergencyOnlyEddyCurrentBraking.
 :pom_115 rr:objectMap :om_115.
 :om_115 a fnml:FunctionTermMap;
     rr:termType rr:Literal;
@@ -1869,7 +1875,7 @@
 :map_use-of-eddy-current-brakes_0 rr:predicateObjectMap :pom_120.
 :pm_120 a rr:PredicateMap.
 :pom_120 rr:predicateMap :pm_120.
-:pm_120 rr:constant era:conditionaleddyCurrentBrakingEmergencyOnly.
+:pm_120 rr:constant era:conditionalEmergencyOnlyEddyCurrentBraking.
 :pom_120 rr:objectMap :om_120.
 :om_120 a fnml:FunctionTermMap;
     rr:termType rr:Literal;
@@ -2119,7 +2125,7 @@
 :map_contact-line-system-type_0 rml:logicalSource :source_37.
 :source_37 a rml:LogicalSource;
     rml:source :database_37;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.2.2.1.1') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, REPLACE(CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, ''), ' ', '_') AS UriName FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.2.2.1.1') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
 :database_37 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -2138,8 +2144,8 @@
 :pm_138 rr:constant era:contactLineSystem.
 :pom_138 rr:objectMap :om_138.
 :om_138 a rr:ObjectMap;
-    rml:reference "ParameterValue";
-    rr:termType rr:Literal.
+    rr:template "http://era.europa.eu/concepts/contact-line-systems#{UriName}";
+    rr:termType rr:IRI.
 :map_energy-supply-system_0 rml:logicalSource :source_38.
 :source_38 a rml:LogicalSource;
     rml:source :database_38;
@@ -2185,8 +2191,117 @@
 :pom_140 rr:predicateMap :pm_140.
 :pm_140 rr:constant era:energySupplySystemTSICompliant.
 :pom_140 rr:objectMap :om_140.
-:om_140 a rr:ObjectMap;
+:om_140 a fnml:FunctionTermMap;
+    rr:termType rr:Literal;
+    rr:datatype xsd:boolean;
+    fnml:functionValue :fn_42.
+:fn_42 rml:logicalSource :source_39;
+    rr:predicateObjectMap :pomexec_42.
+:pomexec_42 rr:predicateMap :pmexec_42.
+:pmexec_42 rr:constant fno:executes.
+:pomexec_42 rr:objectMap :omexec_42.
+:omexec_42 rr:constant "http://example.com/idlab/function/trueCondition";
+    rr:termType rr:IRI.
+:fn_42 rr:predicateObjectMap :pom_141.
+:pom_141 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_141.
+:pm_141 a rr:PredicateMap;
+    rr:constant idlab-fn:strBoolean.
+:pom_141 rr:objectMap :om_141.
+:om_141 a rr:ObjectMap, fnml:FunctionTermMap;
+    fnml:functionValue :fn_43.
+:fn_43 rml:logicalSource :source_39;
+    rr:predicateObjectMap :pomexec_43.
+:pomexec_43 rr:predicateMap :pmexec_43.
+:pmexec_43 rr:constant fno:executes.
+:pomexec_43 rr:objectMap :omexec_43.
+:omexec_43 rr:constant "http://example.com/idlab/function/equal";
+    rr:termType rr:IRI.
+:fn_43 rr:predicateObjectMap :pom_142.
+:pom_142 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_142.
+:pm_142 a rr:PredicateMap;
+    rr:constant grel:valueParameter.
+:pom_142 rr:objectMap :om_142.
+:om_142 a rr:ObjectMap;
     rml:reference "ParameterValue";
+    rr:termType rr:Literal.
+:fn_43 rr:predicateObjectMap :pom_143.
+:pom_143 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_143.
+:pm_143 a rr:PredicateMap;
+    rr:constant grel:valueParameter2.
+:pom_143 rr:objectMap :om_143.
+:om_143 a rr:ObjectMap;
+    rr:constant "Y";
+    rr:termType rr:Literal.
+:fn_42 rr:predicateObjectMap :pom_144.
+:pom_144 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_144.
+:pm_144 a rr:PredicateMap;
+    rr:constant idlab-fn:str.
+:pom_144 rr:objectMap :om_144.
+:om_144 a rr:ObjectMap;
+    rr:constant "true";
+    rr:termType rr:Literal.
+:pom_145 a rr:PredicateObjectMap.
+:map_energy-supply-system-tsi-compliant_0 rr:predicateObjectMap :pom_145.
+:pm_145 a rr:PredicateMap.
+:pom_145 rr:predicateMap :pm_145.
+:pm_145 rr:constant era:energySupplySystemTSICompliant.
+:pom_145 rr:objectMap :om_145.
+:om_145 a fnml:FunctionTermMap;
+    rr:termType rr:Literal;
+    rr:datatype xsd:boolean;
+    fnml:functionValue :fn_44.
+:fn_44 rml:logicalSource :source_39;
+    rr:predicateObjectMap :pomexec_44.
+:pomexec_44 rr:predicateMap :pmexec_44.
+:pmexec_44 rr:constant fno:executes.
+:pomexec_44 rr:objectMap :omexec_44.
+:omexec_44 rr:constant "http://example.com/idlab/function/trueCondition";
+    rr:termType rr:IRI.
+:fn_44 rr:predicateObjectMap :pom_146.
+:pom_146 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_146.
+:pm_146 a rr:PredicateMap;
+    rr:constant idlab-fn:strBoolean.
+:pom_146 rr:objectMap :om_146.
+:om_146 a rr:ObjectMap, fnml:FunctionTermMap;
+    fnml:functionValue :fn_45.
+:fn_45 rml:logicalSource :source_39;
+    rr:predicateObjectMap :pomexec_45.
+:pomexec_45 rr:predicateMap :pmexec_45.
+:pmexec_45 rr:constant fno:executes.
+:pomexec_45 rr:objectMap :omexec_45.
+:omexec_45 rr:constant "http://example.com/idlab/function/equal";
+    rr:termType rr:IRI.
+:fn_45 rr:predicateObjectMap :pom_147.
+:pom_147 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_147.
+:pm_147 a rr:PredicateMap;
+    rr:constant grel:valueParameter.
+:pom_147 rr:objectMap :om_147.
+:om_147 a rr:ObjectMap;
+    rml:reference "ParameterValue";
+    rr:termType rr:Literal.
+:fn_45 rr:predicateObjectMap :pom_148.
+:pom_148 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_148.
+:pm_148 a rr:PredicateMap;
+    rr:constant grel:valueParameter2.
+:pom_148 rr:objectMap :om_148.
+:om_148 a rr:ObjectMap;
+    rr:constant "N";
+    rr:termType rr:Literal.
+:fn_44 rr:predicateObjectMap :pom_149.
+:pom_149 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_149.
+:pm_149 a rr:PredicateMap;
+    rr:constant idlab-fn:str.
+:pom_149 rr:objectMap :om_149.
+:om_149 a rr:ObjectMap;
+    rr:constant "false";
     rr:termType rr:Literal.
 :map_umax2_0 rml:logicalSource :source_40.
 :source_40 a rml:LogicalSource;
@@ -2203,13 +2318,13 @@
 :s_40 a rr:SubjectMap.
 :map_umax2_0 rr:subjectMap :s_40.
 :s_40 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
-:pom_141 a rr:PredicateObjectMap.
-:map_umax2_0 rr:predicateObjectMap :pom_141.
-:pm_141 a rr:PredicateMap.
-:pom_141 rr:predicateMap :pm_141.
-:pm_141 rr:constant era:umax2.
-:pom_141 rr:objectMap :om_141.
-:om_141 a rr:ObjectMap;
+:pom_150 a rr:PredicateObjectMap.
+:map_umax2_0 rr:predicateObjectMap :pom_150.
+:pm_150 a rr:PredicateMap.
+:pom_150 rr:predicateMap :pm_150.
+:pm_150 rr:constant era:umax2.
+:pom_150 rr:objectMap :om_150.
+:om_150 a rr:ObjectMap;
     rml:reference "ParameterValue";
     rr:termType rr:Literal.
 :map_regenerative-braking_0 rml:logicalSource :source_41.
@@ -2227,131 +2342,13 @@
 :s_41 a rr:SubjectMap.
 :map_regenerative-braking_0 rr:subjectMap :s_41.
 :s_41 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
-:pom_142 a rr:PredicateObjectMap.
-:map_regenerative-braking_0 rr:predicateObjectMap :pom_142.
-:pm_142 a rr:PredicateMap.
-:pom_142 rr:predicateMap :pm_142.
-:pm_142 rr:constant era:regenerativeBrakeAllowed.
-:pom_142 rr:objectMap :om_142.
-:om_142 a fnml:FunctionTermMap;
-    rr:termType rr:Literal;
-    rr:datatype xsd:boolean;
-    fnml:functionValue :fn_42.
-:fn_42 rml:logicalSource :source_41;
-    rr:predicateObjectMap :pomexec_42.
-:pomexec_42 rr:predicateMap :pmexec_42.
-:pmexec_42 rr:constant fno:executes.
-:pomexec_42 rr:objectMap :omexec_42.
-:omexec_42 rr:constant "http://example.com/idlab/function/trueCondition";
-    rr:termType rr:IRI.
-:fn_42 rr:predicateObjectMap :pom_143.
-:pom_143 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_143.
-:pm_143 a rr:PredicateMap;
-    rr:constant idlab-fn:strBoolean.
-:pom_143 rr:objectMap :om_143.
-:om_143 a rr:ObjectMap, fnml:FunctionTermMap;
-    fnml:functionValue :fn_43.
-:fn_43 rml:logicalSource :source_41;
-    rr:predicateObjectMap :pomexec_43.
-:pomexec_43 rr:predicateMap :pmexec_43.
-:pmexec_43 rr:constant fno:executes.
-:pomexec_43 rr:objectMap :omexec_43.
-:omexec_43 rr:constant "http://example.com/idlab/function/equal";
-    rr:termType rr:IRI.
-:fn_43 rr:predicateObjectMap :pom_144.
-:pom_144 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_144.
-:pm_144 a rr:PredicateMap;
-    rr:constant grel:valueParameter.
-:pom_144 rr:objectMap :om_144.
-:om_144 a rr:ObjectMap;
-    rml:reference "ParameterValue";
-    rr:termType rr:Literal.
-:fn_43 rr:predicateObjectMap :pom_145.
-:pom_145 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_145.
-:pm_145 a rr:PredicateMap;
-    rr:constant grel:valueParameter2.
-:pom_145 rr:objectMap :om_145.
-:om_145 a rr:ObjectMap;
-    rr:constant "Y";
-    rr:termType rr:Literal.
-:fn_42 rr:predicateObjectMap :pom_146.
-:pom_146 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_146.
-:pm_146 a rr:PredicateMap;
-    rr:constant idlab-fn:str.
-:pom_146 rr:objectMap :om_146.
-:om_146 a rr:ObjectMap;
-    rr:constant "true";
-    rr:termType rr:Literal.
-:pom_147 a rr:PredicateObjectMap.
-:map_regenerative-braking_0 rr:predicateObjectMap :pom_147.
-:pm_147 a rr:PredicateMap.
-:pom_147 rr:predicateMap :pm_147.
-:pm_147 rr:constant era:regenerativeBrakeAllowed.
-:pom_147 rr:objectMap :om_147.
-:om_147 a fnml:FunctionTermMap;
-    rr:termType rr:Literal;
-    rr:datatype xsd:boolean;
-    fnml:functionValue :fn_44.
-:fn_44 rml:logicalSource :source_41;
-    rr:predicateObjectMap :pomexec_44.
-:pomexec_44 rr:predicateMap :pmexec_44.
-:pmexec_44 rr:constant fno:executes.
-:pomexec_44 rr:objectMap :omexec_44.
-:omexec_44 rr:constant "http://example.com/idlab/function/trueCondition";
-    rr:termType rr:IRI.
-:fn_44 rr:predicateObjectMap :pom_148.
-:pom_148 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_148.
-:pm_148 a rr:PredicateMap;
-    rr:constant idlab-fn:strBoolean.
-:pom_148 rr:objectMap :om_148.
-:om_148 a rr:ObjectMap, fnml:FunctionTermMap;
-    fnml:functionValue :fn_45.
-:fn_45 rml:logicalSource :source_41;
-    rr:predicateObjectMap :pomexec_45.
-:pomexec_45 rr:predicateMap :pmexec_45.
-:pmexec_45 rr:constant fno:executes.
-:pomexec_45 rr:objectMap :omexec_45.
-:omexec_45 rr:constant "http://example.com/idlab/function/equal";
-    rr:termType rr:IRI.
-:fn_45 rr:predicateObjectMap :pom_149.
-:pom_149 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_149.
-:pm_149 a rr:PredicateMap;
-    rr:constant grel:valueParameter.
-:pom_149 rr:objectMap :om_149.
-:om_149 a rr:ObjectMap;
-    rml:reference "ParameterValue";
-    rr:termType rr:Literal.
-:fn_45 rr:predicateObjectMap :pom_150.
-:pom_150 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_150.
-:pm_150 a rr:PredicateMap;
-    rr:constant grel:valueParameter2.
-:pom_150 rr:objectMap :om_150.
-:om_150 a rr:ObjectMap;
-    rr:constant "N";
-    rr:termType rr:Literal.
-:fn_44 rr:predicateObjectMap :pom_151.
-:pom_151 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_151.
-:pm_151 a rr:PredicateMap;
-    rr:constant idlab-fn:str.
+:pom_151 a rr:PredicateObjectMap.
+:map_regenerative-braking_0 rr:predicateObjectMap :pom_151.
+:pm_151 a rr:PredicateMap.
+:pom_151 rr:predicateMap :pm_151.
+:pm_151 rr:constant era:hasRegenerativeBrake.
 :pom_151 rr:objectMap :om_151.
-:om_151 a rr:ObjectMap;
-    rr:constant "false";
-    rr:termType rr:Literal.
-:pom_152 a rr:PredicateObjectMap.
-:map_regenerative-braking_0 rr:predicateObjectMap :pom_152.
-:pm_152 a rr:PredicateMap.
-:pom_152 rr:predicateMap :pm_152.
-:pm_152 rr:constant era:conditionalRegenerativeBrakeAllowed.
-:pom_152 rr:objectMap :om_152.
-:om_152 a fnml:FunctionTermMap;
+:om_151 a fnml:FunctionTermMap;
     rr:termType rr:Literal;
     rr:datatype xsd:boolean;
     fnml:functionValue :fn_46.
@@ -2362,13 +2359,13 @@
 :pomexec_46 rr:objectMap :omexec_46.
 :omexec_46 rr:constant "http://example.com/idlab/function/trueCondition";
     rr:termType rr:IRI.
-:fn_46 rr:predicateObjectMap :pom_153.
-:pom_153 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_153.
-:pm_153 a rr:PredicateMap;
+:fn_46 rr:predicateObjectMap :pom_152.
+:pom_152 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_152.
+:pm_152 a rr:PredicateMap;
     rr:constant idlab-fn:strBoolean.
-:pom_153 rr:objectMap :om_153.
-:om_153 a rr:ObjectMap, fnml:FunctionTermMap;
+:pom_152 rr:objectMap :om_152.
+:om_152 a rr:ObjectMap, fnml:FunctionTermMap;
     fnml:functionValue :fn_47.
 :fn_47 rml:logicalSource :source_41;
     rr:predicateObjectMap :pomexec_47.
@@ -2377,31 +2374,149 @@
 :pomexec_47 rr:objectMap :omexec_47.
 :omexec_47 rr:constant "http://example.com/idlab/function/equal";
     rr:termType rr:IRI.
+:fn_47 rr:predicateObjectMap :pom_153.
+:pom_153 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_153.
+:pm_153 a rr:PredicateMap;
+    rr:constant grel:valueParameter.
+:pom_153 rr:objectMap :om_153.
+:om_153 a rr:ObjectMap;
+    rml:reference "ParameterValue";
+    rr:termType rr:Literal.
 :fn_47 rr:predicateObjectMap :pom_154.
 :pom_154 a rr:PredicateObjectMap;
     rr:predicateMap :pm_154.
 :pm_154 a rr:PredicateMap;
-    rr:constant grel:valueParameter.
+    rr:constant grel:valueParameter2.
 :pom_154 rr:objectMap :om_154.
 :om_154 a rr:ObjectMap;
-    rml:reference "ParameterValue";
+    rr:constant "Y";
     rr:termType rr:Literal.
-:fn_47 rr:predicateObjectMap :pom_155.
+:fn_46 rr:predicateObjectMap :pom_155.
 :pom_155 a rr:PredicateObjectMap;
     rr:predicateMap :pm_155.
 :pm_155 a rr:PredicateMap;
-    rr:constant grel:valueParameter2.
+    rr:constant idlab-fn:str.
 :pom_155 rr:objectMap :om_155.
 :om_155 a rr:ObjectMap;
+    rr:constant "true";
+    rr:termType rr:Literal.
+:pom_156 a rr:PredicateObjectMap.
+:map_regenerative-braking_0 rr:predicateObjectMap :pom_156.
+:pm_156 a rr:PredicateMap.
+:pom_156 rr:predicateMap :pm_156.
+:pm_156 rr:constant era:hasRegenerativeBrake.
+:pom_156 rr:objectMap :om_156.
+:om_156 a fnml:FunctionTermMap;
+    rr:termType rr:Literal;
+    rr:datatype xsd:boolean;
+    fnml:functionValue :fn_48.
+:fn_48 rml:logicalSource :source_41;
+    rr:predicateObjectMap :pomexec_48.
+:pomexec_48 rr:predicateMap :pmexec_48.
+:pmexec_48 rr:constant fno:executes.
+:pomexec_48 rr:objectMap :omexec_48.
+:omexec_48 rr:constant "http://example.com/idlab/function/trueCondition";
+    rr:termType rr:IRI.
+:fn_48 rr:predicateObjectMap :pom_157.
+:pom_157 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_157.
+:pm_157 a rr:PredicateMap;
+    rr:constant idlab-fn:strBoolean.
+:pom_157 rr:objectMap :om_157.
+:om_157 a rr:ObjectMap, fnml:FunctionTermMap;
+    fnml:functionValue :fn_49.
+:fn_49 rml:logicalSource :source_41;
+    rr:predicateObjectMap :pomexec_49.
+:pomexec_49 rr:predicateMap :pmexec_49.
+:pmexec_49 rr:constant fno:executes.
+:pomexec_49 rr:objectMap :omexec_49.
+:omexec_49 rr:constant "http://example.com/idlab/function/equal";
+    rr:termType rr:IRI.
+:fn_49 rr:predicateObjectMap :pom_158.
+:pom_158 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_158.
+:pm_158 a rr:PredicateMap;
+    rr:constant grel:valueParameter.
+:pom_158 rr:objectMap :om_158.
+:om_158 a rr:ObjectMap;
+    rml:reference "ParameterValue";
+    rr:termType rr:Literal.
+:fn_49 rr:predicateObjectMap :pom_159.
+:pom_159 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_159.
+:pm_159 a rr:PredicateMap;
+    rr:constant grel:valueParameter2.
+:pom_159 rr:objectMap :om_159.
+:om_159 a rr:ObjectMap;
+    rr:constant "N";
+    rr:termType rr:Literal.
+:fn_48 rr:predicateObjectMap :pom_160.
+:pom_160 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_160.
+:pm_160 a rr:PredicateMap;
+    rr:constant idlab-fn:str.
+:pom_160 rr:objectMap :om_160.
+:om_160 a rr:ObjectMap;
+    rr:constant "false";
+    rr:termType rr:Literal.
+:pom_161 a rr:PredicateObjectMap.
+:map_regenerative-braking_0 rr:predicateObjectMap :pom_161.
+:pm_161 a rr:PredicateMap.
+:pom_161 rr:predicateMap :pm_161.
+:pm_161 rr:constant era:conditionalRegenerativeBrake.
+:pom_161 rr:objectMap :om_161.
+:om_161 a fnml:FunctionTermMap;
+    rr:termType rr:Literal;
+    rr:datatype xsd:boolean;
+    fnml:functionValue :fn_50.
+:fn_50 rml:logicalSource :source_41;
+    rr:predicateObjectMap :pomexec_50.
+:pomexec_50 rr:predicateMap :pmexec_50.
+:pmexec_50 rr:constant fno:executes.
+:pomexec_50 rr:objectMap :omexec_50.
+:omexec_50 rr:constant "http://example.com/idlab/function/trueCondition";
+    rr:termType rr:IRI.
+:fn_50 rr:predicateObjectMap :pom_162.
+:pom_162 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_162.
+:pm_162 a rr:PredicateMap;
+    rr:constant idlab-fn:strBoolean.
+:pom_162 rr:objectMap :om_162.
+:om_162 a rr:ObjectMap, fnml:FunctionTermMap;
+    fnml:functionValue :fn_51.
+:fn_51 rml:logicalSource :source_41;
+    rr:predicateObjectMap :pomexec_51.
+:pomexec_51 rr:predicateMap :pmexec_51.
+:pmexec_51 rr:constant fno:executes.
+:pomexec_51 rr:objectMap :omexec_51.
+:omexec_51 rr:constant "http://example.com/idlab/function/equal";
+    rr:termType rr:IRI.
+:fn_51 rr:predicateObjectMap :pom_163.
+:pom_163 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_163.
+:pm_163 a rr:PredicateMap;
+    rr:constant grel:valueParameter.
+:pom_163 rr:objectMap :om_163.
+:om_163 a rr:ObjectMap;
+    rml:reference "ParameterValue";
+    rr:termType rr:Literal.
+:fn_51 rr:predicateObjectMap :pom_164.
+:pom_164 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_164.
+:pm_164 a rr:PredicateMap;
+    rr:constant grel:valueParameter2.
+:pom_164 rr:objectMap :om_164.
+:om_164 a rr:ObjectMap;
     rr:constant "allowed under conditions";
     rr:termType rr:Literal.
-:fn_46 rr:predicateObjectMap :pom_156.
-:pom_156 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_156.
-:pm_156 a rr:PredicateMap;
+:fn_50 rr:predicateObjectMap :pom_165.
+:pom_165 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_165.
+:pm_165 a rr:PredicateMap;
     rr:constant idlab-fn:str.
-:pom_156 rr:objectMap :om_156.
-:om_156 a rr:ObjectMap;
+:pom_165 rr:objectMap :om_165.
+:om_165 a rr:ObjectMap;
     rr:constant "true";
     rr:termType rr:Literal.
 :map_current-limitation_0 rml:logicalSource :source_42.
@@ -2419,122 +2534,122 @@
 :s_42 a rr:SubjectMap.
 :map_current-limitation_0 rr:subjectMap :s_42.
 :s_42 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
-:pom_157 a rr:PredicateObjectMap.
-:map_current-limitation_0 rr:predicateObjectMap :pom_157.
-:pm_157 a rr:PredicateMap.
-:pom_157 rr:predicateMap :pm_157.
-:pm_157 rr:constant era:currentLimitationRequired.
-:pom_157 rr:objectMap :om_157.
-:om_157 a fnml:FunctionTermMap;
+:pom_166 a rr:PredicateObjectMap.
+:map_current-limitation_0 rr:predicateObjectMap :pom_166.
+:pm_166 a rr:PredicateMap.
+:pom_166 rr:predicateMap :pm_166.
+:pm_166 rr:constant era:currentLimitationRequired.
+:pom_166 rr:objectMap :om_166.
+:om_166 a fnml:FunctionTermMap;
     rr:termType rr:Literal;
     rr:datatype xsd:boolean;
-    fnml:functionValue :fn_48.
-:fn_48 rml:logicalSource :source_42;
-    rr:predicateObjectMap :pomexec_48.
-:pomexec_48 rr:predicateMap :pmexec_48.
-:pmexec_48 rr:constant fno:executes.
-:pomexec_48 rr:objectMap :omexec_48.
-:omexec_48 rr:constant "http://example.com/idlab/function/trueCondition";
+    fnml:functionValue :fn_52.
+:fn_52 rml:logicalSource :source_42;
+    rr:predicateObjectMap :pomexec_52.
+:pomexec_52 rr:predicateMap :pmexec_52.
+:pmexec_52 rr:constant fno:executes.
+:pomexec_52 rr:objectMap :omexec_52.
+:omexec_52 rr:constant "http://example.com/idlab/function/trueCondition";
     rr:termType rr:IRI.
-:fn_48 rr:predicateObjectMap :pom_158.
-:pom_158 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_158.
-:pm_158 a rr:PredicateMap;
+:fn_52 rr:predicateObjectMap :pom_167.
+:pom_167 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_167.
+:pm_167 a rr:PredicateMap;
     rr:constant idlab-fn:strBoolean.
-:pom_158 rr:objectMap :om_158.
-:om_158 a rr:ObjectMap, fnml:FunctionTermMap;
-    fnml:functionValue :fn_49.
-:fn_49 rml:logicalSource :source_42;
-    rr:predicateObjectMap :pomexec_49.
-:pomexec_49 rr:predicateMap :pmexec_49.
-:pmexec_49 rr:constant fno:executes.
-:pomexec_49 rr:objectMap :omexec_49.
-:omexec_49 rr:constant "http://example.com/idlab/function/equal";
+:pom_167 rr:objectMap :om_167.
+:om_167 a rr:ObjectMap, fnml:FunctionTermMap;
+    fnml:functionValue :fn_53.
+:fn_53 rml:logicalSource :source_42;
+    rr:predicateObjectMap :pomexec_53.
+:pomexec_53 rr:predicateMap :pmexec_53.
+:pmexec_53 rr:constant fno:executes.
+:pomexec_53 rr:objectMap :omexec_53.
+:omexec_53 rr:constant "http://example.com/idlab/function/equal";
     rr:termType rr:IRI.
-:fn_49 rr:predicateObjectMap :pom_159.
-:pom_159 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_159.
-:pm_159 a rr:PredicateMap;
+:fn_53 rr:predicateObjectMap :pom_168.
+:pom_168 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_168.
+:pm_168 a rr:PredicateMap;
     rr:constant grel:valueParameter.
-:pom_159 rr:objectMap :om_159.
-:om_159 a rr:ObjectMap;
+:pom_168 rr:objectMap :om_168.
+:om_168 a rr:ObjectMap;
     rml:reference "ParameterValue";
     rr:termType rr:Literal.
-:fn_49 rr:predicateObjectMap :pom_160.
-:pom_160 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_160.
-:pm_160 a rr:PredicateMap;
+:fn_53 rr:predicateObjectMap :pom_169.
+:pom_169 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_169.
+:pm_169 a rr:PredicateMap;
     rr:constant grel:valueParameter2.
-:pom_160 rr:objectMap :om_160.
-:om_160 a rr:ObjectMap;
+:pom_169 rr:objectMap :om_169.
+:om_169 a rr:ObjectMap;
     rr:constant "Y";
     rr:termType rr:Literal.
-:fn_48 rr:predicateObjectMap :pom_161.
-:pom_161 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_161.
-:pm_161 a rr:PredicateMap;
+:fn_52 rr:predicateObjectMap :pom_170.
+:pom_170 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_170.
+:pm_170 a rr:PredicateMap;
     rr:constant idlab-fn:str.
-:pom_161 rr:objectMap :om_161.
-:om_161 a rr:ObjectMap;
+:pom_170 rr:objectMap :om_170.
+:om_170 a rr:ObjectMap;
     rr:constant "true";
     rr:termType rr:Literal.
-:pom_162 a rr:PredicateObjectMap.
-:map_current-limitation_0 rr:predicateObjectMap :pom_162.
-:pm_162 a rr:PredicateMap.
-:pom_162 rr:predicateMap :pm_162.
-:pm_162 rr:constant era:currentLimitationRequired.
-:pom_162 rr:objectMap :om_162.
-:om_162 a fnml:FunctionTermMap;
+:pom_171 a rr:PredicateObjectMap.
+:map_current-limitation_0 rr:predicateObjectMap :pom_171.
+:pm_171 a rr:PredicateMap.
+:pom_171 rr:predicateMap :pm_171.
+:pm_171 rr:constant era:currentLimitationRequired.
+:pom_171 rr:objectMap :om_171.
+:om_171 a fnml:FunctionTermMap;
     rr:termType rr:Literal;
     rr:datatype xsd:boolean;
-    fnml:functionValue :fn_50.
-:fn_50 rml:logicalSource :source_42;
-    rr:predicateObjectMap :pomexec_50.
-:pomexec_50 rr:predicateMap :pmexec_50.
-:pmexec_50 rr:constant fno:executes.
-:pomexec_50 rr:objectMap :omexec_50.
-:omexec_50 rr:constant "http://example.com/idlab/function/trueCondition";
+    fnml:functionValue :fn_54.
+:fn_54 rml:logicalSource :source_42;
+    rr:predicateObjectMap :pomexec_54.
+:pomexec_54 rr:predicateMap :pmexec_54.
+:pmexec_54 rr:constant fno:executes.
+:pomexec_54 rr:objectMap :omexec_54.
+:omexec_54 rr:constant "http://example.com/idlab/function/trueCondition";
     rr:termType rr:IRI.
-:fn_50 rr:predicateObjectMap :pom_163.
-:pom_163 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_163.
-:pm_163 a rr:PredicateMap;
+:fn_54 rr:predicateObjectMap :pom_172.
+:pom_172 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_172.
+:pm_172 a rr:PredicateMap;
     rr:constant idlab-fn:strBoolean.
-:pom_163 rr:objectMap :om_163.
-:om_163 a rr:ObjectMap, fnml:FunctionTermMap;
-    fnml:functionValue :fn_51.
-:fn_51 rml:logicalSource :source_42;
-    rr:predicateObjectMap :pomexec_51.
-:pomexec_51 rr:predicateMap :pmexec_51.
-:pmexec_51 rr:constant fno:executes.
-:pomexec_51 rr:objectMap :omexec_51.
-:omexec_51 rr:constant "http://example.com/idlab/function/equal";
+:pom_172 rr:objectMap :om_172.
+:om_172 a rr:ObjectMap, fnml:FunctionTermMap;
+    fnml:functionValue :fn_55.
+:fn_55 rml:logicalSource :source_42;
+    rr:predicateObjectMap :pomexec_55.
+:pomexec_55 rr:predicateMap :pmexec_55.
+:pmexec_55 rr:constant fno:executes.
+:pomexec_55 rr:objectMap :omexec_55.
+:omexec_55 rr:constant "http://example.com/idlab/function/equal";
     rr:termType rr:IRI.
-:fn_51 rr:predicateObjectMap :pom_164.
-:pom_164 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_164.
-:pm_164 a rr:PredicateMap;
+:fn_55 rr:predicateObjectMap :pom_173.
+:pom_173 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_173.
+:pm_173 a rr:PredicateMap;
     rr:constant grel:valueParameter.
-:pom_164 rr:objectMap :om_164.
-:om_164 a rr:ObjectMap;
+:pom_173 rr:objectMap :om_173.
+:om_173 a rr:ObjectMap;
     rml:reference "ParameterValue";
     rr:termType rr:Literal.
-:fn_51 rr:predicateObjectMap :pom_165.
-:pom_165 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_165.
-:pm_165 a rr:PredicateMap;
+:fn_55 rr:predicateObjectMap :pom_174.
+:pom_174 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_174.
+:pm_174 a rr:PredicateMap;
     rr:constant grel:valueParameter2.
-:pom_165 rr:objectMap :om_165.
-:om_165 a rr:ObjectMap;
+:pom_174 rr:objectMap :om_174.
+:om_174 a rr:ObjectMap;
     rr:constant "N";
     rr:termType rr:Literal.
-:fn_50 rr:predicateObjectMap :pom_166.
-:pom_166 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_166.
-:pm_166 a rr:PredicateMap;
+:fn_54 rr:predicateObjectMap :pom_175.
+:pom_175 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_175.
+:pm_175 a rr:PredicateMap;
     rr:constant idlab-fn:str.
-:pom_166 rr:objectMap :om_166.
-:om_166 a rr:ObjectMap;
+:pom_175 rr:objectMap :om_175.
+:om_175 a rr:ObjectMap;
     rr:constant "false";
     rr:termType rr:Literal.
 :map_maximum-current-standstill_0 rml:logicalSource :source_43.
@@ -2552,16 +2667,16 @@
 :s_43 a rr:SubjectMap.
 :map_maximum-current-standstill_0 rr:subjectMap :s_43.
 :s_43 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
-:pom_167 a rr:PredicateObjectMap.
-:map_maximum-current-standstill_0 rr:predicateObjectMap :pom_167.
-:pm_167 a rr:PredicateMap.
-:pom_167 rr:predicateMap :pm_167.
-:pm_167 rr:constant era:maxCurrentStandstillPantograph.
-:pom_167 rr:objectMap :om_167.
-:om_167 a rr:ObjectMap;
+:pom_176 a rr:PredicateObjectMap.
+:map_maximum-current-standstill_0 rr:predicateObjectMap :pom_176.
+:pm_176 a rr:PredicateMap.
+:pom_176 rr:predicateMap :pm_176.
+:pm_176 rr:constant era:maxCurrentStandstillPantograph.
+:pom_176 rr:objectMap :om_176.
+:om_176 a rr:ObjectMap;
     rml:reference "ParameterValue";
     rr:termType rr:Literal;
-    rr:datatype xsd:integer.
+    rr:datatype xsd:double.
 :map_maximum-wire-height_0 rml:logicalSource :source_44.
 :source_44 a rml:LogicalSource;
     rml:source :database_44;
@@ -2577,13 +2692,13 @@
 :s_44 a rr:SubjectMap.
 :map_maximum-wire-height_0 rr:subjectMap :s_44.
 :s_44 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
-:pom_168 a rr:PredicateObjectMap.
-:map_maximum-wire-height_0 rr:predicateObjectMap :pom_168.
-:pm_168 a rr:PredicateMap.
-:pom_168 rr:predicateMap :pm_168.
-:pm_168 rr:constant era:maximumContactWireHeight.
-:pom_168 rr:objectMap :om_168.
-:om_168 a rr:ObjectMap;
+:pom_177 a rr:PredicateObjectMap.
+:map_maximum-wire-height_0 rr:predicateObjectMap :pom_177.
+:pm_177 a rr:PredicateMap.
+:pom_177 rr:predicateMap :pm_177.
+:pm_177 rr:constant era:maximumContactWireHeight.
+:pom_177 rr:objectMap :om_177.
+:om_177 a rr:ObjectMap;
     rml:reference "ParameterValue";
     rr:termType rr:Literal;
     rr:datatype xsd:double.
@@ -2602,20 +2717,20 @@
 :s_45 a rr:SubjectMap.
 :map_minimum-wire-height_0 rr:subjectMap :s_45.
 :s_45 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
-:pom_169 a rr:PredicateObjectMap.
-:map_minimum-wire-height_0 rr:predicateObjectMap :pom_169.
-:pm_169 a rr:PredicateMap.
-:pom_169 rr:predicateMap :pm_169.
-:pm_169 rr:constant era:minimumContactWireHeight.
-:pom_169 rr:objectMap :om_169.
-:om_169 a rr:ObjectMap;
+:pom_178 a rr:PredicateObjectMap.
+:map_minimum-wire-height_0 rr:predicateObjectMap :pom_178.
+:pm_178 a rr:PredicateMap.
+:pom_178 rr:predicateMap :pm_178.
+:pm_178 rr:constant era:minimumContactWireHeight.
+:pom_178 rr:objectMap :om_178.
+:om_178 a rr:ObjectMap;
     rml:reference "ParameterValue";
     rr:termType rr:Literal;
     rr:datatype xsd:double.
 :map_pantograph-tsi-compliant_0 rml:logicalSource :source_46.
 :source_46 a rml:LogicalSource;
     rml:source :database_46;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.2.3.1') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, REPLACE(CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, ''), ' ', '_') AS UriName FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.2.3.1') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
 :database_46 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -2627,19 +2742,19 @@
 :s_46 a rr:SubjectMap.
 :map_pantograph-tsi-compliant_0 rr:subjectMap :s_46.
 :s_46 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
-:pom_170 a rr:PredicateObjectMap.
-:map_pantograph-tsi-compliant_0 rr:predicateObjectMap :pom_170.
-:pm_170 a rr:PredicateMap.
-:pom_170 rr:predicateMap :pm_170.
-:pm_170 rr:constant era:pantographTSICompliant.
-:pom_170 rr:objectMap :om_170.
-:om_170 a rr:ObjectMap;
-    rml:reference "ParameterValue";
-    rr:termType rr:Literal.
+:pom_179 a rr:PredicateObjectMap.
+:map_pantograph-tsi-compliant_0 rr:predicateObjectMap :pom_179.
+:pm_179 a rr:PredicateMap.
+:pom_179 rr:predicateMap :pm_179.
+:pm_179 rr:constant era:pantographHeadTSI.
+:pom_179 rr:objectMap :om_179.
+:om_179 a rr:ObjectMap;
+    rr:template "http://era.europa.eu/concepts/tsi-pantograph-heads#{UriName}";
+    rr:termType rr:IRI.
 :map_other-accepted-pantographs_0 rml:logicalSource :source_47.
 :source_47 a rml:LogicalSource;
     rml:source :database_47;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.2.3.2') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, REPLACE(CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, ''), ' ', '_') AS UriName FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.2.3.2') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
 :database_47 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -2651,19 +2766,19 @@
 :s_47 a rr:SubjectMap.
 :map_other-accepted-pantographs_0 rr:subjectMap :s_47.
 :s_47 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
-:pom_171 a rr:PredicateObjectMap.
-:map_other-accepted-pantographs_0 rr:predicateObjectMap :pom_171.
-:pm_171 a rr:PredicateMap.
-:pom_171 rr:predicateMap :pm_171.
-:pm_171 rr:constant era:otherAcceptedPantographs.
-:pom_171 rr:objectMap :om_171.
-:om_171 a rr:ObjectMap;
-    rml:reference "ParameterValue";
-    rr:termType rr:Literal.
+:pom_180 a rr:PredicateObjectMap.
+:map_other-accepted-pantographs_0 rr:predicateObjectMap :pom_180.
+:pm_180 a rr:PredicateMap.
+:pom_180 rr:predicateMap :pm_180.
+:pm_180 rr:constant era:otherPantographHeads.
+:pom_180 rr:objectMap :om_180.
+:om_180 a rr:ObjectMap;
+    rr:template "http://era.europa.eu/concepts/other-pantograph-heads#{UriName}";
+    rr:termType rr:IRI.
 :map_contact-strip-material_0 rml:logicalSource :source_48.
 :source_48 a rml:LogicalSource;
     rml:source :database_48;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.2.3.4') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, REPLACE(CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, ''), ' ', '_') AS UriName FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.2.3.4') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
 :database_48 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -2675,15 +2790,15 @@
 :s_48 a rr:SubjectMap.
 :map_contact-strip-material_0 rr:subjectMap :s_48.
 :s_48 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
-:pom_172 a rr:PredicateObjectMap.
-:map_contact-strip-material_0 rr:predicateObjectMap :pom_172.
-:pm_172 a rr:PredicateMap.
-:pom_172 rr:predicateMap :pm_172.
-:pm_172 rr:constant era:contactStripMaterial.
-:pom_172 rr:objectMap :om_172.
-:om_172 a rr:ObjectMap;
-    rml:reference "ParameterValue";
-    rr:termType rr:Literal.
+:pom_181 a rr:PredicateObjectMap.
+:map_contact-strip-material_0 rr:predicateObjectMap :pom_181.
+:pm_181 a rr:PredicateMap.
+:pom_181 rr:predicateMap :pm_181.
+:pm_181 rr:constant era:contactStripMaterial.
+:pom_181 rr:objectMap :om_181.
+:om_181 a rr:ObjectMap;
+    rr:template "http://era.europa.eu/concepts/contact-strip-materials#{UriName}";
+    rr:termType rr:IRI.
 :map_contact-force_0 rml:logicalSource :source_49.
 :source_49 a rml:LogicalSource;
     rml:source :database_49;
@@ -2699,13 +2814,13 @@
 :s_49 a rr:SubjectMap.
 :map_contact-force_0 rr:subjectMap :s_49.
 :s_49 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
-:pom_173 a rr:PredicateObjectMap.
-:map_contact-force_0 rr:predicateObjectMap :pom_173.
-:pm_173 a rr:PredicateMap.
-:pom_173 rr:predicateMap :pm_173.
-:pm_173 rr:constant era:contactForce.
-:pom_173 rr:objectMap :om_173.
-:om_173 a rr:ObjectMap;
+:pom_182 a rr:PredicateObjectMap.
+:map_contact-force_0 rr:predicateObjectMap :pom_182.
+:pm_182 a rr:PredicateMap.
+:pom_182 rr:predicateMap :pm_182.
+:pm_182 rr:constant era:permittedContactForce.
+:pom_182 rr:objectMap :om_182.
+:om_182 a rr:ObjectMap;
     rml:reference "ParameterValue";
     rr:termType rr:Literal.
 :map_raised-pantograph-distance-speed_0 rml:logicalSource :source_50.
@@ -2723,13 +2838,13 @@
 :s_50 a rr:SubjectMap.
 :map_raised-pantograph-distance-speed_0 rr:subjectMap :s_50.
 :s_50 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
-:pom_174 a rr:PredicateObjectMap.
-:map_raised-pantograph-distance-speed_0 rr:predicateObjectMap :pom_174.
-:pm_174 a rr:PredicateMap.
-:pom_174 rr:predicateMap :pm_174.
-:pm_174 rr:constant era:raisedPantographsDistanceAndSpeed.
-:pom_174 rr:objectMap :om_174.
-:om_174 a rr:ObjectMap;
+:pom_183 a rr:PredicateObjectMap.
+:map_raised-pantograph-distance-speed_0 rr:predicateObjectMap :pom_183.
+:pm_183 a rr:PredicateMap.
+:pom_183 rr:predicateMap :pm_183.
+:pm_183 rr:constant era:raisedPantographsDistanceAndSpeed.
+:pom_183 rr:objectMap :om_183.
+:om_183 a rr:ObjectMap;
     rml:reference "ParameterValue";
     rr:termType rr:Literal.
 :map_automatic-dropping-device-required_0 rml:logicalSource :source_51.
@@ -2747,122 +2862,122 @@
 :s_51 a rr:SubjectMap.
 :map_automatic-dropping-device-required_0 rr:subjectMap :s_51.
 :s_51 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
-:pom_175 a rr:PredicateObjectMap.
-:map_automatic-dropping-device-required_0 rr:predicateObjectMap :pom_175.
-:pm_175 a rr:PredicateMap.
-:pom_175 rr:predicateMap :pm_175.
-:pm_175 rr:constant era:automaticDroppingDeviceRequired.
-:pom_175 rr:objectMap :om_175.
-:om_175 a fnml:FunctionTermMap;
+:pom_184 a rr:PredicateObjectMap.
+:map_automatic-dropping-device-required_0 rr:predicateObjectMap :pom_184.
+:pm_184 a rr:PredicateMap.
+:pom_184 rr:predicateMap :pm_184.
+:pm_184 rr:constant era:automaticDroppingDeviceRequired.
+:pom_184 rr:objectMap :om_184.
+:om_184 a fnml:FunctionTermMap;
     rr:termType rr:Literal;
     rr:datatype xsd:boolean;
-    fnml:functionValue :fn_52.
-:fn_52 rml:logicalSource :source_51;
-    rr:predicateObjectMap :pomexec_52.
-:pomexec_52 rr:predicateMap :pmexec_52.
-:pmexec_52 rr:constant fno:executes.
-:pomexec_52 rr:objectMap :omexec_52.
-:omexec_52 rr:constant "http://example.com/idlab/function/trueCondition";
+    fnml:functionValue :fn_56.
+:fn_56 rml:logicalSource :source_51;
+    rr:predicateObjectMap :pomexec_56.
+:pomexec_56 rr:predicateMap :pmexec_56.
+:pmexec_56 rr:constant fno:executes.
+:pomexec_56 rr:objectMap :omexec_56.
+:omexec_56 rr:constant "http://example.com/idlab/function/trueCondition";
     rr:termType rr:IRI.
-:fn_52 rr:predicateObjectMap :pom_176.
-:pom_176 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_176.
-:pm_176 a rr:PredicateMap;
+:fn_56 rr:predicateObjectMap :pom_185.
+:pom_185 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_185.
+:pm_185 a rr:PredicateMap;
     rr:constant idlab-fn:strBoolean.
-:pom_176 rr:objectMap :om_176.
-:om_176 a rr:ObjectMap, fnml:FunctionTermMap;
-    fnml:functionValue :fn_53.
-:fn_53 rml:logicalSource :source_51;
-    rr:predicateObjectMap :pomexec_53.
-:pomexec_53 rr:predicateMap :pmexec_53.
-:pmexec_53 rr:constant fno:executes.
-:pomexec_53 rr:objectMap :omexec_53.
-:omexec_53 rr:constant "http://example.com/idlab/function/equal";
+:pom_185 rr:objectMap :om_185.
+:om_185 a rr:ObjectMap, fnml:FunctionTermMap;
+    fnml:functionValue :fn_57.
+:fn_57 rml:logicalSource :source_51;
+    rr:predicateObjectMap :pomexec_57.
+:pomexec_57 rr:predicateMap :pmexec_57.
+:pmexec_57 rr:constant fno:executes.
+:pomexec_57 rr:objectMap :omexec_57.
+:omexec_57 rr:constant "http://example.com/idlab/function/equal";
     rr:termType rr:IRI.
-:fn_53 rr:predicateObjectMap :pom_177.
-:pom_177 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_177.
-:pm_177 a rr:PredicateMap;
+:fn_57 rr:predicateObjectMap :pom_186.
+:pom_186 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_186.
+:pm_186 a rr:PredicateMap;
     rr:constant grel:valueParameter.
-:pom_177 rr:objectMap :om_177.
-:om_177 a rr:ObjectMap;
+:pom_186 rr:objectMap :om_186.
+:om_186 a rr:ObjectMap;
     rml:reference "ParameterValue";
     rr:termType rr:Literal.
-:fn_53 rr:predicateObjectMap :pom_178.
-:pom_178 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_178.
-:pm_178 a rr:PredicateMap;
+:fn_57 rr:predicateObjectMap :pom_187.
+:pom_187 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_187.
+:pm_187 a rr:PredicateMap;
     rr:constant grel:valueParameter2.
-:pom_178 rr:objectMap :om_178.
-:om_178 a rr:ObjectMap;
+:pom_187 rr:objectMap :om_187.
+:om_187 a rr:ObjectMap;
     rr:constant "Y";
     rr:termType rr:Literal.
-:fn_52 rr:predicateObjectMap :pom_179.
-:pom_179 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_179.
-:pm_179 a rr:PredicateMap;
+:fn_56 rr:predicateObjectMap :pom_188.
+:pom_188 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_188.
+:pm_188 a rr:PredicateMap;
     rr:constant idlab-fn:str.
-:pom_179 rr:objectMap :om_179.
-:om_179 a rr:ObjectMap;
+:pom_188 rr:objectMap :om_188.
+:om_188 a rr:ObjectMap;
     rr:constant "true";
     rr:termType rr:Literal.
-:pom_180 a rr:PredicateObjectMap.
-:map_automatic-dropping-device-required_0 rr:predicateObjectMap :pom_180.
-:pm_180 a rr:PredicateMap.
-:pom_180 rr:predicateMap :pm_180.
-:pm_180 rr:constant era:automaticDroppingDeviceRequired.
-:pom_180 rr:objectMap :om_180.
-:om_180 a fnml:FunctionTermMap;
+:pom_189 a rr:PredicateObjectMap.
+:map_automatic-dropping-device-required_0 rr:predicateObjectMap :pom_189.
+:pm_189 a rr:PredicateMap.
+:pom_189 rr:predicateMap :pm_189.
+:pm_189 rr:constant era:automaticDroppingDeviceRequired.
+:pom_189 rr:objectMap :om_189.
+:om_189 a fnml:FunctionTermMap;
     rr:termType rr:Literal;
     rr:datatype xsd:boolean;
-    fnml:functionValue :fn_54.
-:fn_54 rml:logicalSource :source_51;
-    rr:predicateObjectMap :pomexec_54.
-:pomexec_54 rr:predicateMap :pmexec_54.
-:pmexec_54 rr:constant fno:executes.
-:pomexec_54 rr:objectMap :omexec_54.
-:omexec_54 rr:constant "http://example.com/idlab/function/trueCondition";
+    fnml:functionValue :fn_58.
+:fn_58 rml:logicalSource :source_51;
+    rr:predicateObjectMap :pomexec_58.
+:pomexec_58 rr:predicateMap :pmexec_58.
+:pmexec_58 rr:constant fno:executes.
+:pomexec_58 rr:objectMap :omexec_58.
+:omexec_58 rr:constant "http://example.com/idlab/function/trueCondition";
     rr:termType rr:IRI.
-:fn_54 rr:predicateObjectMap :pom_181.
-:pom_181 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_181.
-:pm_181 a rr:PredicateMap;
+:fn_58 rr:predicateObjectMap :pom_190.
+:pom_190 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_190.
+:pm_190 a rr:PredicateMap;
     rr:constant idlab-fn:strBoolean.
-:pom_181 rr:objectMap :om_181.
-:om_181 a rr:ObjectMap, fnml:FunctionTermMap;
-    fnml:functionValue :fn_55.
-:fn_55 rml:logicalSource :source_51;
-    rr:predicateObjectMap :pomexec_55.
-:pomexec_55 rr:predicateMap :pmexec_55.
-:pmexec_55 rr:constant fno:executes.
-:pomexec_55 rr:objectMap :omexec_55.
-:omexec_55 rr:constant "http://example.com/idlab/function/equal";
+:pom_190 rr:objectMap :om_190.
+:om_190 a rr:ObjectMap, fnml:FunctionTermMap;
+    fnml:functionValue :fn_59.
+:fn_59 rml:logicalSource :source_51;
+    rr:predicateObjectMap :pomexec_59.
+:pomexec_59 rr:predicateMap :pmexec_59.
+:pmexec_59 rr:constant fno:executes.
+:pomexec_59 rr:objectMap :omexec_59.
+:omexec_59 rr:constant "http://example.com/idlab/function/equal";
     rr:termType rr:IRI.
-:fn_55 rr:predicateObjectMap :pom_182.
-:pom_182 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_182.
-:pm_182 a rr:PredicateMap;
+:fn_59 rr:predicateObjectMap :pom_191.
+:pom_191 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_191.
+:pm_191 a rr:PredicateMap;
     rr:constant grel:valueParameter.
-:pom_182 rr:objectMap :om_182.
-:om_182 a rr:ObjectMap;
+:pom_191 rr:objectMap :om_191.
+:om_191 a rr:ObjectMap;
     rml:reference "ParameterValue";
     rr:termType rr:Literal.
-:fn_55 rr:predicateObjectMap :pom_183.
-:pom_183 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_183.
-:pm_183 a rr:PredicateMap;
+:fn_59 rr:predicateObjectMap :pom_192.
+:pom_192 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_192.
+:pm_192 a rr:PredicateMap;
     rr:constant grel:valueParameter2.
-:pom_183 rr:objectMap :om_183.
-:om_183 a rr:ObjectMap;
+:pom_192 rr:objectMap :om_192.
+:om_192 a rr:ObjectMap;
     rr:constant "N";
     rr:termType rr:Literal.
-:fn_54 rr:predicateObjectMap :pom_184.
-:pom_184 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_184.
-:pm_184 a rr:PredicateMap;
+:fn_58 rr:predicateObjectMap :pom_193.
+:pom_193 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_193.
+:pm_193 a rr:PredicateMap;
     rr:constant idlab-fn:str.
-:pom_184 rr:objectMap :om_184.
-:om_184 a rr:ObjectMap;
+:pom_193 rr:objectMap :om_193.
+:om_193 a rr:ObjectMap;
     rr:constant "false";
     rr:termType rr:Literal.
 :map_etcs-compatible_0 rml:logicalSource :source_52.
@@ -2880,122 +2995,122 @@
 :s_52 a rr:SubjectMap.
 :map_etcs-compatible_0 rr:subjectMap :s_52.
 :s_52 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
-:pom_185 a rr:PredicateObjectMap.
-:map_etcs-compatible_0 rr:predicateObjectMap :pom_185.
-:pm_185 a rr:PredicateMap.
-:pom_185 rr:predicateMap :pm_185.
-:pm_185 rr:constant era:isETCSCompatible.
-:pom_185 rr:objectMap :om_185.
-:om_185 a fnml:FunctionTermMap;
+:pom_194 a rr:PredicateObjectMap.
+:map_etcs-compatible_0 rr:predicateObjectMap :pom_194.
+:pm_194 a rr:PredicateMap.
+:pom_194 rr:predicateMap :pm_194.
+:pm_194 rr:constant era:isETCSCompatible.
+:pom_194 rr:objectMap :om_194.
+:om_194 a fnml:FunctionTermMap;
     rr:termType rr:Literal;
     rr:datatype xsd:boolean;
-    fnml:functionValue :fn_56.
-:fn_56 rml:logicalSource :source_52;
-    rr:predicateObjectMap :pomexec_56.
-:pomexec_56 rr:predicateMap :pmexec_56.
-:pmexec_56 rr:constant fno:executes.
-:pomexec_56 rr:objectMap :omexec_56.
-:omexec_56 rr:constant "http://example.com/idlab/function/trueCondition";
+    fnml:functionValue :fn_60.
+:fn_60 rml:logicalSource :source_52;
+    rr:predicateObjectMap :pomexec_60.
+:pomexec_60 rr:predicateMap :pmexec_60.
+:pmexec_60 rr:constant fno:executes.
+:pomexec_60 rr:objectMap :omexec_60.
+:omexec_60 rr:constant "http://example.com/idlab/function/trueCondition";
     rr:termType rr:IRI.
-:fn_56 rr:predicateObjectMap :pom_186.
-:pom_186 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_186.
-:pm_186 a rr:PredicateMap;
+:fn_60 rr:predicateObjectMap :pom_195.
+:pom_195 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_195.
+:pm_195 a rr:PredicateMap;
     rr:constant idlab-fn:strBoolean.
-:pom_186 rr:objectMap :om_186.
-:om_186 a rr:ObjectMap, fnml:FunctionTermMap;
-    fnml:functionValue :fn_57.
-:fn_57 rml:logicalSource :source_52;
-    rr:predicateObjectMap :pomexec_57.
-:pomexec_57 rr:predicateMap :pmexec_57.
-:pmexec_57 rr:constant fno:executes.
-:pomexec_57 rr:objectMap :omexec_57.
-:omexec_57 rr:constant "http://example.com/idlab/function/equal";
+:pom_195 rr:objectMap :om_195.
+:om_195 a rr:ObjectMap, fnml:FunctionTermMap;
+    fnml:functionValue :fn_61.
+:fn_61 rml:logicalSource :source_52;
+    rr:predicateObjectMap :pomexec_61.
+:pomexec_61 rr:predicateMap :pmexec_61.
+:pmexec_61 rr:constant fno:executes.
+:pomexec_61 rr:objectMap :omexec_61.
+:omexec_61 rr:constant "http://example.com/idlab/function/equal";
     rr:termType rr:IRI.
-:fn_57 rr:predicateObjectMap :pom_187.
-:pom_187 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_187.
-:pm_187 a rr:PredicateMap;
+:fn_61 rr:predicateObjectMap :pom_196.
+:pom_196 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_196.
+:pm_196 a rr:PredicateMap;
     rr:constant grel:valueParameter.
-:pom_187 rr:objectMap :om_187.
-:om_187 a rr:ObjectMap;
+:pom_196 rr:objectMap :om_196.
+:om_196 a rr:ObjectMap;
     rml:reference "ParameterValue";
     rr:termType rr:Literal.
-:fn_57 rr:predicateObjectMap :pom_188.
-:pom_188 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_188.
-:pm_188 a rr:PredicateMap;
+:fn_61 rr:predicateObjectMap :pom_197.
+:pom_197 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_197.
+:pm_197 a rr:PredicateMap;
     rr:constant grel:valueParameter2.
-:pom_188 rr:objectMap :om_188.
-:om_188 a rr:ObjectMap;
+:pom_197 rr:objectMap :om_197.
+:om_197 a rr:ObjectMap;
     rr:constant "Y";
     rr:termType rr:Literal.
-:fn_56 rr:predicateObjectMap :pom_189.
-:pom_189 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_189.
-:pm_189 a rr:PredicateMap;
+:fn_60 rr:predicateObjectMap :pom_198.
+:pom_198 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_198.
+:pm_198 a rr:PredicateMap;
     rr:constant idlab-fn:str.
-:pom_189 rr:objectMap :om_189.
-:om_189 a rr:ObjectMap;
+:pom_198 rr:objectMap :om_198.
+:om_198 a rr:ObjectMap;
     rr:constant "true";
     rr:termType rr:Literal.
-:pom_190 a rr:PredicateObjectMap.
-:map_etcs-compatible_0 rr:predicateObjectMap :pom_190.
-:pm_190 a rr:PredicateMap.
-:pom_190 rr:predicateMap :pm_190.
-:pm_190 rr:constant era:isETCSCompatible.
-:pom_190 rr:objectMap :om_190.
-:om_190 a fnml:FunctionTermMap;
+:pom_199 a rr:PredicateObjectMap.
+:map_etcs-compatible_0 rr:predicateObjectMap :pom_199.
+:pm_199 a rr:PredicateMap.
+:pom_199 rr:predicateMap :pm_199.
+:pm_199 rr:constant era:isETCSCompatible.
+:pom_199 rr:objectMap :om_199.
+:om_199 a fnml:FunctionTermMap;
     rr:termType rr:Literal;
     rr:datatype xsd:boolean;
-    fnml:functionValue :fn_58.
-:fn_58 rml:logicalSource :source_52;
-    rr:predicateObjectMap :pomexec_58.
-:pomexec_58 rr:predicateMap :pmexec_58.
-:pmexec_58 rr:constant fno:executes.
-:pomexec_58 rr:objectMap :omexec_58.
-:omexec_58 rr:constant "http://example.com/idlab/function/trueCondition";
+    fnml:functionValue :fn_62.
+:fn_62 rml:logicalSource :source_52;
+    rr:predicateObjectMap :pomexec_62.
+:pomexec_62 rr:predicateMap :pmexec_62.
+:pmexec_62 rr:constant fno:executes.
+:pomexec_62 rr:objectMap :omexec_62.
+:omexec_62 rr:constant "http://example.com/idlab/function/trueCondition";
     rr:termType rr:IRI.
-:fn_58 rr:predicateObjectMap :pom_191.
-:pom_191 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_191.
-:pm_191 a rr:PredicateMap;
+:fn_62 rr:predicateObjectMap :pom_200.
+:pom_200 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_200.
+:pm_200 a rr:PredicateMap;
     rr:constant idlab-fn:strBoolean.
-:pom_191 rr:objectMap :om_191.
-:om_191 a rr:ObjectMap, fnml:FunctionTermMap;
-    fnml:functionValue :fn_59.
-:fn_59 rml:logicalSource :source_52;
-    rr:predicateObjectMap :pomexec_59.
-:pomexec_59 rr:predicateMap :pmexec_59.
-:pmexec_59 rr:constant fno:executes.
-:pomexec_59 rr:objectMap :omexec_59.
-:omexec_59 rr:constant "http://example.com/idlab/function/equal";
+:pom_200 rr:objectMap :om_200.
+:om_200 a rr:ObjectMap, fnml:FunctionTermMap;
+    fnml:functionValue :fn_63.
+:fn_63 rml:logicalSource :source_52;
+    rr:predicateObjectMap :pomexec_63.
+:pomexec_63 rr:predicateMap :pmexec_63.
+:pmexec_63 rr:constant fno:executes.
+:pomexec_63 rr:objectMap :omexec_63.
+:omexec_63 rr:constant "http://example.com/idlab/function/equal";
     rr:termType rr:IRI.
-:fn_59 rr:predicateObjectMap :pom_192.
-:pom_192 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_192.
-:pm_192 a rr:PredicateMap;
+:fn_63 rr:predicateObjectMap :pom_201.
+:pom_201 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_201.
+:pm_201 a rr:PredicateMap;
     rr:constant grel:valueParameter.
-:pom_192 rr:objectMap :om_192.
-:om_192 a rr:ObjectMap;
+:pom_201 rr:objectMap :om_201.
+:om_201 a rr:ObjectMap;
     rml:reference "ParameterValue";
     rr:termType rr:Literal.
-:fn_59 rr:predicateObjectMap :pom_193.
-:pom_193 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_193.
-:pm_193 a rr:PredicateMap;
+:fn_63 rr:predicateObjectMap :pom_202.
+:pom_202 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_202.
+:pm_202 a rr:PredicateMap;
     rr:constant grel:valueParameter2.
-:pom_193 rr:objectMap :om_193.
-:om_193 a rr:ObjectMap;
+:pom_202 rr:objectMap :om_202.
+:om_202 a rr:ObjectMap;
     rr:constant "N";
     rr:termType rr:Literal.
-:fn_58 rr:predicateObjectMap :pom_194.
-:pom_194 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_194.
-:pm_194 a rr:PredicateMap;
+:fn_62 rr:predicateObjectMap :pom_203.
+:pom_203 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_203.
+:pm_203 a rr:PredicateMap;
     rr:constant idlab-fn:str.
-:pom_194 rr:objectMap :om_194.
-:om_194 a rr:ObjectMap;
+:pom_203 rr:objectMap :om_203.
+:om_203 a rr:ObjectMap;
     rr:constant "false";
     rr:termType rr:Literal.
 :map_train-integrity-required_0 rml:logicalSource :source_53.
@@ -3013,122 +3128,122 @@
 :s_53 a rr:SubjectMap.
 :map_train-integrity-required_0 rr:subjectMap :s_53.
 :s_53 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
-:pom_195 a rr:PredicateObjectMap.
-:map_train-integrity-required_0 rr:predicateObjectMap :pom_195.
-:pm_195 a rr:PredicateMap.
-:pom_195 rr:predicateMap :pm_195.
-:pm_195 rr:constant era:trainIntegrityOnBoardRequired.
-:pom_195 rr:objectMap :om_195.
-:om_195 a fnml:FunctionTermMap;
+:pom_204 a rr:PredicateObjectMap.
+:map_train-integrity-required_0 rr:predicateObjectMap :pom_204.
+:pm_204 a rr:PredicateMap.
+:pom_204 rr:predicateMap :pm_204.
+:pm_204 rr:constant era:trainIntegrityOnBoardRequired.
+:pom_204 rr:objectMap :om_204.
+:om_204 a fnml:FunctionTermMap;
     rr:termType rr:Literal;
     rr:datatype xsd:boolean;
-    fnml:functionValue :fn_60.
-:fn_60 rml:logicalSource :source_53;
-    rr:predicateObjectMap :pomexec_60.
-:pomexec_60 rr:predicateMap :pmexec_60.
-:pmexec_60 rr:constant fno:executes.
-:pomexec_60 rr:objectMap :omexec_60.
-:omexec_60 rr:constant "http://example.com/idlab/function/trueCondition";
+    fnml:functionValue :fn_64.
+:fn_64 rml:logicalSource :source_53;
+    rr:predicateObjectMap :pomexec_64.
+:pomexec_64 rr:predicateMap :pmexec_64.
+:pmexec_64 rr:constant fno:executes.
+:pomexec_64 rr:objectMap :omexec_64.
+:omexec_64 rr:constant "http://example.com/idlab/function/trueCondition";
     rr:termType rr:IRI.
-:fn_60 rr:predicateObjectMap :pom_196.
-:pom_196 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_196.
-:pm_196 a rr:PredicateMap;
+:fn_64 rr:predicateObjectMap :pom_205.
+:pom_205 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_205.
+:pm_205 a rr:PredicateMap;
     rr:constant idlab-fn:strBoolean.
-:pom_196 rr:objectMap :om_196.
-:om_196 a rr:ObjectMap, fnml:FunctionTermMap;
-    fnml:functionValue :fn_61.
-:fn_61 rml:logicalSource :source_53;
-    rr:predicateObjectMap :pomexec_61.
-:pomexec_61 rr:predicateMap :pmexec_61.
-:pmexec_61 rr:constant fno:executes.
-:pomexec_61 rr:objectMap :omexec_61.
-:omexec_61 rr:constant "http://example.com/idlab/function/equal";
+:pom_205 rr:objectMap :om_205.
+:om_205 a rr:ObjectMap, fnml:FunctionTermMap;
+    fnml:functionValue :fn_65.
+:fn_65 rml:logicalSource :source_53;
+    rr:predicateObjectMap :pomexec_65.
+:pomexec_65 rr:predicateMap :pmexec_65.
+:pmexec_65 rr:constant fno:executes.
+:pomexec_65 rr:objectMap :omexec_65.
+:omexec_65 rr:constant "http://example.com/idlab/function/equal";
     rr:termType rr:IRI.
-:fn_61 rr:predicateObjectMap :pom_197.
-:pom_197 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_197.
-:pm_197 a rr:PredicateMap;
+:fn_65 rr:predicateObjectMap :pom_206.
+:pom_206 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_206.
+:pm_206 a rr:PredicateMap;
     rr:constant grel:valueParameter.
-:pom_197 rr:objectMap :om_197.
-:om_197 a rr:ObjectMap;
+:pom_206 rr:objectMap :om_206.
+:om_206 a rr:ObjectMap;
     rml:reference "ParameterValue";
     rr:termType rr:Literal.
-:fn_61 rr:predicateObjectMap :pom_198.
-:pom_198 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_198.
-:pm_198 a rr:PredicateMap;
+:fn_65 rr:predicateObjectMap :pom_207.
+:pom_207 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_207.
+:pm_207 a rr:PredicateMap;
     rr:constant grel:valueParameter2.
-:pom_198 rr:objectMap :om_198.
-:om_198 a rr:ObjectMap;
+:pom_207 rr:objectMap :om_207.
+:om_207 a rr:ObjectMap;
     rr:constant "Y";
     rr:termType rr:Literal.
-:fn_60 rr:predicateObjectMap :pom_199.
-:pom_199 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_199.
-:pm_199 a rr:PredicateMap;
+:fn_64 rr:predicateObjectMap :pom_208.
+:pom_208 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_208.
+:pm_208 a rr:PredicateMap;
     rr:constant idlab-fn:str.
-:pom_199 rr:objectMap :om_199.
-:om_199 a rr:ObjectMap;
+:pom_208 rr:objectMap :om_208.
+:om_208 a rr:ObjectMap;
     rr:constant "true";
     rr:termType rr:Literal.
-:pom_200 a rr:PredicateObjectMap.
-:map_train-integrity-required_0 rr:predicateObjectMap :pom_200.
-:pm_200 a rr:PredicateMap.
-:pom_200 rr:predicateMap :pm_200.
-:pm_200 rr:constant era:trainIntegrityOnBoardRequired.
-:pom_200 rr:objectMap :om_200.
-:om_200 a fnml:FunctionTermMap;
+:pom_209 a rr:PredicateObjectMap.
+:map_train-integrity-required_0 rr:predicateObjectMap :pom_209.
+:pm_209 a rr:PredicateMap.
+:pom_209 rr:predicateMap :pm_209.
+:pm_209 rr:constant era:trainIntegrityOnBoardRequired.
+:pom_209 rr:objectMap :om_209.
+:om_209 a fnml:FunctionTermMap;
     rr:termType rr:Literal;
     rr:datatype xsd:boolean;
-    fnml:functionValue :fn_62.
-:fn_62 rml:logicalSource :source_53;
-    rr:predicateObjectMap :pomexec_62.
-:pomexec_62 rr:predicateMap :pmexec_62.
-:pmexec_62 rr:constant fno:executes.
-:pomexec_62 rr:objectMap :omexec_62.
-:omexec_62 rr:constant "http://example.com/idlab/function/trueCondition";
+    fnml:functionValue :fn_66.
+:fn_66 rml:logicalSource :source_53;
+    rr:predicateObjectMap :pomexec_66.
+:pomexec_66 rr:predicateMap :pmexec_66.
+:pmexec_66 rr:constant fno:executes.
+:pomexec_66 rr:objectMap :omexec_66.
+:omexec_66 rr:constant "http://example.com/idlab/function/trueCondition";
     rr:termType rr:IRI.
-:fn_62 rr:predicateObjectMap :pom_201.
-:pom_201 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_201.
-:pm_201 a rr:PredicateMap;
+:fn_66 rr:predicateObjectMap :pom_210.
+:pom_210 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_210.
+:pm_210 a rr:PredicateMap;
     rr:constant idlab-fn:strBoolean.
-:pom_201 rr:objectMap :om_201.
-:om_201 a rr:ObjectMap, fnml:FunctionTermMap;
-    fnml:functionValue :fn_63.
-:fn_63 rml:logicalSource :source_53;
-    rr:predicateObjectMap :pomexec_63.
-:pomexec_63 rr:predicateMap :pmexec_63.
-:pmexec_63 rr:constant fno:executes.
-:pomexec_63 rr:objectMap :omexec_63.
-:omexec_63 rr:constant "http://example.com/idlab/function/equal";
+:pom_210 rr:objectMap :om_210.
+:om_210 a rr:ObjectMap, fnml:FunctionTermMap;
+    fnml:functionValue :fn_67.
+:fn_67 rml:logicalSource :source_53;
+    rr:predicateObjectMap :pomexec_67.
+:pomexec_67 rr:predicateMap :pmexec_67.
+:pmexec_67 rr:constant fno:executes.
+:pomexec_67 rr:objectMap :omexec_67.
+:omexec_67 rr:constant "http://example.com/idlab/function/equal";
     rr:termType rr:IRI.
-:fn_63 rr:predicateObjectMap :pom_202.
-:pom_202 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_202.
-:pm_202 a rr:PredicateMap;
+:fn_67 rr:predicateObjectMap :pom_211.
+:pom_211 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_211.
+:pm_211 a rr:PredicateMap;
     rr:constant grel:valueParameter.
-:pom_202 rr:objectMap :om_202.
-:om_202 a rr:ObjectMap;
+:pom_211 rr:objectMap :om_211.
+:om_211 a rr:ObjectMap;
     rml:reference "ParameterValue";
     rr:termType rr:Literal.
-:fn_63 rr:predicateObjectMap :pom_203.
-:pom_203 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_203.
-:pm_203 a rr:PredicateMap;
+:fn_67 rr:predicateObjectMap :pom_212.
+:pom_212 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_212.
+:pm_212 a rr:PredicateMap;
     rr:constant grel:valueParameter2.
-:pom_203 rr:objectMap :om_203.
-:om_203 a rr:ObjectMap;
+:pom_212 rr:objectMap :om_212.
+:om_212 a rr:ObjectMap;
     rr:constant "N";
     rr:termType rr:Literal.
-:fn_62 rr:predicateObjectMap :pom_204.
-:pom_204 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_204.
-:pm_204 a rr:PredicateMap;
+:fn_66 rr:predicateObjectMap :pom_213.
+:pom_213 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_213.
+:pm_213 a rr:PredicateMap;
     rr:constant idlab-fn:str.
-:pom_204 rr:objectMap :om_204.
-:om_204 a rr:ObjectMap;
+:pom_213 rr:objectMap :om_213.
+:om_213 a rr:ObjectMap;
     rr:constant "false";
     rr:termType rr:Literal.
 :map_gsm-r-network-coverage_0 rml:logicalSource :source_54.
@@ -3146,13 +3261,13 @@
 :s_54 a rr:SubjectMap.
 :map_gsm-r-network-coverage_0 rr:subjectMap :s_54.
 :s_54 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
-:pom_205 a rr:PredicateObjectMap.
-:map_gsm-r-network-coverage_0 rr:predicateObjectMap :pom_205.
-:pm_205 a rr:PredicateMap.
-:pom_205 rr:predicateMap :pm_205.
-:pm_205 rr:constant era:networkCoverage.
-:pom_205 rr:objectMap :om_205.
-:om_205 a rr:ObjectMap;
+:pom_214 a rr:PredicateObjectMap.
+:map_gsm-r-network-coverage_0 rr:predicateObjectMap :pom_214.
+:pm_214 a rr:PredicateMap.
+:pom_214 rr:predicateMap :pm_214.
+:pm_214 rr:constant era:networkCoverage.
+:pom_214 rr:objectMap :om_214.
+:om_214 a rr:ObjectMap;
     rml:reference "ParameterValue";
     rr:termType rr:Literal.
 :map_group-555-support_0 rml:logicalSource :source_55.
@@ -3170,122 +3285,122 @@
 :s_55 a rr:SubjectMap.
 :map_group-555-support_0 rr:subjectMap :s_55.
 :s_55 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
-:pom_206 a rr:PredicateObjectMap.
-:map_group-555-support_0 rr:predicateObjectMap :pom_206.
-:pm_206 a rr:PredicateMap.
-:pom_206 rr:predicateMap :pm_206.
-:pm_206 rr:constant era:isGroup555Compatible.
-:pom_206 rr:objectMap :om_206.
-:om_206 a fnml:FunctionTermMap;
+:pom_215 a rr:PredicateObjectMap.
+:map_group-555-support_0 rr:predicateObjectMap :pom_215.
+:pm_215 a rr:PredicateMap.
+:pom_215 rr:predicateMap :pm_215.
+:pm_215 rr:constant era:isGroup555Compatible.
+:pom_215 rr:objectMap :om_215.
+:om_215 a fnml:FunctionTermMap;
     rr:termType rr:Literal;
     rr:datatype xsd:boolean;
-    fnml:functionValue :fn_64.
-:fn_64 rml:logicalSource :source_55;
-    rr:predicateObjectMap :pomexec_64.
-:pomexec_64 rr:predicateMap :pmexec_64.
-:pmexec_64 rr:constant fno:executes.
-:pomexec_64 rr:objectMap :omexec_64.
-:omexec_64 rr:constant "http://example.com/idlab/function/trueCondition";
+    fnml:functionValue :fn_68.
+:fn_68 rml:logicalSource :source_55;
+    rr:predicateObjectMap :pomexec_68.
+:pomexec_68 rr:predicateMap :pmexec_68.
+:pmexec_68 rr:constant fno:executes.
+:pomexec_68 rr:objectMap :omexec_68.
+:omexec_68 rr:constant "http://example.com/idlab/function/trueCondition";
     rr:termType rr:IRI.
-:fn_64 rr:predicateObjectMap :pom_207.
-:pom_207 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_207.
-:pm_207 a rr:PredicateMap;
+:fn_68 rr:predicateObjectMap :pom_216.
+:pom_216 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_216.
+:pm_216 a rr:PredicateMap;
     rr:constant idlab-fn:strBoolean.
-:pom_207 rr:objectMap :om_207.
-:om_207 a rr:ObjectMap, fnml:FunctionTermMap;
-    fnml:functionValue :fn_65.
-:fn_65 rml:logicalSource :source_55;
-    rr:predicateObjectMap :pomexec_65.
-:pomexec_65 rr:predicateMap :pmexec_65.
-:pmexec_65 rr:constant fno:executes.
-:pomexec_65 rr:objectMap :omexec_65.
-:omexec_65 rr:constant "http://example.com/idlab/function/equal";
+:pom_216 rr:objectMap :om_216.
+:om_216 a rr:ObjectMap, fnml:FunctionTermMap;
+    fnml:functionValue :fn_69.
+:fn_69 rml:logicalSource :source_55;
+    rr:predicateObjectMap :pomexec_69.
+:pomexec_69 rr:predicateMap :pmexec_69.
+:pmexec_69 rr:constant fno:executes.
+:pomexec_69 rr:objectMap :omexec_69.
+:omexec_69 rr:constant "http://example.com/idlab/function/equal";
     rr:termType rr:IRI.
-:fn_65 rr:predicateObjectMap :pom_208.
-:pom_208 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_208.
-:pm_208 a rr:PredicateMap;
+:fn_69 rr:predicateObjectMap :pom_217.
+:pom_217 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_217.
+:pm_217 a rr:PredicateMap;
     rr:constant grel:valueParameter.
-:pom_208 rr:objectMap :om_208.
-:om_208 a rr:ObjectMap;
+:pom_217 rr:objectMap :om_217.
+:om_217 a rr:ObjectMap;
     rml:reference "ParameterValue";
     rr:termType rr:Literal.
-:fn_65 rr:predicateObjectMap :pom_209.
-:pom_209 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_209.
-:pm_209 a rr:PredicateMap;
+:fn_69 rr:predicateObjectMap :pom_218.
+:pom_218 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_218.
+:pm_218 a rr:PredicateMap;
     rr:constant grel:valueParameter2.
-:pom_209 rr:objectMap :om_209.
-:om_209 a rr:ObjectMap;
+:pom_218 rr:objectMap :om_218.
+:om_218 a rr:ObjectMap;
     rr:constant "Y";
     rr:termType rr:Literal.
-:fn_64 rr:predicateObjectMap :pom_210.
-:pom_210 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_210.
-:pm_210 a rr:PredicateMap;
+:fn_68 rr:predicateObjectMap :pom_219.
+:pom_219 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_219.
+:pm_219 a rr:PredicateMap;
     rr:constant idlab-fn:str.
-:pom_210 rr:objectMap :om_210.
-:om_210 a rr:ObjectMap;
+:pom_219 rr:objectMap :om_219.
+:om_219 a rr:ObjectMap;
     rr:constant "true";
     rr:termType rr:Literal.
-:pom_211 a rr:PredicateObjectMap.
-:map_group-555-support_0 rr:predicateObjectMap :pom_211.
-:pm_211 a rr:PredicateMap.
-:pom_211 rr:predicateMap :pm_211.
-:pm_211 rr:constant era:isGroup555Compatible.
-:pom_211 rr:objectMap :om_211.
-:om_211 a fnml:FunctionTermMap;
+:pom_220 a rr:PredicateObjectMap.
+:map_group-555-support_0 rr:predicateObjectMap :pom_220.
+:pm_220 a rr:PredicateMap.
+:pom_220 rr:predicateMap :pm_220.
+:pm_220 rr:constant era:isGroup555Compatible.
+:pom_220 rr:objectMap :om_220.
+:om_220 a fnml:FunctionTermMap;
     rr:termType rr:Literal;
     rr:datatype xsd:boolean;
-    fnml:functionValue :fn_66.
-:fn_66 rml:logicalSource :source_55;
-    rr:predicateObjectMap :pomexec_66.
-:pomexec_66 rr:predicateMap :pmexec_66.
-:pmexec_66 rr:constant fno:executes.
-:pomexec_66 rr:objectMap :omexec_66.
-:omexec_66 rr:constant "http://example.com/idlab/function/trueCondition";
+    fnml:functionValue :fn_70.
+:fn_70 rml:logicalSource :source_55;
+    rr:predicateObjectMap :pomexec_70.
+:pomexec_70 rr:predicateMap :pmexec_70.
+:pmexec_70 rr:constant fno:executes.
+:pomexec_70 rr:objectMap :omexec_70.
+:omexec_70 rr:constant "http://example.com/idlab/function/trueCondition";
     rr:termType rr:IRI.
-:fn_66 rr:predicateObjectMap :pom_212.
-:pom_212 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_212.
-:pm_212 a rr:PredicateMap;
+:fn_70 rr:predicateObjectMap :pom_221.
+:pom_221 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_221.
+:pm_221 a rr:PredicateMap;
     rr:constant idlab-fn:strBoolean.
-:pom_212 rr:objectMap :om_212.
-:om_212 a rr:ObjectMap, fnml:FunctionTermMap;
-    fnml:functionValue :fn_67.
-:fn_67 rml:logicalSource :source_55;
-    rr:predicateObjectMap :pomexec_67.
-:pomexec_67 rr:predicateMap :pmexec_67.
-:pmexec_67 rr:constant fno:executes.
-:pomexec_67 rr:objectMap :omexec_67.
-:omexec_67 rr:constant "http://example.com/idlab/function/equal";
+:pom_221 rr:objectMap :om_221.
+:om_221 a rr:ObjectMap, fnml:FunctionTermMap;
+    fnml:functionValue :fn_71.
+:fn_71 rml:logicalSource :source_55;
+    rr:predicateObjectMap :pomexec_71.
+:pomexec_71 rr:predicateMap :pmexec_71.
+:pmexec_71 rr:constant fno:executes.
+:pomexec_71 rr:objectMap :omexec_71.
+:omexec_71 rr:constant "http://example.com/idlab/function/equal";
     rr:termType rr:IRI.
-:fn_67 rr:predicateObjectMap :pom_213.
-:pom_213 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_213.
-:pm_213 a rr:PredicateMap;
+:fn_71 rr:predicateObjectMap :pom_222.
+:pom_222 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_222.
+:pm_222 a rr:PredicateMap;
     rr:constant grel:valueParameter.
-:pom_213 rr:objectMap :om_213.
-:om_213 a rr:ObjectMap;
+:pom_222 rr:objectMap :om_222.
+:om_222 a rr:ObjectMap;
     rml:reference "ParameterValue";
     rr:termType rr:Literal.
-:fn_67 rr:predicateObjectMap :pom_214.
-:pom_214 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_214.
-:pm_214 a rr:PredicateMap;
+:fn_71 rr:predicateObjectMap :pom_223.
+:pom_223 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_223.
+:pm_223 a rr:PredicateMap;
     rr:constant grel:valueParameter2.
-:pom_214 rr:objectMap :om_214.
-:om_214 a rr:ObjectMap;
+:pom_223 rr:objectMap :om_223.
+:om_223 a rr:ObjectMap;
     rr:constant "N";
     rr:termType rr:Literal.
-:fn_66 rr:predicateObjectMap :pom_215.
-:pom_215 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_215.
-:pm_215 a rr:PredicateMap;
+:fn_70 rr:predicateObjectMap :pom_224.
+:pom_224 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_224.
+:pm_224 a rr:PredicateMap;
     rr:constant idlab-fn:str.
-:pom_215 rr:objectMap :om_215.
-:om_215 a rr:ObjectMap;
+:pom_224 rr:objectMap :om_224.
+:om_224 a rr:ObjectMap;
     rr:constant "false";
     rr:termType rr:Literal.
 :map_voice-radio-compatible_0 rml:logicalSource :source_56.
@@ -3303,122 +3418,122 @@
 :s_56 a rr:SubjectMap.
 :map_voice-radio-compatible_0 rr:subjectMap :s_56.
 :s_56 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
-:pom_216 a rr:PredicateObjectMap.
-:map_voice-radio-compatible_0 rr:predicateObjectMap :pom_216.
-:pm_216 a rr:PredicateMap.
-:pom_216 rr:predicateMap :pm_216.
-:pm_216 rr:constant era:voiceRadioCompatible.
-:pom_216 rr:objectMap :om_216.
-:om_216 a fnml:FunctionTermMap;
+:pom_225 a rr:PredicateObjectMap.
+:map_voice-radio-compatible_0 rr:predicateObjectMap :pom_225.
+:pm_225 a rr:PredicateMap.
+:pom_225 rr:predicateMap :pm_225.
+:pm_225 rr:constant era:voiceRadioCompatible.
+:pom_225 rr:objectMap :om_225.
+:om_225 a fnml:FunctionTermMap;
     rr:termType rr:Literal;
     rr:datatype xsd:boolean;
-    fnml:functionValue :fn_68.
-:fn_68 rml:logicalSource :source_56;
-    rr:predicateObjectMap :pomexec_68.
-:pomexec_68 rr:predicateMap :pmexec_68.
-:pmexec_68 rr:constant fno:executes.
-:pomexec_68 rr:objectMap :omexec_68.
-:omexec_68 rr:constant "http://example.com/idlab/function/trueCondition";
+    fnml:functionValue :fn_72.
+:fn_72 rml:logicalSource :source_56;
+    rr:predicateObjectMap :pomexec_72.
+:pomexec_72 rr:predicateMap :pmexec_72.
+:pmexec_72 rr:constant fno:executes.
+:pomexec_72 rr:objectMap :omexec_72.
+:omexec_72 rr:constant "http://example.com/idlab/function/trueCondition";
     rr:termType rr:IRI.
-:fn_68 rr:predicateObjectMap :pom_217.
-:pom_217 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_217.
-:pm_217 a rr:PredicateMap;
+:fn_72 rr:predicateObjectMap :pom_226.
+:pom_226 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_226.
+:pm_226 a rr:PredicateMap;
     rr:constant idlab-fn:strBoolean.
-:pom_217 rr:objectMap :om_217.
-:om_217 a rr:ObjectMap, fnml:FunctionTermMap;
-    fnml:functionValue :fn_69.
-:fn_69 rml:logicalSource :source_56;
-    rr:predicateObjectMap :pomexec_69.
-:pomexec_69 rr:predicateMap :pmexec_69.
-:pmexec_69 rr:constant fno:executes.
-:pomexec_69 rr:objectMap :omexec_69.
-:omexec_69 rr:constant "http://example.com/idlab/function/equal";
+:pom_226 rr:objectMap :om_226.
+:om_226 a rr:ObjectMap, fnml:FunctionTermMap;
+    fnml:functionValue :fn_73.
+:fn_73 rml:logicalSource :source_56;
+    rr:predicateObjectMap :pomexec_73.
+:pomexec_73 rr:predicateMap :pmexec_73.
+:pmexec_73 rr:constant fno:executes.
+:pomexec_73 rr:objectMap :omexec_73.
+:omexec_73 rr:constant "http://example.com/idlab/function/equal";
     rr:termType rr:IRI.
-:fn_69 rr:predicateObjectMap :pom_218.
-:pom_218 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_218.
-:pm_218 a rr:PredicateMap;
+:fn_73 rr:predicateObjectMap :pom_227.
+:pom_227 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_227.
+:pm_227 a rr:PredicateMap;
     rr:constant grel:valueParameter.
-:pom_218 rr:objectMap :om_218.
-:om_218 a rr:ObjectMap;
+:pom_227 rr:objectMap :om_227.
+:om_227 a rr:ObjectMap;
     rml:reference "ParameterValue";
     rr:termType rr:Literal.
-:fn_69 rr:predicateObjectMap :pom_219.
-:pom_219 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_219.
-:pm_219 a rr:PredicateMap;
+:fn_73 rr:predicateObjectMap :pom_228.
+:pom_228 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_228.
+:pm_228 a rr:PredicateMap;
     rr:constant grel:valueParameter2.
-:pom_219 rr:objectMap :om_219.
-:om_219 a rr:ObjectMap;
+:pom_228 rr:objectMap :om_228.
+:om_228 a rr:ObjectMap;
     rr:constant "Y";
     rr:termType rr:Literal.
-:fn_68 rr:predicateObjectMap :pom_220.
-:pom_220 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_220.
-:pm_220 a rr:PredicateMap;
+:fn_72 rr:predicateObjectMap :pom_229.
+:pom_229 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_229.
+:pm_229 a rr:PredicateMap;
     rr:constant idlab-fn:str.
-:pom_220 rr:objectMap :om_220.
-:om_220 a rr:ObjectMap;
+:pom_229 rr:objectMap :om_229.
+:om_229 a rr:ObjectMap;
     rr:constant "true";
     rr:termType rr:Literal.
-:pom_221 a rr:PredicateObjectMap.
-:map_voice-radio-compatible_0 rr:predicateObjectMap :pom_221.
-:pm_221 a rr:PredicateMap.
-:pom_221 rr:predicateMap :pm_221.
-:pm_221 rr:constant era:voiceRadioCompatible.
-:pom_221 rr:objectMap :om_221.
-:om_221 a fnml:FunctionTermMap;
+:pom_230 a rr:PredicateObjectMap.
+:map_voice-radio-compatible_0 rr:predicateObjectMap :pom_230.
+:pm_230 a rr:PredicateMap.
+:pom_230 rr:predicateMap :pm_230.
+:pm_230 rr:constant era:voiceRadioCompatible.
+:pom_230 rr:objectMap :om_230.
+:om_230 a fnml:FunctionTermMap;
     rr:termType rr:Literal;
     rr:datatype xsd:boolean;
-    fnml:functionValue :fn_70.
-:fn_70 rml:logicalSource :source_56;
-    rr:predicateObjectMap :pomexec_70.
-:pomexec_70 rr:predicateMap :pmexec_70.
-:pmexec_70 rr:constant fno:executes.
-:pomexec_70 rr:objectMap :omexec_70.
-:omexec_70 rr:constant "http://example.com/idlab/function/trueCondition";
+    fnml:functionValue :fn_74.
+:fn_74 rml:logicalSource :source_56;
+    rr:predicateObjectMap :pomexec_74.
+:pomexec_74 rr:predicateMap :pmexec_74.
+:pmexec_74 rr:constant fno:executes.
+:pomexec_74 rr:objectMap :omexec_74.
+:omexec_74 rr:constant "http://example.com/idlab/function/trueCondition";
     rr:termType rr:IRI.
-:fn_70 rr:predicateObjectMap :pom_222.
-:pom_222 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_222.
-:pm_222 a rr:PredicateMap;
+:fn_74 rr:predicateObjectMap :pom_231.
+:pom_231 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_231.
+:pm_231 a rr:PredicateMap;
     rr:constant idlab-fn:strBoolean.
-:pom_222 rr:objectMap :om_222.
-:om_222 a rr:ObjectMap, fnml:FunctionTermMap;
-    fnml:functionValue :fn_71.
-:fn_71 rml:logicalSource :source_56;
-    rr:predicateObjectMap :pomexec_71.
-:pomexec_71 rr:predicateMap :pmexec_71.
-:pmexec_71 rr:constant fno:executes.
-:pomexec_71 rr:objectMap :omexec_71.
-:omexec_71 rr:constant "http://example.com/idlab/function/equal";
+:pom_231 rr:objectMap :om_231.
+:om_231 a rr:ObjectMap, fnml:FunctionTermMap;
+    fnml:functionValue :fn_75.
+:fn_75 rml:logicalSource :source_56;
+    rr:predicateObjectMap :pomexec_75.
+:pomexec_75 rr:predicateMap :pmexec_75.
+:pmexec_75 rr:constant fno:executes.
+:pomexec_75 rr:objectMap :omexec_75.
+:omexec_75 rr:constant "http://example.com/idlab/function/equal";
     rr:termType rr:IRI.
-:fn_71 rr:predicateObjectMap :pom_223.
-:pom_223 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_223.
-:pm_223 a rr:PredicateMap;
+:fn_75 rr:predicateObjectMap :pom_232.
+:pom_232 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_232.
+:pm_232 a rr:PredicateMap;
     rr:constant grel:valueParameter.
-:pom_223 rr:objectMap :om_223.
-:om_223 a rr:ObjectMap;
+:pom_232 rr:objectMap :om_232.
+:om_232 a rr:ObjectMap;
     rml:reference "ParameterValue";
     rr:termType rr:Literal.
-:fn_71 rr:predicateObjectMap :pom_224.
-:pom_224 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_224.
-:pm_224 a rr:PredicateMap;
+:fn_75 rr:predicateObjectMap :pom_233.
+:pom_233 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_233.
+:pm_233 a rr:PredicateMap;
     rr:constant grel:valueParameter2.
-:pom_224 rr:objectMap :om_224.
-:om_224 a rr:ObjectMap;
+:pom_233 rr:objectMap :om_233.
+:om_233 a rr:ObjectMap;
     rr:constant "N";
     rr:termType rr:Literal.
-:fn_70 rr:predicateObjectMap :pom_225.
-:pom_225 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_225.
-:pm_225 a rr:PredicateMap;
+:fn_74 rr:predicateObjectMap :pom_234.
+:pom_234 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_234.
+:pm_234 a rr:PredicateMap;
     rr:constant idlab-fn:str.
-:pom_225 rr:objectMap :om_225.
-:om_225 a rr:ObjectMap;
+:pom_234 rr:objectMap :om_234.
+:om_234 a rr:ObjectMap;
     rr:constant "false";
     rr:termType rr:Literal.
 :map_data-radio-compatible_0 rml:logicalSource :source_57.
@@ -3436,122 +3551,122 @@
 :s_57 a rr:SubjectMap.
 :map_data-radio-compatible_0 rr:subjectMap :s_57.
 :s_57 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
-:pom_226 a rr:PredicateObjectMap.
-:map_data-radio-compatible_0 rr:predicateObjectMap :pom_226.
-:pm_226 a rr:PredicateMap.
-:pom_226 rr:predicateMap :pm_226.
-:pm_226 rr:constant era:dataRadioCompatible.
-:pom_226 rr:objectMap :om_226.
-:om_226 a fnml:FunctionTermMap;
+:pom_235 a rr:PredicateObjectMap.
+:map_data-radio-compatible_0 rr:predicateObjectMap :pom_235.
+:pm_235 a rr:PredicateMap.
+:pom_235 rr:predicateMap :pm_235.
+:pm_235 rr:constant era:dataRadioCompatible.
+:pom_235 rr:objectMap :om_235.
+:om_235 a fnml:FunctionTermMap;
     rr:termType rr:Literal;
     rr:datatype xsd:boolean;
-    fnml:functionValue :fn_72.
-:fn_72 rml:logicalSource :source_57;
-    rr:predicateObjectMap :pomexec_72.
-:pomexec_72 rr:predicateMap :pmexec_72.
-:pmexec_72 rr:constant fno:executes.
-:pomexec_72 rr:objectMap :omexec_72.
-:omexec_72 rr:constant "http://example.com/idlab/function/trueCondition";
+    fnml:functionValue :fn_76.
+:fn_76 rml:logicalSource :source_57;
+    rr:predicateObjectMap :pomexec_76.
+:pomexec_76 rr:predicateMap :pmexec_76.
+:pmexec_76 rr:constant fno:executes.
+:pomexec_76 rr:objectMap :omexec_76.
+:omexec_76 rr:constant "http://example.com/idlab/function/trueCondition";
     rr:termType rr:IRI.
-:fn_72 rr:predicateObjectMap :pom_227.
-:pom_227 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_227.
-:pm_227 a rr:PredicateMap;
+:fn_76 rr:predicateObjectMap :pom_236.
+:pom_236 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_236.
+:pm_236 a rr:PredicateMap;
     rr:constant idlab-fn:strBoolean.
-:pom_227 rr:objectMap :om_227.
-:om_227 a rr:ObjectMap, fnml:FunctionTermMap;
-    fnml:functionValue :fn_73.
-:fn_73 rml:logicalSource :source_57;
-    rr:predicateObjectMap :pomexec_73.
-:pomexec_73 rr:predicateMap :pmexec_73.
-:pmexec_73 rr:constant fno:executes.
-:pomexec_73 rr:objectMap :omexec_73.
-:omexec_73 rr:constant "http://example.com/idlab/function/equal";
+:pom_236 rr:objectMap :om_236.
+:om_236 a rr:ObjectMap, fnml:FunctionTermMap;
+    fnml:functionValue :fn_77.
+:fn_77 rml:logicalSource :source_57;
+    rr:predicateObjectMap :pomexec_77.
+:pomexec_77 rr:predicateMap :pmexec_77.
+:pmexec_77 rr:constant fno:executes.
+:pomexec_77 rr:objectMap :omexec_77.
+:omexec_77 rr:constant "http://example.com/idlab/function/equal";
     rr:termType rr:IRI.
-:fn_73 rr:predicateObjectMap :pom_228.
-:pom_228 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_228.
-:pm_228 a rr:PredicateMap;
+:fn_77 rr:predicateObjectMap :pom_237.
+:pom_237 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_237.
+:pm_237 a rr:PredicateMap;
     rr:constant grel:valueParameter.
-:pom_228 rr:objectMap :om_228.
-:om_228 a rr:ObjectMap;
+:pom_237 rr:objectMap :om_237.
+:om_237 a rr:ObjectMap;
     rml:reference "ParameterValue";
     rr:termType rr:Literal.
-:fn_73 rr:predicateObjectMap :pom_229.
-:pom_229 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_229.
-:pm_229 a rr:PredicateMap;
+:fn_77 rr:predicateObjectMap :pom_238.
+:pom_238 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_238.
+:pm_238 a rr:PredicateMap;
     rr:constant grel:valueParameter2.
-:pom_229 rr:objectMap :om_229.
-:om_229 a rr:ObjectMap;
+:pom_238 rr:objectMap :om_238.
+:om_238 a rr:ObjectMap;
     rr:constant "Y";
     rr:termType rr:Literal.
-:fn_72 rr:predicateObjectMap :pom_230.
-:pom_230 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_230.
-:pm_230 a rr:PredicateMap;
+:fn_76 rr:predicateObjectMap :pom_239.
+:pom_239 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_239.
+:pm_239 a rr:PredicateMap;
     rr:constant idlab-fn:str.
-:pom_230 rr:objectMap :om_230.
-:om_230 a rr:ObjectMap;
+:pom_239 rr:objectMap :om_239.
+:om_239 a rr:ObjectMap;
     rr:constant "true";
     rr:termType rr:Literal.
-:pom_231 a rr:PredicateObjectMap.
-:map_data-radio-compatible_0 rr:predicateObjectMap :pom_231.
-:pm_231 a rr:PredicateMap.
-:pom_231 rr:predicateMap :pm_231.
-:pm_231 rr:constant era:dataRadioCompatible.
-:pom_231 rr:objectMap :om_231.
-:om_231 a fnml:FunctionTermMap;
+:pom_240 a rr:PredicateObjectMap.
+:map_data-radio-compatible_0 rr:predicateObjectMap :pom_240.
+:pm_240 a rr:PredicateMap.
+:pom_240 rr:predicateMap :pm_240.
+:pm_240 rr:constant era:dataRadioCompatible.
+:pom_240 rr:objectMap :om_240.
+:om_240 a fnml:FunctionTermMap;
     rr:termType rr:Literal;
     rr:datatype xsd:boolean;
-    fnml:functionValue :fn_74.
-:fn_74 rml:logicalSource :source_57;
-    rr:predicateObjectMap :pomexec_74.
-:pomexec_74 rr:predicateMap :pmexec_74.
-:pmexec_74 rr:constant fno:executes.
-:pomexec_74 rr:objectMap :omexec_74.
-:omexec_74 rr:constant "http://example.com/idlab/function/trueCondition";
+    fnml:functionValue :fn_78.
+:fn_78 rml:logicalSource :source_57;
+    rr:predicateObjectMap :pomexec_78.
+:pomexec_78 rr:predicateMap :pmexec_78.
+:pmexec_78 rr:constant fno:executes.
+:pomexec_78 rr:objectMap :omexec_78.
+:omexec_78 rr:constant "http://example.com/idlab/function/trueCondition";
     rr:termType rr:IRI.
-:fn_74 rr:predicateObjectMap :pom_232.
-:pom_232 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_232.
-:pm_232 a rr:PredicateMap;
+:fn_78 rr:predicateObjectMap :pom_241.
+:pom_241 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_241.
+:pm_241 a rr:PredicateMap;
     rr:constant idlab-fn:strBoolean.
-:pom_232 rr:objectMap :om_232.
-:om_232 a rr:ObjectMap, fnml:FunctionTermMap;
-    fnml:functionValue :fn_75.
-:fn_75 rml:logicalSource :source_57;
-    rr:predicateObjectMap :pomexec_75.
-:pomexec_75 rr:predicateMap :pmexec_75.
-:pmexec_75 rr:constant fno:executes.
-:pomexec_75 rr:objectMap :omexec_75.
-:omexec_75 rr:constant "http://example.com/idlab/function/equal";
+:pom_241 rr:objectMap :om_241.
+:om_241 a rr:ObjectMap, fnml:FunctionTermMap;
+    fnml:functionValue :fn_79.
+:fn_79 rml:logicalSource :source_57;
+    rr:predicateObjectMap :pomexec_79.
+:pomexec_79 rr:predicateMap :pmexec_79.
+:pmexec_79 rr:constant fno:executes.
+:pomexec_79 rr:objectMap :omexec_79.
+:omexec_79 rr:constant "http://example.com/idlab/function/equal";
     rr:termType rr:IRI.
-:fn_75 rr:predicateObjectMap :pom_233.
-:pom_233 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_233.
-:pm_233 a rr:PredicateMap;
+:fn_79 rr:predicateObjectMap :pom_242.
+:pom_242 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_242.
+:pm_242 a rr:PredicateMap;
     rr:constant grel:valueParameter.
-:pom_233 rr:objectMap :om_233.
-:om_233 a rr:ObjectMap;
+:pom_242 rr:objectMap :om_242.
+:om_242 a rr:ObjectMap;
     rml:reference "ParameterValue";
     rr:termType rr:Literal.
-:fn_75 rr:predicateObjectMap :pom_234.
-:pom_234 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_234.
-:pm_234 a rr:PredicateMap;
+:fn_79 rr:predicateObjectMap :pom_243.
+:pom_243 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_243.
+:pm_243 a rr:PredicateMap;
     rr:constant grel:valueParameter2.
-:pom_234 rr:objectMap :om_234.
-:om_234 a rr:ObjectMap;
+:pom_243 rr:objectMap :om_243.
+:om_243 a rr:ObjectMap;
     rr:constant "N";
     rr:termType rr:Literal.
-:fn_74 rr:predicateObjectMap :pom_235.
-:pom_235 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_235.
-:pm_235 a rr:PredicateMap;
+:fn_78 rr:predicateObjectMap :pom_244.
+:pom_244 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_244.
+:pm_244 a rr:PredicateMap;
     rr:constant idlab-fn:str.
-:pom_235 rr:objectMap :om_235.
-:om_235 a rr:ObjectMap;
+:pom_244 rr:objectMap :om_244.
+:om_244 a rr:ObjectMap;
     rr:constant "false";
     rr:termType rr:Literal.
 :map_protection-legacy-system_0 rml:logicalSource :source_58.
@@ -3569,13 +3684,13 @@
 :s_58 a rr:SubjectMap.
 :map_protection-legacy-system_0 rr:subjectMap :s_58.
 :s_58 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
-:pom_236 a rr:PredicateObjectMap.
-:map_protection-legacy-system_0 rr:predicateObjectMap :pom_236.
-:pm_236 a rr:PredicateMap.
-:pom_236 rr:predicateMap :pm_236.
-:pm_236 rr:constant era:legacyProtectionSystem.
-:pom_236 rr:objectMap :om_236.
-:om_236 a rr:ObjectMap;
+:pom_245 a rr:PredicateObjectMap.
+:map_protection-legacy-system_0 rr:predicateObjectMap :pom_245.
+:pm_245 a rr:PredicateMap.
+:pom_245 rr:predicateMap :pm_245.
+:pm_245 rr:constant era:legacyProtectionSystem.
+:pom_245 rr:objectMap :om_245.
+:om_245 a rr:ObjectMap;
     rml:reference "ParameterValue";
     rr:termType rr:Literal.
 :map_legacy-radio-system_0 rml:logicalSource :source_59.
@@ -3593,121 +3708,121 @@
 :s_59 a rr:SubjectMap.
 :map_legacy-radio-system_0 rr:subjectMap :s_59.
 :s_59 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
-:pom_237 a rr:PredicateObjectMap.
-:map_legacy-radio-system_0 rr:predicateObjectMap :pom_237.
-:pm_237 a rr:PredicateMap.
-:pom_237 rr:predicateMap :pm_237.
-:pm_237 rr:constant era:hasLegacyRadioSystem.
-:pom_237 rr:objectMap :om_237.
-:om_237 a fnml:FunctionTermMap;
+:pom_246 a rr:PredicateObjectMap.
+:map_legacy-radio-system_0 rr:predicateObjectMap :pom_246.
+:pm_246 a rr:PredicateMap.
+:pom_246 rr:predicateMap :pm_246.
+:pm_246 rr:constant era:hasLegacyRadioSystem.
+:pom_246 rr:objectMap :om_246.
+:om_246 a fnml:FunctionTermMap;
     rr:termType rr:Literal;
     rr:datatype xsd:boolean;
-    fnml:functionValue :fn_76.
-:fn_76 rml:logicalSource :source_59;
-    rr:predicateObjectMap :pomexec_76.
-:pomexec_76 rr:predicateMap :pmexec_76.
-:pmexec_76 rr:constant fno:executes.
-:pomexec_76 rr:objectMap :omexec_76.
-:omexec_76 rr:constant "http://example.com/idlab/function/trueCondition";
+    fnml:functionValue :fn_80.
+:fn_80 rml:logicalSource :source_59;
+    rr:predicateObjectMap :pomexec_80.
+:pomexec_80 rr:predicateMap :pmexec_80.
+:pmexec_80 rr:constant fno:executes.
+:pomexec_80 rr:objectMap :omexec_80.
+:omexec_80 rr:constant "http://example.com/idlab/function/trueCondition";
     rr:termType rr:IRI.
-:fn_76 rr:predicateObjectMap :pom_238.
-:pom_238 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_238.
-:pm_238 a rr:PredicateMap;
+:fn_80 rr:predicateObjectMap :pom_247.
+:pom_247 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_247.
+:pm_247 a rr:PredicateMap;
     rr:constant idlab-fn:strBoolean.
-:pom_238 rr:objectMap :om_238.
-:om_238 a rr:ObjectMap, fnml:FunctionTermMap;
-    fnml:functionValue :fn_77.
-:fn_77 rml:logicalSource :source_59;
-    rr:predicateObjectMap :pomexec_77.
-:pomexec_77 rr:predicateMap :pmexec_77.
-:pmexec_77 rr:constant fno:executes.
-:pomexec_77 rr:objectMap :omexec_77.
-:omexec_77 rr:constant "http://example.com/idlab/function/equal";
+:pom_247 rr:objectMap :om_247.
+:om_247 a rr:ObjectMap, fnml:FunctionTermMap;
+    fnml:functionValue :fn_81.
+:fn_81 rml:logicalSource :source_59;
+    rr:predicateObjectMap :pomexec_81.
+:pomexec_81 rr:predicateMap :pmexec_81.
+:pmexec_81 rr:constant fno:executes.
+:pomexec_81 rr:objectMap :omexec_81.
+:omexec_81 rr:constant "http://example.com/idlab/function/equal";
     rr:termType rr:IRI.
-:fn_77 rr:predicateObjectMap :pom_239.
-:pom_239 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_239.
-:pm_239 a rr:PredicateMap;
+:fn_81 rr:predicateObjectMap :pom_248.
+:pom_248 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_248.
+:pm_248 a rr:PredicateMap;
     rr:constant grel:valueParameter.
-:pom_239 rr:objectMap :om_239.
-:om_239 a rr:ObjectMap;
+:pom_248 rr:objectMap :om_248.
+:om_248 a rr:ObjectMap;
     rml:reference "ParameterValue";
     rr:termType rr:Literal.
-:fn_77 rr:predicateObjectMap :pom_240.
-:pom_240 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_240.
-:pm_240 a rr:PredicateMap;
+:fn_81 rr:predicateObjectMap :pom_249.
+:pom_249 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_249.
+:pm_249 a rr:PredicateMap;
     rr:constant grel:valueParameter2.
-:pom_240 rr:objectMap :om_240.
-:om_240 a rr:ObjectMap;
+:pom_249 rr:objectMap :om_249.
+:om_249 a rr:ObjectMap;
     rr:constant "Y";
     rr:termType rr:Literal.
-:fn_76 rr:predicateObjectMap :pom_241.
-:pom_241 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_241.
-:pm_241 a rr:PredicateMap;
+:fn_80 rr:predicateObjectMap :pom_250.
+:pom_250 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_250.
+:pm_250 a rr:PredicateMap;
     rr:constant idlab-fn:str.
-:pom_241 rr:objectMap :om_241.
-:om_241 a rr:ObjectMap;
+:pom_250 rr:objectMap :om_250.
+:om_250 a rr:ObjectMap;
     rr:constant "true";
     rr:termType rr:Literal.
-:pom_242 a rr:PredicateObjectMap.
-:map_legacy-radio-system_0 rr:predicateObjectMap :pom_242.
-:pm_242 a rr:PredicateMap.
-:pom_242 rr:predicateMap :pm_242.
-:pm_242 rr:constant era:hasLegacyRadioSystem.
-:pom_242 rr:objectMap :om_242.
-:om_242 a fnml:FunctionTermMap;
+:pom_251 a rr:PredicateObjectMap.
+:map_legacy-radio-system_0 rr:predicateObjectMap :pom_251.
+:pm_251 a rr:PredicateMap.
+:pom_251 rr:predicateMap :pm_251.
+:pm_251 rr:constant era:hasLegacyRadioSystem.
+:pom_251 rr:objectMap :om_251.
+:om_251 a fnml:FunctionTermMap;
     rr:termType rr:Literal;
     rr:datatype xsd:boolean;
-    fnml:functionValue :fn_78.
-:fn_78 rml:logicalSource :source_59;
-    rr:predicateObjectMap :pomexec_78.
-:pomexec_78 rr:predicateMap :pmexec_78.
-:pmexec_78 rr:constant fno:executes.
-:pomexec_78 rr:objectMap :omexec_78.
-:omexec_78 rr:constant "http://example.com/idlab/function/trueCondition";
+    fnml:functionValue :fn_82.
+:fn_82 rml:logicalSource :source_59;
+    rr:predicateObjectMap :pomexec_82.
+:pomexec_82 rr:predicateMap :pmexec_82.
+:pmexec_82 rr:constant fno:executes.
+:pomexec_82 rr:objectMap :omexec_82.
+:omexec_82 rr:constant "http://example.com/idlab/function/trueCondition";
     rr:termType rr:IRI.
-:fn_78 rr:predicateObjectMap :pom_243.
-:pom_243 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_243.
-:pm_243 a rr:PredicateMap;
+:fn_82 rr:predicateObjectMap :pom_252.
+:pom_252 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_252.
+:pm_252 a rr:PredicateMap;
     rr:constant idlab-fn:strBoolean.
-:pom_243 rr:objectMap :om_243.
-:om_243 a rr:ObjectMap, fnml:FunctionTermMap;
-    fnml:functionValue :fn_79.
-:fn_79 rml:logicalSource :source_59;
-    rr:predicateObjectMap :pomexec_79.
-:pomexec_79 rr:predicateMap :pmexec_79.
-:pmexec_79 rr:constant fno:executes.
-:pomexec_79 rr:objectMap :omexec_79.
-:omexec_79 rr:constant "http://example.com/idlab/function/equal";
+:pom_252 rr:objectMap :om_252.
+:om_252 a rr:ObjectMap, fnml:FunctionTermMap;
+    fnml:functionValue :fn_83.
+:fn_83 rml:logicalSource :source_59;
+    rr:predicateObjectMap :pomexec_83.
+:pomexec_83 rr:predicateMap :pmexec_83.
+:pmexec_83 rr:constant fno:executes.
+:pomexec_83 rr:objectMap :omexec_83.
+:omexec_83 rr:constant "http://example.com/idlab/function/equal";
     rr:termType rr:IRI.
-:fn_79 rr:predicateObjectMap :pom_244.
-:pom_244 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_244.
-:pm_244 a rr:PredicateMap;
+:fn_83 rr:predicateObjectMap :pom_253.
+:pom_253 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_253.
+:pm_253 a rr:PredicateMap;
     rr:constant grel:valueParameter.
-:pom_244 rr:objectMap :om_244.
-:om_244 a rr:ObjectMap;
+:pom_253 rr:objectMap :om_253.
+:om_253 a rr:ObjectMap;
     rml:reference "ParameterValue";
     rr:termType rr:Literal.
-:fn_79 rr:predicateObjectMap :pom_245.
-:pom_245 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_245.
-:pm_245 a rr:PredicateMap;
+:fn_83 rr:predicateObjectMap :pom_254.
+:pom_254 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_254.
+:pm_254 a rr:PredicateMap;
     rr:constant grel:valueParameter2.
-:pom_245 rr:objectMap :om_245.
-:om_245 a rr:ObjectMap;
+:pom_254 rr:objectMap :om_254.
+:om_254 a rr:ObjectMap;
     rr:constant "N";
     rr:termType rr:Literal.
-:fn_78 rr:predicateObjectMap :pom_246.
-:pom_246 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_246.
-:pm_246 a rr:PredicateMap;
+:fn_82 rr:predicateObjectMap :pom_255.
+:pom_255 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_255.
+:pm_255 a rr:PredicateMap;
     rr:constant idlab-fn:str.
-:pom_246 rr:objectMap :om_246.
-:om_246 a rr:ObjectMap;
+:pom_255 rr:objectMap :om_255.
+:om_255 a rr:ObjectMap;
     rr:constant "false";
     rr:termType rr:Literal.

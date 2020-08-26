@@ -1,9 +1,13 @@
 prefixes:
+  xsd: "http://www.w3.org/2001/XMLSchema#"
   idlab-fn: "http://example.com/idlab/function/"
   grel: "http://users.ugent.be/~bjdmeest/function/grel.ttl#"
   rdfs: "http://www.w3.org/2000/01/rdf-schema#"
+  dct: "http://purl.org/dc/terms/"
   era: "http://era.europa.eu/ns#"
-  xsd: "http://www.w3.org/2001/XMLSchema#"
+  era-am: "http://era.europa.eu/concepts/axle-monitoring#"
+  era-tc: "http://era.europa.eu/concepts/thermal-capacity#"
+  era-ic: "http://era.europa.eu/concepts/ice-conditions#"
 variables:
   connection: 
     access: &host //10.10.160.21:1433
@@ -27,8 +31,15 @@ mappings:
     po:
       - [a, era:VehicleType]
       - [rdfs:label, $(TypeName)]
-      - [era:country, http://era.europa.eu/concepts/countries#$(CountryCode)~iri]
       - [era:manufacturer, http://era.europa.eu/concepts/manufacturers#$(Manufacturer)~iri]
+      - p: dct:spatial
+        o:
+          - mapping: geonames-country
+            condition:
+              function: equal
+              parameters:
+                - [str1, $(CountryCode)]
+                - [str2, $(code)]
       - p: era:alternativeName
         o: $(AlternativeTypeName)
         condition:
@@ -170,6 +181,11 @@ mappings:
             - [grel:valueParameter, $(SubCategoryCode)]
             - [grel:valueParameter2, "73"]
   
+  geonames-country:
+    sources:
+      - ["data/countries.csv~csv"]
+    s: $(geonames)
+  
   # ------------Traffic loads and load carrying capacity of infrastructure--------------
 
   static-axle-load-in-working-order: # 4.5.3.1
@@ -254,7 +270,7 @@ mappings:
         query: SELECT VehicleTypes.ID, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.1.2.1'));
     s: http://era.europa.eu/implementation#V_$(ID)
     po:
-      - [era:maximumSpeed, $(ParameterValue), xsd:integer]
+      - [era:maximumDesignSpeed, $(ParameterValue), xsd:integer]
 
   vehicle-length: # 4.8.1
     sources:
@@ -375,10 +391,10 @@ mappings:
         credentials: *credentials
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
-        query: SELECT VehicleTypes.ID, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.9.2'));
+        query: SELECT VehicleTypes.ID, REPLACE((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId), ' ', '_') AS UriName FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.9.2'));
     s: http://era.europa.eu/implementation#V_$(ID)
     po:
-      - [era:axleBearingConditionMonitoring, $(ParameterValue)]
+      - [era:axleBearingConditionMonitoring, era-am:$(UriName)~iri]
 
   # -----------------Running characteristics--------------------
 
@@ -404,7 +420,7 @@ mappings:
         query: SELECT VehicleTypes.ID, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.6.5'));
     s: http://era.europa.eu/implementation#V_$(ID)
     po:
-      - [era:maximumRailInclination, $(ParameterValue)]
+      - [era:railInclination, $(ParameterValue), xsd:integer]
 
   # -----------------Wheelset--------------------
 
@@ -491,10 +507,10 @@ mappings:
         credentials: *credentials
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
-        query: SELECT VehicleTypes.ID, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.7.2.1.1'));
+        query: SELECT VehicleTypes.ID, REPLACE(CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)), ' ', '_') AS UriName FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.7.2.1.1'));
     s: http://era.europa.eu/implementation#V_$(ID)
     po:
-      - [era:thermalCapacityTSIReferenceCase, $(ParameterValue)]
+      - [era:thermalCapacityTSIReference, era-tc:$(UriName)~iri]
 
   thermal-capacity-speed: # 4.7.2.1.2
     sources:
@@ -698,10 +714,10 @@ mappings:
         credentials: *credentials
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
-        query: SELECT VehicleTypes.ID, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.3.3'));
+        query: SELECT VehicleTypes.ID, REPLACE((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId), ' ', '_') AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.3.3'));
     s: http://era.europa.eu/implementation#V_$(ID)
     po:
-      - [era:snowIceHailConditions, $(ParameterValue)]
+      - [era:snowIceHailConditions, era-ic:$(ParameterValue)~iri]
 
   # -------------------Voltages and frequencies-----------------------
 
@@ -845,7 +861,7 @@ mappings:
         query: SELECT VehicleTypes.ID, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.10.6'));
     s: http://era.europa.eu/implementation#V_$(ID)
     po:
-      - [era:pantographHead, $(ParameterValue)]
+      - [era:vehiclePantographHead, $(ParameterValue)]
 
   contact-strip-material: # 4.10.10
     sources:
@@ -857,7 +873,7 @@ mappings:
         query: SELECT VehicleTypes.ID, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.10.10'));
     s: http://era.europa.eu/implementation#V_$(ID)
     po:
-      - [era:contactStripMaterial, $(ParameterValue)]
+      - [era:vehicleContactStripMaterial, $(ParameterValue)]
 
   contact-force: # 4.10.15 (no data!)
     sources:
@@ -869,7 +885,7 @@ mappings:
         query: SELECT VehicleTypes.ID, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.10.15'));
     s: http://era.europa.eu/implementation#V_$(ID)
     po:
-      - [era:contactForce, $(ParameterValue)]
+      - [era:vehicleContactForce, $(ParameterValue)]
 
   pantograph-number: # 4.10.7
     sources:

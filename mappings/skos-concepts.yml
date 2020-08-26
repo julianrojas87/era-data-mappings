@@ -2,10 +2,17 @@ prefixes:
   rdfs: "http://www.w3.org/2000/01/rdf-schema#"
   skos: "http://www.w3.org/2004/02/skos/core#"
   era: "http://era.europa.eu/ns#"
-  era-countries: "http://era.europa.eu/concepts/countries#"
   era-manufacturers: "http://era.europa.eu/concepts/manufacturers#"
+  era-lc: "http://era.europa.eu/concepts/load-capabilities#"
   era-gaugings: "http://era.europa.eu/concepts/gaugings#"
   era-tds: "http://era.europa.eu/concepts/train-detection#"
+  era-am: "http://era.europa.eu/concepts/axle-monitoring#"
+  era-tc: "http://era.europa.eu/concepts/thermal-capacity#"
+  era-ic: "http://era.europa.eu/concepts/ice-conditions#"
+  era-cls: "http://era.europa.eu/concepts/contact-line-systems#"
+  era-tph: "http://era.europa.eu/concepts/tsi-pantograph-heads#"
+  era-oph: "http://era.europa.eu/concepts/other-pantograph-heads#"
+  era-csm: "http://era.europa.eu/concepts/contact-strip-materials#"
 variables:
   connection: 
     access: &host //10.10.160.21:1433
@@ -17,20 +24,6 @@ variables:
     referenceFormulation: &referenceFormulation csv
 
 mappings:
-  country:
-    sources:
-      - access: *host
-        type: *typeMSSQL
-        credentials: *credentials
-        queryFormulation: *queryFormulation
-        referenceFormulation: *referenceFormulation
-        query: SELECT Code, Name FROM RINF.dbo.MemberStates;
-    s: http://era.europa.eu/concepts/countries#$(Code)
-    po:
-      - [a, era-countries:Country]
-      - [skos:prefLabel, $(Name), en~lang]
-      - [skos:notation, $(Code), era-countries:iso3166-1-alpha-2DT]
-  
   manufacturer:
     sources:
       - access: *host
@@ -44,6 +37,19 @@ mappings:
       - [a, era-manufacturers:Manufacturer]
       - [skos:prefLabel, $(Name)]
   
+  load-capability:
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT DISTINCT CONCAT(LookupValues.[Value], '-' , TrackParameters.Value) AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.LookupValues WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.1.1.1.2.4') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://era.europa.eu/concepts/load-capabilities#$(ParameterValue)
+    po:
+      - [a, era-lc:LoadCapability]
+      - [skos:prefLabel, $(ParameterValue)]
+
   gauging-profile:
     sources:
       - access: *host
@@ -69,3 +75,94 @@ mappings:
     po:
       - [a, era-tds:TrainDetectionSystem]
       - [skos:prefLabel, $(Label)]
+  
+  axle-bearing-monitoring:
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT REPLACE((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId), ' ', '_') AS UriName, (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.9.2'));
+    s: http://era.europa.eu/concepts/axle-monitoring#$(UriName)
+    po:
+      - [a, era-am:AxleBearingMonitoring]
+      - [skos:prefLabel, $(ParameterValue)]
+  
+  thermal-capacity-tsi:
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT DISTINCT CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue, REPLACE(CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)), ' ', '_') AS UriName FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.7.2.1.1'));
+    s: http://era.europa.eu/concepts/thermal-capacity#$(UriName)
+    po:
+      - [a, era-tc:ThermalCapacityTSIReference]
+      - [skos:prefLabel, $(ParameterValue)]
+  
+  snow-ice-hail-conditions:
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT DISTINCT REPLACE((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId), ' ', '_') AS UriName, (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.3.3'));
+    s: http://era.europa.eu/concepts/ice-conditions#$(UriName)
+    po:
+      - [a, era-ic:IceCondition]
+      - [skos:prefLabel, $(ParameterValue)]
+  
+  contact-line-systems:
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT DISTINCT CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue, REPLACE(CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, ''), ' ', '_') AS UriName FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.2.2.1.1') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://era.europa.eu/concepts/contact-line-systmes#$(UriName)
+    po:
+      - [a, era-cls:ContactLineSystem]
+      - [skos:prefLabel, $(ParameterValue)]
+  
+  tsi-pantograph-heads:
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT DISTINCT CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue, REPLACE(CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, ''), ' ', '_') AS UriName FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.2.3.1') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://era.europa.eu/concepts/tsi-pantograph-heads#$(UriName)
+    po:
+      - [a, era-tph:TSIPantographHead]
+      - [skos:prefLabel, $(ParameterValue)]
+  
+  other-pantograph-heads:
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT DISTINCT CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue, REPLACE(CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, ''), ' ', '_') AS UriName FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.2.3.2') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://era.europa.eu/concepts/other-pantograph-heads#$(UriName)
+    po:
+      - [a, era-oph:OtherPantographHead]
+      - [skos:prefLabel, $(ParameterValue)]
+  
+  contact-strip-material:
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT DISTINCT CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue, REPLACE(CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, ''), ' ', '_') AS UriName FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.2.3.4') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://era.europa.eu/concepts/contact-strip-materials#$(UriName)
+    po:
+      - [a, era-csm:ContactStripMaterial]
+      - [skos:prefLabel, $(ParameterValue)]
