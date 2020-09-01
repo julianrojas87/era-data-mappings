@@ -1,11 +1,12 @@
 prefixes:
+  xsd: "http://www.w3.org/2001/XMLSchema#"
   idlab-fn: "http://example.com/idlab/function/"
   grel: "http://users.ugent.be/~bjdmeest/function/grel.ttl#"
   wgs: "http://www.w3.org/2003/01/geo/wgs84_pos#"
   geosparql: "http://www.opengis.net/ont/geosparql#"
   rdfs: "http://www.w3.org/2000/01/rdf-schema#"
   era: "http://era.europa.eu/ns#"
-  xsd: "http://www.w3.org/2001/XMLSchema#"
+  era-rsf: "http://era.europa.eu/concepts/rolling-stock-fire#"
 variables:
   connection:
     access: &host //10.10.160.21:1433
@@ -79,21 +80,21 @@ mappings:
     s: http://era.europa.eu/implementation#TN_$(VersionID)_$(TunnelID)
     po:
       - p: era:rollingStockFireCategory
-        o: http://era.europa.eu/concepts/rs-fire#a~iri
+        o: era-rs-fire:a~iri
         condition:
           function: idlab-fn:equal
           parameters:
             - [grel:valueParameter, $(Value)]
             - [grel:valueParameter2, "A"]
       - p: era:rollingStockFireCategory
-        o: http://era.europa.eu/concepts/rs-fire#b~iri
+        o: era-rs-fire:b~iri
         condition:
           function: idlab-fn:equal
           parameters:
             - [grel:valueParameter, $(Value)]
             - [grel:valueParameter2, "B"]
       - p: era:rollingStockFireCategory
-        o: http://era.europa.eu/concepts/rs-fire#none~iri
+        o: era-rs-fire:none~iri
         condition:
           function: idlab-fn:equal
           parameters:

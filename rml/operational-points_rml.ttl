@@ -11,9 +11,8 @@
 @prefix grel: <http://users.ugent.be/~bjdmeest/function/grel.ttl#>.
 @prefix wgs: <http://www.w3.org/2003/01/geo/wgs84_pos#>.
 @prefix geosparql: <http://www.opengis.net/ont/geosparql#>.
-@prefix geonames: <http://www.geonames.org/ontology#>.
 @prefix skos: <http://www.w3.org/2004/02/skos/core#>.
-@prefix dct: <http://purl.org/dc/terms/>.
+@prefix eu-country: <http://publications.europa.eu/resource/authority/country/>.
 @prefix era: <http://era.europa.eu/ns#>.
 @prefix era-op-types: <http://era.europa.eu/concepts/op-types#>.
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
@@ -91,7 +90,7 @@
 :map_operational-point_0 rr:predicateObjectMap :pom_6.
 :pm_6 a rr:PredicateMap.
 :pom_6 rr:predicateMap :pm_6.
-:pm_6 rr:constant geonames:parentCountry.
+:pm_6 rr:constant era:inCountry.
 :pom_6 rr:objectMap :om_6.
 :pom_7 a rr:PredicateObjectMap.
 :map_operational-point_0 rr:predicateObjectMap :pom_7.
@@ -229,46 +228,17 @@
 :s_2 a rr:SubjectMap.
 :map_op-type_0 rr:subjectMap :s_2.
 :s_2 rr:template "http://era.europa.eu/concepts/op-types#{type}".
-:pom_18 a rr:PredicateObjectMap.
-:map_op-type_0 rr:predicateObjectMap :pom_18.
-:pm_18 a rr:PredicateMap.
-:pom_18 rr:predicateMap :pm_18.
-:pm_18 rr:constant rdf:type.
-:pom_18 rr:objectMap :om_18.
-:om_18 a rr:ObjectMap;
-    rr:constant "http://era.europa.eu/concepts/op-types#OperationalPointType";
-    rr:termType rr:IRI.
-:pom_19 a rr:PredicateObjectMap.
-:map_op-type_0 rr:predicateObjectMap :pom_19.
-:pm_19 a rr:PredicateMap.
-:pom_19 rr:predicateMap :pm_19.
-:pm_19 rr:constant skos:prefLabel.
-:pom_19 rr:objectMap :om_19.
-:om_19 a rr:ObjectMap;
-    rml:reference "label";
-    rr:termType rr:Literal;
-    rr:language "en".
-:pom_20 a rr:PredicateObjectMap.
-:map_op-type_0 rr:predicateObjectMap :pom_20.
-:pm_20 a rr:PredicateMap.
-:pom_20 rr:predicateMap :pm_20.
-:pm_20 rr:constant skos:definition.
-:pom_20 rr:objectMap :om_20.
-:om_20 a rr:ObjectMap;
-    rml:reference "description";
-    rr:termType rr:Literal;
-    rr:language "en".
-:map_geonames-country_0 rml:logicalSource :source_3.
+:map_eu-country_0 rml:logicalSource :source_3.
 :source_3 a rml:LogicalSource;
     rml:source "data/countries.csv";
     rml:referenceFormulation ql:CSV.
-:map_geonames-country_0 a rr:TriplesMap;
-    rdfs:label "geonames-country".
+:map_eu-country_0 a rr:TriplesMap;
+    rdfs:label "eu-country".
 :s_3 a rr:SubjectMap.
-:map_geonames-country_0 rr:subjectMap :s_3.
-:s_3 rml:reference "geonames".
+:map_eu-country_0 rr:subjectMap :s_3.
+:s_3 rml:reference "eu".
 :om_6 a rr:ObjectMap;
-    rr:parentTriplesMap :map_geonames-country_0;
+    rr:parentTriplesMap :map_eu-country_0;
     rr:joinCondition :jc_0.
 :jc_0 rr:child "Code";
     rr:parent "code".

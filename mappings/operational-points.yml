@@ -3,10 +3,9 @@ prefixes:
   grel: "http://users.ugent.be/~bjdmeest/function/grel.ttl#"
   wgs: "http://www.w3.org/2003/01/geo/wgs84_pos#"
   geosparql: "http://www.opengis.net/ont/geosparql#"
-  geonames: "http://www.geonames.org/ontology#"
   rdfs: "http://www.w3.org/2000/01/rdf-schema#"
   skos: "http://www.w3.org/2004/02/skos/core#"
-  dct: "http://purl.org/dc/terms/"
+  eu-country: "http://publications.europa.eu/resource/authority/country/"
   era: "http://era.europa.eu/ns#"
   era-op-types: "http://era.europa.eu/concepts/op-types#"
   xsd: "http://www.w3.org/2001/XMLSchema#"
@@ -37,9 +36,9 @@ mappings:
       - [geosparql:hasGeometry, http://era.europa.eu/location#GEO/$(Longitude)/$(Latitude)~iri]
       - [wgs:location, http://era.europa.eu/location#GEO/$(Longitude)/$(Latitude)~iri]
       - [era:hasAbstraction, http://era.europa.eu/abstraction#MN_$(UOPID)~iri]
-      - p: geonames:parentCountry
+      - p: era:inCountry
         o:
-          - mapping: geonames-country
+          - mapping: eu-country
             condition:
               function: equal
               parameters:
@@ -81,12 +80,12 @@ mappings:
     sources:
       - ["data/op_types.csv~csv"]
     s: http://era.europa.eu/concepts/op-types#$(type)
-    po:
-      - [a, era-op-types:OperationalPointType]
-      - [skos:prefLabel, $(label), en~lang]
-      - [skos:definition, $(description), en~lang]
+    #po:
+    #  - [a, era-op-types:OperationalPointType]
+    #  - [skos:prefLabel, $(label), en~lang]
+    #  - [skos:definition, $(description), en~lang]
   
-  geonames-country:
+  eu-country:
     sources:
       - ["data/countries.csv~csv"]
-    s: $(geonames)
+    s: $(eu)
