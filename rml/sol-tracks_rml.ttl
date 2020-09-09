@@ -2825,7 +2825,7 @@
 :map_other-accepted-pantographs_0 rr:predicateObjectMap :pom_184.
 :pm_184 a rr:PredicateMap.
 :pom_184 rr:predicateMap :pm_184.
-:pm_184 rr:constant era:otherPantographHeads.
+:pm_184 rr:constant era:otherPantographHead.
 :pom_184 rr:objectMap :om_184.
 :om_184 a rr:ObjectMap;
     rr:template "http://era.europa.eu/concepts/tsi-pantograph-heads#{UriName}";
