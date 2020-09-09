@@ -3,12 +3,12 @@ prefixes:
   grel: "http://users.ugent.be/~bjdmeest/function/grel.ttl#"
   wgs: "http://www.w3.org/2003/01/geo/wgs84_pos#"
   geosparql: "http://www.opengis.net/ont/geosparql#"
+  eu-country: "http://publications.europa.eu/resource/authority/country/"
   rdfs: "http://www.w3.org/2000/01/rdf-schema#"
   skos: "http://www.w3.org/2004/02/skos/core#"
-  eu-country: "http://publications.europa.eu/resource/authority/country/"
   era: "http://era.europa.eu/ns#"
-  era-op-types: "http://era.europa.eu/concepts/op-types#"
   xsd: "http://www.w3.org/2001/XMLSchema#"
+  # era-op-types: "http://era.europa.eu/concepts/op-types#"
 variables:
   connection: 
     access: &host //10.10.160.21:1433

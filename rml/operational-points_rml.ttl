@@ -11,10 +11,9 @@
 @prefix grel: <http://users.ugent.be/~bjdmeest/function/grel.ttl#>.
 @prefix wgs: <http://www.w3.org/2003/01/geo/wgs84_pos#>.
 @prefix geosparql: <http://www.opengis.net/ont/geosparql#>.
-@prefix skos: <http://www.w3.org/2004/02/skos/core#>.
 @prefix eu-country: <http://publications.europa.eu/resource/authority/country/>.
+@prefix skos: <http://www.w3.org/2004/02/skos/core#>.
 @prefix era: <http://era.europa.eu/ns#>.
-@prefix era-op-types: <http://era.europa.eu/concepts/op-types#>.
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
 
 :map_operational-point_0 rml:logicalSource :source_0.
