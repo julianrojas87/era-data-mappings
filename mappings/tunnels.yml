@@ -80,21 +80,21 @@ mappings:
     s: http://era.europa.eu/implementation#TN_$(VersionID)_$(TunnelID)
     po:
       - p: era:rollingStockFireCategory
-        o: era-rs-fire:a~iri
+        o: era-rsf:a~iri
         condition:
           function: idlab-fn:equal
           parameters:
             - [grel:valueParameter, $(Value)]
             - [grel:valueParameter2, "A"]
       - p: era:rollingStockFireCategory
-        o: era-rs-fire:b~iri
+        o: era-rsf:b~iri
         condition:
           function: idlab-fn:equal
           parameters:
             - [grel:valueParameter, $(Value)]
             - [grel:valueParameter2, "B"]
       - p: era:rollingStockFireCategory
-        o: era-rs-fire:none~iri
+        o: era-rsf:none~iri
         condition:
           function: idlab-fn:equal
           parameters:
