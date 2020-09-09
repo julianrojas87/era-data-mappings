@@ -36,6 +36,6 @@ For contributions we follow the "fork-and-pull" Git workflow:
 2. **Clone** the project in your local machine.
 3. **Commit** the changes to your own branch.
 4. **Push** your changes back up to your own fork.
-5. Submit a **Pull request** to the [**dev**](https://github.com/julianrojas87/era-vocabulary/tree/dev) branch so we can review your changes.
+5. Submit a **Pull request** to the [**dev**](https://github.com/julianrojas87/era-data-mappings/tree/dev) branch so we can review your changes.
 
 NOTE: Make sure to merge the latest "upstream" version before submitting a pull request.
