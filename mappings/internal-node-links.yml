@@ -20,22 +20,7 @@ mappings:
         credentials: *credentials
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
-        query: SELECT TRIM(UOPID) AS UOPID, LineEdges2.ID AS INCOMING, LineEdges1.ID AS OUTGOING, LineEdges1.VersionID FROM RINF.dbo.LineEdges AS LineEdges1, RINF.dbo.LineEdges AS LineEdges2, RINF.dbo.SectionOfLines, RINF.dbo.LineNodes, RINF.dbo.OperationalPoints WHERE LineEdgeID=LineEdges1.ID AND LineNodes.ID=LineEdges1.LineNodeStartID AND OperationalPointID=OperationalPoints.ID AND LineNodes.VersionID = OperationalPoints.VersionID AND LineEdges1.LineNodeStartID=LineEdges2.LineNodeEndID;
-    s: http://era.europa.eu/abstraction#INL_$(UOPID)_$(INCOMING)_$(OUTGOING)_$(VersionID)
-    po:
-      - [a, era:InternalNodeLink]
-      - [era:bidirectional, "true", xsd:boolean]
-      - [era:startPort, http://era.europa.eu/abstraction#NP_$(UOPID)_$(INCOMING)_$(VersionID)~iri]
-      - [era:endPort, http://era.europa.eu/abstraction#NP_$(UOPID)_$(OUTGOING)_$(VersionID)~iri]
-  
-  border-internal-node-link:
-    sources:
-      - access: *host
-        type: *typeMSSQL
-        credentials: *credentials
-        queryFormulation: *queryFormulation
-        referenceFormulation: *referenceFormulation
-        query: SELECT TRIM(OP2.UOPID) AS UOPID, LineEdges2.ID AS INCOMING, LineEdges1.ID AS OUTGOING, LineEdges2.VersionID AS StartV, LineEdges1.VersionID AS EndV FROM RINF.dbo.LineEdges AS LineEdges2, RINF.dbo.LineEdges AS LineEdges1, RINF.dbo.LineNodes AS LineNodes1, RINF.dbo.LineNodes AS LineNodes2, RINF.dbo.OperationalPoints AS OP1, RINF.dbo.OperationalPoints AS OP2, RINF.dbo.LookupValues WHERE LineEdges2.LineNodeEndID = LineNodes2.ID AND LineEdges1.LineNodeStartID = LineNodes1.ID AND LineEdges1.ID != LineEdges2.ID AND LineEdges2.VersionID = LineNodes2.VersionID AND LineEdges1.VersionID = LineNodes1.VersionID AND LineNodes2.OperationalPointID = OP2.ID AND LineNodes1.OperationalPointID = OP1.ID AND LineNodes2.VersionID = OP2.VersionID AND LineNodes1.VersionID = OP1.VersionID AND OP2.UOPID = OP1.UOPID AND OP1.[Type] = LookupValues.ID AND OP2.[Type] = LookupValues.ID AND LookupValues.[Value] = 'border point'
+        query: SELECT TRIM(OP2.UOPID) AS UOPID, LineEdges2.ID AS INCOMING, LineEdges1.ID AS OUTGOING, LineEdges2.VersionID AS StartV, LineEdges1.VersionID AS EndV FROM RINF.dbo.LineEdges AS LineEdges2, RINF.dbo.LineEdges AS LineEdges1, RINF.dbo.LineNodes AS LineNodes1, RINF.dbo.LineNodes AS LineNodes2, RINF.dbo.OperationalPoints AS OP1, RINF.dbo.OperationalPoints AS OP2, RINF.dbo.LookupValues WHERE LineEdges2.LineNodeEndID = LineNodes2.ID AND LineEdges1.LineNodeStartID = LineNodes1.ID AND LineEdges1.ID != LineEdges2.ID AND LineEdges2.VersionID = LineNodes2.VersionID AND LineEdges1.VersionID = LineNodes1.VersionID AND LineNodes2.OperationalPointID = OP2.ID AND LineNodes1.OperationalPointID = OP1.ID AND LineNodes2.VersionID = OP2.VersionID AND LineNodes1.VersionID = OP1.VersionID AND OP2.UOPID = OP1.UOPID AND OP1.[Type] = LookupValues.ID AND OP2.[Type] = LookupValues.ID;
     s: http://era.europa.eu/abstraction#INL_$(UOPID)_$(INCOMING)_$(OUTGOING)_$(StartV)
     po:
       - [a, era:InternalNodeLink]
@@ -43,14 +28,14 @@ mappings:
       - [era:startPort, http://era.europa.eu/abstraction#NP_$(UOPID)_$(INCOMING)_$(StartV)~iri]
       - [era:endPort, http://era.europa.eu/abstraction#NP_$(UOPID)_$(OUTGOING)_$(EndV)~iri]
   
-  border-internal-node-link-no-out:
+  internal-node-link-no-out:
     sources:
       - access: *host
         type: *typeMSSQL
         credentials: *credentials
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
-        query: SELECT TRIM(OP1.UOPID) AS UOPID, LineEdges1.ID AS Line1, LineEdges2.ID AS Line2, LineEdges1.VersionID AS StartV, LineEdges2.VersionID AS EndV FROM RINF.dbo.LineEdges AS LineEdges1, RINF.dbo.LineEdges AS LineEdges2, RINF.dbo.LineNodes AS LineNodes1, RINF.dbo.LineNodes AS LineNodes2, RINF.dbo.OperationalPoints AS OP1, RINF.dbo.OperationalPoints AS OP2, RINF.dbo.LookupValues WHERE LineEdges2.LineNodeEndID = LineNodes2.ID AND LineEdges2.VersionID = LineNodes2.VersionID AND LineEdges1.LineNodeEndID = LineNodes1.ID AND LineEdges1.ID != LineEdges2.ID AND LineNodes2.OperationalPointID = OP2.ID AND LineNodes2.VersionID = OP2.VersionID AND LineNodes1.OperationalPointID = OP1.ID AND LineNodes1.VersionID = OP1.VersionID AND OP2.UOPID = OP1.UOPID AND OP1.[Type] = LookupValues.ID AND OP2.[Type] = LookupValues.ID AND LookupValues.[Value] = 'border point';
+        query: SELECT TRIM(OP1.UOPID) AS UOPID, LineEdges1.ID AS Line1, LineEdges2.ID AS Line2, LineEdges1.VersionID AS StartV, LineEdges2.VersionID AS EndV FROM RINF.dbo.LineEdges AS LineEdges1, RINF.dbo.LineEdges AS LineEdges2, RINF.dbo.LineNodes AS LineNodes1, RINF.dbo.LineNodes AS LineNodes2, RINF.dbo.OperationalPoints AS OP1, RINF.dbo.OperationalPoints AS OP2, RINF.dbo.LookupValues WHERE LineEdges2.LineNodeEndID = LineNodes2.ID AND LineEdges2.VersionID = LineNodes2.VersionID AND LineEdges1.LineNodeEndID = LineNodes1.ID AND LineEdges1.ID != LineEdges2.ID AND LineNodes2.OperationalPointID = OP2.ID AND LineNodes2.VersionID = OP2.VersionID AND LineNodes1.OperationalPointID = OP1.ID AND LineNodes1.VersionID = OP1.VersionID AND OP2.UOPID = OP1.UOPID AND OP1.[Type] = LookupValues.ID AND OP2.[Type] = LookupValues.ID;
     s: http://era.europa.eu/abstraction#INL_$(UOPID)_$(Line1)_$(Line2)_$(StartV)
     po:
       - [a, era:InternalNodeLink]
