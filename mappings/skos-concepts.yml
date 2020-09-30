@@ -520,7 +520,7 @@ mappings:
         credentials: *credentials
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
-        query: SELECT DISTINCT (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId) AS ParameterValue, RegistrationParameters.OtherValue, REPLACE((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId), ' ', '_') AS ParameterURI, REPLACE(RegistrationParameters.OtherValue, ' ', '_') AS OtherURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.10.10'));
+        query: SELECT DISTINCT (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId) AS ParameterValue, RegistrationParameters.OtherValue, REPLACE(LOWER((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)), ' ', '_') AS ParameterURI, REPLACE(RegistrationParameters.OtherValue, ' ', '_') AS OtherURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.10.10'));
     s: http://era.europa.eu/concepts/contact-strip-materials#$(ParameterURI)
     po:
       - p: a 
