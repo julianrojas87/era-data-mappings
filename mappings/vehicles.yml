@@ -355,10 +355,23 @@ mappings:
         credentials: *credentials
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
-        query: SELECT VehicleTypes.ID, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.2.1'));
+        query: SELECT VehicleTypes.ID, (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId) AS ParameterValue, RegistrationParameters.OtherValue, REPLACE((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId), ' ', '_') AS ParameterURI, REPLACE(RegistrationParameters.OtherValue, ' ', '_') AS OtherURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.2.1'));
     s: http://era.europa.eu/implementation#V_$(ID)
     po:
-      - [era:gaugingProfile, http://era.europa.eu/concepts/gaugings#$(ParameterValue)~iri]
+      - p: era:gaugingProfile
+        o: era-gaugings:$(ParameterURI)~iri
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(OtherURI)]
+            - [grel:valueParameter2, ""]
+      - p: era:gaugingProfile
+        o: era-gaugings:$(OtherURI)~iri
+        condition:
+          function: idlab-fn:notEqual
+          parameters:
+            - [grel:valueParameter, $(OtherURI)]
+            - [grel:valueParameter2, ""]
 
   # -----------------Vertical radius--------------------
 
