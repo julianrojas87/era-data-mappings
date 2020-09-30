@@ -3895,7 +3895,7 @@
 :map_contact-strip-material_0 rml:logicalSource :source_45.
 :source_45 a rml:LogicalSource;
     rml:source :database_44;
-    rml:query "SELECT VehicleTypes.ID, REPLACE((SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId), ' ', '_') AS ParameterURI, REPLACE(RegistrationParameters.OtherValue, ' ', '_') AS OtherURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.10.10'));".
+    rml:query "SELECT VehicleTypes.ID, REPLACE(LOWER((SELECT \"Name\" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)), ' ', '_') AS ParameterURI, REPLACE(RegistrationParameters.OtherValue, ' ', '_') AS OtherURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.10.10'));".
 :database_44 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";

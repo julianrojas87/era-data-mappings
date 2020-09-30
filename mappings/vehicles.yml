@@ -986,7 +986,7 @@ mappings:
         credentials: *credentials
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
-        query: SELECT VehicleTypes.ID, REPLACE((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId), ' ', '_') AS ParameterURI, REPLACE(RegistrationParameters.OtherValue, ' ', '_') AS OtherURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.10.10'));
+        query: SELECT VehicleTypes.ID, REPLACE(LOWER((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)), ' ', '_') AS ParameterURI, REPLACE(RegistrationParameters.OtherValue, ' ', '_') AS OtherURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.10.10'));
     s: http://era.europa.eu/implementation#V_$(ID)
     po:
       - p: era:contactStripMaterial
