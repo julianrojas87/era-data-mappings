@@ -4,7 +4,7 @@ prefixes:
   grel: "http://users.ugent.be/~bjdmeest/function/grel.ttl#"
   rdfs: "http://www.w3.org/2000/01/rdf-schema#"
   era: "http://era.europa.eu/ns#"
-  era-uic: "http://era.europa.eu/concepts/uic-codes#"
+  era-lni: "http://era.europa.eu/concepts/line-national-ids#"
   era-lc: "http://era.europa.eu/concepts/load-capabilities#"
   era-gaugings: "http://era.europa.eu/concepts/gaugings#"
   era-tds: "http://era.europa.eu/concepts/train-detection#"
@@ -40,7 +40,7 @@ mappings:
     s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
     po:
       - [a, era:Track]
-      - [era:lineUICCode, era-uic:$(UICCode)~iri]
+      - [era:lineNationalId, era-lni:$(UICCode)~iri]
       - [era:trackLength, $(Length), xsd:double]
       - [era:hasAbstraction, http://era.europa.eu/abstraction#ML_$(ID)_$(VersionID)_$(TrackID)~iri]
 

@@ -4,7 +4,7 @@ prefixes:
   idlab-fn: "http://example.com/idlab/function/"
   grel: "http://users.ugent.be/~bjdmeest/function/grel.ttl#"
   era: "http://era.europa.eu/ns#"
-  era-uic: "http://era.europa.eu/concepts/uic-codes#"
+  era-lni: "http://era.europa.eu/concepts/line-national-ids#"
   era-manufacturers: "http://era.europa.eu/concepts/manufacturers#"
   era-lc: "http://era.europa.eu/concepts/load-capabilities#"
   era-gaugings: "http://era.europa.eu/concepts/gaugings#"
@@ -37,7 +37,7 @@ variables:
     referenceFormulation: &referenceFormulation csv
 
 mappings:
-  uic-codes:
+  line-national-ids:
     sources:
       - access: *host
         type: *typeMSSQL
@@ -45,9 +45,9 @@ mappings:
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT UICLines.UICCode FROM RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.UICLines WHERE SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SectionOfLines.UICLineID = UICLines.ID AND SectionOfLines.VersionID = UICLines.VersionID;
-    s: http://era.europa.eu/concepts/uic-codes#$(UICCode)
+    s: http://era.europa.eu/concepts/line-national-ids#$(UICCode)
     po:
-      - [a, era-uic:UICCode]
+      - [a, era-lni:LineNationalId]
       - [skos:prefLabel, $(UICCode)]
   manufacturer:
     sources:
