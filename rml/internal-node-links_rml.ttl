@@ -13,7 +13,7 @@
 :map_internal-node-link_0 rml:logicalSource :source_0.
 :source_0 a rml:LogicalSource;
     rml:source :database_0;
-    rml:query "SELECT TRIM(UOPID) AS UOPID, LineEdges2.ID AS INCOMING, LineEdges1.ID AS OUTGOING, LineEdges1.VersionID FROM RINF.dbo.LineEdges AS LineEdges1, RINF.dbo.LineEdges AS LineEdges2, RINF.dbo.SectionOfLines, RINF.dbo.LineNodes, RINF.dbo.OperationalPoints WHERE LineEdgeID=LineEdges1.ID AND LineNodes.ID=LineEdges1.LineNodeStartID AND OperationalPointID=OperationalPoints.ID AND LineNodes.VersionID = OperationalPoints.VersionID AND LineEdges1.LineNodeStartID=LineEdges2.LineNodeEndID;".
+    rml:query "SELECT TRIM(OP2.UOPID) AS UOPID, LineEdges2.ID AS INCOMING, LineEdges1.ID AS OUTGOING, LineEdges2.VersionID AS StartV, LineEdges1.VersionID AS EndV FROM RINF.dbo.LineEdges AS LineEdges2, RINF.dbo.LineEdges AS LineEdges1, RINF.dbo.LineNodes AS LineNodes1, RINF.dbo.LineNodes AS LineNodes2, RINF.dbo.OperationalPoints AS OP1, RINF.dbo.OperationalPoints AS OP2, RINF.dbo.LookupValues WHERE LineEdges2.LineNodeEndID = LineNodes2.ID AND LineEdges1.LineNodeStartID = LineNodes1.ID AND LineEdges1.ID != LineEdges2.ID AND LineEdges2.VersionID = LineNodes2.VersionID AND LineEdges1.VersionID = LineNodes1.VersionID AND LineNodes2.OperationalPointID = OP2.ID AND LineNodes1.OperationalPointID = OP1.ID AND LineNodes2.VersionID = OP2.VersionID AND LineNodes1.VersionID = OP1.VersionID AND OP2.UOPID = OP1.UOPID AND OP1.[Type] = LookupValues.ID AND OP2.[Type] = LookupValues.ID;".
 :database_0 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -24,7 +24,7 @@
     rdfs:label "internal-node-link".
 :s_0 a rr:SubjectMap.
 :map_internal-node-link_0 rr:subjectMap :s_0.
-:s_0 rr:template "http://era.europa.eu/abstraction#INL_{UOPID}_{INCOMING}_{OUTGOING}_{VersionID}".
+:s_0 rr:template "http://era.europa.eu/abstraction#INL_{UOPID}_{INCOMING}_{OUTGOING}_{StartV}".
 :pom_0 a rr:PredicateObjectMap.
 :map_internal-node-link_0 rr:predicateObjectMap :pom_0.
 :pm_0 a rr:PredicateMap.
@@ -51,7 +51,7 @@
 :pm_2 rr:constant era:startPort.
 :pom_2 rr:objectMap :om_2.
 :om_2 a rr:ObjectMap;
-    rr:template "http://era.europa.eu/abstraction#NP_{UOPID}_{INCOMING}_{VersionID}";
+    rr:template "http://era.europa.eu/abstraction#NP_{UOPID}_{INCOMING}_{StartV}";
     rr:termType rr:IRI.
 :pom_3 a rr:PredicateObjectMap.
 :map_internal-node-link_0 rr:predicateObjectMap :pom_3.
@@ -60,25 +60,25 @@
 :pm_3 rr:constant era:endPort.
 :pom_3 rr:objectMap :om_3.
 :om_3 a rr:ObjectMap;
-    rr:template "http://era.europa.eu/abstraction#NP_{UOPID}_{OUTGOING}_{VersionID}";
+    rr:template "http://era.europa.eu/abstraction#NP_{UOPID}_{OUTGOING}_{EndV}";
     rr:termType rr:IRI.
-:map_border-internal-node-link_0 rml:logicalSource :source_1.
+:map_internal-node-link-no-out_0 rml:logicalSource :source_1.
 :source_1 a rml:LogicalSource;
     rml:source :database_1;
-    rml:query "SELECT TRIM(OP2.UOPID) AS UOPID, LineEdges2.ID AS INCOMING, LineEdges1.ID AS OUTGOING, LineEdges2.VersionID AS StartV, LineEdges1.VersionID AS EndV FROM RINF.dbo.LineEdges AS LineEdges2, RINF.dbo.LineEdges AS LineEdges1, RINF.dbo.LineNodes AS LineNodes1, RINF.dbo.LineNodes AS LineNodes2, RINF.dbo.OperationalPoints AS OP1, RINF.dbo.OperationalPoints AS OP2, RINF.dbo.LookupValues WHERE LineEdges2.LineNodeEndID = LineNodes2.ID AND LineEdges1.LineNodeStartID = LineNodes1.ID AND LineEdges1.ID != LineEdges2.ID AND LineEdges2.VersionID = LineNodes2.VersionID AND LineEdges1.VersionID = LineNodes1.VersionID AND LineNodes2.OperationalPointID = OP2.ID AND LineNodes1.OperationalPointID = OP1.ID AND LineNodes2.VersionID = OP2.VersionID AND LineNodes1.VersionID = OP1.VersionID AND OP2.UOPID = OP1.UOPID AND OP1.[Type] = LookupValues.ID AND OP2.[Type] = LookupValues.ID AND LookupValues.[Value] = 'border point'".
+    rml:query "SELECT TRIM(OP1.UOPID) AS UOPID, LineEdges1.ID AS Line1, LineEdges2.ID AS Line2, LineEdges1.VersionID AS StartV, LineEdges2.VersionID AS EndV FROM RINF.dbo.LineEdges AS LineEdges1, RINF.dbo.LineEdges AS LineEdges2, RINF.dbo.LineNodes AS LineNodes1, RINF.dbo.LineNodes AS LineNodes2, RINF.dbo.OperationalPoints AS OP1, RINF.dbo.OperationalPoints AS OP2, RINF.dbo.LookupValues WHERE LineEdges2.LineNodeEndID = LineNodes2.ID AND LineEdges2.VersionID = LineNodes2.VersionID AND LineEdges1.LineNodeEndID = LineNodes1.ID AND LineEdges1.ID != LineEdges2.ID AND LineNodes2.OperationalPointID = OP2.ID AND LineNodes2.VersionID = OP2.VersionID AND LineNodes1.OperationalPointID = OP1.ID AND LineNodes1.VersionID = OP1.VersionID AND OP2.UOPID = OP1.UOPID AND OP1.[Type] = LookupValues.ID AND OP2.[Type] = LookupValues.ID;".
 :database_1 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
 :source_1 rml:referenceFormulation ql:CSV.
-:map_border-internal-node-link_0 a rr:TriplesMap;
-    rdfs:label "border-internal-node-link".
+:map_internal-node-link-no-out_0 a rr:TriplesMap;
+    rdfs:label "internal-node-link-no-out".
 :s_1 a rr:SubjectMap.
-:map_border-internal-node-link_0 rr:subjectMap :s_1.
-:s_1 rr:template "http://era.europa.eu/abstraction#INL_{UOPID}_{INCOMING}_{OUTGOING}_{StartV}".
+:map_internal-node-link-no-out_0 rr:subjectMap :s_1.
+:s_1 rr:template "http://era.europa.eu/abstraction#INL_{UOPID}_{Line1}_{Line2}_{StartV}".
 :pom_4 a rr:PredicateObjectMap.
-:map_border-internal-node-link_0 rr:predicateObjectMap :pom_4.
+:map_internal-node-link-no-out_0 rr:predicateObjectMap :pom_4.
 :pm_4 a rr:PredicateMap.
 :pom_4 rr:predicateMap :pm_4.
 :pm_4 rr:constant rdf:type.
@@ -87,7 +87,7 @@
     rr:constant "http://era.europa.eu/ns#InternalNodeLink";
     rr:termType rr:IRI.
 :pom_5 a rr:PredicateObjectMap.
-:map_border-internal-node-link_0 rr:predicateObjectMap :pom_5.
+:map_internal-node-link-no-out_0 rr:predicateObjectMap :pom_5.
 :pm_5 a rr:PredicateMap.
 :pom_5 rr:predicateMap :pm_5.
 :pm_5 rr:constant era:bidirectional.
@@ -97,72 +97,20 @@
     rr:termType rr:Literal;
     rr:datatype xsd:boolean.
 :pom_6 a rr:PredicateObjectMap.
-:map_border-internal-node-link_0 rr:predicateObjectMap :pom_6.
+:map_internal-node-link-no-out_0 rr:predicateObjectMap :pom_6.
 :pm_6 a rr:PredicateMap.
 :pom_6 rr:predicateMap :pm_6.
 :pm_6 rr:constant era:startPort.
 :pom_6 rr:objectMap :om_6.
 :om_6 a rr:ObjectMap;
-    rr:template "http://era.europa.eu/abstraction#NP_{UOPID}_{INCOMING}_{StartV}";
+    rr:template "http://era.europa.eu/abstraction#NP_{UOPID}_{Line1}_{StartV}";
     rr:termType rr:IRI.
 :pom_7 a rr:PredicateObjectMap.
-:map_border-internal-node-link_0 rr:predicateObjectMap :pom_7.
+:map_internal-node-link-no-out_0 rr:predicateObjectMap :pom_7.
 :pm_7 a rr:PredicateMap.
 :pom_7 rr:predicateMap :pm_7.
 :pm_7 rr:constant era:endPort.
 :pom_7 rr:objectMap :om_7.
 :om_7 a rr:ObjectMap;
-    rr:template "http://era.europa.eu/abstraction#NP_{UOPID}_{OUTGOING}_{EndV}";
-    rr:termType rr:IRI.
-:map_border-internal-node-link-no-out_0 rml:logicalSource :source_2.
-:source_2 a rml:LogicalSource;
-    rml:source :database_2;
-    rml:query "SELECT TRIM(OP1.UOPID) AS UOPID, LineEdges1.ID AS Line1, LineEdges2.ID AS Line2, LineEdges1.VersionID AS StartV, LineEdges2.VersionID AS EndV FROM RINF.dbo.LineEdges AS LineEdges1, RINF.dbo.LineEdges AS LineEdges2, RINF.dbo.LineNodes AS LineNodes1, RINF.dbo.LineNodes AS LineNodes2, RINF.dbo.OperationalPoints AS OP1, RINF.dbo.OperationalPoints AS OP2, RINF.dbo.LookupValues WHERE LineEdges2.LineNodeEndID = LineNodes2.ID AND LineEdges2.VersionID = LineNodes2.VersionID AND LineEdges1.LineNodeEndID = LineNodes1.ID AND LineEdges1.ID != LineEdges2.ID AND LineNodes2.OperationalPointID = OP2.ID AND LineNodes2.VersionID = OP2.VersionID AND LineNodes1.OperationalPointID = OP1.ID AND LineNodes1.VersionID = OP1.VersionID AND OP2.UOPID = OP1.UOPID AND OP1.[Type] = LookupValues.ID AND OP2.[Type] = LookupValues.ID AND LookupValues.[Value] = 'border point';".
-:database_2 a d2rq:Database;
-    d2rq:jdbcDSN "//10.10.160.21:1433";
-    d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-    d2rq:username "SA";
-    d2rq:password "ChooChoo2020".
-:source_2 rml:referenceFormulation ql:CSV.
-:map_border-internal-node-link-no-out_0 a rr:TriplesMap;
-    rdfs:label "border-internal-node-link-no-out".
-:s_2 a rr:SubjectMap.
-:map_border-internal-node-link-no-out_0 rr:subjectMap :s_2.
-:s_2 rr:template "http://era.europa.eu/abstraction#INL_{UOPID}_{Line1}_{Line2}_{StartV}".
-:pom_8 a rr:PredicateObjectMap.
-:map_border-internal-node-link-no-out_0 rr:predicateObjectMap :pom_8.
-:pm_8 a rr:PredicateMap.
-:pom_8 rr:predicateMap :pm_8.
-:pm_8 rr:constant rdf:type.
-:pom_8 rr:objectMap :om_8.
-:om_8 a rr:ObjectMap;
-    rr:constant "http://era.europa.eu/ns#InternalNodeLink";
-    rr:termType rr:IRI.
-:pom_9 a rr:PredicateObjectMap.
-:map_border-internal-node-link-no-out_0 rr:predicateObjectMap :pom_9.
-:pm_9 a rr:PredicateMap.
-:pom_9 rr:predicateMap :pm_9.
-:pm_9 rr:constant era:bidirectional.
-:pom_9 rr:objectMap :om_9.
-:om_9 a rr:ObjectMap;
-    rr:constant "true";
-    rr:termType rr:Literal;
-    rr:datatype xsd:boolean.
-:pom_10 a rr:PredicateObjectMap.
-:map_border-internal-node-link-no-out_0 rr:predicateObjectMap :pom_10.
-:pm_10 a rr:PredicateMap.
-:pom_10 rr:predicateMap :pm_10.
-:pm_10 rr:constant era:startPort.
-:pom_10 rr:objectMap :om_10.
-:om_10 a rr:ObjectMap;
-    rr:template "http://era.europa.eu/abstraction#NP_{UOPID}_{Line1}_{StartV}";
-    rr:termType rr:IRI.
-:pom_11 a rr:PredicateObjectMap.
-:map_border-internal-node-link-no-out_0 rr:predicateObjectMap :pom_11.
-:pm_11 a rr:PredicateMap.
-:pom_11 rr:predicateMap :pm_11.
-:pm_11 rr:constant era:endPort.
-:pom_11 rr:objectMap :om_11.
-:om_11 a rr:ObjectMap;
     rr:template "http://era.europa.eu/abstraction#NP_{UOPID}_{Line2}_{EndV}";
     rr:termType rr:IRI.
