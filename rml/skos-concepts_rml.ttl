@@ -426,7 +426,7 @@
     rr:constant idlab-fn:str.
 :pom_27 rr:objectMap :om_27.
 :om_27 a rr:ObjectMap;
-    rml:reference "ParameterValue";
+    rml:reference "OtherValue";
     rr:termType rr:Literal.
 :map_axle-positions_0 rml:logicalSource :source_6.
 :source_6 a rml:LogicalSource;

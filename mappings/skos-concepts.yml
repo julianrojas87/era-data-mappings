@@ -131,7 +131,7 @@ mappings:
             - [grel:valueParameter, $(OtherValue)]
             - [grel:valueParameter2, ""]
       - p: skos:prefLabel
-        o: $(ParameterValue)
+        o: $(OtherValue)
         condition:
           function: idlab-fn:notEqual
           parameters:
