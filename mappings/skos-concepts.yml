@@ -1,4 +1,5 @@
 prefixes:
+  xsd: "http://www.w3.org/2001/XMLSchema#"
   rdfs: "http://www.w3.org/2000/01/rdf-schema#"
   skos: "http://www.w3.org/2004/02/skos/core#"
   idlab-fn: "http://example.com/idlab/function/"
@@ -20,7 +21,7 @@ prefixes:
   era-ic: "http://era.europa.eu/concepts/ice-conditions#"
   era-cls: "http://era.europa.eu/concepts/contact-line-systems#"
   era-ess: "http://era.europa.eu/concepts/energy-supply-systems#"
-  era-tph: "http://era.europa.eu/concepts/tsi-pantograph-heads#"
+  era-pth: "http://era.europa.eu/concepts/pantograph-heads#"
   era-csm: "http://era.europa.eu/concepts/contact-strip-materials#"
   era-ph: "http://era.europa.eu/concepts/platform-heights#"
   era-gsmr: "http://era.europa.eu/concepts/gsmr-networks#"
@@ -199,7 +200,7 @@ mappings:
         query: SELECT DISTINCT (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId) AS ParameterValue, RegistrationParameters.OtherValue, REPLACE((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId), ' ', '_') AS ParameterURI, REPLACE(RegistrationParameters.OtherValue, ' ', '_') AS OtherURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.9.2'));
     s: http://era.europa.eu/concepts/axle-monitoring#$(OtherURI)
     po:
-      - [a, era-am:OtherAxleBearingMonitoring]
+      - [a, era-am:AxleBearingMonitoring]
       - p: skos:prefLabel
         o: $(OtherValue)
         condition:
@@ -269,7 +270,7 @@ mappings:
         query: SELECT DISTINCT (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId) AS ParameterValue, RegistrationParameters.OtherValue, REPLACE((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId), ' ', '_') AS ParameterURI, REPLACE(RegistrationParameters.OtherValue, ' ', '_') AS OtherURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.6.5'));
     s: http://era.europa.eu/concepts/rail-inclinations#$(OtherURI)
     po:
-      - [a, era-ri:OtherRailInclination]
+      - [a, era-ri:RailInclination]
       - p: skos:prefLabel
         o: $(OtherValue)
         condition:
@@ -313,7 +314,7 @@ mappings:
         query: SELECT DISTINCT (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId) AS ParameterValue, RegistrationParameters.OtherValue, REPLACE((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId), ' ', '_') AS ParameterURI, REPLACE(RegistrationParameters.OtherValue, ' ', '_') AS OtherURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.1.11'));
     s: http://era.europa.eu/concepts/gauge-changeover-facilities#$(OtherURI)
     po:
-      - [a, era-gcf:OtherGaugeChangeoverFacility]
+      - [a, era-gcf:GaugeChangeoverFacility]
       - p: skos:prefLabel
         o: $(OtherValue)
         condition:
@@ -396,7 +397,7 @@ mappings:
         query: SELECT DISTINCT (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId) AS ParameterValue, RegistrationParameters.OtherValue, REPLACE((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId), ' ', '_') AS ParameterURI, REPLACE(RegistrationParameters.OtherValue, ' ', '_') AS OtherURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.3.3'));
     s: http://era.europa.eu/concepts/ice-conditions#$(OtherURI)
     po:
-      - [a, era-ic:OtherIceCondition]
+      - [a, era-ic:IceCondition]
       - p: skos:prefLabel
         o: $(OtherValue)
         condition:
@@ -478,7 +479,7 @@ mappings:
         query: SELECT DISTINCT (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId) AS ParameterValue, RegistrationParameters.OtherValue, REPLACE((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId), ' ', '_') AS ParameterURI, REPLACE(RegistrationParameters.OtherValue, ' ', '_') AS OtherURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.10.1'));
     s: http://era.europa.eu/concepts/energy-supply-systems#$(OtherURI)
     po:
-      - [a, era-ess:OtherEnergySupplySystem]
+      - [a, era-ess:EnergySupplySystem]
       - p: skos:prefLabel
         o: $(OtherValue)
         condition:
@@ -495,10 +496,11 @@ mappings:
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue, REPLACE(CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, ''), ' ', '_') AS UriName FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.2.3.1') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
-    s: http://era.europa.eu/concepts/tsi-pantograph-heads#$(UriName)
+    s: era-pth:$(UriName)
     po:
-      - [a, era-tph:TSIPantographHead]
+      - [a, era-pth:PantographHead]
       - [skos:prefLabel, $(ParameterValue)]
+      - [era:tsiCompliant, "true", xsd:boolean]
   
   other-pantograph-heads-rinf:
     sources:
@@ -508,10 +510,11 @@ mappings:
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue, REPLACE(CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, ''), ' ', '_') AS UriName FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.2.3.2') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
-    s: http://era.europa.eu/concepts/tsi-pantograph-heads#$(UriName)
+    s: era-pth:$(UriName)
     po:
-      - [a, era-tph:OtherPantographHead]
+      - [a, era-pth:PantographHead]
       - [skos:prefLabel, $(ParameterValue)]
+      - [era:tsiCompliant, "false", xsd:boolean]
   
   contact-strip-materials-eratv:
     sources:
@@ -573,7 +576,7 @@ mappings:
         query: SELECT DISTINCT (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId) AS ParameterValue, RegistrationParameters.OtherValue, REPLACE((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId), ' ', '_') AS ParameterURI, REPLACE(RegistrationParameters.OtherValue, ' ', '_') AS OtherURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.10.10'));
     s: http://era.europa.eu/concepts/contact-strip-materials#$(OtherURI)
     po:
-      - [a, era-csm:OtherContactStripMaterial]
+      - [a, era-csm:ContactStripMaterial]
       - p: skos:prefLabel
         o: $(OtherValue)
         condition:
@@ -642,7 +645,7 @@ mappings:
         query: SELECT DISTINCT SUBSTRING(TRIM((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)), 1, 3) AS ParameterValue, RegistrationParameters.OtherValue, REPLACE(RegistrationParameters.OtherValue, ' ', '_') AS OtherURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.12.3.1'));
     s: http://era.europa.eu/concepts/platform-heights#$(OtherURI)
     po:
-      - [a, era-ph:OtherPlatformHeight]
+      - [a, era-ph:PlatformHeight]
       - p: skos:prefLabel
         o: $(OtherValue)
         condition:
@@ -712,7 +715,7 @@ mappings:
         query: SELECT DISTINCT (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId) AS ParameterValue, RegistrationParameters.OtherValue, REPLACE((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId), ' ', '_') AS ParameterURI, REPLACE(RegistrationParameters.OtherValue, ' ', '_') AS OtherURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.13.1.5'));
     s: http://era.europa.eu/concepts/train-protection-legacy-systems#$(OtherURI)
     po:
-      - [a, era-tpls:OtherTrainProtectionLegacySystem]
+      - [a, era-tpls:TrainProtectionLegacySystem]
       - p: skos:prefLabel
         o: $(OtherValue)
         condition:
@@ -795,7 +798,7 @@ mappings:
         query: SELECT DISTINCT (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId) AS ParameterValue, RegistrationParameters.OtherValue, REPLACE((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId), ' ', '_') AS ParameterURI, REPLACE(RegistrationParameters.OtherValue, ' ', '_') AS OtherURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.13.1.5'));
     s: http://era.europa.eu/concepts/legacy-radio-systems#$(OtherURI)
     po:
-      - [a, era-lrs:OtherLegacyRadioSystem]
+      - [a, era-lrs:LegacyRadioSystem]
       - p: skos:prefLabel
         o: $(OtherValue)
         condition:
