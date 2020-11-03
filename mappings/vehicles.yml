@@ -452,7 +452,7 @@ mappings:
           parameters:
             - [grel:valueParameter, $(OtherURI)]
             - [grel:valueParameter2, ""]
-      - p: era:otherAxleBearingConditionMonitoring
+      - p: era:axleBearingConditionMonitoring
         o: era-am:$(OtherURI)~iri
         condition:
           function: idlab-fn:notEqual
@@ -491,7 +491,7 @@ mappings:
           parameters:
             - [grel:valueParameter, $(OtherURI)]
             - [grel:valueParameter2, ""]
-      - p: era:otherRailInclination
+      - p: era:railInclination
         o: era-ri:$(OtherURI)~iri
         condition:
           function: idlab-fn:notEqual
@@ -542,7 +542,7 @@ mappings:
           parameters:
             - [grel:valueParameter, $(OtherURI)]
             - [grel:valueParameter2, ""]
-      - p: era:otherWheelSetGaugeChangeoverFacility
+      - p: era:wheelSetGaugeChangeoverFacility
         o: era-gcf:$(OtherURI)~iri
         condition:
           function: idlab-fn:notEqual
@@ -814,7 +814,7 @@ mappings:
           parameters:
             - [grel:valueParameter, $(OtherURI)]
             - [grel:valueParameter2, ""]
-      - p: era:otherSnowIceHailConditions
+      - p: era:snowIceHailConditions
         o: era-ic:$(OtherURI)~iri
         condition:
           function: idlab-fn:notEqual
@@ -841,7 +841,7 @@ mappings:
           parameters:
             - [grel:valueParameter, $(OtherURI)]
             - [grel:valueParameter2, ""]
-      - p: era:otherEnergySupplySystem 
+      - p: era:energySupplySystem 
         o: era-ess:$(OtherURI)~iri
         condition:
           function: idlab-fn:notEqual
@@ -996,7 +996,7 @@ mappings:
           parameters:
             - [grel:valueParameter, $(OtherURI)]
             - [grel:valueParameter2, ""]
-      - p: era:otherContactStripMaterial
+      - p: era:contactStripMaterial
         o: era-csm:$(OtherURI)~iri
         condition:
           function: idlab-fn:notEqual
@@ -1151,7 +1151,7 @@ mappings:
           parameters:
             - [grel:valueParameter, $(OtherURI)]
             - [grel:valueParameter2, ""]
-      - p: era:otherPlatformHeight
+      - p: era:platformHeight
         o: era-ph:$(OtherURI)~iri
         condition:
           function: idlab-fn:notEqual
@@ -1318,7 +1318,7 @@ mappings:
           parameters:
             - [grel:valueParameter, $(OtherURI)]
             - [grel:valueParameter2, ""]
-      - p: era:otherProtectionLegacySystem
+      - p: era:protectionLegacySystem
         o: era-tpls:$(OtherURI)~iri
         condition:
           function: idlab-fn:notEqual
@@ -1343,7 +1343,7 @@ mappings:
           parameters:
             - [grel:valueParameter, $(OtherURI)]
             - [grel:valueParameter2, ""]
-      - p: era:otherLegacyRadioSystem
+      - p: era:legacyRadioSystem
         o: era-tpls:$(OtherURI)~iri
         condition:
           function: idlab-fn:notEqual

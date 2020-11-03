@@ -1968,7 +1968,7 @@
 :map_axle-bearing-condition-monitoring_0 rr:predicateObjectMap :pom_147.
 :pm_147 a rr:PredicateMap.
 :pom_147 rr:predicateMap :pm_147.
-:pm_147 rr:constant era:otherAxleBearingConditionMonitoring.
+:pm_147 rr:constant era:axleBearingConditionMonitoring.
 :pom_147 rr:objectMap :om_147.
 :om_147 a fnml:FunctionTermMap;
     rr:termType rr:IRI;
@@ -2123,7 +2123,7 @@
 :map_rail-inclination_0 rr:predicateObjectMap :pom_158.
 :pm_158 a rr:PredicateMap.
 :pom_158 rr:predicateMap :pm_158.
-:pm_158 rr:constant era:otherRailInclination.
+:pm_158 rr:constant era:railInclination.
 :pom_158 rr:objectMap :om_158.
 :om_158 a fnml:FunctionTermMap;
     rr:termType rr:IRI;
@@ -2304,7 +2304,7 @@
 :map_wheelset-gauge-changeover-facility_0 rr:predicateObjectMap :pom_170.
 :pm_170 a rr:PredicateMap.
 :pom_170 rr:predicateMap :pm_170.
-:pm_170 rr:constant era:otherWheelSetGaugeChangeoverFacility.
+:pm_170 rr:constant era:wheelSetGaugeChangeoverFacility.
 :pom_170 rr:objectMap :om_170.
 :om_170 a fnml:FunctionTermMap;
     rr:termType rr:IRI;
@@ -3224,7 +3224,7 @@
 :map_snow-ice-hail-conditions_0 rr:predicateObjectMap :pom_231.
 :pm_231 a rr:PredicateMap.
 :pom_231 rr:predicateMap :pm_231.
-:pm_231 rr:constant era:otherSnowIceHailConditions.
+:pm_231 rr:constant era:snowIceHailConditions.
 :pom_231 rr:objectMap :om_231.
 :om_231 a fnml:FunctionTermMap;
     rr:termType rr:IRI;
@@ -3355,7 +3355,7 @@
 :map_energy-supply-system_0 rr:predicateObjectMap :pom_241.
 :pm_241 a rr:PredicateMap.
 :pom_241 rr:predicateMap :pm_241.
-:pm_241 rr:constant era:otherEnergySupplySystem.
+:pm_241 rr:constant era:energySupplySystem.
 :pom_241 rr:objectMap :om_241.
 :om_241 a fnml:FunctionTermMap;
     rr:termType rr:IRI;
@@ -3969,7 +3969,7 @@
 :map_contact-strip-material_0 rr:predicateObjectMap :pom_285.
 :pm_285 a rr:PredicateMap.
 :pom_285 rr:predicateMap :pm_285.
-:pm_285 rr:constant era:otherContactStripMaterial.
+:pm_285 rr:constant era:contactStripMaterial.
 :pom_285 rr:objectMap :om_285.
 :om_285 a fnml:FunctionTermMap;
     rr:termType rr:IRI;
@@ -4637,7 +4637,7 @@
 :map_platform-height_0 rr:predicateObjectMap :pom_334.
 :pm_334 a rr:PredicateMap.
 :pom_334 rr:predicateMap :pm_334.
-:pm_334 rr:constant era:otherPlatformHeight.
+:pm_334 rr:constant era:platformHeight.
 :pom_334 rr:objectMap :om_334.
 :om_334 a fnml:FunctionTermMap;
     rr:termType rr:IRI;
@@ -5301,7 +5301,7 @@
 :map_protection-legacy-system_0 rr:predicateObjectMap :pom_381.
 :pm_381 a rr:PredicateMap.
 :pom_381 rr:predicateMap :pm_381.
-:pm_381 rr:constant era:otherProtectionLegacySystem.
+:pm_381 rr:constant era:protectionLegacySystem.
 :pom_381 rr:objectMap :om_381.
 :om_381 a fnml:FunctionTermMap;
     rr:termType rr:IRI;
@@ -5432,7 +5432,7 @@
 :map_radio-legacy-system_0 rr:predicateObjectMap :pom_391.
 :pm_391 a rr:PredicateMap.
 :pom_391 rr:predicateMap :pm_391.
-:pm_391 rr:constant era:otherLegacyRadioSystem.
+:pm_391 rr:constant era:legacyRadioSystem.
 :pom_391 rr:objectMap :om_391.
 :om_391 a fnml:FunctionTermMap;
     rr:termType rr:IRI;

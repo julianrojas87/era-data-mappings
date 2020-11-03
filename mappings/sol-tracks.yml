@@ -11,7 +11,7 @@ prefixes:
   era-ri: "http://era.europa.eu/concepts/rail-inclinations#"
   era-cls: "http://era.europa.eu/concepts/contact-line-systems#"
   era-ess: "http://era.europa.eu/concepts/energy-supply-systems#"
-  era-tph: "http://era.europa.eu/concepts/tsi-pantograph-heads#"
+  era-pth: "http://era.europa.eu/concepts/pantograph-heads#"
   era-csm: "http://era.europa.eu/concepts/contact-strip-materials#"
   era-esc: "http://era.europa.eu/concepts/etcs-system-compatibilities#"
   era-gsmr: "http://era.europa.eu/concepts/gsmr-networks#"
@@ -876,7 +876,7 @@ mappings:
         query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, REPLACE(CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, ''), ' ', '_') AS UriName FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.2.3.1') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
     s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
     po:
-      - [era:pantographHeadTSI, era-tph:$(UriName)~iri]
+      - [era:pantographHead, era-pth:$(UriName)~iri]
   
   other-accepted-pantographs: # 1.1.1.2.3.2
     sources:
@@ -888,7 +888,7 @@ mappings:
         query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, REPLACE(CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, ''), ' ', '_') AS UriName FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.2.3.2') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
     s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
     po:
-      - [era:otherPantographHead, era-tph:$(UriName)~iri]
+      - [era:pantographHead, era-pth:$(UriName)~iri]
   
   contact-strip-material: # 1.1.1.2.3.4
     sources:

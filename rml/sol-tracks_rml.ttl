@@ -18,7 +18,7 @@
 @prefix era-ri: <http://era.europa.eu/concepts/rail-inclinations#>.
 @prefix era-cls: <http://era.europa.eu/concepts/contact-line-systems#>.
 @prefix era-ess: <http://era.europa.eu/concepts/energy-supply-systems#>.
-@prefix era-tph: <http://era.europa.eu/concepts/tsi-pantograph-heads#>.
+@prefix era-pth: <http://era.europa.eu/concepts/pantograph-heads#>.
 @prefix era-csm: <http://era.europa.eu/concepts/contact-strip-materials#>.
 @prefix era-esc: <http://era.europa.eu/concepts/etcs-system-compatibilities#>.
 @prefix era-gsmr: <http://era.europa.eu/concepts/gsmr-networks#>.
@@ -2801,10 +2801,10 @@
 :map_pantograph-tsi-compliant_0 rr:predicateObjectMap :pom_183.
 :pm_183 a rr:PredicateMap.
 :pom_183 rr:predicateMap :pm_183.
-:pm_183 rr:constant era:pantographHeadTSI.
+:pm_183 rr:constant era:pantographHead.
 :pom_183 rr:objectMap :om_183.
 :om_183 a rr:ObjectMap;
-    rr:template "http://era.europa.eu/concepts/tsi-pantograph-heads#{UriName}";
+    rr:template "http://era.europa.eu/concepts/pantograph-heads#{UriName}";
     rr:termType rr:IRI.
 :map_other-accepted-pantographs_0 rml:logicalSource :source_47.
 :source_47 a rml:LogicalSource;
@@ -2825,10 +2825,10 @@
 :map_other-accepted-pantographs_0 rr:predicateObjectMap :pom_184.
 :pm_184 a rr:PredicateMap.
 :pom_184 rr:predicateMap :pm_184.
-:pm_184 rr:constant era:otherPantographHead.
+:pm_184 rr:constant era:pantographHead.
 :pom_184 rr:objectMap :om_184.
 :om_184 a rr:ObjectMap;
-    rr:template "http://era.europa.eu/concepts/tsi-pantograph-heads#{UriName}";
+    rr:template "http://era.europa.eu/concepts/pantograph-heads#{UriName}";
     rr:termType rr:IRI.
 :map_contact-strip-material_0 rml:logicalSource :source_48.
 :source_48 a rml:LogicalSource;
