@@ -6,7 +6,7 @@ prefixes:
   eu-country: "http://publications.europa.eu/resource/authority/country/"
   era: "http://era.europa.eu/ns#"
   era-vehicles: "http://era.europa.eu/concepts/vehicles#"
-  era-manufacturers: "http://era.europa.eu/concepts/manufacturers#"
+  era-manufacturers: "http://era.europa.eu/manufacturers#"
   era-gaugings: "http://era.europa.eu/concepts/gaugings#"
   era-ap: "http://era.europa.eu/concepts/axle-positions#"
   era-am: "http://era.europa.eu/concepts/axle-monitoring#"
@@ -50,7 +50,7 @@ mappings:
     po:
       - [a, era:VehicleType]
       - [rdfs:label, $(TypeName)]
-      - [era:manufacturer, http://era.europa.eu/concepts/manufacturers#$(Manufacturer)~iri]
+      - [era:manufacturer, era-manufacturers:$(Manufacturer)~iri]
       - p: era:manufacturingCountry
         o:
           - mapping: eu-country
