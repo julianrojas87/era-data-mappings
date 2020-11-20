@@ -36,7 +36,7 @@ mappings:
         credentials: *credentials
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
-        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, SectionOfLines.Length, UICLines.UICCode, Tracks.UUID FROM RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.UICLines, RINF.dbo.Tracks WHERE SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID AND SectionOfLines.UICLineID = UICLines.ID AND SectionOfLines.VersionID = UICLines.VersionID;
+        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, SectionOfLines.Length, UICLines.UICCode, Tracks.UUID, MemberStates.Code FROM RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.UICLines, RINF.dbo.Tracks, RINF.dbo.MemberStates, RINF.dbo.MemberStateVersions WHERE SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID AND SOLTracks.VersionID = MemberStateVersions.ID AND MemberStateVersions.MemberStateID = MemberStates.ID AND SectionOfLines.UICLineID = UICLines.ID AND SectionOfLines.VersionID = UICLines.VersionID;
     s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
     po:
       - [a, era:Track]
@@ -44,6 +44,14 @@ mappings:
       - [era:lineNationalId, era-lni:$(UICCode)~iri]
       - [era:trackLength, $(Length), xsd:double]
       - [era:hasAbstraction, http://era.europa.eu/abstraction#ML_$(ID)_$(VersionID)_$(TrackID)~iri]
+      - p: era:inCountry
+        o:
+          - mapping: eu-country
+            condition:
+              function: equal
+              parameters:
+                - [str1, $(Code)]
+                - [str2, $(code)]
 
   tunnel-reference:
     sources:
@@ -56,6 +64,11 @@ mappings:
     s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
     po:
       - [era:passesThroughTunnel, http://era.europa.eu/implementation#TN_$(VersionID)_$(TunnelID)~iri]
+  
+  eu-country:
+    sources:
+      - ["data/countries.csv~csv"]
+    s: $(eu)
 
 
   # ------------Traffic loads and load carrying capacity of infrastructure--------------

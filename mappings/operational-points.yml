@@ -80,10 +80,6 @@ mappings:
     sources:
       - ["data/op_types.csv~csv"]
     s: http://era.europa.eu/concepts/op-types#$(type)
-    #po:
-    #  - [a, era-op-types:OperationalPointType]
-    #  - [skos:prefLabel, $(label), en~lang]
-    #  - [skos:definition, $(description), en~lang]
   
   eu-country:
     sources:
