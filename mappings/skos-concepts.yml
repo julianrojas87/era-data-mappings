@@ -6,7 +6,6 @@ prefixes:
   grel: "http://users.ugent.be/~bjdmeest/function/grel.ttl#"
   era: "http://era.europa.eu/ns#"
   era-lni: "http://era.europa.eu/concepts/line-national-ids#"
-  era-manufacturers: "http://era.europa.eu/concepts/manufacturers#"
   era-lc: "http://era.europa.eu/concepts/load-capabilities#"
   era-gaugings: "http://era.europa.eu/concepts/gaugings#"
   era-ap: "http://era.europa.eu/concepts/axle-positions#"
@@ -50,18 +49,6 @@ mappings:
     po:
       - [a, era-lni:LineNationalId]
       - [skos:prefLabel, $(UICCode)]
-  manufacturer:
-    sources:
-      - access: *host
-        type: *typeMSSQL
-        credentials: *credentials
-        queryFormulation: *queryFormulation
-        referenceFormulation: *referenceFormulation
-        query: SELECT REPLACE(Manufacturers.Name, ' ', '') AS Name FROM ERATV.dbo.Manufacturers;
-    s: http://era.europa.eu/concepts/manufacturers#$(Name)
-    po:
-      - [a, era-manufacturers:Manufacturer]
-      - [skos:prefLabel, $(Name)]
   
   load-capability:
     sources:

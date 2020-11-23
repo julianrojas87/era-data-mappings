@@ -3,6 +3,7 @@ prefixes:
   idlab-fn: "http://example.com/idlab/function/"
   grel: "http://users.ugent.be/~bjdmeest/function/grel.ttl#"
   rdfs: "http://www.w3.org/2000/01/rdf-schema#"
+  eu-country: "http://publications.europa.eu/resource/authority/country/"
   era: "http://era.europa.eu/ns#"
   era-lni: "http://era.europa.eu/concepts/line-national-ids#"
   era-lc: "http://era.europa.eu/concepts/load-capabilities#"
@@ -36,13 +37,22 @@ mappings:
         credentials: *credentials
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
-        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, SectionOfLines.Length, UICLines.UICCode FROM RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.UICLines WHERE SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SectionOfLines.UICLineID = UICLines.ID AND SectionOfLines.VersionID = UICLines.VersionID;
+        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, SectionOfLines.Length, UICLines.UICCode, Tracks.UUID, MemberStates.Code FROM RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.UICLines, RINF.dbo.Tracks, RINF.dbo.MemberStates, RINF.dbo.MemberStateVersions WHERE SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID AND SOLTracks.VersionID = MemberStateVersions.ID AND MemberStateVersions.MemberStateID = MemberStates.ID AND SectionOfLines.UICLineID = UICLines.ID AND SectionOfLines.VersionID = UICLines.VersionID;
     s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
     po:
       - [a, era:Track]
+      - [rdfs:label, $(UUID)]
       - [era:lineNationalId, era-lni:$(UICCode)~iri]
       - [era:trackLength, $(Length), xsd:double]
       - [era:hasAbstraction, http://era.europa.eu/abstraction#ML_$(ID)_$(VersionID)_$(TrackID)~iri]
+      - p: era:inCountry
+        o:
+          - mapping: eu-country
+            condition:
+              function: equal
+              parameters:
+                - [str1, $(Code)]
+                - [str2, $(code)]
 
   tunnel-reference:
     sources:
@@ -55,6 +65,11 @@ mappings:
     s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
     po:
       - [era:passesThroughTunnel, http://era.europa.eu/implementation#TN_$(VersionID)_$(TunnelID)~iri]
+  
+  eu-country:
+    sources:
+      - ["data/countries.csv~csv"]
+    s: $(eu)
 
 
   # ------------Traffic loads and load carrying capacity of infrastructure--------------
@@ -1119,3 +1134,34 @@ mappings:
           parameters:
             - [grel:valueParameter, $(ParameterURI)]
             - [grel:valueParameter2, "RETB_(voice)"]
+
+  # ---------------------Noise (pilot 1.2)--------------------------
+
+  quieter-route: # 1.1.1.1.7.11
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.1.7.11') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)
+    po:
+      - p: era:isQuietRoute
+        o:
+          value: "true"
+          datatype: "xsd:boolean"
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(ParameterValue)]
+            - [grel:valueParameter2, "Y"]
+      - p: era:isQuietRoute
+        o:
+          value: "false"
+          datatype: "xsd:boolean"
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(ParameterValue)]
+            - [grel:valueParameter2, "N"]

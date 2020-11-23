@@ -25,7 +25,7 @@ mappings:
         credentials: *credentials
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
-        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, TrackTunnels.TunnelID, Tunnels.UUID, ROUND(ABS(Tunnels.EndKm - Tunnels.StartKm), 2) AS TunnelLength, Tunnels.StartLat, Tunnels.StartLong, Tunnels.EndLat, Tunnels.EndLong FROM RINF.dbo.SectionOfLines, RINF.dbo.SOLTracks, RINF.dbo.TrackTunnels, RINF.dbo.Tunnels WHERE SectionOfLines.ID = SOLTracks.SectionOfLineID AND SectionOfLines.VersionID = SOLTracks.VersionID AND SOLTracks.TrackID = TrackTunnels.TrackID AND SOLTracks.VersionID = TrackTunnels.VersionID AND TrackTunnels.TunnelID = Tunnels.ID AND TrackTunnels.VersionID = Tunnels.VersionID;
+        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, TrackTunnels.TunnelID, Tunnels.UUID, MemberStates.Code, ROUND(ABS(Tunnels.EndKm - Tunnels.StartKm), 2) AS TunnelLength, Tunnels.StartLat, Tunnels.StartLong, Tunnels.EndLat, Tunnels.EndLong FROM RINF.dbo.SectionOfLines, RINF.dbo.SOLTracks, RINF.dbo.TrackTunnels, RINF.dbo.Tunnels, RINF.dbo.MemberStates, RINF.dbo.MemberStateVersions WHERE SectionOfLines.ID = SOLTracks.SectionOfLineID AND SectionOfLines.VersionID = SOLTracks.VersionID AND SOLTracks.TrackID = TrackTunnels.TrackID AND SOLTracks.VersionID = TrackTunnels.VersionID AND TrackTunnels.TunnelID = Tunnels.ID AND TrackTunnels.VersionID = Tunnels.VersionID AND TrackTunnels.VersionID = MemberStateVersions.ID AND MemberStateVersions.MemberStateID = MemberStates.ID;
     s: http://era.europa.eu/implementation#TN_$(VersionID)_$(TunnelID)
     po:
       - [a, era:Tunnel]
@@ -34,6 +34,14 @@ mappings:
       - [era:startLocation, http://era.europa.eu/location#GEO/$(StartLong)/$(StartLat)~iri]
       - [era:endLocation, http://era.europa.eu/location#GEO/$(EndLong)/$(EndLat)~iri]
       - [era:hasTrack, http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)~iri]
+      - p: era:inCountry
+        o:
+          - mapping: eu-country
+            condition:
+              function: equal
+              parameters:
+                - [str1, $(Code)]
+                - [str2, $(code)]
   
   start-location:
     sources:
@@ -66,6 +74,11 @@ mappings:
       - [wgs:latitude, $(EndLat), xsd:double]
       - [wgs:longitude, $(EndLong), xsd:double]
       - [geosparql:asWKT, POINT ($(EndLong) $(EndLat)), geosparql:wktLiteral]
+  
+  eu-country:
+    sources:
+      - ["data/countries.csv~csv"]
+    s: $(eu)
 
   # -------------------Tunnel----------------------
 
