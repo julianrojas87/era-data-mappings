@@ -10,6 +10,7 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
 @prefix idlab-fn: <http://example.com/idlab/function/>.
 @prefix grel: <http://users.ugent.be/~bjdmeest/function/grel.ttl#>.
+@prefix eu-country: <http://publications.europa.eu/resource/authority/country/>.
 @prefix era: <http://era.europa.eu/ns#>.
 @prefix era-lni: <http://era.europa.eu/concepts/line-national-ids#>.
 @prefix era-lc: <http://era.europa.eu/concepts/load-capabilities#>.

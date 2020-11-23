@@ -5,32 +5,324 @@ prefixes:
   rdfs: "http://www.w3.org/2000/01/rdf-schema#"
   eu-country: "http://publications.europa.eu/resource/authority/country/"
   era: "http://era.europa.eu/ns#"
+  era-rc: "http://era.europa.eu/concepts/restrictions#"
 
-  mappings:
-    vehicles-ecvvr:
-      sources:
-        - ["data/ecvvr.csc~csv"]
-      s: "http://era.europa.eu/implementation#V_$(EVN)"
-      po:
-        - [a, era:Vehicle]
-        - [era:vehicleSeries, $(SERIES)]
-        - p: era:vehicleType
-          o: "http://era.europa.eu/implementation#VT_$(ERA_TV_REFERENCE)"
-          condition:
-            function: idlab-fn:notEqual
-            parameters:
-              - [grel:valueParameter, $(ERA_TV_REFERENCE)]
-              - [grel:valueParameter2, ""]
-        - p: era:manufacturingCountry
-          o: 
-            - mapping: eu-country
-              condition:
-                function: equal
-                parameters:
-                  - [str1, $(NSA_COUNTRY_CODE)]
-                  - [str2, $(code)]
-  
-    eu-country:
-      sources:
-        - ["data/countries.csv~csv"]
-      s: $(eu)
+mappings:
+  vehicles-ecvvr:
+    sources:
+      - ["data/ecvvr.csv~csv"]
+    s: "http://era.europa.eu/implementation#V_$(EVN)"
+    po:
+      - [a, era:Vehicle]
+      - p: era:vehicleSeries
+        o: $(SERIES)
+        condition:
+          function: idlab-fn:notEqual
+          parameters:
+            - [grel:valueParameter, $(SERIES)]
+            - [grel:valueParameter2, ""]
+      - p: era:vehicleType
+        o: "http://era.europa.eu/implementation#VT_$(ERA_TV_REFERENCE)~iri"
+        condition:
+          function: idlab-fn:notEqual
+          parameters:
+            - [grel:valueParameter, $(ERA_TV_REFERENCE)]
+            - [grel:valueParameter2, "Non applicable"]
+      - p: era:manufacturingCountry
+        o: 
+          - mapping: eu-country
+            condition:
+              function: equal
+              parameters:
+                - [str1, $(NSA_COUNTRY_CODE)]
+                - [str2, $(code)]
+      - p: era:operationalRestriction
+        o: era-rc:2.7.1~iri
+        condition:
+          function: grel:string_contains
+          parameters:
+            - [grel:valueParameter, $(RESTRICTION_CODES)]
+            - [grel:string_sub, "2.7.1"]
+      - p: era:operationalRestriction
+        o: era-rc:2.7.2~iri
+        condition:
+          function: grel:string_contains
+          parameters:
+            - [grel:valueParameter, $(RESTRICTION_CODES)]
+            - [grel:string_sub, "2.7.2"]
+      - p: era:operationalRestriction
+        o: era-rc:2.7.3~iri
+        condition:
+          function: grel:string_contains
+          parameters:
+            - [grel:valueParameter, $(RESTRICTION_CODES)]
+            - [grel:string_sub, "2.7.3"]
+      - p: era:operationalRestriction
+        o: era-rc:2.7.4~iri
+        condition:
+          function: grel:string_contains
+          parameters:
+            - [grel:valueParameter, $(RESTRICTION_CODES)]
+            - [grel:string_sub, "2.7.4"]
+      - p: era:operationalRestriction
+        o: era-rc:2.7.5~iri
+        condition:
+          function: grel:string_contains
+          parameters:
+            - [grel:valueParameter, $(RESTRICTION_CODES)]
+            - [grel:string_sub, "2.7.5"]
+      - p: era:operationalRestriction
+        o: era-rc:2.7.6~iri
+        condition:
+          function: grel:string_contains
+          parameters:
+            - [grel:valueParameter, $(RESTRICTION_CODES)]
+            - [grel:string_sub, "2.7.6"]
+      - p: era:operationalRestriction
+        o: era-rc:2.7.7~iri
+        condition:
+          function: grel:string_contains
+          parameters:
+            - [grel:valueParameter, $(RESTRICTION_CODES)]
+            - [grel:string_sub, "2.7.7"]
+
+  vehicles-rsdr:
+    sources:
+      - ["data/wagons_rsdr.csv~csv"]
+    s: "http://era.europa.eu/implementation#V_$(Wagon Number)"
+    po:
+      - [a, era:Vehicle]
+      - [era:vehicleKeeper, "http://era.europa.eu/keepers#$(Keeper)~iri"]
+      - p: era:compositeBrakeBlockRetrofitted
+        o:
+          value: "true"
+          datatype: xsd:boolean
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(CompositeBrakeBlockRetrofitted)]
+            - [grel:valueParameter2, "Y"]
+      - p: era:compositeBrakeBlockRetrofitted
+        o:
+          value: "false"
+          datatype: xsd:boolean
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(CompositeBrakeBlockRetrofitted)]
+            - [grel:valueParameter2, "N"]
+      - p: era:quieterRoutesExemptedCountry
+        o: eu-country:GRC~iri
+        condition:
+          function: grel:string_contains
+          parameters:
+            - [grel:valueParameter, $(QuieterRoutesExemptionCountry)]
+            - [grel:string_sub, "EL"]
+      - p: era:quieterRoutesExemptedCountry
+        o: eu-country:DEU~iri
+        condition:
+          function: grel:string_contains
+          parameters:
+            - [grel:valueParameter, $(QuieterRoutesExemptionCountry)]
+            - [grel:string_sub, "DE"]
+      - p: era:quieterRoutesExemptedCountry
+        o: eu-country:FRA~iri
+        condition:
+          function: grel:string_contains
+          parameters:
+            - [grel:valueParameter, $(QuieterRoutesExemptionCountry)]
+            - [grel:string_sub, "FR"]
+      - p: era:quieterRoutesExemptedCountry
+        o: eu-country:GBR~iri
+        condition:
+          function: grel:string_contains
+          parameters:
+            - [grel:valueParameter, $(QuieterRoutesExemptionCountry)]
+            - [grel:string_sub, "EN"]
+      - p: era:quieterRoutesExemptedCountry
+        o: eu-country:AUT~iri
+        condition:
+          function: grel:string_contains
+          parameters:
+            - [grel:valueParameter, $(QuieterRoutesExemptionCountry)]
+            - [grel:string_sub, "AT"]
+      - p: era:quieterRoutesExemptedCountry
+        o: eu-country:BEL~iri
+        condition:
+          function: grel:string_contains
+          parameters:
+            - [grel:valueParameter, $(QuieterRoutesExemptionCountry)]
+            - [grel:string_sub, "BE"]
+      - p: era:quieterRoutesExemptedCountry
+        o: eu-country:BGR~iri
+        condition:
+          function: grel:string_contains
+          parameters:
+            - [grel:valueParameter, $(QuieterRoutesExemptionCountry)]
+            - [grel:string_sub, "BG"]
+      - p: era:quieterRoutesExemptedCountry
+        o: eu-country:CHE~iri
+        condition:
+          function: grel:string_contains
+          parameters:
+            - [grel:valueParameter, $(QuieterRoutesExemptionCountry)]
+            - [grel:string_sub, "CH"]
+      - p: era:quieterRoutesExemptedCountry
+        o: eu-country:CYP~iri
+        condition:
+          function: grel:string_contains
+          parameters:
+            - [grel:valueParameter, $(QuieterRoutesExemptionCountry)]
+            - [grel:string_sub, "CY"]
+      - p: era:quieterRoutesExemptedCountry
+        o: eu-country:CZE~iri
+        condition:
+          function: grel:string_contains
+          parameters:
+            - [grel:valueParameter, $(QuieterRoutesExemptionCountry)]
+            - [grel:string_sub, "CZ"]
+      - p: era:quieterRoutesExemptedCountry
+        o: eu-country:DNK~iri
+        condition:
+          function: grel:string_contains
+          parameters:
+            - [grel:valueParameter, $(QuieterRoutesExemptionCountry)]
+            - [grel:string_sub, "DK"]
+      - p: era:quieterRoutesExemptedCountry
+        o: eu-country:EST~iri
+        condition:
+          function: grel:string_contains
+          parameters:
+            - [grel:valueParameter, $(QuieterRoutesExemptionCountry)]
+            - [grel:string_sub, "EE"]
+      - p: era:quieterRoutesExemptedCountry
+        o: eu-country:ESP~iri
+        condition:
+          function: grel:string_contains
+          parameters:
+            - [grel:valueParameter, $(QuieterRoutesExemptionCountry)]
+            - [grel:string_sub, "ES"]
+      - p: era:quieterRoutesExemptedCountry
+        o: eu-country:FIN~iri
+        condition:
+          function: grel:string_contains
+          parameters:
+            - [grel:valueParameter, $(QuieterRoutesExemptionCountry)]
+            - [grel:string_sub, "FI"]
+      - p: era:quieterRoutesExemptedCountry
+        o: eu-country:HRV~iri
+        condition:
+          function: grel:string_contains
+          parameters:
+            - [grel:valueParameter, $(QuieterRoutesExemptionCountry)]
+            - [grel:string_sub, "HR"]
+      - p: era:quieterRoutesExemptedCountry
+        o: eu-country:HUN~iri
+        condition:
+          function: grel:string_contains
+          parameters:
+            - [grel:valueParameter, $(QuieterRoutesExemptionCountry)]
+            - [grel:string_sub, "HU"]
+      - p: era:quieterRoutesExemptedCountry
+        o: eu-country:IRL~iri
+        condition:
+          function: grel:string_contains
+          parameters:
+            - [grel:valueParameter, $(QuieterRoutesExemptionCountry)]
+            - [grel:string_sub, "IE"]
+      - p: era:quieterRoutesExemptedCountry
+        o: eu-country:ITA~iri
+        condition:
+          function: grel:string_contains
+          parameters:
+            - [grel:valueParameter, $(QuieterRoutesExemptionCountry)]
+            - [grel:string_sub, "IT"]
+      - p: era:quieterRoutesExemptedCountry
+        o: eu-country:LTU~iri
+        condition:
+          function: grel:string_contains
+          parameters:
+            - [grel:valueParameter, $(QuieterRoutesExemptionCountry)]
+            - [grel:string_sub, "LT"]
+      - p: era:quieterRoutesExemptedCountry
+        o: eu-country:LU~iri
+        condition:
+          function: grel:string_contains
+          parameters:
+            - [grel:valueParameter, $(QuieterRoutesExemptionCountry)]
+            - [grel:string_sub, "LUX"]
+      - p: era:quieterRoutesExemptedCountry
+        o: eu-country:LVA~iri
+        condition:
+          function: grel:string_contains
+          parameters:
+            - [grel:valueParameter, $(QuieterRoutesExemptionCountry)]
+            - [grel:string_sub, "LV"]
+      - p: era:quieterRoutesExemptedCountry
+        o: eu-country:MLT~iri
+        condition:
+          function: grel:string_contains
+          parameters:
+            - [grel:valueParameter, $(QuieterRoutesExemptionCountry)]
+            - [grel:string_sub, "MT"]
+      - p: era:quieterRoutesExemptedCountry
+        o: eu-country:NLD~iri
+        condition:
+          function: grel:string_contains
+          parameters:
+            - [grel:valueParameter, $(QuieterRoutesExemptionCountry)]
+            - [grel:string_sub, "NL"]
+      - p: era:quieterRoutesExemptedCountry
+        o: eu-country:NOR~iri
+        condition:
+          function: grel:string_contains
+          parameters:
+            - [grel:valueParameter, $(QuieterRoutesExemptionCountry)]
+            - [grel:string_sub, "NR"]
+      - p: era:quieterRoutesExemptedCountry
+        o: eu-country:POL~iri
+        condition:
+          function: grel:string_contains
+          parameters:
+            - [grel:valueParameter, $(QuieterRoutesExemptionCountry)]
+            - [grel:string_sub, "PL"]
+      - p: era:quieterRoutesExemptedCountry
+        o: eu-country:PRT~iri
+        condition:
+          function: grel:string_contains
+          parameters:
+            - [grel:valueParameter, $(QuieterRoutesExemptionCountry)]
+            - [grel:string_sub, "PT"]
+      - p: era:quieterRoutesExemptedCountry
+        o: eu-country:ROU~iri
+        condition:
+          function: grel:string_contains
+          parameters:
+            - [grel:valueParameter, $(QuieterRoutesExemptionCountry)]
+            - [grel:string_sub, "RO"]
+      - p: era:quieterRoutesExemptedCountry
+        o: eu-country:SWE~iri
+        condition:
+          function: grel:string_contains
+          parameters:
+            - [grel:valueParameter, $(QuieterRoutesExemptionCountry)]
+            - [grel:string_sub, "SE"]
+      - p: era:quieterRoutesExemptedCountry
+        o: eu-country:SVN~iri
+        condition:
+          function: grel:string_contains
+          parameters:
+            - [grel:valueParameter, $(QuieterRoutesExemptionCountry)]
+            - [grel:string_sub, "SI"]
+      - p: era:quieterRoutesExemptedCountry
+        o: eu-country:SVK~iri
+        condition:
+          function: grel:string_contains
+          parameters:
+            - [grel:valueParameter, $(QuieterRoutesExemptionCountry)]
+            - [grel:string_sub, "SK"]
+
+  eu-country:
+    sources:
+      - ["data/countries.csv~csv"]
+    s: $(eu)
