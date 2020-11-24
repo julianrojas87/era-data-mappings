@@ -14,6 +14,7 @@ mappings:
     s: "http://era.europa.eu/implementation#V_$(EVN)"
     po:
       - [a, era:Vehicle]
+      - [era:vehicleNumber, $(EVN)]
       - p: era:vehicleSeries
         o: $(SERIES)
         condition:
@@ -92,7 +93,15 @@ mappings:
     s: "http://era.europa.eu/implementation#V_$(Wagon Number)"
     po:
       - [a, era:Vehicle]
+      - [era:vehicleNumber, $(Wagon Number)]
       - [era:vehicleKeeper, "http://era.europa.eu/keepers#$(Keeper)~iri"]
+      - p: era:vehicleType # Faked data used to fit this predicate
+        o: "http://era.europa.eu/implementation#VT_$(ERATVReference)~iri"
+        condition:
+          function: idlab-fn:notEqual
+          parameters:
+            - [grel:valueParameter, $(ERATVReference)]
+            - [grel:valueParameter2, ""]
       - p: era:compositeBrakeBlockRetrofitted
         o:
           value: "true"
