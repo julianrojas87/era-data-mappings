@@ -12,7 +12,6 @@
 @prefix grel: <http://users.ugent.be/~bjdmeest/function/grel.ttl#>.
 @prefix eu-country: <http://publications.europa.eu/resource/authority/country/>.
 @prefix era: <http://era.europa.eu/ns#>.
-@prefix era-lni: <http://era.europa.eu/concepts/line-national-ids#>.
 @prefix era-lc: <http://era.europa.eu/concepts/load-capabilities#>.
 @prefix era-gaugings: <http://era.europa.eu/concepts/gaugings#>.
 @prefix era-tds: <http://era.europa.eu/concepts/train-detection#>.
@@ -67,7 +66,7 @@
 :pm_2 rr:constant era:lineNationalId.
 :pom_2 rr:objectMap :om_2.
 :om_2 a rr:ObjectMap;
-    rr:template "http://era.europa.eu/concepts/line-national-ids#{UICCode}";
+    rr:template "http://era.europa.eu/implementation#LNI_{UICCode}";
     rr:termType rr:IRI.
 :pom_3 a rr:PredicateObjectMap.
 :map_sol-tracks_0 rr:predicateObjectMap :pom_3.
