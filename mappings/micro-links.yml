@@ -22,48 +22,48 @@ mappings:
         credentials: *credentials
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
-        query: SELECT SectionOfLines.ID, SOLTracks.TrackID, LineEdges.ID AS LineEdgeID, LineEdges.VersionID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, LookupValues.[Value] AS Direction FROM RINF.dbo.LineEdges, RINF.dbo.SectionOfLines, RINF.dbo.SOLTracks, RINF.dbo.LookupValues WHERE LineEdges.ID=SectionOfLines.LineEdgeID AND LineEdges.VersionID=SectionOfLines.VersionID AND SectionOfLines.ID = SOLTracks.SectionOfLineID AND SOLTracks.VersionID=SectionOfLines.VersionID AND SOLTracks.Direction = LookupValues.ID;
-    s: http://era.europa.eu/abstraction#ML_$(ID)_$(VersionID)_$(TrackID)
+        query: SELECT Tracks.UUID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, LookupValues.[Value] AS Direction FROM RINF.dbo.LineEdges, RINF.dbo.SectionOfLines, RINF.dbo.SOLTracks, RINF.dbo.Tracks, RINF.dbo.LookupValues WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SectionOfLines.ID = SOLTracks.SectionOfLineID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.Direction = LookupValues.ID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID;
+    s: http://era.europa.eu/abstraction#ML_$(FROM_NODE)_$(UUID)_$(TO_NODE)
     po:
       - [a, era:MicroLink]
-      - [era:hasImplementation, http://era.europa.eu/implementation#T_$(ID)_$(VersionID)_$(TrackID)~iri]
+      - [era:hasImplementation, http://era.europa.eu/implementation#T_$(FROM_NODE)_$(UUID)_$(TO_NODE)~iri]
       - p: era:startPort
-        o: http://era.europa.eu/abstraction#NP_$(FROM_NODE)_$(LineEdgeID)_$(VersionID)~iri
+        o: http://era.europa.eu/abstraction#NP_$(FROM_NODE)_$(UUID)_$(TO_NODE)~iri
         condition:
           function: idlab-fn:equal
           parameters:
             - [grel:valueParameter, $(Direction)]
             - [grel:valueParameter2, "N"]
       - p: era:startPort
-        o: http://era.europa.eu/abstraction#NP_$(FROM_NODE)_$(LineEdgeID)_$(VersionID)~iri
+        o: http://era.europa.eu/abstraction#NP_$(FROM_NODE)_$(UUID)_$(TO_NODE)~iri
         condition:
           function: idlab-fn:equal
           parameters:
             - [grel:valueParameter, $(Direction)]
             - [grel:valueParameter2, "B"]
       - p: era:startPort
-        o: http://era.europa.eu/abstraction#NP_$(TO_NODE)_$(LineEdgeID)_$(VersionID)~iri
+        o: http://era.europa.eu/abstraction#NP_$(TO_NODE)_$(UUID)_$(FROM_NODE)~iri
         condition:
           function: idlab-fn:equal
           parameters:
             - [grel:valueParameter, $(Direction)]
             - [grel:valueParameter2, "O"]
       - p: era:endPort
-        o: http://era.europa.eu/abstraction#NP_$(TO_NODE)_$(LineEdgeID)_$(VersionID)~iri
+        o: http://era.europa.eu/abstraction#NP_$(TO_NODE)_$(UUID)_$(FROM_NODE)~iri
         condition:
           function: idlab-fn:equal
           parameters:
             - [grel:valueParameter, $(Direction)]
             - [grel:valueParameter2, "N"]
       - p: era:endPort
-        o: http://era.europa.eu/abstraction#NP_$(TO_NODE)_$(LineEdgeID)_$(VersionID)~iri
+        o: http://era.europa.eu/abstraction#NP_$(TO_NODE)_$(UUID)_$(FROM_NODE)~iri
         condition:
           function: idlab-fn:equal
           parameters:
             - [grel:valueParameter, $(Direction)]
             - [grel:valueParameter2, "B"]
       - p: era:endPort
-        o: http://era.europa.eu/abstraction#NP_$(FROM_NODE)_$(LineEdgeID)_$(VersionID)~iri
+        o: http://era.europa.eu/abstraction#NP_$(FROM_NODE)_$(UUID)_$(TO_NODE)~iri
         condition:
           function: idlab-fn:equal
           parameters:

@@ -15,7 +15,7 @@
 :map_micro-link_0 rml:logicalSource :source_0.
 :source_0 a rml:LogicalSource;
     rml:source :database_0;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, LineEdges.ID AS LineEdgeID, LineEdges.VersionID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, LookupValues.[Value] AS Direction FROM RINF.dbo.LineEdges, RINF.dbo.SectionOfLines, RINF.dbo.SOLTracks, RINF.dbo.LookupValues WHERE LineEdges.ID=SectionOfLines.LineEdgeID AND LineEdges.VersionID=SectionOfLines.VersionID AND SectionOfLines.ID = SOLTracks.SectionOfLineID AND SOLTracks.VersionID=SectionOfLines.VersionID AND SOLTracks.Direction = LookupValues.ID;".
+    rml:query "SELECT Tracks.UUID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, LookupValues.[Value] AS Direction FROM RINF.dbo.LineEdges, RINF.dbo.SectionOfLines, RINF.dbo.SOLTracks, RINF.dbo.Tracks, RINF.dbo.LookupValues WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SectionOfLines.ID = SOLTracks.SectionOfLineID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.Direction = LookupValues.ID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID;".
 :database_0 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -26,7 +26,7 @@
     rdfs:label "micro-link".
 :s_0 a rr:SubjectMap.
 :map_micro-link_0 rr:subjectMap :s_0.
-:s_0 rr:template "http://era.europa.eu/abstraction#ML_{ID}_{VersionID}_{TrackID}".
+:s_0 rr:template "http://era.europa.eu/abstraction#ML_{FROM_NODE}_{UUID}_{TO_NODE}".
 :pom_0 a rr:PredicateObjectMap.
 :map_micro-link_0 rr:predicateObjectMap :pom_0.
 :pm_0 a rr:PredicateMap.
@@ -43,7 +43,7 @@
 :pm_1 rr:constant era:hasImplementation.
 :pom_1 rr:objectMap :om_1.
 :om_1 a rr:ObjectMap;
-    rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}";
+    rr:template "http://era.europa.eu/implementation#T_{FROM_NODE}_{UUID}_{TO_NODE}";
     rr:termType rr:IRI.
 :pom_2 a rr:PredicateObjectMap.
 :map_micro-link_0 rr:predicateObjectMap :pom_2.
@@ -101,7 +101,7 @@
     rr:constant idlab-fn:str.
 :pom_6 rr:objectMap :om_6.
 :om_6 a rr:ObjectMap;
-    rr:template "http://era.europa.eu/abstraction#NP_{FROM_NODE}_{LineEdgeID}_{VersionID}";
+    rr:template "http://era.europa.eu/abstraction#NP_{FROM_NODE}_{UUID}_{TO_NODE}";
     rr:termType rr:IRI.
 :pom_7 a rr:PredicateObjectMap.
 :map_micro-link_0 rr:predicateObjectMap :pom_7.
@@ -159,7 +159,7 @@
     rr:constant idlab-fn:str.
 :pom_11 rr:objectMap :om_11.
 :om_11 a rr:ObjectMap;
-    rr:template "http://era.europa.eu/abstraction#NP_{FROM_NODE}_{LineEdgeID}_{VersionID}";
+    rr:template "http://era.europa.eu/abstraction#NP_{FROM_NODE}_{UUID}_{TO_NODE}";
     rr:termType rr:IRI.
 :pom_12 a rr:PredicateObjectMap.
 :map_micro-link_0 rr:predicateObjectMap :pom_12.
@@ -217,7 +217,7 @@
     rr:constant idlab-fn:str.
 :pom_16 rr:objectMap :om_16.
 :om_16 a rr:ObjectMap;
-    rr:template "http://era.europa.eu/abstraction#NP_{TO_NODE}_{LineEdgeID}_{VersionID}";
+    rr:template "http://era.europa.eu/abstraction#NP_{TO_NODE}_{UUID}_{FROM_NODE}";
     rr:termType rr:IRI.
 :pom_17 a rr:PredicateObjectMap.
 :map_micro-link_0 rr:predicateObjectMap :pom_17.
@@ -275,7 +275,7 @@
     rr:constant idlab-fn:str.
 :pom_21 rr:objectMap :om_21.
 :om_21 a rr:ObjectMap;
-    rr:template "http://era.europa.eu/abstraction#NP_{TO_NODE}_{LineEdgeID}_{VersionID}";
+    rr:template "http://era.europa.eu/abstraction#NP_{TO_NODE}_{UUID}_{FROM_NODE}";
     rr:termType rr:IRI.
 :pom_22 a rr:PredicateObjectMap.
 :map_micro-link_0 rr:predicateObjectMap :pom_22.
@@ -333,7 +333,7 @@
     rr:constant idlab-fn:str.
 :pom_26 rr:objectMap :om_26.
 :om_26 a rr:ObjectMap;
-    rr:template "http://era.europa.eu/abstraction#NP_{TO_NODE}_{LineEdgeID}_{VersionID}";
+    rr:template "http://era.europa.eu/abstraction#NP_{TO_NODE}_{UUID}_{FROM_NODE}";
     rr:termType rr:IRI.
 :pom_27 a rr:PredicateObjectMap.
 :map_micro-link_0 rr:predicateObjectMap :pom_27.
@@ -391,7 +391,7 @@
     rr:constant idlab-fn:str.
 :pom_31 rr:objectMap :om_31.
 :om_31 a rr:ObjectMap;
-    rr:template "http://era.europa.eu/abstraction#NP_{FROM_NODE}_{LineEdgeID}_{VersionID}";
+    rr:template "http://era.europa.eu/abstraction#NP_{FROM_NODE}_{UUID}_{TO_NODE}";
     rr:termType rr:IRI.
 :pom_32 a rr:PredicateObjectMap.
 :map_micro-link_0 rr:predicateObjectMap :pom_32.
