@@ -95,7 +95,7 @@ mappings:
       - [a, era:Vehicle]
       - [era:vehicleNumber, $(Wagon Number)]
       - [era:vehicleKeeper, "http://era.europa.eu/keepers#$(Keeper)~iri"]
-      - p: era:vehicleType # Faked data used to fit this predicate
+      - p: era:vehicleType # Fake data used to fit this predicate for demo purposes
         o: "http://era.europa.eu/implementation#VT_$(ERATVReference)~iri"
         condition:
           function: idlab-fn:notEqual

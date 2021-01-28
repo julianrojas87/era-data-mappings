@@ -15,18 +15,34 @@ variables:
     referenceFormulation: &referenceFormulation csv
 
 mappings:
-  node-port:
+  departing-node-port:
     sources:
       - access: *host
         type: *typeMSSQL
         credentials: *credentials
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
-        query: (SELECT LineEdges.ID, LineEdges.VersionID, LineNodes.Latitude, LineNodes.Longitude, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS NODE FROM RINF.dbo.LineEdges, RINF.dbo.LineNodes WHERE LineEdges.LineNodeEndID = LineNodes.ID AND LineEdges.VersionID = LineNodes.VersionID) UNION (SELECT LineEdges.ID, LineEdges.VersionID, LineNodes.Latitude, LineNodes.Longitude, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS NODE FROM RINF.dbo.LineEdges, RINF.dbo.LineNodes WHERE LineEdges.LineNodeStartID = LineNodes.ID AND LineEdges.VersionID = LineNodes.VersionID);
-    s: http://era.europa.eu/abstraction#NP_$(NODE)_$(ID)_$(VersionID)
+        query: SELECT Tracks.UUID, LineNodes.Latitude, LineNodes.Longitude, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE FROM RINF.dbo.LineEdges, RINF.dbo.SectionOfLines, RINF.dbo.SOLTracks, RINF.dbo.Tracks, RINF.dbo.LineNodes WHERE LineEdges.LineNodeStartID = LineNodes.ID AND LineEdges.VersionID = LineNodes.VersionID AND LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SectionOfLines.ID = SOLTracks.SectionOfLineID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID;
+    s: http://era.europa.eu/abstraction#NP_$(FROM_NODE)_$(UUID)_$(TO_NODE)
     po:
       - [a, era:NodePort]
       - [wgs:latitude, $(Latitude), xsd:double]
       - [wgs:longitude, $(Longitude), xsd:double]
       - [geosparql:asWKT, POINT ($(Longitude) $(Latitude)), geosparql:wktLiteral]
-      - [era:belongsToNode, http://era.europa.eu/abstraction#MN_$(NODE)~iri]
+      - [era:belongsToNode, http://era.europa.eu/abstraction#MN_$(FROM_NODE)~iri]
+  
+  arriving-node-port:
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT Tracks.UUID, LineNodes.Latitude, LineNodes.Longitude, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE FROM RINF.dbo.LineEdges, RINF.dbo.SectionOfLines, RINF.dbo.SOLTracks, RINF.dbo.Tracks, RINF.dbo.LineNodes WHERE LineEdges.LineNodeEndID = LineNodes.ID AND LineEdges.VersionID = LineNodes.VersionID AND LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SectionOfLines.ID = SOLTracks.SectionOfLineID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID;
+    s: http://era.europa.eu/abstraction#NP_$(TO_NODE)_$(UUID)_$(FROM_NODE)
+    po:
+      - [a, era:NodePort]
+      - [wgs:latitude, $(Latitude), xsd:double]
+      - [wgs:longitude, $(Longitude), xsd:double]
+      - [geosparql:asWKT, POINT ($(Longitude) $(Latitude)), geosparql:wktLiteral]
+      - [era:belongsToNode, http://era.europa.eu/abstraction#MN_$(TO_NODE)~iri]

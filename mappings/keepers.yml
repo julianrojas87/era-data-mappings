@@ -4,11 +4,10 @@ prefixes:
   rdfs: "http://www.w3.org/2000/01/rdf-schema#"
   schema: "https://schema.org/"
   era: "http://era.europa.eu/ns#"
-  era-manufacturers: "http://era.europa.eu/manufacturers#"
   xsd: "http://www.w3.org/2001/XMLSchema#"
 
 mappings:
-  manufacturer:
+  keeper:
     sources: 
       - ["data/wagons_rsdr.csv~csv"]
     s: http://era.europa.eu/keepers#$(Keeper)

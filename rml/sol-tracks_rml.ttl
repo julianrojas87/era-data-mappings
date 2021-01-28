@@ -12,7 +12,6 @@
 @prefix grel: <http://users.ugent.be/~bjdmeest/function/grel.ttl#>.
 @prefix eu-country: <http://publications.europa.eu/resource/authority/country/>.
 @prefix era: <http://era.europa.eu/ns#>.
-@prefix era-lni: <http://era.europa.eu/concepts/line-national-ids#>.
 @prefix era-lc: <http://era.europa.eu/concepts/load-capabilities#>.
 @prefix era-gaugings: <http://era.europa.eu/concepts/gaugings#>.
 @prefix era-tds: <http://era.europa.eu/concepts/train-detection#>.
@@ -30,7 +29,7 @@
 :map_sol-tracks_0 rml:logicalSource :source_0.
 :source_0 a rml:LogicalSource;
     rml:source :database_0;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, SectionOfLines.Length, UICLines.UICCode, Tracks.UUID, MemberStates.Code FROM RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.UICLines, RINF.dbo.Tracks, RINF.dbo.MemberStates, RINF.dbo.MemberStateVersions WHERE SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID AND SOLTracks.VersionID = MemberStateVersions.ID AND MemberStateVersions.MemberStateID = MemberStates.ID AND SectionOfLines.UICLineID = UICLines.ID AND SectionOfLines.VersionID = UICLines.VersionID;".
+    rml:query "SELECT Tracks.UUID, SectionOfLines.Length, UICLines.UICCode, MemberStates.Code, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.UICLines, RINF.dbo.MemberStateVersions, RINF.dbo.MemberStates WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID AND SectionOfLines.UICLineID = UICLines.ID AND SectionOfLines.VersionID = UICLines.VersionID AND Tracks.VersionID = MemberStateVersions.ID AND MemberStateVersions.MemberStateID = MemberStates.ID;".
 :database_0 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -41,7 +40,7 @@
     rdfs:label "sol-tracks".
 :s_0 a rr:SubjectMap.
 :map_sol-tracks_0 rr:subjectMap :s_0.
-:s_0 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
+:s_0 rr:template "http://era.europa.eu/implementation#T_{FROM_NODE}_{UUID}_{TO_NODE}".
 :pom_0 a rr:PredicateObjectMap.
 :map_sol-tracks_0 rr:predicateObjectMap :pom_0.
 :pm_0 a rr:PredicateMap.
@@ -67,7 +66,7 @@
 :pm_2 rr:constant era:lineNationalId.
 :pom_2 rr:objectMap :om_2.
 :om_2 a rr:ObjectMap;
-    rr:template "http://era.europa.eu/concepts/line-national-ids#{UICCode}";
+    rr:template "http://era.europa.eu/implementation#LNI_{UICCode}";
     rr:termType rr:IRI.
 :pom_3 a rr:PredicateObjectMap.
 :map_sol-tracks_0 rr:predicateObjectMap :pom_3.
@@ -86,7 +85,7 @@
 :pm_4 rr:constant era:hasAbstraction.
 :pom_4 rr:objectMap :om_4.
 :om_4 a rr:ObjectMap;
-    rr:template "http://era.europa.eu/abstraction#ML_{ID}_{VersionID}_{TrackID}";
+    rr:template "http://era.europa.eu/abstraction#ML_{FROM_NODE}_{UUID}_{TO_NODE}";
     rr:termType rr:IRI.
 :pom_5 a rr:PredicateObjectMap.
 :map_sol-tracks_0 rr:predicateObjectMap :pom_5.
@@ -97,7 +96,7 @@
 :map_tunnel-reference_0 rml:logicalSource :source_1.
 :source_1 a rml:LogicalSource;
     rml:source :database_1;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, TrackTunnels.TunnelID FROM RINF.dbo.SectionOfLines, RINF.dbo.SOLTracks, RINF.dbo.TrackTunnels WHERE SectionOfLines.ID = SOLTracks.SectionOfLineID AND SectionOfLines.VersionID = SOLTracks.VersionID AND SOLTracks.TrackID = TrackTunnels.TrackID AND SOLTracks.VersionID = TrackTunnels.VersionID;".
+    rml:query "SELECT Tracks.UUID AS TRACK_ID, REPLACE(Tunnels.UUID, ' ', '_') AS TUNNEL_URI, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE FROM RINF.dbo.LineEdges, RINF.dbo.SectionOfLines, RINF.dbo.SOLTracks, RINF.dbo.TrackTunnels, RINF.dbo.Tracks, RINF.dbo.Tunnels WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SectionOfLines.ID = SOLTracks.SectionOfLineID AND SectionOfLines.VersionID = SOLTracks.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID AND SOLTracks.TrackID = TrackTunnels.TrackID AND SOLTracks.VersionID = TrackTunnels.VersionID AND TrackTunnels.TunnelID = Tunnels.ID AND TrackTunnels.VersionID = Tunnels.VersionID;".
 :database_1 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -108,7 +107,7 @@
     rdfs:label "tunnel-reference".
 :s_1 a rr:SubjectMap.
 :map_tunnel-reference_0 rr:subjectMap :s_1.
-:s_1 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
+:s_1 rr:template "http://era.europa.eu/implementation#T_{FROM_NODE}_{TRACK_ID}_{TO_NODE}".
 :pom_6 a rr:PredicateObjectMap.
 :map_tunnel-reference_0 rr:predicateObjectMap :pom_6.
 :pm_6 a rr:PredicateMap.
@@ -116,7 +115,7 @@
 :pm_6 rr:constant era:passesThroughTunnel.
 :pom_6 rr:objectMap :om_6.
 :om_6 a rr:ObjectMap;
-    rr:template "http://era.europa.eu/implementation#TN_{VersionID}_{TunnelID}";
+    rr:template "http://era.europa.eu/implementation#TN_{TUNNEL_URI}";
     rr:termType rr:IRI.
 :map_eu-country_0 rml:logicalSource :source_2.
 :source_2 a rml:LogicalSource;
@@ -130,7 +129,7 @@
 :map_load-capability_0 rml:logicalSource :source_3.
 :source_3 a rml:LogicalSource;
     rml:source :database_2;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT(LookupValues.[Value], '-' , TrackParameters.Value) AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.LookupValues WHERE SOLTracks.TrackID = TrackParameters.TrackID  AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID  AND Parameters.[Index] IN ('1.1.1.1.2.4') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT Tracks.UUID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, CONCAT(LookupValues.[Value], '-' , TrackParameters.Value) AS ParameterValue FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.1.1.1.2.4') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID;".
 :database_2 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -141,7 +140,7 @@
     rdfs:label "load-capability".
 :s_3 a rr:SubjectMap.
 :map_load-capability_0 rr:subjectMap :s_3.
-:s_3 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
+:s_3 rr:template "http://era.europa.eu/implementation#T_{FROM_NODE}_{UUID}_{TO_NODE}".
 :pom_7 a rr:PredicateObjectMap.
 :map_load-capability_0 rr:predicateObjectMap :pom_7.
 :pm_7 a rr:PredicateMap.
@@ -154,7 +153,7 @@
 :map_national-load-capability_0 rml:logicalSource :source_4.
 :source_4 a rml:LogicalSource;
     rml:source :database_3;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.1.2.4.1') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT Tracks.UUID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, TrackParameters.[Value] AS ParameterValue FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.TrackParameters, RINF.dbo.Parameters WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID AND Tracks.ID = TrackParameters.TrackID AND Tracks.VersionID = TrackParameters.VersionID AND TrackParameters.ParameterID = Parameters.ID AND TrackParameters.[Value] IS NOT NULL AND Parameters.[Index] IN ('1.1.1.1.2.4.1');".
 :database_3 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -165,7 +164,7 @@
     rdfs:label "national-load-capability".
 :s_4 a rr:SubjectMap.
 :map_national-load-capability_0 rr:subjectMap :s_4.
-:s_4 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
+:s_4 rr:template "http://era.europa.eu/implementation#T_{FROM_NODE}_{UUID}_{TO_NODE}".
 :pom_8 a rr:PredicateObjectMap.
 :map_national-load-capability_0 rr:predicateObjectMap :pom_8.
 :pm_8 a rr:PredicateMap.
@@ -178,7 +177,7 @@
 :map_hslm-compliance_0 rml:logicalSource :source_5.
 :source_5 a rml:LogicalSource;
     rml:source :database_4;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.1.2.4.2') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT Tracks.UUID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, LookupValues.[Value] AS ParameterValue FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.1.1.1.2.4.2') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID;".
 :database_4 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -189,7 +188,7 @@
     rdfs:label "hslm-compliance".
 :s_5 a rr:SubjectMap.
 :map_hslm-compliance_0 rr:subjectMap :s_5.
-:s_5 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
+:s_5 rr:template "http://era.europa.eu/implementation#T_{FROM_NODE}_{UUID}_{TO_NODE}".
 :pom_9 a rr:PredicateObjectMap.
 :map_hslm-compliance_0 rr:predicateObjectMap :pom_9.
 :pm_9 a rr:PredicateMap.
@@ -311,7 +310,7 @@
 :map_structure-check-locations_0 rml:logicalSource :source_6.
 :source_6 a rml:LogicalSource;
     rml:source :database_5;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.1.2.4.3') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT Tracks.UUID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, LookupValues.[Value] AS ParameterValue FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.1.1.1.2.4.3') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID;".
 :database_5 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -322,7 +321,7 @@
     rdfs:label "structure-check-locations".
 :s_6 a rr:SubjectMap.
 :map_structure-check-locations_0 rr:subjectMap :s_6.
-:s_6 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
+:s_6 rr:template "http://era.europa.eu/implementation#T_{FROM_NODE}_{UUID}_{TO_NODE}".
 :pom_19 a rr:PredicateObjectMap.
 :map_structure-check-locations_0 rr:predicateObjectMap :pom_19.
 :pm_19 a rr:PredicateMap.
@@ -336,7 +335,7 @@
 :map_compatibility-procedure-document_0 rml:logicalSource :source_7.
 :source_7 a rml:LogicalSource;
     rml:source :database_6;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.1.2.4.4') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT Tracks.UUID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, LookupValues.[Value] AS ParameterValue FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.1.1.1.2.4.4') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID;".
 :database_6 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -347,7 +346,7 @@
     rdfs:label "compatibility-procedure-document".
 :s_7 a rr:SubjectMap.
 :map_compatibility-procedure-document_0 rr:subjectMap :s_7.
-:s_7 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
+:s_7 rr:template "http://era.europa.eu/implementation#T_{FROM_NODE}_{UUID}_{TO_NODE}".
 :pom_20 a rr:PredicateObjectMap.
 :map_compatibility-procedure-document_0 rr:predicateObjectMap :pom_20.
 :pm_20 a rr:PredicateMap.
@@ -360,7 +359,7 @@
 :map_gauging_0 rml:logicalSource :source_8.
 :source_8 a rml:LogicalSource;
     rml:source :database_7;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.1.3.1.1') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT Tracks.UUID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, LookupValues.[Value] AS ParameterValue FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.1.1.1.3.1.1') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID;".
 :database_7 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -371,7 +370,7 @@
     rdfs:label "gauging".
 :s_8 a rr:SubjectMap.
 :map_gauging_0 rr:subjectMap :s_8.
-:s_8 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
+:s_8 rr:template "http://era.europa.eu/implementation#T_{FROM_NODE}_{UUID}_{TO_NODE}".
 :pom_21 a rr:PredicateObjectMap.
 :map_gauging_0 rr:predicateObjectMap :pom_21.
 :pm_21 a rr:PredicateMap.
@@ -384,7 +383,7 @@
 :map_gauging-check-locations_0 rml:logicalSource :source_9.
 :source_9 a rml:LogicalSource;
     rml:source :database_8;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.1.3.1.2') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT Tracks.UUID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, TrackParameters.[Value] AS ParameterValue FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.TrackParameters, RINF.dbo.Parameters WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID AND Tracks.ID = TrackParameters.TrackID AND Tracks.VersionID = TrackParameters.VersionID AND TrackParameters.ParameterID = Parameters.ID AND TrackParameters.[Value] IS NOT NULL AND Parameters.[Index] IN ('1.1.1.1.3.1.2');".
 :database_8 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -395,7 +394,7 @@
     rdfs:label "gauging-check-locations".
 :s_9 a rr:SubjectMap.
 :map_gauging-check-locations_0 rr:subjectMap :s_9.
-:s_9 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
+:s_9 rr:template "http://era.europa.eu/implementation#T_{FROM_NODE}_{UUID}_{TO_NODE}".
 :pom_22 a rr:PredicateObjectMap.
 :map_gauging-check-locations_0 rr:predicateObjectMap :pom_22.
 :pm_22 a rr:PredicateMap.
@@ -409,7 +408,7 @@
 :map_gauging-transversal-document_0 rml:logicalSource :source_10.
 :source_10 a rml:LogicalSource;
     rml:source :database_9;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.1.3.1.3') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT Tracks.UUID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, TrackParameters.[Value] AS ParameterValue FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.TrackParameters, RINF.dbo.Parameters WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID AND Tracks.ID = TrackParameters.TrackID AND Tracks.VersionID = TrackParameters.VersionID AND TrackParameters.ParameterID = Parameters.ID AND TrackParameters.[Value] IS NOT NULL AND Parameters.[Index] IN ('1.1.1.1.3.1.3');".
 :database_9 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -420,7 +419,7 @@
     rdfs:label "gauging-transversal-document".
 :s_10 a rr:SubjectMap.
 :map_gauging-transversal-document_0 rr:subjectMap :s_10.
-:s_10 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
+:s_10 rr:template "http://era.europa.eu/implementation#T_{FROM_NODE}_{UUID}_{TO_NODE}".
 :pom_23 a rr:PredicateObjectMap.
 :map_gauging-transversal-document_0 rr:predicateObjectMap :pom_23.
 :pm_23 a rr:PredicateMap.
@@ -433,7 +432,7 @@
 :map_minimum-vertical-curve_0 rml:logicalSource :source_11.
 :source_11 a rml:LogicalSource;
     rml:source :database_10;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.2.2.0.3.3') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT Tracks.UUID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, TrackParameters.[Value] AS ParameterValue FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.TrackParameters, RINF.dbo.Parameters WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID AND Tracks.ID = TrackParameters.TrackID AND Tracks.VersionID = TrackParameters.VersionID AND TrackParameters.ParameterID = Parameters.ID AND TrackParameters.[Value] IS NOT NULL AND Parameters.[Index] IN ('1.2.2.0.3.3');".
 :database_10 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -444,7 +443,7 @@
     rdfs:label "minimum-vertical-curve".
 :s_11 a rr:SubjectMap.
 :map_minimum-vertical-curve_0 rr:subjectMap :s_11.
-:s_11 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
+:s_11 rr:template "http://era.europa.eu/implementation#T_{FROM_NODE}_{UUID}_{TO_NODE}".
 :pom_24 a rr:PredicateObjectMap.
 :map_minimum-vertical-curve_0 rr:predicateObjectMap :pom_24.
 :pm_24 a rr:PredicateMap.
@@ -457,7 +456,7 @@
 :map_train-detection-system-type_0 rml:logicalSource :source_12.
 :source_12 a rml:LogicalSource;
     rml:source :database_11;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, REPLACE(CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, ''), ' ', '_') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.3.7.1.1') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT Tracks.UUID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, REPLACE(LookupValues.[Value], ' ', '_') AS ParameterValue FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.1.1.3.7.1.1') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID;".
 :database_11 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -468,7 +467,7 @@
     rdfs:label "train-detection-system-type".
 :s_12 a rr:SubjectMap.
 :map_train-detection-system-type_0 rr:subjectMap :s_12.
-:s_12 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
+:s_12 rr:template "http://era.europa.eu/implementation#T_{FROM_NODE}_{UUID}_{TO_NODE}".
 :pom_25 a rr:PredicateObjectMap.
 :map_train-detection-system-type_0 rr:predicateObjectMap :pom_25.
 :pm_25 a rr:PredicateMap.
@@ -481,7 +480,7 @@
 :map_detection-system-specific-checks_0 rml:logicalSource :source_13.
 :source_13 a rml:LogicalSource;
     rml:source :database_12;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.3.7.1.2') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT Tracks.UUID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, TrackParameters.[Value] AS ParameterValue FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.TrackParameters, RINF.dbo.Parameters WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID AND Tracks.ID = TrackParameters.TrackID AND Tracks.VersionID = TrackParameters.VersionID AND TrackParameters.ParameterID = Parameters.ID AND TrackParameters.[Value] IS NOT NULL AND Parameters.[Index] IN ('1.1.1.3.7.1.2');".
 :database_12 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -492,7 +491,7 @@
     rdfs:label "detection-system-specific-checks".
 :s_13 a rr:SubjectMap.
 :map_detection-system-specific-checks_0 rr:subjectMap :s_13.
-:s_13 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
+:s_13 rr:template "http://era.europa.eu/implementation#T_{FROM_NODE}_{UUID}_{TO_NODE}".
 :pom_26 a rr:PredicateObjectMap.
 :map_detection-system-specific-checks_0 rr:predicateObjectMap :pom_26.
 :pm_26 a rr:PredicateMap.
@@ -505,7 +504,7 @@
 :map_french-detection-limitation_0 rml:logicalSource :source_14.
 :source_14 a rml:LogicalSource;
     rml:source :database_13;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, REPLACE(CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, ''), '+', '_') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.3.7.1.4') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT Tracks.UUID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, REPLACE(TrackParameters.[Value], '+', '_') AS ParameterValue FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.TrackParameters, RINF.dbo.Parameters WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID AND Tracks.ID = TrackParameters.TrackID AND Tracks.VersionID = TrackParameters.VersionID AND TrackParameters.ParameterID = Parameters.ID AND TrackParameters.[Value] IS NOT NULL AND Parameters.[Index] IN ('1.1.1.3.7.1.4')".
 :database_13 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -516,7 +515,7 @@
     rdfs:label "french-detection-limitation".
 :s_14 a rr:SubjectMap.
 :map_french-detection-limitation_0 rr:subjectMap :s_14.
-:s_14 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
+:s_14 rr:template "http://era.europa.eu/implementation#T_{FROM_NODE}_{UUID}_{TO_NODE}".
 :pom_27 a rr:PredicateObjectMap.
 :map_french-detection-limitation_0 rr:predicateObjectMap :pom_27.
 :pm_27 a rr:PredicateMap.
@@ -529,7 +528,7 @@
 :map_hot-axle-box-detector-existence_0 rml:logicalSource :source_15.
 :source_15 a rml:LogicalSource;
     rml:source :database_14;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.1.7.4') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT Tracks.UUID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, LookupValues.[Value] AS ParameterValue FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.1.1.1.7.4') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID;".
 :database_14 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -540,7 +539,7 @@
     rdfs:label "hot-axle-box-detector-existence".
 :s_15 a rr:SubjectMap.
 :map_hot-axle-box-detector-existence_0 rr:subjectMap :s_15.
-:s_15 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
+:s_15 rr:template "http://era.europa.eu/implementation#T_{FROM_NODE}_{UUID}_{TO_NODE}".
 :pom_28 a rr:PredicateObjectMap.
 :map_hot-axle-box-detector-existence_0 rr:predicateObjectMap :pom_28.
 :pm_28 a rr:PredicateMap.
@@ -662,7 +661,7 @@
 :map_hot-axle-box-detection-tsi-compliant_0 rml:logicalSource :source_16.
 :source_16 a rml:LogicalSource;
     rml:source :database_15;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.1.7.5') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT Tracks.UUID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, LookupValues.[Value] AS ParameterValue FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.1.1.1.7.5') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID;".
 :database_15 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -673,7 +672,7 @@
     rdfs:label "hot-axle-box-detection-tsi-compliant".
 :s_16 a rr:SubjectMap.
 :map_hot-axle-box-detection-tsi-compliant_0 rr:subjectMap :s_16.
-:s_16 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
+:s_16 rr:template "http://era.europa.eu/implementation#T_{FROM_NODE}_{UUID}_{TO_NODE}".
 :pom_38 a rr:PredicateObjectMap.
 :map_hot-axle-box-detection-tsi-compliant_0 rr:predicateObjectMap :pom_38.
 :pm_38 a rr:PredicateMap.
@@ -795,7 +794,7 @@
 :map_hot-axle-box-detector-identification_0 rml:logicalSource :source_17.
 :source_17 a rml:LogicalSource;
     rml:source :database_16;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.1.7.6') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT Tracks.UUID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, LookupValues.[Value] AS ParameterValue FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.1.1.1.7.6') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID;".
 :database_16 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -806,7 +805,7 @@
     rdfs:label "hot-axle-box-detector-identification".
 :s_17 a rr:SubjectMap.
 :map_hot-axle-box-detector-identification_0 rr:subjectMap :s_17.
-:s_17 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
+:s_17 rr:template "http://era.europa.eu/implementation#T_{FROM_NODE}_{UUID}_{TO_NODE}".
 :pom_48 a rr:PredicateObjectMap.
 :map_hot-axle-box-detector-identification_0 rr:predicateObjectMap :pom_48.
 :pm_48 a rr:PredicateMap.
@@ -819,7 +818,7 @@
 :map_hot-axle-box-detector-generation_0 rml:logicalSource :source_18.
 :source_18 a rml:LogicalSource;
     rml:source :database_17;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.1.7.7') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT Tracks.UUID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, LookupValues.[Value] AS ParameterValue FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.1.1.1.7.7') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID;".
 :database_17 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -830,7 +829,7 @@
     rdfs:label "hot-axle-box-detector-generation".
 :s_18 a rr:SubjectMap.
 :map_hot-axle-box-detector-generation_0 rr:subjectMap :s_18.
-:s_18 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
+:s_18 rr:template "http://era.europa.eu/implementation#T_{FROM_NODE}_{UUID}_{TO_NODE}".
 :pom_49 a rr:PredicateObjectMap.
 :map_hot-axle-box-detector-generation_0 rr:predicateObjectMap :pom_49.
 :pm_49 a rr:PredicateMap.
@@ -843,7 +842,7 @@
 :map_hot-axle-box-detector-location_0 rml:logicalSource :source_19.
 :source_19 a rml:LogicalSource;
     rml:source :database_18;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, SUBSTRING(TrackParameters.Value, 2, LEN(TrackParameters.Value)) AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.1.7.8') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT Tracks.UUID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, SUBSTRING(TrackParameters.Value, 2, LEN(TrackParameters.Value)) AS ParameterValue FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.TrackParameters, RINF.dbo.Parameters WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID AND Tracks.ID = TrackParameters.TrackID AND Tracks.VersionID = TrackParameters.VersionID AND TrackParameters.ParameterID = Parameters.ID AND TrackParameters.[Value] IS NOT NULL AND Parameters.[Index] IN ('1.1.1.1.7.8');".
 :database_18 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -854,7 +853,7 @@
     rdfs:label "hot-axle-box-detector-location".
 :s_19 a rr:SubjectMap.
 :map_hot-axle-box-detector-location_0 rr:subjectMap :s_19.
-:s_19 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
+:s_19 rr:template "http://era.europa.eu/implementation#T_{FROM_NODE}_{UUID}_{TO_NODE}".
 :pom_50 a rr:PredicateObjectMap.
 :map_hot-axle-box-detector-location_0 rr:predicateObjectMap :pom_50.
 :pm_50 a rr:PredicateMap.
@@ -868,7 +867,7 @@
 :map_hot-axle-box-detector-direction_0 rml:logicalSource :source_20.
 :source_20 a rml:LogicalSource;
     rml:source :database_19;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.1.7.9') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT Tracks.UUID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, LookupValues.[Value] AS ParameterValue FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.1.1.1.7.9') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID;".
 :database_19 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -879,7 +878,7 @@
     rdfs:label "hot-axle-box-detector-direction".
 :s_20 a rr:SubjectMap.
 :map_hot-axle-box-detector-direction_0 rr:subjectMap :s_20.
-:s_20 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
+:s_20 rr:template "http://era.europa.eu/implementation#T_{FROM_NODE}_{UUID}_{TO_NODE}".
 :pom_51 a rr:PredicateObjectMap.
 :map_hot-axle-box-detector-direction_0 rr:predicateObjectMap :pom_51.
 :pm_51 a rr:PredicateMap.
@@ -892,7 +891,7 @@
 :map_cant-deficiency_0 rml:logicalSource :source_21.
 :source_21 a rml:LogicalSource;
     rml:source :database_20;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.1.4.2') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT Tracks.UUID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, TrackParameters.Value AS ParameterValue FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.TrackParameters, RINF.dbo.Parameters WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID AND Tracks.ID = TrackParameters.TrackID AND Tracks.VersionID = TrackParameters.VersionID AND TrackParameters.ParameterID = Parameters.ID AND TrackParameters.[Value] IS NOT NULL AND Parameters.[Index] IN ('1.1.1.1.4.2');".
 :database_20 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -903,7 +902,7 @@
     rdfs:label "cant-deficiency".
 :s_21 a rr:SubjectMap.
 :map_cant-deficiency_0 rr:subjectMap :s_21.
-:s_21 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
+:s_21 rr:template "http://era.europa.eu/implementation#T_{FROM_NODE}_{UUID}_{TO_NODE}".
 :pom_52 a rr:PredicateObjectMap.
 :map_cant-deficiency_0 rr:predicateObjectMap :pom_52.
 :pm_52 a rr:PredicateMap.
@@ -916,7 +915,7 @@
 :map_maximum-permitted-speed_0 rml:logicalSource :source_22.
 :source_22 a rml:LogicalSource;
     rml:source :database_21;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.1.2.5') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT Tracks.UUID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, TrackParameters.Value AS ParameterValue FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.TrackParameters, RINF.dbo.Parameters WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID AND Tracks.ID = TrackParameters.TrackID AND Tracks.VersionID = TrackParameters.VersionID AND TrackParameters.ParameterID = Parameters.ID AND TrackParameters.[Value] IS NOT NULL AND Parameters.[Index] IN ('1.1.1.1.2.5');".
 :database_21 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -927,7 +926,7 @@
     rdfs:label "maximum-permitted-speed".
 :s_22 a rr:SubjectMap.
 :map_maximum-permitted-speed_0 rr:subjectMap :s_22.
-:s_22 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
+:s_22 rr:template "http://era.europa.eu/implementation#T_{FROM_NODE}_{UUID}_{TO_NODE}".
 :pom_53 a rr:PredicateObjectMap.
 :map_maximum-permitted-speed_0 rr:predicateObjectMap :pom_53.
 :pm_53 a rr:PredicateMap.
@@ -941,7 +940,7 @@
 :map_rail-inclination_0 rml:logicalSource :source_23.
 :source_23 a rml:LogicalSource;
     rml:source :database_22;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.1.4.3') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT Tracks.UUID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, TrackParameters.Value AS ParameterValue FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.TrackParameters, RINF.dbo.Parameters WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID AND Tracks.ID = TrackParameters.TrackID AND Tracks.VersionID = TrackParameters.VersionID AND TrackParameters.ParameterID = Parameters.ID AND TrackParameters.[Value] IS NOT NULL AND Parameters.[Index] IN ('1.1.1.1.4.3');".
 :database_22 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -952,7 +951,7 @@
     rdfs:label "rail-inclination".
 :s_23 a rr:SubjectMap.
 :map_rail-inclination_0 rr:subjectMap :s_23.
-:s_23 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
+:s_23 rr:template "http://era.europa.eu/implementation#T_{FROM_NODE}_{UUID}_{TO_NODE}".
 :pom_54 a rr:PredicateObjectMap.
 :map_rail-inclination_0 rr:predicateObjectMap :pom_54.
 :pm_54 a rr:PredicateMap.
@@ -965,7 +964,7 @@
 :map_nominal-track-gauge_0 rml:logicalSource :source_24.
 :source_24 a rml:LogicalSource;
     rml:source :database_23;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.1.4.1') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT Tracks.UUID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, LookupValues.[Value] AS ParameterValue FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.1.1.1.4.1') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID;".
 :database_23 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -976,7 +975,7 @@
     rdfs:label "nominal-track-gauge".
 :s_24 a rr:SubjectMap.
 :map_nominal-track-gauge_0 rr:subjectMap :s_24.
-:s_24 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
+:s_24 rr:template "http://era.europa.eu/implementation#T_{FROM_NODE}_{UUID}_{TO_NODE}".
 :pom_55 a rr:PredicateObjectMap.
 :map_nominal-track-gauge_0 rr:predicateObjectMap :pom_55.
 :pm_55 a rr:PredicateMap.
@@ -1039,7 +1038,7 @@
 :map_minimum-wheel-diameter_0 rml:logicalSource :source_25.
 :source_25 a rml:LogicalSource;
     rml:source :database_24;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.1.5.2') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT Tracks.UUID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, TrackParameters.Value AS ParameterValue FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.TrackParameters, RINF.dbo.Parameters WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID AND Tracks.ID = TrackParameters.TrackID AND Tracks.VersionID = TrackParameters.VersionID AND TrackParameters.ParameterID = Parameters.ID AND TrackParameters.[Value] IS NOT NULL AND Parameters.[Index] IN ('1.1.1.1.5.2');".
 :database_24 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -1050,7 +1049,7 @@
     rdfs:label "minimum-wheel-diameter".
 :s_25 a rr:SubjectMap.
 :map_minimum-wheel-diameter_0 rr:subjectMap :s_25.
-:s_25 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
+:s_25 rr:template "http://era.europa.eu/implementation#T_{FROM_NODE}_{UUID}_{TO_NODE}".
 :pom_60 a rr:PredicateObjectMap.
 :map_minimum-wheel-diameter_0 rr:predicateObjectMap :pom_60.
 :pm_60 a rr:PredicateMap.
@@ -1064,7 +1063,7 @@
 :map_minimum-horizontal-curve-radius_0 rml:logicalSource :source_26.
 :source_26 a rml:LogicalSource;
     rml:source :database_25;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.1.3.7') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT Tracks.UUID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, TrackParameters.Value AS ParameterValue FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.TrackParameters, RINF.dbo.Parameters WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID AND Tracks.ID = TrackParameters.TrackID AND Tracks.VersionID = TrackParameters.VersionID AND TrackParameters.ParameterID = Parameters.ID AND TrackParameters.[Value] IS NOT NULL AND Parameters.[Index] IN ('1.1.1.1.3.7');".
 :database_25 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -1075,7 +1074,7 @@
     rdfs:label "minimum-horizontal-curve-radius".
 :s_26 a rr:SubjectMap.
 :map_minimum-horizontal-curve-radius_0 rr:subjectMap :s_26.
-:s_26 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
+:s_26 rr:template "http://era.europa.eu/implementation#T_{FROM_NODE}_{UUID}_{TO_NODE}".
 :pom_61 a rr:PredicateObjectMap.
 :map_minimum-horizontal-curve-radius_0 rr:predicateObjectMap :pom_61.
 :pm_61 a rr:PredicateMap.
@@ -1089,7 +1088,7 @@
 :map_maximum-braking-distance_0 rml:logicalSource :source_27.
 :source_27 a rml:LogicalSource;
     rml:source :database_26;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.3.11.1') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT Tracks.UUID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, TrackParameters.Value AS ParameterValue FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.TrackParameters, RINF.dbo.Parameters WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID AND Tracks.ID = TrackParameters.TrackID AND Tracks.VersionID = TrackParameters.VersionID AND TrackParameters.ParameterID = Parameters.ID AND TrackParameters.[Value] IS NOT NULL AND Parameters.[Index] IN ('1.1.1.3.11.1');".
 :database_26 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -1100,7 +1099,7 @@
     rdfs:label "maximum-braking-distance".
 :s_27 a rr:SubjectMap.
 :map_maximum-braking-distance_0 rr:subjectMap :s_27.
-:s_27 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
+:s_27 rr:template "http://era.europa.eu/implementation#T_{FROM_NODE}_{UUID}_{TO_NODE}".
 :pom_62 a rr:PredicateObjectMap.
 :map_maximum-braking-distance_0 rr:predicateObjectMap :pom_62.
 :pm_62 a rr:PredicateMap.
@@ -1114,7 +1113,7 @@
 :map_gradient-profile_0 rml:logicalSource :source_28.
 :source_28 a rml:LogicalSource;
     rml:source :database_27;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.1.3.6') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT Tracks.UUID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, TrackParameters.Value AS ParameterValue FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.TrackParameters, RINF.dbo.Parameters WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID AND Tracks.ID = TrackParameters.TrackID AND Tracks.VersionID = TrackParameters.VersionID AND TrackParameters.ParameterID = Parameters.ID AND TrackParameters.[Value] IS NOT NULL AND Parameters.[Index] IN ('1.1.1.1.3.6');".
 :database_27 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -1125,7 +1124,7 @@
     rdfs:label "gradient-profile".
 :s_28 a rr:SubjectMap.
 :map_gradient-profile_0 rr:subjectMap :s_28.
-:s_28 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
+:s_28 rr:template "http://era.europa.eu/implementation#T_{FROM_NODE}_{UUID}_{TO_NODE}".
 :pom_63 a rr:PredicateObjectMap.
 :map_gradient-profile_0 rr:predicateObjectMap :pom_63.
 :pm_63 a rr:PredicateMap.
@@ -1138,7 +1137,7 @@
 :map_maximum-train-deceleration_0 rml:logicalSource :source_29.
 :source_29 a rml:LogicalSource;
     rml:source :database_28;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.1.6.1') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT Tracks.UUID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, TrackParameters.Value AS ParameterValue FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.TrackParameters, RINF.dbo.Parameters WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID AND Tracks.ID = TrackParameters.TrackID AND Tracks.VersionID = TrackParameters.VersionID AND TrackParameters.ParameterID = Parameters.ID AND TrackParameters.[Value] IS NOT NULL AND Parameters.[Index] IN ('1.1.1.1.6.1');".
 :database_28 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -1149,7 +1148,7 @@
     rdfs:label "maximum-train-deceleration".
 :s_29 a rr:SubjectMap.
 :map_maximum-train-deceleration_0 rr:subjectMap :s_29.
-:s_29 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
+:s_29 rr:template "http://era.europa.eu/implementation#T_{FROM_NODE}_{UUID}_{TO_NODE}".
 :pom_64 a rr:PredicateObjectMap.
 :map_maximum-train-deceleration_0 rr:predicateObjectMap :pom_64.
 :pm_64 a rr:PredicateMap.
@@ -1163,7 +1162,7 @@
 :map_has-additional-braking-information_0 rml:logicalSource :source_30.
 :source_30 a rml:LogicalSource;
     rml:source :database_29;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.3.11.2') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT Tracks.UUID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, LookupValues.[Value] AS ParameterValue FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.1.1.3.11.2') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID;".
 :database_29 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -1174,7 +1173,7 @@
     rdfs:label "has-additional-braking-information".
 :s_30 a rr:SubjectMap.
 :map_has-additional-braking-information_0 rr:subjectMap :s_30.
-:s_30 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
+:s_30 rr:template "http://era.europa.eu/implementation#T_{FROM_NODE}_{UUID}_{TO_NODE}".
 :pom_65 a rr:PredicateObjectMap.
 :map_has-additional-braking-information_0 rr:predicateObjectMap :pom_65.
 :pm_65 a rr:PredicateMap.
@@ -1296,7 +1295,7 @@
 :map_additional-braking-information-document_0 rml:logicalSource :source_31.
 :source_31 a rml:LogicalSource;
     rml:source :database_30;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.3.11.3') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT Tracks.UUID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, TrackParameters.Value AS ParameterValue FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.TrackParameters, RINF.dbo.Parameters WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID AND Tracks.ID = TrackParameters.TrackID AND Tracks.VersionID = TrackParameters.VersionID AND TrackParameters.ParameterID = Parameters.ID AND TrackParameters.[Value] IS NOT NULL AND Parameters.[Index] IN ('1.1.1.3.11.3');".
 :database_30 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -1307,7 +1306,7 @@
     rdfs:label "additional-braking-information-document".
 :s_31 a rr:SubjectMap.
 :map_additional-braking-information-document_0 rr:subjectMap :s_31.
-:s_31 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
+:s_31 rr:template "http://era.europa.eu/implementation#T_{FROM_NODE}_{UUID}_{TO_NODE}".
 :pom_75 a rr:PredicateObjectMap.
 :map_additional-braking-information-document_0 rr:predicateObjectMap :pom_75.
 :pm_75 a rr:PredicateMap.
@@ -1320,7 +1319,7 @@
 :map_use-of-magnetic-brakes_0 rml:logicalSource :source_32.
 :source_32 a rml:LogicalSource;
     rml:source :database_31;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.1.6.3') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT Tracks.UUID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, LookupValues.[Value] AS ParameterValue FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.1.1.1.6.3') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID;".
 :database_31 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -1331,7 +1330,7 @@
     rdfs:label "use-of-magnetic-brakes".
 :s_32 a rr:SubjectMap.
 :map_use-of-magnetic-brakes_0 rr:subjectMap :s_32.
-:s_32 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
+:s_32 rr:template "http://era.europa.eu/implementation#T_{FROM_NODE}_{UUID}_{TO_NODE}".
 :pom_76 a rr:PredicateObjectMap.
 :map_use-of-magnetic-brakes_0 rr:predicateObjectMap :pom_76.
 :pm_76 a rr:PredicateMap.
@@ -1630,7 +1629,7 @@
 :map_magnetic-braking-conditions-document_0 rml:logicalSource :source_33.
 :source_33 a rml:LogicalSource;
     rml:source :database_32;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.1.6.5') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT Tracks.UUID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, LookupValues.[Value] AS ParameterValue FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.1.1.1.6.5') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID;".
 :database_32 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -1641,7 +1640,7 @@
     rdfs:label "magnetic-braking-conditions-document".
 :s_33 a rr:SubjectMap.
 :map_magnetic-braking-conditions-document_0 rr:subjectMap :s_33.
-:s_33 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
+:s_33 rr:template "http://era.europa.eu/implementation#T_{FROM_NODE}_{UUID}_{TO_NODE}".
 :pom_101 a rr:PredicateObjectMap.
 :map_magnetic-braking-conditions-document_0 rr:predicateObjectMap :pom_101.
 :pm_101 a rr:PredicateMap.
@@ -1654,7 +1653,7 @@
 :map_use-of-eddy-current-brakes_0 rml:logicalSource :source_34.
 :source_34 a rml:LogicalSource;
     rml:source :database_33;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.1.6.2') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT Tracks.UUID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, LookupValues.[Value] AS ParameterValue FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.1.1.1.6.2') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID;".
 :database_33 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -1665,7 +1664,7 @@
     rdfs:label "use-of-eddy-current-brakes".
 :s_34 a rr:SubjectMap.
 :map_use-of-eddy-current-brakes_0 rr:subjectMap :s_34.
-:s_34 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
+:s_34 rr:template "http://era.europa.eu/implementation#T_{FROM_NODE}_{UUID}_{TO_NODE}".
 :pom_102 a rr:PredicateObjectMap.
 :map_use-of-eddy-current-brakes_0 rr:predicateObjectMap :pom_102.
 :pm_102 a rr:PredicateMap.
@@ -1964,7 +1963,7 @@
 :map_eddy-current-braking-conditions-document_0 rml:logicalSource :source_35.
 :source_35 a rml:LogicalSource;
     rml:source :database_34;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.1.6.4') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT Tracks.UUID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, LookupValues.[Value] AS ParameterValue FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.1.1.1.6.4') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID;".
 :database_34 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -1975,7 +1974,7 @@
     rdfs:label "eddy-current-braking-conditions-document".
 :s_35 a rr:SubjectMap.
 :map_eddy-current-braking-conditions-document_0 rr:subjectMap :s_35.
-:s_35 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
+:s_35 rr:template "http://era.europa.eu/implementation#T_{FROM_NODE}_{UUID}_{TO_NODE}".
 :pom_127 a rr:PredicateObjectMap.
 :map_eddy-current-braking-conditions-document_0 rr:predicateObjectMap :pom_127.
 :pm_127 a rr:PredicateMap.
@@ -1988,7 +1987,7 @@
 :map_temperature-range_0 rml:logicalSource :source_36.
 :source_36 a rml:LogicalSource;
     rml:source :database_35;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, \"Index\", Parameters.Name, SUBSTRING(LookupValues.[Value], 5, 3) AS MinimumTemperature, SUBSTRING(LookupValues.[Value], 13, 2) AS MaximumTemperature FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.LookupValues WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID AND \"Index\" IN ('1.1.1.1.2.6') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT Tracks.UUID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, SUBSTRING(LookupValues.[Value], 5, 3) AS MinimumTemperature, SUBSTRING(LookupValues.[Value], 13, 2) AS MaximumTemperature FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.1.1.1.2.6') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID;".
 :database_35 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -1999,7 +1998,7 @@
     rdfs:label "temperature-range".
 :s_36 a rr:SubjectMap.
 :map_temperature-range_0 rr:subjectMap :s_36.
-:s_36 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
+:s_36 rr:template "http://era.europa.eu/implementation#T_{FROM_NODE}_{UUID}_{TO_NODE}".
 :pom_128 a rr:PredicateObjectMap.
 :map_temperature-range_0 rr:predicateObjectMap :pom_128.
 :pm_128 a rr:PredicateMap.
@@ -2023,7 +2022,7 @@
 :map_severe-weather-conditions_0 rml:logicalSource :source_37.
 :source_37 a rml:LogicalSource;
     rml:source :database_36;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.1.2.8') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT Tracks.UUID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, LookupValues.[Value] AS ParameterValue FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.1.1.1.2.8') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID;".
 :database_36 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -2034,7 +2033,7 @@
     rdfs:label "severe-weather-conditions".
 :s_37 a rr:SubjectMap.
 :map_severe-weather-conditions_0 rr:subjectMap :s_37.
-:s_37 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
+:s_37 rr:template "http://era.europa.eu/implementation#T_{FROM_NODE}_{UUID}_{TO_NODE}".
 :pom_130 a rr:PredicateObjectMap.
 :map_severe-weather-conditions_0 rr:predicateObjectMap :pom_130.
 :pm_130 a rr:PredicateMap.
@@ -2156,7 +2155,7 @@
 :map_contact-line-system-type_0 rml:logicalSource :source_38.
 :source_38 a rml:LogicalSource;
     rml:source :database_37;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, REPLACE(CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, ''), ' ', '_') AS UriName FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.2.2.1.1') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT Tracks.UUID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, REPLACE(LookupValues.[Value], ' ', '_') AS ParameterValue FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.1.1.2.2.1.1') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID;".
 :database_37 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -2167,7 +2166,7 @@
     rdfs:label "contact-line-system-type".
 :s_38 a rr:SubjectMap.
 :map_contact-line-system-type_0 rr:subjectMap :s_38.
-:s_38 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
+:s_38 rr:template "http://era.europa.eu/implementation#T_{FROM_NODE}_{UUID}_{TO_NODE}".
 :pom_140 a rr:PredicateObjectMap.
 :map_contact-line-system-type_0 rr:predicateObjectMap :pom_140.
 :pm_140 a rr:PredicateMap.
@@ -2175,12 +2174,12 @@
 :pm_140 rr:constant era:contactLineSystem.
 :pom_140 rr:objectMap :om_140.
 :om_140 a rr:ObjectMap;
-    rr:template "http://era.europa.eu/concepts/contact-line-systems#{UriName}";
+    rr:template "http://era.europa.eu/concepts/contact-line-systems#{ParameterValue}";
     rr:termType rr:IRI.
 :map_energy-supply-system_0 rml:logicalSource :source_39.
 :source_39 a rml:LogicalSource;
     rml:source :database_38;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, REPLACE((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), ' ', '_') AS ParameterURI FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.2.2.1.2') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT Tracks.UUID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, REPLACE(LookupValues.[Value], ' ', '_') AS ParameterValue FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.1.1.2.2.1.2') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID;".
 :database_38 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -2191,7 +2190,7 @@
     rdfs:label "energy-supply-system".
 :s_39 a rr:SubjectMap.
 :map_energy-supply-system_0 rr:subjectMap :s_39.
-:s_39 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
+:s_39 rr:template "http://era.europa.eu/implementation#T_{FROM_NODE}_{UUID}_{TO_NODE}".
 :pom_141 a rr:PredicateObjectMap.
 :map_energy-supply-system_0 rr:predicateObjectMap :pom_141.
 :pm_141 a rr:PredicateMap.
@@ -2230,7 +2229,7 @@
     rr:constant grel:valueParameter.
 :pom_143 rr:objectMap :om_143.
 :om_143 a rr:ObjectMap;
-    rml:reference "ParameterURI";
+    rml:reference "ParameterValue";
     rr:termType rr:Literal.
 :fn_43 rr:predicateObjectMap :pom_144.
 :pom_144 a rr:PredicateObjectMap;
@@ -2248,12 +2247,12 @@
     rr:constant idlab-fn:str.
 :pom_145 rr:objectMap :om_145.
 :om_145 a rr:ObjectMap;
-    rr:template "http://era.europa.eu/concepts/energy-supply-systems#{ParameterURI}";
+    rr:template "http://era.europa.eu/concepts/energy-supply-systems#{ParameterValue}";
     rr:termType rr:IRI.
 :map_energy-supply-system-tsi-compliant_0 rml:logicalSource :source_40.
 :source_40 a rml:LogicalSource;
     rml:source :database_39;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.2.2.1.2.1') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT Tracks.UUID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, LookupValues.[Value] AS ParameterValue FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.1.1.2.2.1.2.1') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID;".
 :database_39 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -2264,7 +2263,7 @@
     rdfs:label "energy-supply-system-tsi-compliant".
 :s_40 a rr:SubjectMap.
 :map_energy-supply-system-tsi-compliant_0 rr:subjectMap :s_40.
-:s_40 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
+:s_40 rr:template "http://era.europa.eu/implementation#T_{FROM_NODE}_{UUID}_{TO_NODE}".
 :pom_146 a rr:PredicateObjectMap.
 :map_energy-supply-system-tsi-compliant_0 rr:predicateObjectMap :pom_146.
 :pm_146 a rr:PredicateMap.
@@ -2386,7 +2385,7 @@
 :map_umax2_0 rml:logicalSource :source_41.
 :source_41 a rml:LogicalSource;
     rml:source :database_40;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.2.2.1.3') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT Tracks.UUID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, TrackParameters.Value AS ParameterValue FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.TrackParameters, RINF.dbo.Parameters WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID AND Tracks.ID = TrackParameters.TrackID AND Tracks.VersionID = TrackParameters.VersionID AND TrackParameters.ParameterID = Parameters.ID AND TrackParameters.[Value] IS NOT NULL AND Parameters.[Index] IN ('1.1.1.2.2.1.3');".
 :database_40 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -2397,7 +2396,7 @@
     rdfs:label "umax2".
 :s_41 a rr:SubjectMap.
 :map_umax2_0 rr:subjectMap :s_41.
-:s_41 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
+:s_41 rr:template "http://era.europa.eu/implementation#T_{FROM_NODE}_{UUID}_{TO_NODE}".
 :pom_156 a rr:PredicateObjectMap.
 :map_umax2_0 rr:predicateObjectMap :pom_156.
 :pm_156 a rr:PredicateMap.
@@ -2410,7 +2409,7 @@
 :map_regenerative-braking_0 rml:logicalSource :source_42.
 :source_42 a rml:LogicalSource;
     rml:source :database_41;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.2.2.4') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT Tracks.UUID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, LookupValues.[Value] AS ParameterValue FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.1.1.2.2.4') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID;".
 :database_41 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -2421,7 +2420,7 @@
     rdfs:label "regenerative-braking".
 :s_42 a rr:SubjectMap.
 :map_regenerative-braking_0 rr:subjectMap :s_42.
-:s_42 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
+:s_42 rr:template "http://era.europa.eu/implementation#T_{FROM_NODE}_{UUID}_{TO_NODE}".
 :pom_157 a rr:PredicateObjectMap.
 :map_regenerative-braking_0 rr:predicateObjectMap :pom_157.
 :pm_157 a rr:PredicateMap.
@@ -2602,7 +2601,7 @@
 :map_current-limitation_0 rml:logicalSource :source_43.
 :source_43 a rml:LogicalSource;
     rml:source :database_42;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.2.5.1') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT Tracks.UUID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, LookupValues.[Value] AS ParameterValue FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.1.1.2.5.1') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID;".
 :database_42 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -2613,7 +2612,7 @@
     rdfs:label "current-limitation".
 :s_43 a rr:SubjectMap.
 :map_current-limitation_0 rr:subjectMap :s_43.
-:s_43 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
+:s_43 rr:template "http://era.europa.eu/implementation#T_{FROM_NODE}_{UUID}_{TO_NODE}".
 :pom_172 a rr:PredicateObjectMap.
 :map_current-limitation_0 rr:predicateObjectMap :pom_172.
 :pm_172 a rr:PredicateMap.
@@ -2735,7 +2734,7 @@
 :map_maximum-current-standstill_0 rml:logicalSource :source_44.
 :source_44 a rml:LogicalSource;
     rml:source :database_43;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.2.2.3') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT Tracks.UUID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, TrackParameters.Value AS ParameterValue FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.TrackParameters, RINF.dbo.Parameters WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID AND Tracks.ID = TrackParameters.TrackID AND Tracks.VersionID = TrackParameters.VersionID AND TrackParameters.ParameterID = Parameters.ID AND TrackParameters.[Value] IS NOT NULL AND Parameters.[Index] IN ('1.1.1.2.2.3');".
 :database_43 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -2746,7 +2745,7 @@
     rdfs:label "maximum-current-standstill".
 :s_44 a rr:SubjectMap.
 :map_maximum-current-standstill_0 rr:subjectMap :s_44.
-:s_44 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
+:s_44 rr:template "http://era.europa.eu/implementation#T_{FROM_NODE}_{UUID}_{TO_NODE}".
 :pom_182 a rr:PredicateObjectMap.
 :map_maximum-current-standstill_0 rr:predicateObjectMap :pom_182.
 :pm_182 a rr:PredicateMap.
@@ -2760,7 +2759,7 @@
 :map_maximum-wire-height_0 rml:logicalSource :source_45.
 :source_45 a rml:LogicalSource;
     rml:source :database_44;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.2.2.5') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT Tracks.UUID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, TrackParameters.Value AS ParameterValue FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.TrackParameters, RINF.dbo.Parameters WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID AND Tracks.ID = TrackParameters.TrackID AND Tracks.VersionID = TrackParameters.VersionID AND TrackParameters.ParameterID = Parameters.ID AND TrackParameters.[Value] IS NOT NULL AND Parameters.[Index] IN ('1.1.1.2.2.5');".
 :database_44 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -2771,7 +2770,7 @@
     rdfs:label "maximum-wire-height".
 :s_45 a rr:SubjectMap.
 :map_maximum-wire-height_0 rr:subjectMap :s_45.
-:s_45 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
+:s_45 rr:template "http://era.europa.eu/implementation#T_{FROM_NODE}_{UUID}_{TO_NODE}".
 :pom_183 a rr:PredicateObjectMap.
 :map_maximum-wire-height_0 rr:predicateObjectMap :pom_183.
 :pm_183 a rr:PredicateMap.
@@ -2785,7 +2784,7 @@
 :map_minimum-wire-height_0 rml:logicalSource :source_46.
 :source_46 a rml:LogicalSource;
     rml:source :database_45;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.2.2.6') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT Tracks.UUID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, TrackParameters.Value AS ParameterValue FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.TrackParameters, RINF.dbo.Parameters WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID AND Tracks.ID = TrackParameters.TrackID AND Tracks.VersionID = TrackParameters.VersionID AND TrackParameters.ParameterID = Parameters.ID AND TrackParameters.[Value] IS NOT NULL AND Parameters.[Index] IN ('1.1.1.2.2.6');".
 :database_45 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -2796,7 +2795,7 @@
     rdfs:label "minimum-wire-height".
 :s_46 a rr:SubjectMap.
 :map_minimum-wire-height_0 rr:subjectMap :s_46.
-:s_46 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
+:s_46 rr:template "http://era.europa.eu/implementation#T_{FROM_NODE}_{UUID}_{TO_NODE}".
 :pom_184 a rr:PredicateObjectMap.
 :map_minimum-wire-height_0 rr:predicateObjectMap :pom_184.
 :pm_184 a rr:PredicateMap.
@@ -2810,7 +2809,7 @@
 :map_pantograph-tsi-compliant_0 rml:logicalSource :source_47.
 :source_47 a rml:LogicalSource;
     rml:source :database_46;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, REPLACE(CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, ''), ' ', '_') AS UriName FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.2.3.1') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT Tracks.UUID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, REPLACE(LookupValues.[Value], ' ', '_') AS ParameterValue FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.1.1.2.3.1') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID".
 :database_46 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -2821,7 +2820,7 @@
     rdfs:label "pantograph-tsi-compliant".
 :s_47 a rr:SubjectMap.
 :map_pantograph-tsi-compliant_0 rr:subjectMap :s_47.
-:s_47 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
+:s_47 rr:template "http://era.europa.eu/implementation#T_{FROM_NODE}_{UUID}_{TO_NODE}".
 :pom_185 a rr:PredicateObjectMap.
 :map_pantograph-tsi-compliant_0 rr:predicateObjectMap :pom_185.
 :pm_185 a rr:PredicateMap.
@@ -2829,12 +2828,12 @@
 :pm_185 rr:constant era:pantographHead.
 :pom_185 rr:objectMap :om_185.
 :om_185 a rr:ObjectMap;
-    rr:template "http://era.europa.eu/concepts/pantograph-heads#{UriName}";
+    rr:template "http://era.europa.eu/concepts/pantograph-heads#{ParameterValue}";
     rr:termType rr:IRI.
 :map_other-accepted-pantographs_0 rml:logicalSource :source_48.
 :source_48 a rml:LogicalSource;
     rml:source :database_47;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, REPLACE(CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, ''), ' ', '_') AS UriName FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.2.3.2') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT Tracks.UUID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, REPLACE(LookupValues.[Value], ' ', '_') AS ParameterValue FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.1.1.2.3.2') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID".
 :database_47 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -2845,7 +2844,7 @@
     rdfs:label "other-accepted-pantographs".
 :s_48 a rr:SubjectMap.
 :map_other-accepted-pantographs_0 rr:subjectMap :s_48.
-:s_48 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
+:s_48 rr:template "http://era.europa.eu/implementation#T_{FROM_NODE}_{UUID}_{TO_NODE}".
 :pom_186 a rr:PredicateObjectMap.
 :map_other-accepted-pantographs_0 rr:predicateObjectMap :pom_186.
 :pm_186 a rr:PredicateMap.
@@ -2853,12 +2852,12 @@
 :pm_186 rr:constant era:pantographHead.
 :pom_186 rr:objectMap :om_186.
 :om_186 a rr:ObjectMap;
-    rr:template "http://era.europa.eu/concepts/pantograph-heads#{UriName}";
+    rr:template "http://era.europa.eu/concepts/pantograph-heads#{ParameterValue}";
     rr:termType rr:IRI.
 :map_contact-strip-material_0 rml:logicalSource :source_49.
 :source_49 a rml:LogicalSource;
     rml:source :database_48;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, REPLACE((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), ' ', '_') AS ParameterURI FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.2.3.4') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT Tracks.UUID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, REPLACE(LookupValues.[Value], ' ', '_') AS ParameterValue FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.1.1.2.3.4') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID".
 :database_48 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -2869,7 +2868,7 @@
     rdfs:label "contact-strip-material".
 :s_49 a rr:SubjectMap.
 :map_contact-strip-material_0 rr:subjectMap :s_49.
-:s_49 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
+:s_49 rr:template "http://era.europa.eu/implementation#T_{FROM_NODE}_{UUID}_{TO_NODE}".
 :pom_187 a rr:PredicateObjectMap.
 :map_contact-strip-material_0 rr:predicateObjectMap :pom_187.
 :pm_187 a rr:PredicateMap.
@@ -2908,7 +2907,7 @@
     rr:constant grel:valueParameter.
 :pom_189 rr:objectMap :om_189.
 :om_189 a rr:ObjectMap;
-    rml:reference "ParameterURI";
+    rml:reference "ParameterValue";
     rr:termType rr:Literal.
 :fn_59 rr:predicateObjectMap :pom_190.
 :pom_190 a rr:PredicateObjectMap;
@@ -2926,12 +2925,12 @@
     rr:constant idlab-fn:str.
 :pom_191 rr:objectMap :om_191.
 :om_191 a rr:ObjectMap;
-    rr:template "http://era.europa.eu/concepts/contact-strip-materials#{ParameterURI}";
+    rr:template "http://era.europa.eu/concepts/contact-strip-materials#{ParameterValue}";
     rr:termType rr:IRI.
 :map_contact-force_0 rml:logicalSource :source_50.
 :source_50 a rml:LogicalSource;
     rml:source :database_49;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.2.5.2') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT Tracks.UUID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, TrackParameters.Value AS ParameterValue FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.TrackParameters, RINF.dbo.Parameters WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID AND Tracks.ID = TrackParameters.TrackID AND Tracks.VersionID = TrackParameters.VersionID AND TrackParameters.ParameterID = Parameters.ID AND TrackParameters.[Value] IS NOT NULL AND Parameters.[Index] IN ('1.1.1.2.5.2');".
 :database_49 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -2942,7 +2941,7 @@
     rdfs:label "contact-force".
 :s_50 a rr:SubjectMap.
 :map_contact-force_0 rr:subjectMap :s_50.
-:s_50 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
+:s_50 rr:template "http://era.europa.eu/implementation#T_{FROM_NODE}_{UUID}_{TO_NODE}".
 :pom_192 a rr:PredicateObjectMap.
 :map_contact-force_0 rr:predicateObjectMap :pom_192.
 :pm_192 a rr:PredicateMap.
@@ -2955,7 +2954,7 @@
 :map_raised-pantograph-distance-speed_0 rml:logicalSource :source_51.
 :source_51 a rml:LogicalSource;
     rml:source :database_50;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.2.3.3') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT Tracks.UUID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, TrackParameters.Value AS ParameterValue FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.TrackParameters, RINF.dbo.Parameters WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID AND Tracks.ID = TrackParameters.TrackID AND Tracks.VersionID = TrackParameters.VersionID AND TrackParameters.ParameterID = Parameters.ID AND TrackParameters.[Value] IS NOT NULL AND Parameters.[Index] IN ('1.1.1.2.3.3');".
 :database_50 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -2966,7 +2965,7 @@
     rdfs:label "raised-pantograph-distance-speed".
 :s_51 a rr:SubjectMap.
 :map_raised-pantograph-distance-speed_0 rr:subjectMap :s_51.
-:s_51 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
+:s_51 rr:template "http://era.europa.eu/implementation#T_{FROM_NODE}_{UUID}_{TO_NODE}".
 :pom_193 a rr:PredicateObjectMap.
 :map_raised-pantograph-distance-speed_0 rr:predicateObjectMap :pom_193.
 :pm_193 a rr:PredicateMap.
@@ -2979,7 +2978,7 @@
 :map_automatic-dropping-device-required_0 rml:logicalSource :source_52.
 :source_52 a rml:LogicalSource;
     rml:source :database_51;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.2.5.3') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT Tracks.UUID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, LookupValues.[Value] AS ParameterValue FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.1.1.2.5.3') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID;".
 :database_51 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -2990,7 +2989,7 @@
     rdfs:label "automatic-dropping-device-required".
 :s_52 a rr:SubjectMap.
 :map_automatic-dropping-device-required_0 rr:subjectMap :s_52.
-:s_52 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
+:s_52 rr:template "http://era.europa.eu/implementation#T_{FROM_NODE}_{UUID}_{TO_NODE}".
 :pom_194 a rr:PredicateObjectMap.
 :map_automatic-dropping-device-required_0 rr:predicateObjectMap :pom_194.
 :pm_194 a rr:PredicateMap.
@@ -3112,7 +3111,7 @@
 :map_etcs-compatible_0 rml:logicalSource :source_53.
 :source_53 a rml:LogicalSource;
     rml:source :database_52;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, REPLACE((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), ' ', '_') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.3.2.9') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT Tracks.UUID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, REPLACE(LookupValues.[Value], ' ', '_') AS ParameterValue FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.1.1.3.2.9') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID".
 :database_52 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -3123,7 +3122,7 @@
     rdfs:label "etcs-compatible".
 :s_53 a rr:SubjectMap.
 :map_etcs-compatible_0 rr:subjectMap :s_53.
-:s_53 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
+:s_53 rr:template "http://era.europa.eu/implementation#T_{FROM_NODE}_{UUID}_{TO_NODE}".
 :pom_204 a rr:PredicateObjectMap.
 :map_etcs-compatible_0 rr:predicateObjectMap :pom_204.
 :pm_204 a rr:PredicateMap.
@@ -3136,7 +3135,7 @@
 :map_train-integrity-required_0 rml:logicalSource :source_54.
 :source_54 a rml:LogicalSource;
     rml:source :database_53;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.3.2.8') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT Tracks.UUID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, TrackParameters.Value AS ParameterValue FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.TrackParameters, RINF.dbo.Parameters WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID AND Tracks.ID = TrackParameters.TrackID AND Tracks.VersionID = TrackParameters.VersionID AND TrackParameters.ParameterID = Parameters.ID AND TrackParameters.[Value] IS NOT NULL AND Parameters.[Index] IN ('1.1.1.3.2.8');".
 :database_53 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -3147,7 +3146,7 @@
     rdfs:label "train-integrity-required".
 :s_54 a rr:SubjectMap.
 :map_train-integrity-required_0 rr:subjectMap :s_54.
-:s_54 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
+:s_54 rr:template "http://era.europa.eu/implementation#T_{FROM_NODE}_{UUID}_{TO_NODE}".
 :pom_205 a rr:PredicateObjectMap.
 :map_train-integrity-required_0 rr:predicateObjectMap :pom_205.
 :pm_205 a rr:PredicateMap.
@@ -3269,7 +3268,7 @@
 :map_gsm-r-network-coverage_0 rml:logicalSource :source_55.
 :source_55 a rml:LogicalSource;
     rml:source :database_54;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, REPLACE(CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, ''), ' ', '_') AS ParameterURI FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.3.3.5') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT Tracks.UUID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, REPLACE(LookupValues.[Value], ' ', '_') AS ParameterValue FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.1.1.3.3.5') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID".
 :database_54 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -3280,7 +3279,7 @@
     rdfs:label "gsm-r-network-coverage".
 :s_55 a rr:SubjectMap.
 :map_gsm-r-network-coverage_0 rr:subjectMap :s_55.
-:s_55 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
+:s_55 rr:template "http://era.europa.eu/implementation#T_{FROM_NODE}_{UUID}_{TO_NODE}".
 :pom_215 a rr:PredicateObjectMap.
 :map_gsm-r-network-coverage_0 rr:predicateObjectMap :pom_215.
 :pm_215 a rr:PredicateMap.
@@ -3288,12 +3287,12 @@
 :pm_215 rr:constant era:gsmrNetworkCoverage.
 :pom_215 rr:objectMap :om_215.
 :om_215 a rr:ObjectMap;
-    rr:template "http://era.europa.eu/concepts/gsmr-networks#{ParameterURI}";
+    rr:template "http://era.europa.eu/concepts/gsmr-networks#{ParameterValue}";
     rr:termType rr:IRI.
 :map_group-555-support_0 rml:logicalSource :source_56.
 :source_56 a rml:LogicalSource;
     rml:source :database_55;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.3.3.4') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT Tracks.UUID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, LookupValues.[Value] AS ParameterValue FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.1.1.3.3.4') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID;".
 :database_55 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -3304,7 +3303,7 @@
     rdfs:label "group-555-support".
 :s_56 a rr:SubjectMap.
 :map_group-555-support_0 rr:subjectMap :s_56.
-:s_56 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
+:s_56 rr:template "http://era.europa.eu/implementation#T_{FROM_NODE}_{UUID}_{TO_NODE}".
 :pom_216 a rr:PredicateObjectMap.
 :map_group-555-support_0 rr:predicateObjectMap :pom_216.
 :pm_216 a rr:PredicateMap.
@@ -3426,7 +3425,7 @@
 :map_voice-radio-compatible_0 rml:logicalSource :source_57.
 :source_57 a rml:LogicalSource;
     rml:source :database_56;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, REPLACE(CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, ''), ' ', '_') AS ParameterURI FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.3.3.9') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT Tracks.UUID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, REPLACE(LookupValues.[Value], ' ', '_') AS ParameterValue FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.1.1.3.3.9') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID".
 :database_56 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -3437,7 +3436,7 @@
     rdfs:label "voice-radio-compatible".
 :s_57 a rr:SubjectMap.
 :map_voice-radio-compatible_0 rr:subjectMap :s_57.
-:s_57 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
+:s_57 rr:template "http://era.europa.eu/implementation#T_{FROM_NODE}_{UUID}_{TO_NODE}".
 :pom_226 a rr:PredicateObjectMap.
 :map_voice-radio-compatible_0 rr:predicateObjectMap :pom_226.
 :pm_226 a rr:PredicateMap.
@@ -3445,12 +3444,12 @@
 :pm_226 rr:constant era:voiceRadioCompatible.
 :pom_226 rr:objectMap :om_226.
 :om_226 a rr:ObjectMap;
-    rr:template "http://era.europa.eu/concepts/radio-system-compatibilities#{ParameterURI}";
+    rr:template "http://era.europa.eu/concepts/radio-system-compatibilities#{ParameterValue}";
     rr:termType rr:IRI.
 :map_data-radio-compatible_0 rml:logicalSource :source_58.
 :source_58 a rml:LogicalSource;
     rml:source :database_57;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, REPLACE(CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, ''), ' ', '_') AS ParameterURI FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.3.3.10') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT Tracks.UUID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, REPLACE(LookupValues.[Value], ' ', '_') AS ParameterValue FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.1.1.3.3.10') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID".
 :database_57 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -3461,7 +3460,7 @@
     rdfs:label "data-radio-compatible".
 :s_58 a rr:SubjectMap.
 :map_data-radio-compatible_0 rr:subjectMap :s_58.
-:s_58 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
+:s_58 rr:template "http://era.europa.eu/implementation#T_{FROM_NODE}_{UUID}_{TO_NODE}".
 :pom_227 a rr:PredicateObjectMap.
 :map_data-radio-compatible_0 rr:predicateObjectMap :pom_227.
 :pm_227 a rr:PredicateMap.
@@ -3469,12 +3468,12 @@
 :pm_227 rr:constant era:dataRadioCompatible.
 :pom_227 rr:objectMap :om_227.
 :om_227 a rr:ObjectMap;
-    rr:template "http://era.europa.eu/concepts/radio-system-compatibilities#{ParameterURI}";
+    rr:template "http://era.europa.eu/concepts/radio-system-compatibilities#{ParameterValue}";
     rr:termType rr:IRI.
 :map_protection-legacy-system_0 rml:logicalSource :source_59.
 :source_59 a rml:LogicalSource;
     rml:source :database_58;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, REPLACE(CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, ''), ' ', '_') AS ParameterURI FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.3.5.3') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT Tracks.UUID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, REPLACE(LookupValues.[Value], ' ', '_') AS ParameterValue FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.1.1.3.5.3') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID".
 :database_58 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -3485,7 +3484,7 @@
     rdfs:label "protection-legacy-system".
 :s_59 a rr:SubjectMap.
 :map_protection-legacy-system_0 rr:subjectMap :s_59.
-:s_59 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
+:s_59 rr:template "http://era.europa.eu/implementation#T_{FROM_NODE}_{UUID}_{TO_NODE}".
 :pom_228 a rr:PredicateObjectMap.
 :map_protection-legacy-system_0 rr:predicateObjectMap :pom_228.
 :pm_228 a rr:PredicateMap.
@@ -3493,12 +3492,12 @@
 :pm_228 rr:constant era:protectionLegacySystem.
 :pom_228 rr:objectMap :om_228.
 :om_228 a rr:ObjectMap;
-    rr:template "http://era.europa.eu/concepts/train-protection-legacy-systems#{ParameterURI}";
+    rr:template "http://era.europa.eu/concepts/train-protection-legacy-systems#{ParameterValue}";
     rr:termType rr:IRI.
 :map_legacy-radio-system_0 rml:logicalSource :source_60.
 :source_60 a rml:LogicalSource;
     rml:source :database_59;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, REPLACE(CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, ''), ' ', '_') AS ParameterURI FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.3.6.1') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT Tracks.UUID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, REPLACE(LookupValues.[Value], ' ', '_') AS ParameterValue FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.1.1.3.6.1') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID".
 :database_59 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -3509,7 +3508,7 @@
     rdfs:label "legacy-radio-system".
 :s_60 a rr:SubjectMap.
 :map_legacy-radio-system_0 rr:subjectMap :s_60.
-:s_60 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
+:s_60 rr:template "http://era.europa.eu/implementation#T_{FROM_NODE}_{UUID}_{TO_NODE}".
 :pom_229 a rr:PredicateObjectMap.
 :map_legacy-radio-system_0 rr:predicateObjectMap :pom_229.
 :pm_229 a rr:PredicateMap.
@@ -3548,7 +3547,7 @@
     rr:constant grel:valueParameter.
 :pom_231 rr:objectMap :om_231.
 :om_231 a rr:ObjectMap;
-    rml:reference "ParameterURI";
+    rml:reference "ParameterValue";
     rr:termType rr:Literal.
 :fn_73 rr:predicateObjectMap :pom_232.
 :pom_232 a rr:PredicateObjectMap;
@@ -3566,7 +3565,7 @@
     rr:constant idlab-fn:str.
 :pom_233 rr:objectMap :om_233.
 :om_233 a rr:ObjectMap;
-    rr:template "http://era.europa.eu/concepts/legacy-radio-systems#{ParameterURI}";
+    rr:template "http://era.europa.eu/concepts/legacy-radio-systems#{ParameterValue}";
     rr:termType rr:IRI.
 :pom_234 a rr:PredicateObjectMap.
 :map_legacy-radio-system_0 rr:predicateObjectMap :pom_234.
@@ -3606,7 +3605,7 @@
     rr:constant grel:valueParameter.
 :pom_236 rr:objectMap :om_236.
 :om_236 a rr:ObjectMap;
-    rml:reference "ParameterURI";
+    rml:reference "ParameterValue";
     rr:termType rr:Literal.
 :fn_75 rr:predicateObjectMap :pom_237.
 :pom_237 a rr:PredicateObjectMap;
@@ -3624,12 +3623,12 @@
     rr:constant idlab-fn:str.
 :pom_238 rr:objectMap :om_238.
 :om_238 a rr:ObjectMap;
-    rr:template "http://era.europa.eu/concepts/legacy-radio-systems#{ParameterURI}";
+    rr:template "http://era.europa.eu/concepts/legacy-radio-systems#{ParameterValue}";
     rr:termType rr:IRI.
 :map_quieter-route_0 rml:logicalSource :source_61.
 :source_61 a rml:LogicalSource;
     rml:source :database_60;
-    rml:query "SELECT SectionOfLines.ID, SOLTracks.TrackID, SOLTracks.VersionID, CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND \"Index\" IN ('1.1.1.1.7.11') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;".
+    rml:query "SELECT Tracks.UUID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, LookupValues.[Value] AS ParameterValue FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.1.1.1.7.11') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID;".
 :database_60 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -3640,7 +3639,7 @@
     rdfs:label "quieter-route".
 :s_61 a rr:SubjectMap.
 :map_quieter-route_0 rr:subjectMap :s_61.
-:s_61 rr:template "http://era.europa.eu/implementation#T_{ID}_{VersionID}_{TrackID}".
+:s_61 rr:template "http://era.europa.eu/implementation#T_{FROM_NODE}_{UUID}_{TO_NODE}".
 :pom_239 a rr:PredicateObjectMap.
 :map_quieter-route_0 rr:predicateObjectMap :pom_239.
 :pm_239 a rr:PredicateMap.
