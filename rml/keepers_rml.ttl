@@ -11,20 +11,19 @@
 @prefix grel: <http://users.ugent.be/~bjdmeest/function/grel.ttl#>.
 @prefix schema: <https://schema.org/>.
 @prefix era: <http://era.europa.eu/ns#>.
-@prefix era-manufacturers: <http://era.europa.eu/manufacturers#>.
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
 
-:map_manufacturer_0 rml:logicalSource :source_0.
+:map_keeper_0 rml:logicalSource :source_0.
 :source_0 a rml:LogicalSource;
     rml:source "data/wagons_rsdr.csv";
     rml:referenceFormulation ql:CSV.
-:map_manufacturer_0 a rr:TriplesMap;
-    rdfs:label "manufacturer".
+:map_keeper_0 a rr:TriplesMap;
+    rdfs:label "keeper".
 :s_0 a rr:SubjectMap.
-:map_manufacturer_0 rr:subjectMap :s_0.
+:map_keeper_0 rr:subjectMap :s_0.
 :s_0 rr:template "http://era.europa.eu/keepers#{Keeper}".
 :pom_0 a rr:PredicateObjectMap.
-:map_manufacturer_0 rr:predicateObjectMap :pom_0.
+:map_keeper_0 rr:predicateObjectMap :pom_0.
 :pm_0 a rr:PredicateMap.
 :pom_0 rr:predicateMap :pm_0.
 :pm_0 rr:constant rdf:type.
@@ -33,7 +32,7 @@
     rr:constant "http://era.europa.eu/ns#VehicleKeeper";
     rr:termType rr:IRI.
 :pom_1 a rr:PredicateObjectMap.
-:map_manufacturer_0 rr:predicateObjectMap :pom_1.
+:map_keeper_0 rr:predicateObjectMap :pom_1.
 :pm_1 a rr:PredicateMap.
 :pom_1 rr:predicateMap :pm_1.
 :pm_1 rr:constant schema:name.
@@ -42,7 +41,7 @@
     rml:reference "Keeper";
     rr:termType rr:Literal.
 :pom_2 a rr:PredicateObjectMap.
-:map_manufacturer_0 rr:predicateObjectMap :pom_2.
+:map_keeper_0 rr:predicateObjectMap :pom_2.
 :pm_2 a rr:PredicateMap.
 :pom_2 rr:predicateMap :pm_2.
 :pm_2 rr:constant rdfs:label.

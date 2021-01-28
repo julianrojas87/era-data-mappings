@@ -138,7 +138,7 @@
     rr:constant grel:valueParameter2.
 :pom_10 rr:objectMap :om_10.
 :om_10 a rr:ObjectMap;
-    rr:constant "NULL";
+    rr:constant "";
     rr:termType rr:Literal.
 :fn_0 rr:predicateObjectMap :pom_11.
 :pom_11 a rr:PredicateObjectMap;
@@ -155,87 +155,154 @@
 :pom_12 rr:predicateMap :pm_12.
 :pm_12 rr:constant era:opType.
 :pom_12 rr:objectMap :om_12.
-:map_location_0 rml:logicalSource :source_1.
+:map_op-line-reference_0 rml:logicalSource :source_1.
 :source_1 a rml:LogicalSource;
     rml:source :database_1;
-    rml:query "SELECT LineNodes.Latitude, LineNodes.Longitude FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPoints.ID = LineNodes.OperationalPointID AND OperationalPoints.VersionID = LineNodes.VersionID;".
+    rml:query "SELECT TRIM(UOPID) AS UOPID, LineReferences.Kilometer, UICLines.UICCode FROM RINF.dbo.OperationalPoints, RINF.dbo.LineReferences, RINF.dbo.UICLines WHERE OperationalPoints.ID = LineReferences.OperationalPointId AND OperationalPoints.VersionID = LineReferences.VersionID AND LineReferences.UICLineId = UICLines.ID AND LineReferences.VersionID = UICLines.VersionID;".
 :database_1 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
 :source_1 rml:referenceFormulation ql:CSV.
-:map_location_0 a rr:TriplesMap;
-    rdfs:label "location".
+:map_op-line-reference_0 a rr:TriplesMap;
+    rdfs:label "op-line-reference".
 :s_1 a rr:SubjectMap.
-:map_location_0 rr:subjectMap :s_1.
-:s_1 rr:template "http://era.europa.eu/location#GEO/{Longitude}/{Latitude}".
+:map_op-line-reference_0 rr:subjectMap :s_1.
+:s_1 rr:template "http://era.europa.eu/implementation#OP_{UOPID}".
 :pom_13 a rr:PredicateObjectMap.
-:map_location_0 rr:predicateObjectMap :pom_13.
+:map_op-line-reference_0 rr:predicateObjectMap :pom_13.
 :pm_13 a rr:PredicateMap.
 :pom_13 rr:predicateMap :pm_13.
-:pm_13 rr:constant rdf:type.
+:pm_13 rr:constant era:lineReference.
 :pom_13 rr:objectMap :om_13.
 :om_13 a rr:ObjectMap;
-    rr:constant "http://www.w3.org/2003/01/geo/wgs84_pos#Point";
+    rr:template "http://era.europa.eu/abstraction#LR_{UICCode}_{Kilometer}";
     rr:termType rr:IRI.
+:map_line-reference_0 rml:logicalSource :source_2.
+:source_2 a rml:LogicalSource;
+    rml:source :database_2;
+    rml:query "SELECT TRIM(UOPID) AS UOPID, LineReferences.Kilometer, UICLines.UICCode FROM RINF.dbo.OperationalPoints, RINF.dbo.LineReferences, RINF.dbo.UICLines WHERE OperationalPoints.ID = LineReferences.OperationalPointId AND OperationalPoints.VersionID = LineReferences.VersionID AND LineReferences.UICLineId = UICLines.ID AND LineReferences.VersionID = UICLines.VersionID;".
+:database_2 a d2rq:Database;
+    d2rq:jdbcDSN "//10.10.160.21:1433";
+    d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
+    d2rq:username "SA";
+    d2rq:password "ChooChoo2020".
+:source_2 rml:referenceFormulation ql:CSV.
+:map_line-reference_0 a rr:TriplesMap;
+    rdfs:label "line-reference".
+:s_2 a rr:SubjectMap.
+:map_line-reference_0 rr:subjectMap :s_2.
+:s_2 rr:template "http://era.europa.eu/abstraction#LR_{UICCode}_{Kilometer}".
 :pom_14 a rr:PredicateObjectMap.
-:map_location_0 rr:predicateObjectMap :pom_14.
+:map_line-reference_0 rr:predicateObjectMap :pom_14.
 :pm_14 a rr:PredicateMap.
 :pom_14 rr:predicateMap :pm_14.
 :pm_14 rr:constant rdf:type.
 :pom_14 rr:objectMap :om_14.
 :om_14 a rr:ObjectMap;
-    rr:constant "http://www.opengis.net/ont/geosparql#Geometry";
+    rr:constant "http://era.europa.eu/ns#LineReference";
     rr:termType rr:IRI.
 :pom_15 a rr:PredicateObjectMap.
-:map_location_0 rr:predicateObjectMap :pom_15.
+:map_line-reference_0 rr:predicateObjectMap :pom_15.
 :pm_15 a rr:PredicateMap.
 :pom_15 rr:predicateMap :pm_15.
-:pm_15 rr:constant wgs:latitude.
+:pm_15 rr:constant era:lineNationalId.
 :pom_15 rr:objectMap :om_15.
 :om_15 a rr:ObjectMap;
-    rml:reference "Latitude";
-    rr:termType rr:Literal;
-    rr:datatype xsd:double.
+    rr:template "http://era.europa.eu/implementation#LNI_{UICCode}";
+    rr:termType rr:IRI.
 :pom_16 a rr:PredicateObjectMap.
-:map_location_0 rr:predicateObjectMap :pom_16.
+:map_line-reference_0 rr:predicateObjectMap :pom_16.
 :pm_16 a rr:PredicateMap.
 :pom_16 rr:predicateMap :pm_16.
-:pm_16 rr:constant wgs:longitude.
+:pm_16 rr:constant era:kilometer.
 :pom_16 rr:objectMap :om_16.
 :om_16 a rr:ObjectMap;
-    rml:reference "Longitude";
+    rml:reference "Kilometer";
     rr:termType rr:Literal;
     rr:datatype xsd:double.
+:map_location_0 rml:logicalSource :source_3.
+:source_3 a rml:LogicalSource;
+    rml:source :database_3;
+    rml:query "SELECT LineNodes.Latitude, LineNodes.Longitude FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPoints.ID = LineNodes.OperationalPointID AND OperationalPoints.VersionID = LineNodes.VersionID;".
+:database_3 a d2rq:Database;
+    d2rq:jdbcDSN "//10.10.160.21:1433";
+    d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
+    d2rq:username "SA";
+    d2rq:password "ChooChoo2020".
+:source_3 rml:referenceFormulation ql:CSV.
+:map_location_0 a rr:TriplesMap;
+    rdfs:label "location".
+:s_3 a rr:SubjectMap.
+:map_location_0 rr:subjectMap :s_3.
+:s_3 rr:template "http://era.europa.eu/location#GEO/{Longitude}/{Latitude}".
 :pom_17 a rr:PredicateObjectMap.
 :map_location_0 rr:predicateObjectMap :pom_17.
 :pm_17 a rr:PredicateMap.
 :pom_17 rr:predicateMap :pm_17.
-:pm_17 rr:constant geosparql:asWKT.
+:pm_17 rr:constant rdf:type.
 :pom_17 rr:objectMap :om_17.
 :om_17 a rr:ObjectMap;
+    rr:constant "http://www.w3.org/2003/01/geo/wgs84_pos#Point";
+    rr:termType rr:IRI.
+:pom_18 a rr:PredicateObjectMap.
+:map_location_0 rr:predicateObjectMap :pom_18.
+:pm_18 a rr:PredicateMap.
+:pom_18 rr:predicateMap :pm_18.
+:pm_18 rr:constant rdf:type.
+:pom_18 rr:objectMap :om_18.
+:om_18 a rr:ObjectMap;
+    rr:constant "http://www.opengis.net/ont/geosparql#Geometry";
+    rr:termType rr:IRI.
+:pom_19 a rr:PredicateObjectMap.
+:map_location_0 rr:predicateObjectMap :pom_19.
+:pm_19 a rr:PredicateMap.
+:pom_19 rr:predicateMap :pm_19.
+:pm_19 rr:constant wgs:latitude.
+:pom_19 rr:objectMap :om_19.
+:om_19 a rr:ObjectMap;
+    rml:reference "Latitude";
+    rr:termType rr:Literal;
+    rr:datatype xsd:double.
+:pom_20 a rr:PredicateObjectMap.
+:map_location_0 rr:predicateObjectMap :pom_20.
+:pm_20 a rr:PredicateMap.
+:pom_20 rr:predicateMap :pm_20.
+:pm_20 rr:constant wgs:longitude.
+:pom_20 rr:objectMap :om_20.
+:om_20 a rr:ObjectMap;
+    rml:reference "Longitude";
+    rr:termType rr:Literal;
+    rr:datatype xsd:double.
+:pom_21 a rr:PredicateObjectMap.
+:map_location_0 rr:predicateObjectMap :pom_21.
+:pm_21 a rr:PredicateMap.
+:pom_21 rr:predicateMap :pm_21.
+:pm_21 rr:constant geosparql:asWKT.
+:pom_21 rr:objectMap :om_21.
+:om_21 a rr:ObjectMap;
     rr:template "POINT ({Longitude} {Latitude})";
     rr:termType rr:Literal;
     rr:datatype geosparql:wktLiteral.
-:map_op-type_0 rml:logicalSource :source_2.
-:source_2 a rml:LogicalSource;
+:map_op-type_0 rml:logicalSource :source_4.
+:source_4 a rml:LogicalSource;
     rml:source "data/op_types.csv";
     rml:referenceFormulation ql:CSV.
 :map_op-type_0 a rr:TriplesMap;
     rdfs:label "op-type".
-:s_2 a rr:SubjectMap.
-:map_op-type_0 rr:subjectMap :s_2.
-:s_2 rr:template "http://era.europa.eu/concepts/op-types#{type}".
-:map_eu-country_0 rml:logicalSource :source_3.
-:source_3 a rml:LogicalSource;
+:s_4 a rr:SubjectMap.
+:map_op-type_0 rr:subjectMap :s_4.
+:s_4 rr:template "http://era.europa.eu/concepts/op-types#{type}".
+:map_eu-country_0 rml:logicalSource :source_5.
+:source_5 a rml:LogicalSource;
     rml:source "data/countries.csv";
     rml:referenceFormulation ql:CSV.
 :map_eu-country_0 a rr:TriplesMap;
     rdfs:label "eu-country".
-:s_3 a rr:SubjectMap.
-:map_eu-country_0 rr:subjectMap :s_3.
-:s_3 rml:reference "eu".
+:s_5 a rr:SubjectMap.
+:map_eu-country_0 rr:subjectMap :s_5.
+:s_5 rml:reference "eu".
 :om_6 a rr:ObjectMap;
     rr:parentTriplesMap :map_eu-country_0;
     rr:joinCondition :jc_0.
