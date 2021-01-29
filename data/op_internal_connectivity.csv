@@ -1,0 +1,232 @@
+UOPID,OP_Name,IncomingRemoteOP,IncomingSOL,IncomingTrack,OutgoingTrack,OutgoingSOL,OutgoingRemoteOP,Connected
+NLBHV,Bilthoven,NLBLOA,Ut-Htba,BM,AC,Ut-Htba,NLDLD,NO
+NLBHV,Bilthoven,NLBLOA,Ut-Htba,BM,BE,Ut-Htba,NLDLD,YES
+NLBHV,Bilthoven,NLBLOA,Ut-Htba,BM,CC,Ut-Htba,NLDLD,YES
+NLBHV,Bilthoven,NLBLOA,Ut-Htba,BY,AC,Ut-Htba,NLDLD,YES
+NLBHV,Bilthoven,NLBLOA,Ut-Htba,BY,BE,Ut-Htba,NLDLD,NO
+NLBHV,Bilthoven,NLBLOA,Ut-Htba,BY,CC,Ut-Htba,NLDLD,YES
+NLBKLA,Breukelen aansl.,NLAC,Asa-Zvg,AC1,UR4,Asa-Zvg,NLMAS,NO
+NLBKLA,Breukelen aansl.,NLAC,Asa-Zvg,AC1,UD4,Asa-Zvg,NLMAS,NO
+NLBKLA,Breukelen aansl.,NLAC,Asa-Zvg,AC1,AR1,Asa-Zvg,NLMAS,YES
+NLBKLA,Breukelen aansl.,NLAC,Asa-Zvg,AC1,AD1,Asa-Zvg,NLMAS,YES
+NLBKLA,Breukelen aansl.,NLAC,Asa-Zvg,AC1,BA,Bkl-Hmla,NLHMLA,YES
+NLBKLA,Breukelen aansl.,NLAC,Asa-Zvg,AC1,BN,Bkl-Hmla,NLHMLA,YES
+NLBKLA,Breukelen aansl.,NLAC,Asa-Zvg,AP1,UR4,Asa-Zvg,NLMAS,NO
+NLBKLA,Breukelen aansl.,NLAC,Asa-Zvg,AP1,UD4,Asa-Zvg,NLMAS,NO
+NLBKLA,Breukelen aansl.,NLAC,Asa-Zvg,AP1,AR1,Asa-Zvg,NLMAS,YES
+NLBKLA,Breukelen aansl.,NLAC,Asa-Zvg,AP1,AD1,Asa-Zvg,NLMAS,YES
+NLBKLA,Breukelen aansl.,NLAC,Asa-Zvg,AP1,BA,Bkl-Hmla,NLHMLA,YES
+NLBKLA,Breukelen aansl.,NLAC,Asa-Zvg,AP1,BN,Bkl-Hmla,NLHMLA,YES
+NLBKLA,Breukelen aansl.,NLAC,Asa-Zvg,UC7,UR4,Asa-Zvg,NLMAS,YES
+NLBKLA,Breukelen aansl.,NLAC,Asa-Zvg,UC7,UD4,Asa-Zvg,NLMAS,YES
+NLBKLA,Breukelen aansl.,NLAC,Asa-Zvg,UC7,AR1,Asa-Zvg,NLMAS,NO
+NLBKLA,Breukelen aansl.,NLAC,Asa-Zvg,UC7,AD1,Asa-Zvg,NLMAS,NO
+NLBKLA,Breukelen aansl.,NLAC,Asa-Zvg,UC7,BA,Bkl-Hmla,NLHMLA,YES
+NLBKLA,Breukelen aansl.,NLAC,Asa-Zvg,UC7,BN,Bkl-Hmla,NLHMLA,YES
+NLBKLA,Breukelen aansl.,NLAC,Asa-Zvg,UP7,UR4,Asa-Zvg,NLMAS,YES
+NLBKLA,Breukelen aansl.,NLAC,Asa-Zvg,UP7,UD4,Asa-Zvg,NLMAS,YES
+NLBKLA,Breukelen aansl.,NLAC,Asa-Zvg,UP7,AR1,Asa-Zvg,NLMAS,NO
+NLBKLA,Breukelen aansl.,NLAC,Asa-Zvg,UP7,AD1,Asa-Zvg,NLMAS,NO
+NLBKLA,Breukelen aansl.,NLAC,Asa-Zvg,UP7,BA,Bkl-Hmla,NLHMLA,YES
+NLBKLA,Breukelen aansl.,NLAC,Asa-Zvg,UP7,BN,Bkl-Hmla,NLHMLA,YES
+NLBKP,Blauwkapel,NLHVS,Hvs-Utm,HE,BJ,Ut-Htba,NLBLOA,NO
+NLBKP,Blauwkapel,NLHVS,Hvs-Utm,HE,BV,Ut-Htba,NLBLOA,NO
+NLBKP,Blauwkapel,NLHVS,Hvs-Utm,HE,BE,Ut-Htba,NLBLOA,NO
+NLBKP,Blauwkapel,NLHVS,Hvs-Utm,HE,BR,Ut-Htba,NLBLOA,NO
+NLBKP,Blauwkapel,NLHVS,Hvs-Utm,HQ,BJ,Ut-Htba,NLBLOA,NO
+NLBKP,Blauwkapel,NLHVS,Hvs-Utm,HQ,BV,Ut-Htba,NLBLOA,NO
+NLBKP,Blauwkapel,NLHVS,Hvs-Utm,HQ,BE,Ut-Htba,NLBLOA,NO
+NLBKP,Blauwkapel,NLHVS,Hvs-Utm,HQ,BR,Ut-Htba,NLBLOA,NO
+NLBKP,Blauwkapel,NLUT,Ut-Htba,BA,BR,Ut-Htba,NLBLOA,YES
+NLBKP,Blauwkapel,NLUT,Ut-Htba,BA,BE,Ut-Htba,NLBLOA,YES
+NLBKP,Blauwkapel,NLUT,Ut-Htba,BA,BV,Ut-Htba,NLBLOA,YES
+NLBKP,Blauwkapel,NLUT,Ut-Htba,BA,BJ,Ut-Htba,NLBLOA,YES
+NLBKP,Blauwkapel,NLUT,Ut-Htba,BN,BR,Ut-Htba,NLBLOA,YES
+NLBKP,Blauwkapel,NLUT,Ut-Htba,BN,BE,Ut-Htba,NLBLOA,NO
+NLBKP,Blauwkapel,NLUT,Ut-Htba,BN,BV,Ut-Htba,NLBLOA,NO
+NLBKP,Blauwkapel,NLUT,Ut-Htba,BN,BJ,Ut-Htba,NLBLOA,NO
+NLBKP,Blauwkapel,NLUT,Ut-Htba,HA,BR,Ut-Htba,NLBLOA,NO
+NLBKP,Blauwkapel,NLUT,Ut-Htba,HA,BE,Ut-Htba,NLBLOA,NO
+NLBKP,Blauwkapel,NLUT,Ut-Htba,HA,BV,Ut-Htba,NLBLOA,YES
+NLBKP,Blauwkapel,NLUT,Ut-Htba,HA,BJ,Ut-Htba,NLBLOA,YES
+NLBKP,Blauwkapel,NLUT,Ut-Htba,HN,BR,Ut-Htba,NLBLOA,YES
+NLBKP,Blauwkapel,NLUT,Ut-Htba,HN,BE,Ut-Htba,NLBLOA,YES
+NLBKP,Blauwkapel,NLUT,Ut-Htba,HN,BV,Ut-Htba,NLBLOA,YES
+NLBKP,Blauwkapel,NLUT,Ut-Htba,HN,BJ,Ut-Htba,NLBLOA,YES
+NLBLOA,Blauwkapel Oost aansl.,NLBKP,Ut-Htba,BJ,BM,Ut-Htba,NLBHV,YES
+NLBLOA,Blauwkapel Oost aansl.,NLBKP,Ut-Htba,BJ,BY,Ut-Htba,NLBHV,YES
+NLBLOA,Blauwkapel Oost aansl.,NLBKP,Ut-Htba,BV,BM,Ut-Htba,NLBHV,YES
+NLBLOA,Blauwkapel Oost aansl.,NLBKP,Ut-Htba,BV,BY,Ut-Htba,NLBHV,YES
+NLBLOA,Blauwkapel Oost aansl.,NLBKP,Ut-Htba,BE,BM,Ut-Htba,NLBHV,YES
+NLBLOA,Blauwkapel Oost aansl.,NLBKP,Ut-Htba,BE,BY,Ut-Htba,NLBHV,YES
+NLBLOA,Blauwkapel Oost aansl.,NLBKP,Ut-Htba,BR,BM,Ut-Htba,NLBHV,YES
+NLBLOA,Blauwkapel Oost aansl.,NLBKP,Ut-Htba,BR,BY,Ut-Htba,NLBHV,YES
+NLCR,Crailoo,NLNDB,Asd-Zp,GG,GH,Asd-Zp,NLHVS,NO
+NLCR,Crailoo,NLNDB,Asd-Zp,GG,GS,Asd-Zp,NLHVS,NO
+NLCR,Crailoo,NLNDB,Asd-Zp,GR,GH,Asd-Zp,NLHVS,NO
+NLCR,Crailoo,NLNDB,Asd-Zp,GR,GS,Asd-Zp,NLHVS,NO
+NLDB,Driebergen-Zeist,NLUTZA,Asa-Zvg,AA,AT,Asa-Zvg,NLMRG,YES
+NLDB,Driebergen-Zeist,NLUTZA,Asa-Zvg,AA,AF,Asa-Zvg,NLMRG,YES
+NLDB,Driebergen-Zeist,NLUTZA,Asa-Zvg,AO,AF,Asa-Zvg,NLMRG,YES
+NLDB,Driebergen-Zeist,NLUTZA,Asa-Zvg,AO,AT,Asa-Zvg,NLMRG,YES
+NLDLD,Den Dolder,NLBHV,Ut-Htba,AC,AD,Ut-Htba,NLAMF,YES
+NLDLD,Den Dolder,NLBHV,Ut-Htba,AC,BF,Ut-Htba,NLAMF,YES
+NLDLD,Den Dolder,NLBHV,Ut-Htba,AC,YA,Dld-Brn,NLST,YES
+NLDLD,Den Dolder,NLBHV,Ut-Htba,BE,AD,Ut-Htba,NLAMF,YES
+NLDLD,Den Dolder,NLBHV,Ut-Htba,BE,BF,Ut-Htba,NLAMF,YES
+NLDLD,Den Dolder,NLBHV,Ut-Htba,BE,YA,Dld-Brn,NLST,YES
+NLDLD,Den Dolder,NLBHV,Ut-Htba,CC,AD,Ut-Htba,NLAMF,YES
+NLDLD,Den Dolder,NLBHV,Ut-Htba,CC,BF,Ut-Htba,NLAMF,YES
+NLDLD,Den Dolder,NLBHV,Ut-Htba,CC,YA,Dld-Brn,NLST,YES
+NLHMLA,Harmelen aansl.,NLBKLA,Bkl-Hmla,BA,DF,Ut-Rtd,NLWD,YES
+NLHMLA,Harmelen aansl.,NLBKLA,Bkl-Hmla,BA,DH,Ut-Rtd,NLWD,YES
+NLHMLA,Harmelen aansl.,NLBKLA,Bkl-Hmla,BA,KD,Ut-Rtd,NLWD,YES
+NLHMLA,Harmelen aansl.,NLBKLA,Bkl-Hmla,BA,KL,Ut-Rtd,NLWD,YES
+NLHMLA,Harmelen aansl.,NLBKLA,Bkl-Hmla,BN,DF,Ut-Rtd,NLWD,YES
+NLHMLA,Harmelen aansl.,NLBKLA,Bkl-Hmla,BN,DH,Ut-Rtd,NLWD,YES
+NLHMLA,Harmelen aansl.,NLBKLA,Bkl-Hmla,BN,KD,Ut-Rtd,NLWD,YES
+NLHMLA,Harmelen aansl.,NLBKLA,Bkl-Hmla,BN,KL,Ut-Rtd,NLWD,YES
+NLHMLA,Harmelen aansl.,NLVTN,Ut-Rtd,691,DF,Ut-Rtd,NLWD,NO
+NLHMLA,Harmelen aansl.,NLVTN,Ut-Rtd,691,DH,Ut-Rtd,NLWD,NO
+NLHMLA,Harmelen aansl.,NLVTN,Ut-Rtd,691,KD,Ut-Rtd,NLWD,YES
+NLHMLA,Harmelen aansl.,NLVTN,Ut-Rtd,691,KL,Ut-Rtd,NLWD,NO
+NLHMLA,Harmelen aansl.,NLVTN,Ut-Rtd,692,DF,Ut-Rtd,NLWD,NO
+NLHMLA,Harmelen aansl.,NLVTN,Ut-Rtd,692,DH,Ut-Rtd,NLWD,NO
+NLHMLA,Harmelen aansl.,NLVTN,Ut-Rtd,692,KD,Ut-Rtd,NLWD,NO
+NLHMLA,Harmelen aansl.,NLVTN,Ut-Rtd,692,KL,Ut-Rtd,NLWD,YES
+NLHMLA,Harmelen aansl.,NLVTN,Ut-Rtd,693,DF,Ut-Rtd,NLWD,YES
+NLHMLA,Harmelen aansl.,NLVTN,Ut-Rtd,693,DH,Ut-Rtd,NLWD,NO
+NLHMLA,Harmelen aansl.,NLVTN,Ut-Rtd,693,KD,Ut-Rtd,NLWD,NO
+NLHMLA,Harmelen aansl.,NLVTN,Ut-Rtd,693,KL,Ut-Rtd,NLWD,NO
+NLHMLA,Harmelen aansl.,NLVTN,Ut-Rtd,694,KL,Ut-Rtd,NLWD,NO
+NLHMLA,Harmelen aansl.,NLVTN,Ut-Rtd,694,KD,Ut-Rtd,NLWD,NO
+NLHMLA,Harmelen aansl.,NLVTN,Ut-Rtd,694,DH,Ut-Rtd,NLWD,YES
+NLHMLA,Harmelen aansl.,NLVTN,Ut-Rtd,694,DF,Ut-Rtd,NLWD,YES
+NLHVS,Hilversum,NLCR,Asd-Zp,GH,RC,Asd-Zp,NLBRN,NO
+NLHVS,Hilversum,NLCR,Asd-Zp,GH,PC,Asd-Zp,NLBRN,NO
+NLHVS,Hilversum,NLCR,Asd-Zp,GH,HQ,Hvs-Utm,NLBKP,NO
+NLHVS,Hilversum,NLCR,Asd-Zp,GH,HE,Hvs-Utm,NLBKP,NO
+NLHVS,Hilversum,NLCR,Asd-Zp,GS,RC,Asd-Zp,NLBRN,NO
+NLHVS,Hilversum,NLCR,Asd-Zp,GS,PC,Asd-Zp,NLBRN,NO
+NLHVS,Hilversum,NLCR,Asd-Zp,GS,HQ,Hvs-Utm,NLBKP,NO
+NLHVS,Hilversum,NLCR,Asd-Zp,GS,HE,Hvs-Utm,NLBKP,NO
+NLMAS,Maarssen,NLBKLA,Asa-Zvg,AD1,UE5,Asa-Zvg,NLUT,YES
+NLMAS,Maarssen,NLBKLA,Asa-Zvg,AD1,AS5,Asa-Zvg,NLUT,YES
+NLMAS,Maarssen,NLBKLA,Asa-Zvg,AD1,AE6,Asa-Zvg,NLUT,YES
+NLMAS,Maarssen,NLBKLA,Asa-Zvg,AD1,US5,Asa-Zvg,NLUT,YES
+NLMAS,Maarssen,NLBKLA,Asa-Zvg,AR1,UE5,Asa-Zvg,NLUT,YES
+NLMAS,Maarssen,NLBKLA,Asa-Zvg,AR1,AS5,Asa-Zvg,NLUT,YES
+NLMAS,Maarssen,NLBKLA,Asa-Zvg,AR1,AE6,Asa-Zvg,NLUT,YES
+NLMAS,Maarssen,NLBKLA,Asa-Zvg,AR1,US5,Asa-Zvg,NLUT,YES
+NLMAS,Maarssen,NLBKLA,Asa-Zvg,UD4,UE5,Asa-Zvg,NLUT,YES
+NLMAS,Maarssen,NLBKLA,Asa-Zvg,UD4,AS5,Asa-Zvg,NLUT,YES
+NLMAS,Maarssen,NLBKLA,Asa-Zvg,UD4,AE6,Asa-Zvg,NLUT,YES
+NLMAS,Maarssen,NLBKLA,Asa-Zvg,UD4,US5,Asa-Zvg,NLUT,YES
+NLMAS,Maarssen,NLBKLA,Asa-Zvg,UR4,UE5,Asa-Zvg,NLUT,YES
+NLMAS,Maarssen,NLBKLA,Asa-Zvg,UR4,AS5,Asa-Zvg,NLUT,YES
+NLMAS,Maarssen,NLBKLA,Asa-Zvg,UR4,AE6,Asa-Zvg,NLUT,YES
+NLMAS,Maarssen,NLBKLA,Asa-Zvg,UR4,US5,Asa-Zvg,NLUT,YES
+NLUT,Utrecht Centraal,NLMAS,Asa-Zvg,US5,WH,Ut-Rtd,NLVTN,NO
+NLUT,Utrecht Centraal,NLMAS,Asa-Zvg,US5,WE,Ut-Rtd,NLVTN,NO
+NLUT,Utrecht Centraal,NLMAS,Asa-Zvg,US5,WG,Ut-Rtd,NLVTN,NO
+NLUT,Utrecht Centraal,NLMAS,Asa-Zvg,US5,WF,Ut-Rtd,NLVTN,NO
+NLUT,Utrecht Centraal,NLMAS,Asa-Zvg,US5,243,Ut-Btl,NLUTZA,NO
+NLUT,Utrecht Centraal,NLMAS,Asa-Zvg,US5,242,Ut-Btl,NLUTZA,YES
+NLUT,Utrecht Centraal,NLMAS,Asa-Zvg,US5,BA,Ut-Htba,NLBKP,NO
+NLUT,Utrecht Centraal,NLMAS,Asa-Zvg,US5,BN,Ut-Htba,NLBKP,NO
+NLUT,Utrecht Centraal,NLMAS,Asa-Zvg,US5,241,Ut-Btl,NLUTZA,YES
+NLUT,Utrecht Centraal,NLMAS,Asa-Zvg,US5,HA,Ut-Htba,NLBKP,NO
+NLUT,Utrecht Centraal,NLMAS,Asa-Zvg,US5,HN,Ut-Htba,NLBKP,NO
+NLUT,Utrecht Centraal,NLMAS,Asa-Zvg,US5,SE,Ut-Btl,NLHTN,NO
+NLUT,Utrecht Centraal,NLMAS,Asa-Zvg,US5,SA,Ut-Btl,NLUTZA,NO
+NLUT,Utrecht Centraal,NLMAS,Asa-Zvg,US5,SJ,Ut-Btl,NLHTN,NO
+NLUT,Utrecht Centraal,NLMAS,Asa-Zvg,US5,240,Ut-Btl,NLUTZA,NO
+NLUT,Utrecht Centraal,NLMAS,Asa-Zvg,US5,FA,Ut-Btl,NLUTZA,NO
+NLUT,Utrecht Centraal,NLMAS,Asa-Zvg,AE6,BA,Ut-Htba,NLBKP,NO
+NLUT,Utrecht Centraal,NLMAS,Asa-Zvg,AE6,241,Ut-Btl,NLUTZA,YES
+NLUT,Utrecht Centraal,NLMAS,Asa-Zvg,AE6,242,Ut-Btl,NLUTZA,YES
+NLUT,Utrecht Centraal,NLMAS,Asa-Zvg,AE6,243,Ut-Btl,NLUTZA,NO
+NLUT,Utrecht Centraal,NLMAS,Asa-Zvg,AE6,BN,Ut-Htba,NLBKP,NO
+NLUT,Utrecht Centraal,NLMAS,Asa-Zvg,AE6,WF,Ut-Rtd,NLVTN,NO
+NLUT,Utrecht Centraal,NLMAS,Asa-Zvg,AE6,HA,Ut-Htba,NLBKP,NO
+NLUT,Utrecht Centraal,NLMAS,Asa-Zvg,AE6,WG,Ut-Rtd,NLVTN,NO
+NLUT,Utrecht Centraal,NLMAS,Asa-Zvg,AE6,HN,Ut-Htba,NLBKP,NO
+NLUT,Utrecht Centraal,NLMAS,Asa-Zvg,AE6,SA,Ut-Btl,NLUTZA,NO
+NLUT,Utrecht Centraal,NLMAS,Asa-Zvg,AE6,WE,Ut-Rtd,NLVTN,NO
+NLUT,Utrecht Centraal,NLMAS,Asa-Zvg,AE6,SE,Ut-Btl,NLHTN,NO
+NLUT,Utrecht Centraal,NLMAS,Asa-Zvg,AE6,WH,Ut-Rtd,NLVTN,NO
+NLUT,Utrecht Centraal,NLMAS,Asa-Zvg,AE6,SJ,Ut-Btl,NLHTN,NO
+NLUT,Utrecht Centraal,NLMAS,Asa-Zvg,AE6,240,Ut-Btl,NLUTZA,YES
+NLUT,Utrecht Centraal,NLMAS,Asa-Zvg,AE6,FA,Ut-Btl,NLUTZA,YES
+NLUT,Utrecht Centraal,NLMAS,Asa-Zvg,AS5,BA,Ut-Htba,NLBKP,NO
+NLUT,Utrecht Centraal,NLMAS,Asa-Zvg,AS5,BN,Ut-Htba,NLBKP,NO
+NLUT,Utrecht Centraal,NLMAS,Asa-Zvg,AS5,HA,Ut-Htba,NLBKP,NO
+NLUT,Utrecht Centraal,NLMAS,Asa-Zvg,AS5,HN,Ut-Htba,NLBKP,NO
+NLUT,Utrecht Centraal,NLMAS,Asa-Zvg,AS5,SE,Ut-Btl,NLHTN,NO
+NLUT,Utrecht Centraal,NLMAS,Asa-Zvg,AS5,SJ,Ut-Btl,NLHTN,NO
+NLUT,Utrecht Centraal,NLMAS,Asa-Zvg,AS5,FA,Ut-Btl,NLUTZA,NO
+NLUT,Utrecht Centraal,NLMAS,Asa-Zvg,AS5,240,Ut-Btl,NLUTZA,NO
+NLUT,Utrecht Centraal,NLMAS,Asa-Zvg,AS5,WH,Ut-Rtd,NLVTN,NO
+NLUT,Utrecht Centraal,NLMAS,Asa-Zvg,AS5,WE,Ut-Rtd,NLVTN,NO
+NLUT,Utrecht Centraal,NLMAS,Asa-Zvg,AS5,WG,Ut-Rtd,NLVTN,NO
+NLUT,Utrecht Centraal,NLMAS,Asa-Zvg,AS5,SA,Ut-Btl,NLUTZA,NO
+NLUT,Utrecht Centraal,NLMAS,Asa-Zvg,AS5,WF,Ut-Rtd,NLVTN,NO
+NLUT,Utrecht Centraal,NLMAS,Asa-Zvg,AS5,243,Ut-Btl,NLUTZA,NO
+NLUT,Utrecht Centraal,NLMAS,Asa-Zvg,AS5,242,Ut-Btl,NLUTZA,YES
+NLUT,Utrecht Centraal,NLMAS,Asa-Zvg,AS5,241,Ut-Btl,NLUTZA,YES
+NLUT,Utrecht Centraal,NLMAS,Asa-Zvg,UE5,FA,Ut-Btl,NLUTZA,NO
+NLUT,Utrecht Centraal,NLMAS,Asa-Zvg,UE5,SJ,Ut-Btl,NLHTN,NO
+NLUT,Utrecht Centraal,NLMAS,Asa-Zvg,UE5,240,Ut-Btl,NLUTZA,NO
+NLUT,Utrecht Centraal,NLMAS,Asa-Zvg,UE5,WH,Ut-Rtd,NLVTN,NO
+NLUT,Utrecht Centraal,NLMAS,Asa-Zvg,UE5,SE,Ut-Btl,NLHTN,NO
+NLUT,Utrecht Centraal,NLMAS,Asa-Zvg,UE5,WE,Ut-Rtd,NLVTN,NO
+NLUT,Utrecht Centraal,NLMAS,Asa-Zvg,UE5,HN,Ut-Htba,NLBKP,NO
+NLUT,Utrecht Centraal,NLMAS,Asa-Zvg,UE5,WG,Ut-Rtd,NLVTN,NO
+NLUT,Utrecht Centraal,NLMAS,Asa-Zvg,UE5,HA,Ut-Htba,NLBKP,NO
+NLUT,Utrecht Centraal,NLMAS,Asa-Zvg,UE5,WF,Ut-Rtd,NLVTN,NO
+NLUT,Utrecht Centraal,NLMAS,Asa-Zvg,UE5,SA,Ut-Btl,NLUTZA,YES
+NLUT,Utrecht Centraal,NLMAS,Asa-Zvg,UE5,BN,Ut-Htba,NLBKP,NO
+NLUT,Utrecht Centraal,NLMAS,Asa-Zvg,UE5,243,Ut-Btl,NLUTZA,YES
+NLUT,Utrecht Centraal,NLMAS,Asa-Zvg,UE5,242,Ut-Btl,NLUTZA,YES
+NLUT,Utrecht Centraal,NLMAS,Asa-Zvg,UE5,BA,Ut-Htba,NLBKP,NO
+NLUT,Utrecht Centraal,NLMAS,Asa-Zvg,UE5,241,Ut-Btl,NLUTZA,YES
+NLUTZA,Utrecht Zuid aansluiting,NLUT,Ut-Btl,FA,AA,Asa-Zvg,NLDB,YES
+NLUTZA,Utrecht Zuid aansluiting,NLUT,Ut-Btl,FA,SN,Ut-Btl,NLHTN,NO
+NLUTZA,Utrecht Zuid aansluiting,NLUT,Ut-Btl,FA,FE,Ut-Btl,NLHTN,NO
+NLUTZA,Utrecht Zuid aansluiting,NLUT,Ut-Btl,FA,AO,Asa-Zvg,NLDB,NO
+NLUTZA,Utrecht Zuid aansluiting,NLUT,Ut-Btl,240,SN,Ut-Btl,NLHTN,NO
+NLUTZA,Utrecht Zuid aansluiting,NLUT,Ut-Btl,240,FE,Ut-Btl,NLHTN,YES
+NLUTZA,Utrecht Zuid aansluiting,NLUT,Ut-Btl,240,AO,Asa-Zvg,NLDB,NO
+NLUTZA,Utrecht Zuid aansluiting,NLUT,Ut-Btl,240,AA,Asa-Zvg,NLDB,NO
+NLUTZA,Utrecht Zuid aansluiting,NLUT,Ut-Btl,SA,AO,Asa-Zvg,NLDB,YES
+NLUTZA,Utrecht Zuid aansluiting,NLUT,Ut-Btl,SA,FE,Ut-Btl,NLHTN,NO
+NLUTZA,Utrecht Zuid aansluiting,NLUT,Ut-Btl,SA,AA,Asa-Zvg,NLDB,NO
+NLUTZA,Utrecht Zuid aansluiting,NLUT,Ut-Btl,SA,SN,Ut-Btl,NLHTN,NO
+NLUTZA,Utrecht Zuid aansluiting,NLUT,Ut-Btl,241,AO,Asa-Zvg,NLDB,NO
+NLUTZA,Utrecht Zuid aansluiting,NLUT,Ut-Btl,241,AA,Asa-Zvg,NLDB,YES
+NLUTZA,Utrecht Zuid aansluiting,NLUT,Ut-Btl,241,FE,Ut-Btl,NLHTN,YES
+NLUTZA,Utrecht Zuid aansluiting,NLUT,Ut-Btl,241,SN,Ut-Btl,NLHTN,NO
+NLUTZA,Utrecht Zuid aansluiting,NLUT,Ut-Btl,242,AO,Asa-Zvg,NLDB,YES
+NLUTZA,Utrecht Zuid aansluiting,NLUT,Ut-Btl,242,AA,Asa-Zvg,NLDB,NO
+NLUTZA,Utrecht Zuid aansluiting,NLUT,Ut-Btl,242,FE,Ut-Btl,NLHTN,NO
+NLUTZA,Utrecht Zuid aansluiting,NLUT,Ut-Btl,242,SN,Ut-Btl,NLHTN,YES
+NLUTZA,Utrecht Zuid aansluiting,NLUT,Ut-Btl,243,AA,Asa-Zvg,NLDB,NO
+NLUTZA,Utrecht Zuid aansluiting,NLUT,Ut-Btl,243,AO,Asa-Zvg,NLDB,NO
+NLUTZA,Utrecht Zuid aansluiting,NLUT,Ut-Btl,243,FE,Ut-Btl,NLHTN,NO
+NLUTZA,Utrecht Zuid aansluiting,NLUT,Ut-Btl,243,SN,Ut-Btl,NLHTN,YES
+NLVTN,Vleuten,NLUT,Ut-Rtd,WF,691,Ut-Rtd,NLHMLA,NO
+NLVTN,Vleuten,NLUT,Ut-Rtd,WF,692,Ut-Rtd,NLHMLA,NO
+NLVTN,Vleuten,NLUT,Ut-Rtd,WF,693,Ut-Rtd,NLHMLA,YES
+NLVTN,Vleuten,NLUT,Ut-Rtd,WF,694,Ut-Rtd,NLHMLA,YES
+NLVTN,Vleuten,NLUT,Ut-Rtd,WG,691,Ut-Rtd,NLHMLA,YES
+NLVTN,Vleuten,NLUT,Ut-Rtd,WG,692,Ut-Rtd,NLHMLA,YES
+NLVTN,Vleuten,NLUT,Ut-Rtd,WG,693,Ut-Rtd,NLHMLA,NO
+NLVTN,Vleuten,NLUT,Ut-Rtd,WG,694,Ut-Rtd,NLHMLA,NO
+NLVTN,Vleuten,NLUT,Ut-Rtd,WE,691,Ut-Rtd,NLHMLA,NO
+NLVTN,Vleuten,NLUT,Ut-Rtd,WE,692,Ut-Rtd,NLHMLA,NO
+NLVTN,Vleuten,NLUT,Ut-Rtd,WE,693,Ut-Rtd,NLHMLA,NO
+NLVTN,Vleuten,NLUT,Ut-Rtd,WE,694,Ut-Rtd,NLHMLA,YES
+NLVTN,Vleuten,NLUT,Ut-Rtd,WH,691,Ut-Rtd,NLHMLA,YES
+NLVTN,Vleuten,NLUT,Ut-Rtd,WH,692,Ut-Rtd,NLHMLA,YES
+NLVTN,Vleuten,NLUT,Ut-Rtd,WH,693,Ut-Rtd,NLHMLA,NO
+NLVTN,Vleuten,NLUT,Ut-Rtd,WH,694,Ut-Rtd,NLHMLA,NO
