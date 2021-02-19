@@ -127,7 +127,7 @@
 :map_start-location_0 rr:predicateObjectMap :pom_9.
 :pm_9 a rr:PredicateMap.
 :pom_9 rr:predicateMap :pm_9.
-:pm_9 rr:constant wgs:latitude.
+:pm_9 rr:constant wgs:lat.
 :pom_9 rr:objectMap :om_9.
 :om_9 a rr:ObjectMap;
     rml:reference "StartLat";
@@ -137,7 +137,7 @@
 :map_start-location_0 rr:predicateObjectMap :pom_10.
 :pm_10 a rr:PredicateMap.
 :pom_10 rr:predicateMap :pm_10.
-:pm_10 rr:constant wgs:longitude.
+:pm_10 rr:constant wgs:long.
 :pom_10 rr:objectMap :om_10.
 :om_10 a rr:ObjectMap;
     rml:reference "StartLong";
@@ -190,7 +190,7 @@
 :map_end-location_0 rr:predicateObjectMap :pom_14.
 :pm_14 a rr:PredicateMap.
 :pom_14 rr:predicateMap :pm_14.
-:pm_14 rr:constant wgs:latitude.
+:pm_14 rr:constant wgs:lat.
 :pom_14 rr:objectMap :om_14.
 :om_14 a rr:ObjectMap;
     rml:reference "EndLat";
@@ -200,7 +200,7 @@
 :map_end-location_0 rr:predicateObjectMap :pom_15.
 :pm_15 a rr:PredicateMap.
 :pom_15 rr:predicateMap :pm_15.
-:pm_15 rr:constant wgs:longitude.
+:pm_15 rr:constant wgs:long.
 :pom_15 rr:objectMap :om_15.
 :om_15 a rr:ObjectMap;
     rml:reference "EndLong";
