@@ -55,8 +55,8 @@ mappings:
     po:
       - [a, wgs:Point]
       - [a, geosparql:Geometry]
-      - [wgs:latitude, $(StartLat), xsd:double]
-      - [wgs:longitude, $(StartLong), xsd:double]
+      - [wgs:lat, $(StartLat), xsd:double]
+      - [wgs:long, $(StartLong), xsd:double]
       - [geosparql:asWKT, POINT ($(StartLong) $(StartLat)), geosparql:wktLiteral]
   
   end-location:
@@ -71,8 +71,8 @@ mappings:
     po:
       - [a, wgs:Point]
       - [a, geosparql:Geometry]
-      - [wgs:latitude, $(EndLat), xsd:double]
-      - [wgs:longitude, $(EndLong), xsd:double]
+      - [wgs:lat, $(EndLat), xsd:double]
+      - [wgs:long, $(EndLong), xsd:double]
       - [geosparql:asWKT, POINT ($(EndLong) $(EndLat)), geosparql:wktLiteral]
   
   eu-country:

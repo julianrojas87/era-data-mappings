@@ -259,7 +259,7 @@
 :map_location_0 rr:predicateObjectMap :pom_19.
 :pm_19 a rr:PredicateMap.
 :pom_19 rr:predicateMap :pm_19.
-:pm_19 rr:constant wgs:latitude.
+:pm_19 rr:constant wgs:lat.
 :pom_19 rr:objectMap :om_19.
 :om_19 a rr:ObjectMap;
     rml:reference "Latitude";
@@ -269,7 +269,7 @@
 :map_location_0 rr:predicateObjectMap :pom_20.
 :pm_20 a rr:PredicateMap.
 :pom_20 rr:predicateMap :pm_20.
-:pm_20 rr:constant wgs:longitude.
+:pm_20 rr:constant wgs:long.
 :pom_20 rr:objectMap :om_20.
 :om_20 a rr:ObjectMap;
     rml:reference "Longitude";

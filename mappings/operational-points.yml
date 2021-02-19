@@ -8,7 +8,7 @@ prefixes:
   skos: "http://www.w3.org/2004/02/skos/core#"
   era: "http://era.europa.eu/ns#"
   xsd: "http://www.w3.org/2001/XMLSchema#"
-  # era-op-types: "http://era.europa.eu/concepts/op-types#"
+
 variables:
   connection: 
     access: &host //10.10.160.21:1433
@@ -98,8 +98,8 @@ mappings:
     po:
       - [a, wgs:Point]
       - [a, geosparql:Geometry]
-      - [wgs:latitude, $(Latitude), xsd:double]
-      - [wgs:longitude, $(Longitude), xsd:double]
+      - [wgs:lat, $(Latitude), xsd:double]
+      - [wgs:long, $(Longitude), xsd:double]
       - [geosparql:asWKT, POINT ($(Longitude) $(Latitude)), geosparql:wktLiteral]
   
   op-type:

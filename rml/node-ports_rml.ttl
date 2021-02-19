@@ -40,7 +40,7 @@
 :map_departing-node-port_0 rr:predicateObjectMap :pom_1.
 :pm_1 a rr:PredicateMap.
 :pom_1 rr:predicateMap :pm_1.
-:pm_1 rr:constant wgs:latitude.
+:pm_1 rr:constant wgs:lat.
 :pom_1 rr:objectMap :om_1.
 :om_1 a rr:ObjectMap;
     rml:reference "Latitude";
@@ -50,7 +50,7 @@
 :map_departing-node-port_0 rr:predicateObjectMap :pom_2.
 :pm_2 a rr:PredicateMap.
 :pom_2 rr:predicateMap :pm_2.
-:pm_2 rr:constant wgs:longitude.
+:pm_2 rr:constant wgs:long.
 :pom_2 rr:objectMap :om_2.
 :om_2 a rr:ObjectMap;
     rml:reference "Longitude";
@@ -103,7 +103,7 @@
 :map_arriving-node-port_0 rr:predicateObjectMap :pom_6.
 :pm_6 a rr:PredicateMap.
 :pom_6 rr:predicateMap :pm_6.
-:pm_6 rr:constant wgs:latitude.
+:pm_6 rr:constant wgs:lat.
 :pom_6 rr:objectMap :om_6.
 :om_6 a rr:ObjectMap;
     rml:reference "Latitude";
@@ -113,7 +113,7 @@
 :map_arriving-node-port_0 rr:predicateObjectMap :pom_7.
 :pm_7 a rr:PredicateMap.
 :pom_7 rr:predicateMap :pm_7.
-:pm_7 rr:constant wgs:longitude.
+:pm_7 rr:constant wgs:long.
 :pom_7 rr:objectMap :om_7.
 :om_7 a rr:ObjectMap;
     rml:reference "Longitude";
