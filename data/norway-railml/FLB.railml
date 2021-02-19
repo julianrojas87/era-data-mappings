@@ -1,0 +1,2413 @@
+<?xml version="1.0" encoding="UTF-8"?><railML xmlns="https://www.railml.org/schemas/3.1" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:gml4rail3="https://www.railml.org/schemas/3.1/gml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.1" xsi:schemaLocation="https://www.railml.org/schemas/3.1 https://www.railml.org/schemas/3.1/railml3.xsd">
+  <metadata>
+    <dc:format>3.1</dc:format>
+    <dc:identifier>3</dc:identifier>
+    <dc:source>https://railoscope.com/workspace/5d1df4a672b32b08683bc7e5?modelId=5d1df4a872b32b08683bc7ef&amp;revision=129 (rev 129)</dc:source>
+    <dc:title xml:lang="NO">FLB</dc:title>
+    <dc:language>NO</dc:language>
+    <dc:date>2021-02-15T08:41:29.673Z</dc:date>
+    <dc:source>infrastructureVisualization: For id="vis0" used coordinate system ortho: y-axis vertical from bottom to top, x-axis horizontal from left to right</dc:source>
+    <dc:creator>Torben Brand</dc:creator>
+  </metadata>
+  <common id="co_01">
+    <organizationalUnits>
+      <infrastructureManager code="BN" id="im01"/>
+    </organizationalUnits>
+    <speedProfiles>
+      <speedProfile id="spprf1" influence="increasing">
+        <name language="NO" name="basis"/>
+      </speedProfile>
+      <speedProfile id="spprf2" influence="increasing">
+        <name language="NO" name="nor:pluss"/>
+      </speedProfile>
+      <speedProfile id="spprf3" influence="increasing">
+        <name language="NO" name="nor:krenge"/>
+      </speedProfile>
+      <speedProfile id="spprf4" influence="decreasing">
+        <name description="SJN defined condition" language="NO" name="nor:local"/>
+      </speedProfile>
+      <speedProfile id="spprf5" influence="decreasing">
+        <name language="NO" name="nor:temporary"/>
+      </speedProfile>
+      <speedProfile id="spprf6" influence="decreasing">
+        <name description="SJN defined condition" language="NO" name="nor:conditional"/>
+      </speedProfile>
+      <speedProfile id="spprf7" influence="decreasing">
+        <name description="SJN defined condition" language="NO" name="nor:avalanche"/>
+      </speedProfile>
+    </speedProfiles>
+    <positioning>
+      <linearPositioningSystems>
+        <linearPositioningSystem endMeasure="356065.0" id="lps01" linearReferencingMethod="absolute" startMeasure="335916.0" units="m">
+          <isValid/>
+        </linearPositioningSystem>
+      </linearPositioningSystems>
+    </positioning>
+  </common>
+  <infrastructure id="is_01">
+    <topology>
+      <netElements>
+        <netElement id="ne_9" length="30.0">
+          <relation ref="nr_9_0_206_1"/>
+          <relation ref="nr_9_1_23_0"/>
+          <associatedPositioningSystem id="ne_9_aps01">
+            <intrinsicCoordinate id="ne_9_aps01_ic1" intrinsicCoord="0.0">
+              <linearCoordinate measure="346310.0" positioningSystemRef="lps01"/>
+            </intrinsicCoordinate>
+            <intrinsicCoordinate id="ne_9_aps01_ic2" intrinsicCoord="1.0">
+              <linearCoordinate measure="346340.0" positioningSystemRef="lps01"/>
+            </intrinsicCoordinate>
+          </associatedPositioningSystem>
+        </netElement>
+        <netElement id="ne_23" length="50.0">
+          <relation ref="nr_9_1_23_0"/>
+          <relation ref="nr_23_1_307_0"/>
+          <relation ref="nr_23_1_279_1"/>
+          <associatedPositioningSystem id="ne_23_aps01">
+            <intrinsicCoordinate id="ne_23_aps01_ic1" intrinsicCoord="0.0">
+              <linearCoordinate measure="346340.0" positioningSystemRef="lps01"/>
+            </intrinsicCoordinate>
+            <intrinsicCoordinate id="ne_23_aps01_ic2" intrinsicCoord="1.0">
+              <linearCoordinate measure="346390.0" positioningSystemRef="lps01"/>
+            </intrinsicCoordinate>
+          </associatedPositioningSystem>
+        </netElement>
+        <netElement id="ne_27" length="90.0">
+          <relation ref="nr_27_0_42_1"/>
+          <relation ref="nr_27_0_49_0"/>
+          <relation ref="nr_27_1_38_0"/>
+          <associatedPositioningSystem id="ne_27_aps01">
+            <intrinsicCoordinate id="ne_27_aps01_ic1" intrinsicCoord="0.0">
+              <linearCoordinate measure="355890.0" positioningSystemRef="lps01"/>
+            </intrinsicCoordinate>
+            <intrinsicCoordinate id="ne_27_aps01_ic2" intrinsicCoord="1.0">
+              <linearCoordinate measure="355980.0" positioningSystemRef="lps01"/>
+            </intrinsicCoordinate>
+          </associatedPositioningSystem>
+        </netElement>
+        <netElement id="ne_38" length="60.0">
+          <relation ref="nr_27_1_38_0"/>
+          <associatedPositioningSystem id="ne_38_aps01">
+            <intrinsicCoordinate id="ne_38_aps01_ic1" intrinsicCoord="0.0">
+              <linearCoordinate measure="355980.0" positioningSystemRef="lps01"/>
+            </intrinsicCoordinate>
+            <intrinsicCoordinate id="ne_38_aps01_ic2" intrinsicCoord="1.0">
+              <linearCoordinate measure="356040.0" positioningSystemRef="lps01"/>
+            </intrinsicCoordinate>
+          </associatedPositioningSystem>
+        </netElement>
+        <netElement id="ne_42" length="60.0">
+          <relation ref="nr_42_0_326_0"/>
+          <relation ref="nr_42_0_322_1"/>
+          <relation ref="nr_27_0_42_1"/>
+          <relation ref="nr_42_1_49_0"/>
+          <associatedPositioningSystem id="ne_42_aps01">
+            <intrinsicCoordinate id="ne_42_aps01_ic1" intrinsicCoord="0.0">
+              <linearCoordinate measure="355830.0" positioningSystemRef="lps01"/>
+            </intrinsicCoordinate>
+            <intrinsicCoordinate id="ne_42_aps01_ic2" intrinsicCoord="1.0">
+              <linearCoordinate measure="355890.0" positioningSystemRef="lps01"/>
+            </intrinsicCoordinate>
+          </associatedPositioningSystem>
+        </netElement>
+        <netElement id="ne_49" length="10.0">
+          <relation ref="nr_27_0_49_0"/>
+          <relation ref="nr_42_1_49_0"/>
+          <relation ref="nr_49_1_73_0"/>
+          <relation ref="nr_49_1_84_0"/>
+          <associatedPositioningSystem id="ne_49_aps01">
+            <intrinsicCoordinate id="ne_49_aps01_ic1" intrinsicCoord="0.0">
+              <linearCoordinate measure="355890.0" positioningSystemRef="lps01"/>
+            </intrinsicCoordinate>
+            <intrinsicCoordinate id="ne_49_aps01_ic2" intrinsicCoord="1.0">
+              <linearCoordinate measure="355900.0" positioningSystemRef="lps01"/>
+            </intrinsicCoordinate>
+          </associatedPositioningSystem>
+        </netElement>
+        <netElement id="ne_57" length="54.0">
+          <relation ref="nr_57_0_206_0"/>
+          <relation ref="nr_57_0_109_1"/>
+          <relation ref="nr_57_1_69_0"/>
+          <associatedPositioningSystem id="ne_57_aps01">
+            <intrinsicCoordinate id="ne_57_aps01_ic1" intrinsicCoord="0.0">
+              <linearCoordinate measure="346073.0" positioningSystemRef="lps01"/>
+            </intrinsicCoordinate>
+            <intrinsicCoordinate id="ne_57_aps01_ic2" intrinsicCoord="1.0">
+              <linearCoordinate measure="346127.0" positioningSystemRef="lps01"/>
+            </intrinsicCoordinate>
+          </associatedPositioningSystem>
+        </netElement>
+        <netElement id="ne_69" length="183.0">
+          <relation ref="nr_57_1_69_0"/>
+          <relation ref="nr_69_1_279_0"/>
+          <associatedPositioningSystem id="ne_69_aps01">
+            <intrinsicCoordinate id="ne_69_aps01_ic1" intrinsicCoord="0.0">
+              <linearCoordinate measure="346127.0" positioningSystemRef="lps01"/>
+            </intrinsicCoordinate>
+            <intrinsicCoordinate id="ne_69_aps01_ic2" intrinsicCoord="1.0">
+              <linearCoordinate measure="346310.0" positioningSystemRef="lps01"/>
+            </intrinsicCoordinate>
+          </associatedPositioningSystem>
+        </netElement>
+        <netElement id="ne_73" length="140.0">
+          <relation ref="nr_49_1_73_0"/>
+          <relation ref="nr_73_0_84_0"/>
+          <associatedPositioningSystem id="ne_73_aps01">
+            <intrinsicCoordinate id="ne_73_aps01_ic1" intrinsicCoord="0.0">
+              <linearCoordinate measure="355900.0" positioningSystemRef="lps01"/>
+            </intrinsicCoordinate>
+            <intrinsicCoordinate id="ne_73_aps01_ic2" intrinsicCoord="1.0">
+              <linearCoordinate measure="356040.0" positioningSystemRef="lps01"/>
+            </intrinsicCoordinate>
+          </associatedPositioningSystem>
+        </netElement>
+        <netElement id="ne_84" length="100.0">
+          <relation ref="nr_49_1_84_0"/>
+          <relation ref="nr_73_0_84_0"/>
+          <relation ref="nr_84_1_326_1"/>
+          <relation ref="nr_84_1_330_0"/>
+          <associatedPositioningSystem id="ne_84_aps01">
+            <intrinsicCoordinate id="ne_84_aps01_ic1" intrinsicCoord="0.0">
+              <linearCoordinate measure="355900.0" positioningSystemRef="lps01"/>
+            </intrinsicCoordinate>
+            <intrinsicCoordinate id="ne_84_aps01_ic2" intrinsicCoord="1.0">
+              <linearCoordinate measure="356000.0" positioningSystemRef="lps01"/>
+            </intrinsicCoordinate>
+          </associatedPositioningSystem>
+        </netElement>
+        <netElement id="ne_94" length="94.0">
+          <relation ref="nr_94_0_322_0"/>
+          <relation ref="nr_94_0_311_1"/>
+          <relation ref="nr_94_1_105_0"/>
+          <associatedPositioningSystem id="ne_94_aps01">
+            <intrinsicCoordinate id="ne_94_aps01_ic1" intrinsicCoord="0.0">
+              <linearCoordinate measure="355806.0" positioningSystemRef="lps01"/>
+            </intrinsicCoordinate>
+            <intrinsicCoordinate id="ne_94_aps01_ic2" intrinsicCoord="1.0">
+              <linearCoordinate measure="355900.0" positioningSystemRef="lps01"/>
+            </intrinsicCoordinate>
+          </associatedPositioningSystem>
+        </netElement>
+        <netElement id="ne_105" length="165.0">
+          <relation ref="nr_94_1_105_0"/>
+          <associatedPositioningSystem id="ne_105_aps01">
+            <intrinsicCoordinate id="ne_105_aps01_ic1" intrinsicCoord="0.0">
+              <linearCoordinate measure="355900.0" positioningSystemRef="lps01"/>
+            </intrinsicCoordinate>
+            <intrinsicCoordinate id="ne_105_aps01_ic2" intrinsicCoord="1.0">
+              <linearCoordinate measure="356065.0" positioningSystemRef="lps01"/>
+            </intrinsicCoordinate>
+          </associatedPositioningSystem>
+        </netElement>
+        <netElement id="ne_109" length="10157.0">
+          <relation ref="nr_57_0_109_1"/>
+          <relation ref="nr_109_1_206_0"/>
+          <associatedPositioningSystem id="ne_109_aps01">
+            <intrinsicCoordinate id="ne_109_aps01_ic1" intrinsicCoord="0.0">
+              <linearCoordinate measure="335916.0" positioningSystemRef="lps01"/>
+            </intrinsicCoordinate>
+            <intrinsicCoordinate id="ne_109_aps01_ic2" intrinsicCoord="1.0">
+              <linearCoordinate measure="346073.0" positioningSystemRef="lps01"/>
+            </intrinsicCoordinate>
+          </associatedPositioningSystem>
+        </netElement>
+        <netElement id="ne_206" length="237.0">
+          <relation ref="nr_57_0_206_0"/>
+          <relation ref="nr_109_1_206_0"/>
+          <relation ref="nr_9_0_206_1"/>
+          <associatedPositioningSystem id="ne_206_aps01">
+            <intrinsicCoordinate id="ne_206_aps01_ic1" intrinsicCoord="0.0">
+              <linearCoordinate measure="346073.0" positioningSystemRef="lps01"/>
+            </intrinsicCoordinate>
+            <intrinsicCoordinate id="ne_206_aps01_ic2" intrinsicCoord="1.0">
+              <linearCoordinate measure="346310.0" positioningSystemRef="lps01"/>
+            </intrinsicCoordinate>
+          </associatedPositioningSystem>
+        </netElement>
+        <netElement id="ne_210" length="8935.0">
+          <relation ref="nr_210_0_307_1"/>
+          <relation ref="nr_210_1_311_0"/>
+          <associatedPositioningSystem id="ne_210_aps01">
+            <intrinsicCoordinate id="ne_210_aps01_ic1" intrinsicCoord="0.0">
+              <linearCoordinate measure="346630.0" positioningSystemRef="lps01"/>
+            </intrinsicCoordinate>
+            <intrinsicCoordinate id="ne_210_aps01_ic2" intrinsicCoord="1.0">
+              <linearCoordinate measure="355565.0" positioningSystemRef="lps01"/>
+            </intrinsicCoordinate>
+          </associatedPositioningSystem>
+        </netElement>
+        <netElement id="ne_279" length="80.0">
+          <relation ref="nr_69_1_279_0"/>
+          <relation ref="nr_23_1_279_1"/>
+          <relation ref="nr_279_1_307_0"/>
+          <associatedPositioningSystem id="ne_279_aps01">
+            <intrinsicCoordinate id="ne_279_aps01_ic1" intrinsicCoord="0.0">
+              <linearCoordinate measure="346310.0" positioningSystemRef="lps01"/>
+            </intrinsicCoordinate>
+            <intrinsicCoordinate id="ne_279_aps01_ic2" intrinsicCoord="1.0">
+              <linearCoordinate measure="346390.0" positioningSystemRef="lps01"/>
+            </intrinsicCoordinate>
+          </associatedPositioningSystem>
+        </netElement>
+        <netElement id="ne_307" length="240.0">
+          <relation ref="nr_23_1_307_0"/>
+          <relation ref="nr_279_1_307_0"/>
+          <relation ref="nr_210_0_307_1"/>
+          <associatedPositioningSystem id="ne_307_aps01">
+            <intrinsicCoordinate id="ne_307_aps01_ic1" intrinsicCoord="0.0">
+              <linearCoordinate measure="346390.0" positioningSystemRef="lps01"/>
+            </intrinsicCoordinate>
+            <intrinsicCoordinate id="ne_307_aps01_ic2" intrinsicCoord="1.0">
+              <linearCoordinate measure="346630.0" positioningSystemRef="lps01"/>
+            </intrinsicCoordinate>
+          </associatedPositioningSystem>
+        </netElement>
+        <netElement id="ne_311" length="241.0">
+          <relation ref="nr_210_1_311_0"/>
+          <relation ref="nr_94_0_311_1"/>
+          <relation ref="nr_311_1_322_0"/>
+          <associatedPositioningSystem id="ne_311_aps01">
+            <intrinsicCoordinate id="ne_311_aps01_ic1" intrinsicCoord="0.0">
+              <linearCoordinate measure="355565.0" positioningSystemRef="lps01"/>
+            </intrinsicCoordinate>
+            <intrinsicCoordinate id="ne_311_aps01_ic2" intrinsicCoord="1.0">
+              <linearCoordinate measure="355806.0" positioningSystemRef="lps01"/>
+            </intrinsicCoordinate>
+          </associatedPositioningSystem>
+        </netElement>
+        <netElement id="ne_322" length="24.0">
+          <relation ref="nr_94_0_322_0"/>
+          <relation ref="nr_311_1_322_0"/>
+          <relation ref="nr_42_0_322_1"/>
+          <relation ref="nr_322_1_326_0"/>
+          <associatedPositioningSystem id="ne_322_aps01">
+            <intrinsicCoordinate id="ne_322_aps01_ic1" intrinsicCoord="0.0">
+              <linearCoordinate measure="355806.0" positioningSystemRef="lps01"/>
+            </intrinsicCoordinate>
+            <intrinsicCoordinate id="ne_322_aps01_ic2" intrinsicCoord="1.0">
+              <linearCoordinate measure="355830.0" positioningSystemRef="lps01"/>
+            </intrinsicCoordinate>
+          </associatedPositioningSystem>
+        </netElement>
+        <netElement id="ne_326" length="170.0">
+          <relation ref="nr_42_0_326_0"/>
+          <relation ref="nr_322_1_326_0"/>
+          <relation ref="nr_84_1_326_1"/>
+          <relation ref="nr_326_1_330_0"/>
+          <associatedPositioningSystem id="ne_326_aps01">
+            <intrinsicCoordinate id="ne_326_aps01_ic1" intrinsicCoord="0.0">
+              <linearCoordinate measure="355830.0" positioningSystemRef="lps01"/>
+            </intrinsicCoordinate>
+            <intrinsicCoordinate id="ne_326_aps01_ic2" intrinsicCoord="1.0">
+              <linearCoordinate measure="356000.0" positioningSystemRef="lps01"/>
+            </intrinsicCoordinate>
+          </associatedPositioningSystem>
+        </netElement>
+        <netElement id="ne_330" length="65.0">
+          <relation ref="nr_84_1_330_0"/>
+          <relation ref="nr_326_1_330_0"/>
+          <associatedPositioningSystem id="ne_330_aps01">
+            <intrinsicCoordinate id="ne_330_aps01_ic1" intrinsicCoord="0.0">
+              <linearCoordinate measure="356000.0" positioningSystemRef="lps01"/>
+            </intrinsicCoordinate>
+            <intrinsicCoordinate id="ne_330_aps01_ic2" intrinsicCoord="1.0">
+              <linearCoordinate measure="356065.0" positioningSystemRef="lps01"/>
+            </intrinsicCoordinate>
+          </associatedPositioningSystem>
+        </netElement>
+        <netElement id="ne_ms_8">
+          <name language="NO" name="FM"/>
+          <relation ref="nr_ne_ml_210_ne_ms_8"/>
+          <elementCollectionUnordered id="ne_ms_8_ecu01">
+            <elementPart ref="ne_105"/>
+            <elementPart ref="ne_27"/>
+            <elementPart ref="ne_311"/>
+            <elementPart ref="ne_322"/>
+            <elementPart ref="ne_326"/>
+            <elementPart ref="ne_330"/>
+            <elementPart ref="ne_38"/>
+            <elementPart ref="ne_42"/>
+            <elementPart ref="ne_49"/>
+            <elementPart ref="ne_73"/>
+            <elementPart ref="ne_84"/>
+            <elementPart ref="ne_94"/>
+          </elementCollectionUnordered>
+          <associatedPositioningSystem id="ne_ms_8_aps01">
+            <intrinsicCoordinate id="ne_ms_8_aps01_ic0" intrinsicCoord="0.0">
+              <linearCoordinate measure="355565.0" positioningSystemRef="lps01"/>
+            </intrinsicCoordinate>
+          </associatedPositioningSystem>
+        </netElement>
+        <netElement id="ne_ml_210">
+          <name language="NO" name="BER-FM"/>
+          <relation ref="nr_ne_ml_210_ne_ms_8"/>
+          <relation ref="nr_ne_ml_210_ne_ms_5"/>
+          <elementCollectionUnordered id="ne_ml_210_ecu01">
+            <elementPart ref="ne_210"/>
+          </elementCollectionUnordered>
+          <associatedPositioningSystem id="ne_ml_210_aps01">
+            <intrinsicCoordinate id="ne_ml_210_aps01_ic0" intrinsicCoord="0.0">
+              <linearCoordinate measure="346630.0" positioningSystemRef="lps01"/>
+            </intrinsicCoordinate>
+            <intrinsicCoordinate id="ne_ml_210_aps01_ic1" intrinsicCoord="1.0">
+              <linearCoordinate measure="355565.0" positioningSystemRef="lps01"/>
+            </intrinsicCoordinate>
+          </associatedPositioningSystem>
+        </netElement>
+        <netElement id="ne_ms_5">
+          <name language="NO" name="BER"/>
+          <relation ref="nr_ne_ml_109_ne_ms_5"/>
+          <relation ref="nr_ne_ml_210_ne_ms_5"/>
+          <elementCollectionUnordered id="ne_ms_5_ecu01">
+            <elementPart ref="ne_109"/>
+            <elementPart ref="ne_206"/>
+            <elementPart ref="ne_23"/>
+            <elementPart ref="ne_279"/>
+            <elementPart ref="ne_307"/>
+            <elementPart ref="ne_57"/>
+            <elementPart ref="ne_69"/>
+            <elementPart ref="ne_9"/>
+          </elementCollectionUnordered>
+          <associatedPositioningSystem id="ne_ms_5_aps01">
+            <intrinsicCoordinate id="ne_ms_5_aps01_ic0" intrinsicCoord="0.0">
+              <linearCoordinate measure="345736.0" positioningSystemRef="lps01"/>
+            </intrinsicCoordinate>
+            <intrinsicCoordinate id="ne_ms_5_aps01_ic1" intrinsicCoord="1.0">
+              <linearCoordinate measure="346630.0" positioningSystemRef="lps01"/>
+            </intrinsicCoordinate>
+          </associatedPositioningSystem>
+        </netElement>
+        <netElement id="ne_ml_109">
+          <name language="NO" name="BER-"/>
+          <relation ref="nr_ne_ml_109_ne_ms_5"/>
+          <elementCollectionUnordered id="ne_ml_109_ecu01">
+            <elementPart ref="ne_109"/>
+          </elementCollectionUnordered>
+          <associatedPositioningSystem id="ne_ml_109_aps01">
+            <intrinsicCoordinate id="ne_ml_109_aps01_ic0" intrinsicCoord="0.0">
+              <linearCoordinate measure="345736.0" positioningSystemRef="lps01"/>
+            </intrinsicCoordinate>
+          </associatedPositioningSystem>
+        </netElement>
+      </netElements>
+      <netRelations>
+        <netRelation id="nr_109_1_206_0" navigability="Both" positionOnA="1" positionOnB="0">
+          <elementA ref="ne_109"/>
+          <elementB ref="ne_206"/>
+        </netRelation>
+        <netRelation id="nr_210_0_307_1" navigability="Both" positionOnA="0" positionOnB="1">
+          <elementA ref="ne_210"/>
+          <elementB ref="ne_307"/>
+        </netRelation>
+        <netRelation id="nr_210_1_311_0" navigability="Both" positionOnA="1" positionOnB="0">
+          <elementA ref="ne_210"/>
+          <elementB ref="ne_311"/>
+        </netRelation>
+        <netRelation id="nr_23_1_279_1" navigability="None" positionOnA="1" positionOnB="1">
+          <elementA ref="ne_23"/>
+          <elementB ref="ne_279"/>
+        </netRelation>
+        <netRelation id="nr_23_1_307_0" navigability="Both" positionOnA="1" positionOnB="0">
+          <elementA ref="ne_23"/>
+          <elementB ref="ne_307"/>
+        </netRelation>
+        <netRelation id="nr_279_1_307_0" navigability="Both" positionOnA="1" positionOnB="0">
+          <elementA ref="ne_279"/>
+          <elementB ref="ne_307"/>
+        </netRelation>
+        <netRelation id="nr_27_0_42_1" navigability="Both" positionOnA="0" positionOnB="1">
+          <elementA ref="ne_27"/>
+          <elementB ref="ne_42"/>
+        </netRelation>
+        <netRelation id="nr_27_0_49_0" navigability="None" positionOnA="0" positionOnB="0">
+          <elementA ref="ne_27"/>
+          <elementB ref="ne_49"/>
+        </netRelation>
+        <netRelation id="nr_27_1_38_0" navigability="Both" positionOnA="1" positionOnB="0">
+          <elementA ref="ne_27"/>
+          <elementB ref="ne_38"/>
+        </netRelation>
+        <netRelation id="nr_311_1_322_0" navigability="Both" positionOnA="1" positionOnB="0">
+          <elementA ref="ne_311"/>
+          <elementB ref="ne_322"/>
+        </netRelation>
+        <netRelation id="nr_322_1_326_0" navigability="Both" positionOnA="1" positionOnB="0">
+          <elementA ref="ne_322"/>
+          <elementB ref="ne_326"/>
+        </netRelation>
+        <netRelation id="nr_326_1_330_0" navigability="Both" positionOnA="1" positionOnB="0">
+          <elementA ref="ne_326"/>
+          <elementB ref="ne_330"/>
+        </netRelation>
+        <netRelation id="nr_42_0_322_1" navigability="Both" positionOnA="0" positionOnB="1">
+          <elementA ref="ne_42"/>
+          <elementB ref="ne_322"/>
+        </netRelation>
+        <netRelation id="nr_42_0_326_0" navigability="None" positionOnA="0" positionOnB="0">
+          <elementA ref="ne_42"/>
+          <elementB ref="ne_326"/>
+        </netRelation>
+        <netRelation id="nr_42_1_49_0" navigability="Both" positionOnA="1" positionOnB="0">
+          <elementA ref="ne_42"/>
+          <elementB ref="ne_49"/>
+        </netRelation>
+        <netRelation id="nr_49_1_73_0" navigability="Both" positionOnA="1" positionOnB="0">
+          <elementA ref="ne_49"/>
+          <elementB ref="ne_73"/>
+        </netRelation>
+        <netRelation id="nr_49_1_84_0" navigability="Both" positionOnA="1" positionOnB="0">
+          <elementA ref="ne_49"/>
+          <elementB ref="ne_84"/>
+        </netRelation>
+        <netRelation id="nr_57_0_109_1" navigability="Both" positionOnA="0" positionOnB="1">
+          <elementA ref="ne_57"/>
+          <elementB ref="ne_109"/>
+        </netRelation>
+        <netRelation id="nr_57_0_206_0" navigability="None" positionOnA="0" positionOnB="0">
+          <elementA ref="ne_57"/>
+          <elementB ref="ne_206"/>
+        </netRelation>
+        <netRelation id="nr_57_1_69_0" navigability="Both" positionOnA="1" positionOnB="0">
+          <elementA ref="ne_57"/>
+          <elementB ref="ne_69"/>
+        </netRelation>
+        <netRelation id="nr_69_1_279_0" navigability="Both" positionOnA="1" positionOnB="0">
+          <elementA ref="ne_69"/>
+          <elementB ref="ne_279"/>
+        </netRelation>
+        <netRelation id="nr_73_0_84_0" navigability="None" positionOnA="0" positionOnB="0">
+          <elementA ref="ne_73"/>
+          <elementB ref="ne_84"/>
+        </netRelation>
+        <netRelation id="nr_84_1_326_1" navigability="None" positionOnA="1" positionOnB="1">
+          <elementA ref="ne_84"/>
+          <elementB ref="ne_326"/>
+        </netRelation>
+        <netRelation id="nr_84_1_330_0" navigability="Both" positionOnA="1" positionOnB="0">
+          <elementA ref="ne_84"/>
+          <elementB ref="ne_330"/>
+        </netRelation>
+        <netRelation id="nr_94_0_311_1" navigability="Both" positionOnA="0" positionOnB="1">
+          <elementA ref="ne_94"/>
+          <elementB ref="ne_311"/>
+        </netRelation>
+        <netRelation id="nr_94_0_322_0" navigability="None" positionOnA="0" positionOnB="0">
+          <elementA ref="ne_94"/>
+          <elementB ref="ne_322"/>
+        </netRelation>
+        <netRelation id="nr_94_1_105_0" navigability="Both" positionOnA="1" positionOnB="0">
+          <elementA ref="ne_94"/>
+          <elementB ref="ne_105"/>
+        </netRelation>
+        <netRelation id="nr_9_0_206_1" navigability="Both" positionOnA="0" positionOnB="1">
+          <elementA ref="ne_9"/>
+          <elementB ref="ne_206"/>
+        </netRelation>
+        <netRelation id="nr_9_1_23_0" navigability="Both" positionOnA="1" positionOnB="0">
+          <elementA ref="ne_9"/>
+          <elementB ref="ne_23"/>
+        </netRelation>
+        <netRelation id="nr_ne_ml_109_ne_ms_5">
+          <elementA ref="ne_ml_109"/>
+          <elementB ref="ne_ms_5"/>
+        </netRelation>
+        <netRelation id="nr_ne_ml_210_ne_ms_5">
+          <elementA ref="ne_ml_210"/>
+          <elementB ref="ne_ms_5"/>
+        </netRelation>
+        <netRelation id="nr_ne_ml_210_ne_ms_8">
+          <elementA ref="ne_ml_210"/>
+          <elementB ref="ne_ms_8"/>
+        </netRelation>
+      </netRelations>
+      <networks>
+        <network id="nw01">
+          <level descriptionLevel="Micro" id="lv0">
+            <networkResource ref="ne_105"/>
+            <networkResource ref="ne_109"/>
+            <networkResource ref="ne_206"/>
+            <networkResource ref="ne_210"/>
+            <networkResource ref="ne_23"/>
+            <networkResource ref="ne_27"/>
+            <networkResource ref="ne_279"/>
+            <networkResource ref="ne_307"/>
+            <networkResource ref="ne_311"/>
+            <networkResource ref="ne_322"/>
+            <networkResource ref="ne_326"/>
+            <networkResource ref="ne_330"/>
+            <networkResource ref="ne_38"/>
+            <networkResource ref="ne_42"/>
+            <networkResource ref="ne_49"/>
+            <networkResource ref="ne_57"/>
+            <networkResource ref="ne_69"/>
+            <networkResource ref="ne_73"/>
+            <networkResource ref="ne_84"/>
+            <networkResource ref="ne_9"/>
+            <networkResource ref="ne_94"/>
+            <networkResource ref="nr_109_1_206_0"/>
+            <networkResource ref="nr_210_0_307_1"/>
+            <networkResource ref="nr_210_1_311_0"/>
+            <networkResource ref="nr_23_1_279_1"/>
+            <networkResource ref="nr_23_1_307_0"/>
+            <networkResource ref="nr_279_1_307_0"/>
+            <networkResource ref="nr_27_0_42_1"/>
+            <networkResource ref="nr_27_0_49_0"/>
+            <networkResource ref="nr_27_1_38_0"/>
+            <networkResource ref="nr_311_1_322_0"/>
+            <networkResource ref="nr_322_1_326_0"/>
+            <networkResource ref="nr_326_1_330_0"/>
+            <networkResource ref="nr_42_0_322_1"/>
+            <networkResource ref="nr_42_0_326_0"/>
+            <networkResource ref="nr_42_1_49_0"/>
+            <networkResource ref="nr_49_1_73_0"/>
+            <networkResource ref="nr_49_1_84_0"/>
+            <networkResource ref="nr_57_0_109_1"/>
+            <networkResource ref="nr_57_0_206_0"/>
+            <networkResource ref="nr_57_1_69_0"/>
+            <networkResource ref="nr_69_1_279_0"/>
+            <networkResource ref="nr_73_0_84_0"/>
+            <networkResource ref="nr_84_1_326_1"/>
+            <networkResource ref="nr_84_1_330_0"/>
+            <networkResource ref="nr_94_0_311_1"/>
+            <networkResource ref="nr_94_0_322_0"/>
+            <networkResource ref="nr_94_1_105_0"/>
+            <networkResource ref="nr_9_0_206_1"/>
+            <networkResource ref="nr_9_1_23_0"/>
+          </level>
+          <level descriptionLevel="Meso" id="lv1">
+            <networkResource ref="ne_ms_5"/>
+            <networkResource ref="ne_ml_109"/>
+            <networkResource ref="ne_ml_210"/>
+            <networkResource ref="ne_ms_8"/>
+            <networkResource ref="nr_ne_ml_109_ne_ms_5"/>
+            <networkResource ref="nr_ne_ml_210_ne_ms_5"/>
+            <networkResource ref="nr_ne_ml_210_ne_ms_8"/>
+          </level>
+        </network>
+      </networks>
+    </topology>
+    <geometry>
+      <gradientCurves>
+        <gradientCurve curveType="mixed" gradient="-5.0" id="grc14">
+          <linearLocation id="grc14_lloc">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_9" posBegin="0.0" posEnd="30.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_23" posBegin="0.0" posEnd="50.0"/>
+          </linearLocation>
+        </gradientCurve>
+        <gradientCurve curveType="mixed" gradient="-55.0" id="grc113">
+          <linearLocation id="grc113_lloc">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_109" posBegin="0.0" posEnd="914.0"/>
+          </linearLocation>
+        </gradientCurve>
+        <gradientCurve curveType="mixed" gradient="-3.0" id="grc120">
+          <linearLocation id="grc120_lloc">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_109" posBegin="914.0" posEnd="1014.0"/>
+          </linearLocation>
+        </gradientCurve>
+        <gradientCurve curveType="mixed" gradient="-5.0" id="grc125">
+          <linearLocation id="grc125_lloc">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_109" posBegin="1014.0" posEnd="1064.0"/>
+          </linearLocation>
+        </gradientCurve>
+        <gradientCurve curveType="mixed" gradient="-55.0" id="grc128">
+          <linearLocation id="grc128_lloc">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_109" posBegin="1064.0" posEnd="1846.0"/>
+          </linearLocation>
+        </gradientCurve>
+        <gradientCurve curveType="mixed" gradient="-8.0" id="grc132">
+          <linearLocation id="grc132_lloc">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_109" posBegin="1846.0" posEnd="2084.0"/>
+          </linearLocation>
+        </gradientCurve>
+        <gradientCurve curveType="mixed" gradient="-53.0" id="grc139">
+          <linearLocation id="grc139_lloc">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_109" posBegin="2084.0" posEnd="2497.0"/>
+          </linearLocation>
+        </gradientCurve>
+        <gradientCurve curveType="mixed" gradient="-51.0" id="grc145">
+          <linearLocation id="grc145_lloc">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_109" posBegin="2497.0" posEnd="3241.0"/>
+          </linearLocation>
+        </gradientCurve>
+        <gradientCurve curveType="mixed" gradient="-55.0" id="grc149">
+          <linearLocation id="grc149_lloc">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_109" posBegin="3241.0" posEnd="3944.0"/>
+          </linearLocation>
+        </gradientCurve>
+        <gradientCurve curveType="mixed" gradient="-23.0" id="grc156">
+          <linearLocation id="grc156_lloc">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_109" posBegin="3944.0" posEnd="4011.0"/>
+          </linearLocation>
+        </gradientCurve>
+        <gradientCurve curveType="mixed" gradient="-48.0" id="grc159">
+          <linearLocation id="grc159_lloc">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_109" posBegin="4011.0" posEnd="4504.0"/>
+          </linearLocation>
+        </gradientCurve>
+        <gradientCurve curveType="mixed" gradient="-49.0" id="grc164">
+          <linearLocation id="grc164_lloc">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_109" posBegin="4504.0" posEnd="6186.0"/>
+          </linearLocation>
+        </gradientCurve>
+        <gradientCurve curveType="mixed" gradient="-52.0" id="grc169">
+          <linearLocation id="grc169_lloc">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_109" posBegin="6186.0" posEnd="6543.0"/>
+          </linearLocation>
+        </gradientCurve>
+        <gradientCurve curveType="mixed" gradient="-53.0" id="grc172">
+          <linearLocation id="grc172_lloc">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_109" posBegin="6543.0" posEnd="7584.0"/>
+          </linearLocation>
+        </gradientCurve>
+        <gradientCurve curveType="mixed" gradient="-51.0" id="grc173">
+          <linearLocation id="grc173_lloc">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_109" posBegin="7584.0" posEnd="8244.0"/>
+          </linearLocation>
+        </gradientCurve>
+        <gradientCurve curveType="mixed" gradient="-5.0" id="grc176">
+          <linearLocation id="grc176_lloc">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_109" posBegin="8244.0" posEnd="8284.0"/>
+          </linearLocation>
+        </gradientCurve>
+        <gradientCurve curveType="mixed" gradient="-53.0" id="grc183">
+          <linearLocation id="grc183_lloc">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_109" posBegin="8284.0" posEnd="9820.0"/>
+          </linearLocation>
+        </gradientCurve>
+        <gradientCurve curveType="mixed" gradient="-54.0" id="grc193">
+          <linearLocation id="grc193_lloc">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_109" posBegin="9820.0" posEnd="10157.0"/>
+          </linearLocation>
+        </gradientCurve>
+        <gradientCurve curveType="mixed" gradient="-8.0" id="grc199">
+          <linearLocation id="grc199_lloc">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_57" posBegin="0.0" posEnd="54.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_206" posBegin="0.0" posEnd="237.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_69" posBegin="0.0" posEnd="183.0"/>
+          </linearLocation>
+        </gradientCurve>
+        <gradientCurve curveType="mixed" gradient="-55.0" id="grc214">
+          <linearLocation id="grc214_lloc">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_210" posBegin="0.0" posEnd="2233.0"/>
+          </linearLocation>
+        </gradientCurve>
+        <gradientCurve curveType="mixed" gradient="-29.0" id="grc226">
+          <linearLocation id="grc226_lloc">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_210" posBegin="2233.0" posEnd="2470.0"/>
+          </linearLocation>
+        </gradientCurve>
+        <gradientCurve curveType="mixed" gradient="-5.0" id="grc229">
+          <linearLocation id="grc229_lloc">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_210" posBegin="2470.0" posEnd="3070.0"/>
+          </linearLocation>
+        </gradientCurve>
+        <gradientCurve curveType="mixed" gradient="-3.0" id="grc234">
+          <linearLocation id="grc234_lloc">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_210" posBegin="3070.0" posEnd="3240.0"/>
+          </linearLocation>
+        </gradientCurve>
+        <gradientCurve curveType="mixed" gradient="-36.0" id="grc239">
+          <linearLocation id="grc239_lloc">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_210" posBegin="3240.0" posEnd="3490.0"/>
+          </linearLocation>
+        </gradientCurve>
+        <gradientCurve curveType="mixed" gradient="-47.0" id="grc242">
+          <linearLocation id="grc242_lloc">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_210" posBegin="3490.0" posEnd="4501.0"/>
+          </linearLocation>
+        </gradientCurve>
+        <gradientCurve curveType="mixed" gradient="-55.0" id="grc245">
+          <linearLocation id="grc245_lloc">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_210" posBegin="4501.0" posEnd="4947.0"/>
+          </linearLocation>
+        </gradientCurve>
+        <gradientCurve curveType="mixed" gradient="-49.0" id="grc249">
+          <linearLocation id="grc249_lloc">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_210" posBegin="4947.0" posEnd="6380.0"/>
+          </linearLocation>
+        </gradientCurve>
+        <gradientCurve curveType="mixed" gradient="-45.0" id="grc256">
+          <linearLocation id="grc256_lloc">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_210" posBegin="6380.0" posEnd="7009.0"/>
+          </linearLocation>
+        </gradientCurve>
+        <gradientCurve curveType="mixed" gradient="-5.0" id="grc262">
+          <linearLocation id="grc262_lloc">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_210" posBegin="7009.0" posEnd="7750.0"/>
+          </linearLocation>
+        </gradientCurve>
+        <gradientCurve curveType="mixed" gradient="0.0" id="grc265">
+          <linearLocation id="grc265_lloc">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_210" posBegin="7750.0" posEnd="7790.0"/>
+          </linearLocation>
+        </gradientCurve>
+        <gradientCurve curveType="mixed" gradient="-25.0" id="grc270">
+          <linearLocation id="grc270_lloc">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_210" posBegin="7790.0" posEnd="8112.0"/>
+          </linearLocation>
+        </gradientCurve>
+        <gradientCurve curveType="mixed" gradient="-2.0" id="grc276">
+          <linearLocation id="grc276_lloc">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_210" posBegin="8112.0" posEnd="8935.0"/>
+          </linearLocation>
+        </gradientCurve>
+        <gradientCurve curveType="mixed" gradient="-5.0" id="grc284">
+          <linearLocation id="grc284_lloc">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_279" posBegin="0.0" posEnd="80.0"/>
+          </linearLocation>
+        </gradientCurve>
+        <gradientCurve curveType="mixed" gradient="-46.0" id="grc293">
+          <linearLocation id="grc293_lloc">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_307" posBegin="0.0" posEnd="170.0"/>
+          </linearLocation>
+        </gradientCurve>
+        <gradientCurve curveType="mixed" gradient="-54.0" id="grc304">
+          <linearLocation id="grc304_lloc">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_307" posBegin="170.0" posEnd="240.0"/>
+          </linearLocation>
+        </gradientCurve>
+        <gradientCurve curveType="mixed" gradient="-4.0" id="grc315">
+          <linearLocation id="grc315_lloc">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_311" posBegin="0.0" posEnd="195.0"/>
+          </linearLocation>
+        </gradientCurve>
+        <gradientCurve curveType="mixed" gradient="0.0" id="grc319">
+          <linearLocation id="grc319_lloc">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_311" posBegin="195.0" posEnd="241.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_94" posBegin="0.0" posEnd="94.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_322" posBegin="0.0" posEnd="24.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_105" posBegin="0.0" posEnd="165.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_42" posBegin="0.0" posEnd="60.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_326" posBegin="0.0" posEnd="170.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_27" posBegin="0.0" posEnd="90.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_49" posBegin="0.0" posEnd="10.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_330" posBegin="0.0" posEnd="65.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_38" posBegin="0.0" posEnd="60.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_73" posBegin="0.0" posEnd="140.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_84" posBegin="0.0" posEnd="100.0"/>
+          </linearLocation>
+        </gradientCurve>
+      </gradientCurves>
+    </geometry>
+    <functionalInfrastructure>
+      <borders>
+        <border id="ope110" isOpenEnd="true" type="other:model">
+          <spotLocation applicationDirection="reverse" id="ope110_sloc01" netElementRef="ne_109" pos="0.0">
+            <linearCoordinate measure="335916.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+        </border>
+      </borders>
+      <bufferStops>
+        <bufferStop id="bus30">
+          <name language="NO" name="01"/>
+          <spotLocation applicationDirection="normal" id="bus30_sloc01" netElementRef="ne_38" pos="60.0">
+            <linearCoordinate measure="356040.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+        </bufferStop>
+        <bufferStop id="bus76">
+          <name language="NO" name="02"/>
+          <spotLocation applicationDirection="normal" id="bus76_sloc01" netElementRef="ne_73" pos="140.0">
+            <linearCoordinate measure="356040.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+        </bufferStop>
+        <bufferStop id="bus97">
+          <name language="NO" name="05"/>
+          <spotLocation applicationDirection="normal" id="bus97_sloc01" netElementRef="ne_105" pos="165.0">
+            <linearCoordinate measure="356065.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+        </bufferStop>
+        <bufferStop id="bus333">
+          <name language="NO" name="04"/>
+          <spotLocation applicationDirection="normal" id="bus333_sloc01" netElementRef="ne_330" pos="65.0">
+            <linearCoordinate measure="356065.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+        </bufferStop>
+      </bufferStops>
+      <lines>
+        <line id="lin1">
+          <name language="NO" name="FLB"/>
+          <linearLocation id="lin1_lloc01">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_ms_8"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_ml_210"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_ms_5"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_ml_109"/>
+          </linearLocation>
+        </line>
+      </lines>
+      <operationalPoints>
+        <operationalPoint id="opp1">
+          <name language="NO" name="Vatnahalsen Hp"/>
+          <spotLocation id="sl122_sloc01" netElementRef="ne_109" pos="1014.0">
+            <linearCoordinate measure="336930.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+          <gmlLocations>
+            <point>
+              <gml4rail3:pos>60.743858337402344 7.132081031799316</gml4rail3:pos>
+            </point>
+          </gmlLocations>
+          <opOperations>
+            <opOperation operationalType="station"/>
+          </opOperations>
+        </operationalPoint>
+        <operationalPoint id="opp2">
+          <name language="NO" name="Reinunga Hp"/>
+          <spotLocation id="sl136_sloc01" netElementRef="ne_109" pos="2084.0">
+            <linearCoordinate measure="338000.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+          <gmlLocations>
+            <point>
+              <gml4rail3:pos>60.74444580078125 7.137515068054199</gml4rail3:pos>
+            </point>
+          </gmlLocations>
+          <opOperations>
+            <opOperation operationalType="station"/>
+          </opOperations>
+        </operationalPoint>
+        <operationalPoint id="opp3">
+          <name language="NO" name="Kjosfossen Hp"/>
+          <spotLocation id="sl153_sloc01" netElementRef="ne_109" pos="3944.0">
+            <linearCoordinate measure="339860.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+          <gmlLocations>
+            <point>
+              <gml4rail3:pos>60.74733352661133 7.135842800140381</gml4rail3:pos>
+            </point>
+          </gmlLocations>
+          <opOperations>
+            <opOperation operationalType="station"/>
+          </opOperations>
+        </operationalPoint>
+        <operationalPoint id="opp4">
+          <name language="NO" name="Blomheller Hp"/>
+          <spotLocation id="sl180_sloc01" netElementRef="ne_109" pos="8284.0">
+            <linearCoordinate measure="344200.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+          <gmlLocations>
+            <point>
+              <gml4rail3:pos>60.77172088623047 7.101686000823975</gml4rail3:pos>
+            </point>
+          </gmlLocations>
+          <opOperations>
+            <opOperation operationalType="station"/>
+          </opOperations>
+        </operationalPoint>
+        <operationalPoint id="opp5">
+          <name language="NO" name="Berekvam St"/>
+          <areaLocation id="al5">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_ms_5"/>
+          </areaLocation>
+          <spotLocation id="sl12_sloc01" netElementRef="ne_9" pos="0.0">
+            <linearCoordinate measure="346310.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+          <spotLocation id="sl282_sloc01" netElementRef="ne_279" pos="0.0">
+            <linearCoordinate measure="346310.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+          <gmlLocations>
+            <point>
+              <gml4rail3:pos>60.78807830810547 7.095481872558594</gml4rail3:pos>
+            </point>
+          </gmlLocations>
+          <opOperations>
+            <opOperation operationalType="station"/>
+          </opOperations>
+        </operationalPoint>
+        <operationalPoint id="opp6">
+          <name language="NO" name="Håreina Hp"/>
+          <spotLocation id="sl253_sloc01" netElementRef="ne_210" pos="6380.0">
+            <linearCoordinate measure="353010.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+          <gmlLocations>
+            <point>
+              <gml4rail3:pos>60.83979415893555 7.122713088989258</gml4rail3:pos>
+            </point>
+          </gmlLocations>
+          <opOperations>
+            <opOperation operationalType="station"/>
+          </opOperations>
+        </operationalPoint>
+        <operationalPoint id="opp7">
+          <name language="NO" name="Lunden Hp"/>
+          <spotLocation id="sl267_sloc01" netElementRef="ne_210" pos="7790.0">
+            <linearCoordinate measure="354420.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+          <gmlLocations>
+            <point>
+              <gml4rail3:pos>60.850921630859375 7.113777160644531</gml4rail3:pos>
+            </point>
+          </gmlLocations>
+          <opOperations>
+            <opOperation operationalType="station"/>
+          </opOperations>
+        </operationalPoint>
+        <operationalPoint id="opp8">
+          <name language="NO" name="Flåm St"/>
+          <areaLocation id="al8">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_ms_8"/>
+          </areaLocation>
+          <spotLocation id="sl35_sloc01" netElementRef="ne_38" pos="20.0">
+            <linearCoordinate measure="356000.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+          <spotLocation id="sl81_sloc01" netElementRef="ne_73" pos="100.0">
+            <linearCoordinate measure="356000.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+          <spotLocation id="sl102_sloc01" netElementRef="ne_105" pos="100.0">
+            <linearCoordinate measure="356000.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+          <spotLocation id="sl334_sloc01" netElementRef="ne_330" pos="0.0">
+            <linearCoordinate measure="356000.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+          <gmlLocations>
+            <point>
+              <gml4rail3:pos>60.86275863647461 7.113317966461182</gml4rail3:pos>
+            </point>
+          </gmlLocations>
+          <opOperations>
+            <opOperation operationalType="station"/>
+          </opOperations>
+        </operationalPoint>
+      </operationalPoints>
+      <signalsIS>
+        <signalIS id="sig19" isSwitchable="true">
+          <name language="NO" name="01"/>
+          <spotLocation applicationDirection="normal" id="sig19_sloc01" netElementRef="ne_9" pos="30.0">
+            <linearCoordinate measure="346340.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+          <designator entry="1" register="_Banedata"/>
+        </signalIS>
+        <signalIS id="sig34" isSwitchable="true">
+          <name language="NO" name="01"/>
+          <spotLocation applicationDirection="reverse" id="sig34_sloc01" netElementRef="ne_27" pos="90.0">
+            <linearCoordinate measure="355980.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+          <designator entry="1" register="_Banedata"/>
+        </signalIS>
+        <signalIS id="sig37" isSwitchable="true">
+          <name language="NO" name="01"/>
+          <spotLocation applicationDirection="normal" id="sig37_sloc01" netElementRef="ne_38" pos="60.0">
+            <linearCoordinate measure="356040.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+          <designator entry="1" register="_Banedata"/>
+        </signalIS>
+        <signalIS id="sig65" isSwitchable="true">
+          <name language="NO" name="02"/>
+          <spotLocation applicationDirection="reverse" id="sig65_sloc01" netElementRef="ne_57" pos="54.0">
+            <linearCoordinate measure="346127.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+          <designator entry="1" register="_Banedata"/>
+        </signalIS>
+        <signalIS id="sig83" isSwitchable="true">
+          <name language="NO" name="02"/>
+          <spotLocation applicationDirection="normal" id="sig83_sloc01" netElementRef="ne_73" pos="140.0">
+            <linearCoordinate measure="356040.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+          <designator entry="1" register="_Banedata"/>
+        </signalIS>
+        <signalIS id="sig90" isSwitchable="true">
+          <name language="NO" name="02"/>
+          <spotLocation applicationDirection="reverse" id="sig90_sloc01" netElementRef="ne_49" pos="10.0">
+            <linearCoordinate measure="355900.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+          <designator entry="1" register="_Banedata"/>
+        </signalIS>
+        <signalIS id="sig101" isSwitchable="true">
+          <name language="NO" name="05"/>
+          <spotLocation applicationDirection="reverse" id="sig101_sloc01" netElementRef="ne_94" pos="94.0">
+            <linearCoordinate measure="355900.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+          <designator entry="1" register="_Banedata"/>
+        </signalIS>
+        <signalIS id="sig104" isSwitchable="true">
+          <name language="NO" name="05"/>
+          <spotLocation applicationDirection="normal" id="sig104_sloc01" netElementRef="ne_105" pos="165.0">
+            <linearCoordinate measure="356065.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+          <designator entry="1" register="_Banedata"/>
+        </signalIS>
+        <signalIS id="sig117" isSwitchable="true">
+          <name language="NO" name="FSC(255)"/>
+          <spotLocation applicationDirection="reverse" id="sig117_sloc01" netElementRef="ne_109" pos="175.0">
+            <linearCoordinate measure="336091.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+          <designator entry="3" register="_Banedata"/>
+        </signalIS>
+        <signalIS id="sig194" isSwitchable="true">
+          <name language="NO" name="A"/>
+          <spotLocation applicationDirection="normal" id="sig194_sloc01" netElementRef="ne_109" pos="9820.0">
+            <linearCoordinate measure="345736.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+          <designator entry="1" register="_Banedata"/>
+        </signalIS>
+        <signalIS id="sig202" isSwitchable="true">
+          <name language="NO" name="01"/>
+          <spotLocation applicationDirection="reverse" id="sig202_sloc01" netElementRef="ne_206" pos="54.0">
+            <linearCoordinate measure="346127.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+          <designator entry="1" register="_Banedata"/>
+        </signalIS>
+        <signalIS id="sig216" isSwitchable="true">
+          <name language="NO" name="B"/>
+          <spotLocation applicationDirection="reverse" id="sig216_sloc01" netElementRef="ne_210" pos="0.0">
+            <linearCoordinate measure="346630.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+          <designator entry="1" register="_Banedata"/>
+        </signalIS>
+        <signalIS id="sig278" isSwitchable="true">
+          <name language="NO" name="01_HSA"/>
+          <spotLocation applicationDirection="normal" id="sig278_sloc01" netElementRef="ne_210" pos="8935.0">
+            <linearCoordinate measure="355565.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+          <designator entry="1" register="_Banedata"/>
+        </signalIS>
+        <signalIS id="sig288" isSwitchable="true">
+          <name language="NO" name="02"/>
+          <spotLocation applicationDirection="normal" id="sig288_sloc01" netElementRef="ne_279" pos="30.0">
+            <linearCoordinate measure="346340.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+          <designator entry="1" register="_Banedata"/>
+        </signalIS>
+        <signalIS id="sig320" isSwitchable="true">
+          <name language="NO" name="04"/>
+          <spotLocation applicationDirection="reverse" id="sig320_sloc01" netElementRef="ne_326" pos="70.0">
+            <linearCoordinate measure="355900.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+          <designator entry="1" register="_Banedata"/>
+        </signalIS>
+        <signalIS id="sig339" isSwitchable="true">
+          <name language="NO" name="04"/>
+          <spotLocation applicationDirection="normal" id="sig339_sloc01" netElementRef="ne_330" pos="65.0">
+            <linearCoordinate measure="356065.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+          <designator entry="1" register="_Banedata"/>
+        </signalIS>
+        <signalIS id="stp16_sig" isSwitchable="false">
+          <name language="NO" name="Berekvam stasjon"/>
+          <spotLocation applicationDirection="reverse" id="stp16_sig_sloc01" netElementRef="ne_9" pos="0.0">
+            <linearCoordinate measure="346310.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+          <isStopPost>
+            <refersToStoppingPlace ref="stp16"/>
+          </isStopPost>
+        </signalIS>
+        <signalIS id="stp121_sig" isSwitchable="false">
+          <name language="NO" name="STOP"/>
+          <spotLocation applicationDirection="reverse" id="stp121_sig_sloc01" netElementRef="ne_109" pos="914.0">
+            <linearCoordinate measure="336830.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+          <isStopPost>
+            <refersToStoppingPlace ref="stp121"/>
+          </isStopPost>
+        </signalIS>
+        <signalIS id="stp129_sig" isSwitchable="false">
+          <name language="NO" name="STOP"/>
+          <spotLocation applicationDirection="normal" id="stp129_sig_sloc01" netElementRef="ne_109" pos="1064.0">
+            <linearCoordinate measure="336980.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+          <isStopPost>
+            <refersToStoppingPlace ref="stp129"/>
+          </isStopPost>
+        </signalIS>
+        <signalIS id="stp135_sig" isSwitchable="false">
+          <name language="NO" name="STOP"/>
+          <spotLocation applicationDirection="reverse" id="stp135_sig_sloc01" netElementRef="ne_109" pos="2074.0">
+            <linearCoordinate measure="337990.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+          <isStopPost>
+            <refersToStoppingPlace ref="stp135"/>
+          </isStopPost>
+        </signalIS>
+        <signalIS id="stp142_sig" isSwitchable="false">
+          <name language="NO" name="STOP"/>
+          <spotLocation applicationDirection="normal" id="stp142_sig_sloc01" netElementRef="ne_109" pos="2094.0">
+            <linearCoordinate measure="338010.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+          <isStopPost>
+            <refersToStoppingPlace ref="stp142"/>
+          </isStopPost>
+        </signalIS>
+        <signalIS id="stp152_sig" isSwitchable="false">
+          <name language="NO" name="STOP"/>
+          <spotLocation applicationDirection="reverse" id="stp152_sig_sloc01" netElementRef="ne_109" pos="3934.0">
+            <linearCoordinate measure="339850.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+          <isStopPost>
+            <refersToStoppingPlace ref="stp152"/>
+          </isStopPost>
+        </signalIS>
+        <signalIS id="stp161_sig" isSwitchable="false">
+          <name language="NO" name="KJOSFOSSEN"/>
+          <spotLocation applicationDirection="normal" id="stp161_sig_sloc01" netElementRef="ne_109" pos="4011.0">
+            <linearCoordinate measure="339927.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+          <isStopPost>
+            <refersToStoppingPlace ref="stp161"/>
+          </isStopPost>
+        </signalIS>
+        <signalIS id="stp179_sig" isSwitchable="false">
+          <name language="NO" name="STOP"/>
+          <spotLocation applicationDirection="reverse" id="stp179_sig_sloc01" netElementRef="ne_109" pos="8274.0">
+            <linearCoordinate measure="344190.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+          <isStopPost>
+            <refersToStoppingPlace ref="stp179"/>
+          </isStopPost>
+        </signalIS>
+        <signalIS id="stp186_sig" isSwitchable="false">
+          <name language="NO" name="STOP"/>
+          <spotLocation applicationDirection="normal" id="stp186_sig_sloc01" netElementRef="ne_109" pos="8294.0">
+            <linearCoordinate measure="344210.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+          <isStopPost>
+            <refersToStoppingPlace ref="stp186"/>
+          </isStopPost>
+        </signalIS>
+        <signalIS id="stp252_sig" isSwitchable="false">
+          <name language="NO" name="STOP"/>
+          <spotLocation applicationDirection="reverse" id="stp252_sig_sloc01" netElementRef="ne_210" pos="6370.0">
+            <linearCoordinate measure="353000.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+          <isStopPost>
+            <refersToStoppingPlace ref="stp252"/>
+          </isStopPost>
+        </signalIS>
+        <signalIS id="stp259_sig" isSwitchable="false">
+          <name language="NO" name="STOP"/>
+          <spotLocation applicationDirection="normal" id="stp259_sig_sloc01" netElementRef="ne_210" pos="6390.0">
+            <linearCoordinate measure="353020.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+          <isStopPost>
+            <refersToStoppingPlace ref="stp259"/>
+          </isStopPost>
+        </signalIS>
+        <signalIS id="stp266_sig" isSwitchable="false">
+          <name language="NO" name="STOP"/>
+          <spotLocation applicationDirection="reverse" id="stp266_sig_sloc01" netElementRef="ne_210" pos="7750.0">
+            <linearCoordinate measure="354380.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+          <isStopPost>
+            <refersToStoppingPlace ref="stp266"/>
+          </isStopPost>
+        </signalIS>
+        <signalIS id="stp273_sig" isSwitchable="false">
+          <name language="NO" name="STOP"/>
+          <spotLocation applicationDirection="normal" id="stp273_sig_sloc01" netElementRef="ne_210" pos="7800.0">
+            <linearCoordinate measure="354430.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+          <isStopPost>
+            <refersToStoppingPlace ref="stp273"/>
+          </isStopPost>
+        </signalIS>
+      </signalsIS>
+      <speeds>
+        <speedSection id="sps36_1" maxSpeed="20.0">
+          <linearLocation id="sps36_1_lloc">
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_38" posBegin="60.0" posEnd="0.0"/>
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_27" posBegin="90.0" posEnd="0.0"/>
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_42" posBegin="60.0" posEnd="0.0"/>
+          </linearLocation>
+          <validForSpeedProfile ref="spprf2"/>
+        </speedSection>
+        <speedSection id="sps36_2" maxSpeed="20.0">
+          <linearLocation id="sps36_2_lloc">
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_38" posBegin="60.0" posEnd="0.0"/>
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_27" posBegin="90.0" posEnd="0.0"/>
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_42" posBegin="60.0" posEnd="0.0"/>
+          </linearLocation>
+          <validForSpeedProfile ref="spprf1"/>
+        </speedSection>
+        <speedSection id="sps36_3" maxSpeed="20.0">
+          <linearLocation id="sps36_3_lloc">
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_38" posBegin="60.0" posEnd="0.0"/>
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_27" posBegin="90.0" posEnd="0.0"/>
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_42" posBegin="60.0" posEnd="0.0"/>
+          </linearLocation>
+          <validForSpeedProfile ref="spprf3"/>
+        </speedSection>
+        <speedSection id="sps82_1" maxSpeed="20.0">
+          <linearLocation id="sps82_1_lloc">
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_73" posBegin="140.0" posEnd="0.0"/>
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_49" posBegin="10.0" posEnd="0.0"/>
+          </linearLocation>
+          <validForSpeedProfile ref="spprf2"/>
+        </speedSection>
+        <speedSection id="sps82_2" maxSpeed="20.0">
+          <linearLocation id="sps82_2_lloc">
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_73" posBegin="140.0" posEnd="0.0"/>
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_49" posBegin="10.0" posEnd="0.0"/>
+          </linearLocation>
+          <validForSpeedProfile ref="spprf1"/>
+        </speedSection>
+        <speedSection id="sps82_3" maxSpeed="20.0">
+          <linearLocation id="sps82_3_lloc">
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_73" posBegin="140.0" posEnd="0.0"/>
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_49" posBegin="10.0" posEnd="0.0"/>
+          </linearLocation>
+          <validForSpeedProfile ref="spprf3"/>
+        </speedSection>
+        <speedSection id="sps103_1" maxSpeed="20.0">
+          <linearLocation id="sps103_1_lloc">
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_105" posBegin="165.0" posEnd="0.0"/>
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_94" posBegin="94.0" posEnd="0.0"/>
+          </linearLocation>
+          <validForSpeedProfile ref="spprf2"/>
+        </speedSection>
+        <speedSection id="sps103_2" maxSpeed="20.0">
+          <linearLocation id="sps103_2_lloc">
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_105" posBegin="165.0" posEnd="0.0"/>
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_94" posBegin="94.0" posEnd="0.0"/>
+          </linearLocation>
+          <validForSpeedProfile ref="spprf1"/>
+        </speedSection>
+        <speedSection id="sps103_3" maxSpeed="20.0">
+          <linearLocation id="sps103_3_lloc">
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_105" posBegin="165.0" posEnd="0.0"/>
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_94" posBegin="94.0" posEnd="0.0"/>
+          </linearLocation>
+          <validForSpeedProfile ref="spprf3"/>
+        </speedSection>
+        <speedSection id="sps112_1" maxSpeed="30.0">
+          <linearLocation id="sps112_1_lloc">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_109" posBegin="0.0" posEnd="4504.0"/>
+          </linearLocation>
+          <validForSpeedProfile ref="spprf2"/>
+        </speedSection>
+        <speedSection id="sps112_2" maxSpeed="30.0">
+          <linearLocation id="sps112_2_lloc">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_109" posBegin="0.0" posEnd="4504.0"/>
+          </linearLocation>
+          <validForSpeedProfile ref="spprf1"/>
+        </speedSection>
+        <speedSection id="sps112_3" maxSpeed="30.0">
+          <linearLocation id="sps112_3_lloc">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_109" posBegin="0.0" posEnd="4504.0"/>
+          </linearLocation>
+          <validForSpeedProfile ref="spprf3"/>
+        </speedSection>
+        <speedSection id="sps162_1" maxSpeed="40.0">
+          <linearLocation id="sps162_1_lloc">
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_109" posBegin="4504.0" posEnd="0.0"/>
+          </linearLocation>
+          <validForSpeedProfile ref="spprf2"/>
+        </speedSection>
+        <speedSection id="sps162_2" maxSpeed="40.0">
+          <linearLocation id="sps162_2_lloc">
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_109" posBegin="4504.0" posEnd="0.0"/>
+          </linearLocation>
+          <validForSpeedProfile ref="spprf1"/>
+        </speedSection>
+        <speedSection id="sps162_3" maxSpeed="40.0">
+          <linearLocation id="sps162_3_lloc">
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_109" posBegin="4504.0" posEnd="0.0"/>
+          </linearLocation>
+          <validForSpeedProfile ref="spprf3"/>
+        </speedSection>
+        <speedSection id="sps163_1" maxSpeed="20.0">
+          <linearLocation id="sps163_1_lloc">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_109" posBegin="4504.0" posEnd="4854.0"/>
+          </linearLocation>
+          <validForSpeedProfile ref="spprf2"/>
+        </speedSection>
+        <speedSection id="sps163_2" maxSpeed="20.0">
+          <linearLocation id="sps163_2_lloc">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_109" posBegin="4504.0" posEnd="4854.0"/>
+          </linearLocation>
+          <validForSpeedProfile ref="spprf1"/>
+        </speedSection>
+        <speedSection id="sps163_3" maxSpeed="20.0">
+          <linearLocation id="sps163_3_lloc">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_109" posBegin="4504.0" posEnd="4854.0"/>
+          </linearLocation>
+          <validForSpeedProfile ref="spprf3"/>
+        </speedSection>
+        <speedSection id="sps166_1" maxSpeed="30.0">
+          <linearLocation id="sps166_1_lloc">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_109" posBegin="4854.0" posEnd="10157.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_57" posBegin="0.0" posEnd="54.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_206" posBegin="0.0" posEnd="237.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_69" posBegin="0.0" posEnd="183.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_9" posBegin="0.0" posEnd="30.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_279" posBegin="0.0" posEnd="80.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_23" posBegin="0.0" posEnd="50.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_307" posBegin="0.0" posEnd="240.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_210" posBegin="0.0" posEnd="1790.0"/>
+          </linearLocation>
+          <validForSpeedProfile ref="spprf2"/>
+        </speedSection>
+        <speedSection id="sps166_2" maxSpeed="30.0">
+          <linearLocation id="sps166_2_lloc">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_109" posBegin="4854.0" posEnd="10157.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_57" posBegin="0.0" posEnd="54.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_206" posBegin="0.0" posEnd="237.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_69" posBegin="0.0" posEnd="183.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_9" posBegin="0.0" posEnd="30.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_279" posBegin="0.0" posEnd="80.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_23" posBegin="0.0" posEnd="50.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_307" posBegin="0.0" posEnd="240.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_210" posBegin="0.0" posEnd="1790.0"/>
+          </linearLocation>
+          <validForSpeedProfile ref="spprf1"/>
+        </speedSection>
+        <speedSection id="sps166_3" maxSpeed="30.0">
+          <linearLocation id="sps166_3_lloc">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_109" posBegin="4854.0" posEnd="10157.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_57" posBegin="0.0" posEnd="54.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_206" posBegin="0.0" posEnd="237.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_69" posBegin="0.0" posEnd="183.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_9" posBegin="0.0" posEnd="30.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_279" posBegin="0.0" posEnd="80.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_23" posBegin="0.0" posEnd="50.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_307" posBegin="0.0" posEnd="240.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_210" posBegin="0.0" posEnd="1790.0"/>
+          </linearLocation>
+          <validForSpeedProfile ref="spprf3"/>
+        </speedSection>
+        <speedSection id="sps223_1" maxSpeed="20.0">
+          <linearLocation id="sps223_1_lloc">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_210" posBegin="1790.0" posEnd="2470.0"/>
+          </linearLocation>
+          <validForSpeedProfile ref="spprf2"/>
+        </speedSection>
+        <speedSection id="sps223_2" maxSpeed="20.0">
+          <linearLocation id="sps223_2_lloc">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_210" posBegin="1790.0" posEnd="2470.0"/>
+          </linearLocation>
+          <validForSpeedProfile ref="spprf1"/>
+        </speedSection>
+        <speedSection id="sps223_3" maxSpeed="20.0">
+          <linearLocation id="sps223_3_lloc">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_210" posBegin="1790.0" posEnd="2470.0"/>
+          </linearLocation>
+          <validForSpeedProfile ref="spprf3"/>
+        </speedSection>
+        <speedSection id="sps228_1" maxSpeed="30.0">
+          <linearLocation id="sps228_1_lloc">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_210" posBegin="2470.0" posEnd="8935.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_311" posBegin="0.0" posEnd="195.0"/>
+          </linearLocation>
+          <validForSpeedProfile ref="spprf2"/>
+        </speedSection>
+        <speedSection id="sps228_2" maxSpeed="30.0">
+          <linearLocation id="sps228_2_lloc">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_210" posBegin="2470.0" posEnd="8935.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_311" posBegin="0.0" posEnd="195.0"/>
+          </linearLocation>
+          <validForSpeedProfile ref="spprf1"/>
+        </speedSection>
+        <speedSection id="sps228_3" maxSpeed="30.0">
+          <linearLocation id="sps228_3_lloc">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_210" posBegin="2470.0" posEnd="8935.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_311" posBegin="0.0" posEnd="195.0"/>
+          </linearLocation>
+          <validForSpeedProfile ref="spprf3"/>
+        </speedSection>
+        <speedSection id="sps302_1" maxSpeed="20.0">
+          <linearLocation id="sps302_1_lloc">
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_307" posBegin="170.0" posEnd="0.0"/>
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_23" posBegin="50.0" posEnd="0.0"/>
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_279" posBegin="80.0" posEnd="0.0"/>
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_9" posBegin="30.0" posEnd="0.0"/>
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_69" posBegin="183.0" posEnd="0.0"/>
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_206" posBegin="237.0" posEnd="0.0"/>
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_57" posBegin="54.0" posEnd="0.0"/>
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_109" posBegin="10157.0" posEnd="4504.0"/>
+          </linearLocation>
+          <validForSpeedProfile ref="spprf2"/>
+        </speedSection>
+        <speedSection id="sps302_2" maxSpeed="20.0">
+          <linearLocation id="sps302_2_lloc">
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_307" posBegin="170.0" posEnd="0.0"/>
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_23" posBegin="50.0" posEnd="0.0"/>
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_279" posBegin="80.0" posEnd="0.0"/>
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_9" posBegin="30.0" posEnd="0.0"/>
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_69" posBegin="183.0" posEnd="0.0"/>
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_206" posBegin="237.0" posEnd="0.0"/>
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_57" posBegin="54.0" posEnd="0.0"/>
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_109" posBegin="10157.0" posEnd="4504.0"/>
+          </linearLocation>
+          <validForSpeedProfile ref="spprf1"/>
+        </speedSection>
+        <speedSection id="sps302_3" maxSpeed="20.0">
+          <linearLocation id="sps302_3_lloc">
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_307" posBegin="170.0" posEnd="0.0"/>
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_23" posBegin="50.0" posEnd="0.0"/>
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_279" posBegin="80.0" posEnd="0.0"/>
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_9" posBegin="30.0" posEnd="0.0"/>
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_69" posBegin="183.0" posEnd="0.0"/>
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_206" posBegin="237.0" posEnd="0.0"/>
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_57" posBegin="54.0" posEnd="0.0"/>
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_109" posBegin="10157.0" posEnd="4504.0"/>
+          </linearLocation>
+          <validForSpeedProfile ref="spprf3"/>
+        </speedSection>
+        <speedSection id="sps317_1" maxSpeed="40.0">
+          <linearLocation id="sps317_1_lloc">
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_311" posBegin="195.0" posEnd="0.0"/>
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_210" posBegin="8935.0" posEnd="0.0"/>
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_307" posBegin="240.0" posEnd="170.0"/>
+          </linearLocation>
+          <validForSpeedProfile ref="spprf2"/>
+        </speedSection>
+        <speedSection id="sps317_2" maxSpeed="40.0">
+          <linearLocation id="sps317_2_lloc">
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_311" posBegin="195.0" posEnd="0.0"/>
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_210" posBegin="8935.0" posEnd="0.0"/>
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_307" posBegin="240.0" posEnd="170.0"/>
+          </linearLocation>
+          <validForSpeedProfile ref="spprf1"/>
+        </speedSection>
+        <speedSection id="sps317_3" maxSpeed="40.0">
+          <linearLocation id="sps317_3_lloc">
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_311" posBegin="195.0" posEnd="0.0"/>
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_210" posBegin="8935.0" posEnd="0.0"/>
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_307" posBegin="240.0" posEnd="170.0"/>
+          </linearLocation>
+          <validForSpeedProfile ref="spprf3"/>
+        </speedSection>
+        <speedSection id="sps318_1" maxSpeed="20.0">
+          <linearLocation id="sps318_1_lloc">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_311" posBegin="195.0" posEnd="241.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_94" posBegin="0.0" posEnd="94.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_322" posBegin="0.0" posEnd="24.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_105" posBegin="0.0" posEnd="165.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_42" posBegin="0.0" posEnd="60.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_326" posBegin="0.0" posEnd="170.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_27" posBegin="0.0" posEnd="90.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_49" posBegin="0.0" posEnd="10.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_330" posBegin="0.0" posEnd="65.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_38" posBegin="0.0" posEnd="60.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_73" posBegin="0.0" posEnd="140.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_84" posBegin="0.0" posEnd="100.0"/>
+          </linearLocation>
+          <validForSpeedProfile ref="spprf2"/>
+        </speedSection>
+        <speedSection id="sps318_2" maxSpeed="20.0">
+          <linearLocation id="sps318_2_lloc">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_311" posBegin="195.0" posEnd="241.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_94" posBegin="0.0" posEnd="94.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_322" posBegin="0.0" posEnd="24.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_105" posBegin="0.0" posEnd="165.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_42" posBegin="0.0" posEnd="60.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_326" posBegin="0.0" posEnd="170.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_27" posBegin="0.0" posEnd="90.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_49" posBegin="0.0" posEnd="10.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_330" posBegin="0.0" posEnd="65.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_38" posBegin="0.0" posEnd="60.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_73" posBegin="0.0" posEnd="140.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_84" posBegin="0.0" posEnd="100.0"/>
+          </linearLocation>
+          <validForSpeedProfile ref="spprf1"/>
+        </speedSection>
+        <speedSection id="sps318_3" maxSpeed="20.0">
+          <linearLocation id="sps318_3_lloc">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_311" posBegin="195.0" posEnd="241.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_94" posBegin="0.0" posEnd="94.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_322" posBegin="0.0" posEnd="24.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_105" posBegin="0.0" posEnd="165.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_42" posBegin="0.0" posEnd="60.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_326" posBegin="0.0" posEnd="170.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_27" posBegin="0.0" posEnd="90.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_49" posBegin="0.0" posEnd="10.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_330" posBegin="0.0" posEnd="65.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_38" posBegin="0.0" posEnd="60.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_73" posBegin="0.0" posEnd="140.0"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_84" posBegin="0.0" posEnd="100.0"/>
+          </linearLocation>
+          <validForSpeedProfile ref="spprf3"/>
+        </speedSection>
+        <speedSection id="sps338_1" maxSpeed="20.0">
+          <linearLocation id="sps338_1_lloc">
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_330" posBegin="65.0" posEnd="0.0"/>
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_84" posBegin="100.0" posEnd="0.0"/>
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_326" posBegin="170.0" posEnd="0.0"/>
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_322" posBegin="24.0" posEnd="0.0"/>
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_311" posBegin="241.0" posEnd="195.0"/>
+          </linearLocation>
+          <validForSpeedProfile ref="spprf2"/>
+        </speedSection>
+        <speedSection id="sps338_2" maxSpeed="20.0">
+          <linearLocation id="sps338_2_lloc">
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_330" posBegin="65.0" posEnd="0.0"/>
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_84" posBegin="100.0" posEnd="0.0"/>
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_326" posBegin="170.0" posEnd="0.0"/>
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_322" posBegin="24.0" posEnd="0.0"/>
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_311" posBegin="241.0" posEnd="195.0"/>
+          </linearLocation>
+          <validForSpeedProfile ref="spprf1"/>
+        </speedSection>
+        <speedSection id="sps338_3" maxSpeed="20.0">
+          <linearLocation id="sps338_3_lloc">
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_330" posBegin="65.0" posEnd="0.0"/>
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_84" posBegin="100.0" posEnd="0.0"/>
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_326" posBegin="170.0" posEnd="0.0"/>
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_322" posBegin="24.0" posEnd="0.0"/>
+            <associatedNetElement keepsOrientation="false" netElementRef="ne_311" posBegin="241.0" posEnd="195.0"/>
+          </linearLocation>
+          <validForSpeedProfile ref="spprf3"/>
+        </speedSection>
+      </speeds>
+      <stoppingPlaces>
+        <stoppingPlace id="stp16" isSignalized="true" trainLength="30.0">
+          <name language="NO" name="Berekvam stasjon"/>
+          <spotLocation applicationDirection="reverse" id="stp16_sloc01" netElementRef="ne_9" pos="0.0">
+            <linearCoordinate measure="346310.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+        </stoppingPlace>
+        <stoppingPlace id="stp121" isSignalized="true">
+          <name language="NO" name="STOP"/>
+          <spotLocation applicationDirection="reverse" id="stp121_sloc01" netElementRef="ne_109" pos="914.0">
+            <linearCoordinate measure="336830.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+        </stoppingPlace>
+        <stoppingPlace id="stp129" isSignalized="true">
+          <name language="NO" name="STOP"/>
+          <spotLocation applicationDirection="normal" id="stp129_sloc01" netElementRef="ne_109" pos="1064.0">
+            <linearCoordinate measure="336980.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+        </stoppingPlace>
+        <stoppingPlace id="stp135" isSignalized="true">
+          <name language="NO" name="STOP"/>
+          <spotLocation applicationDirection="reverse" id="stp135_sloc01" netElementRef="ne_109" pos="2074.0">
+            <linearCoordinate measure="337990.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+        </stoppingPlace>
+        <stoppingPlace id="stp142" isSignalized="true">
+          <name language="NO" name="STOP"/>
+          <spotLocation applicationDirection="normal" id="stp142_sloc01" netElementRef="ne_109" pos="2094.0">
+            <linearCoordinate measure="338010.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+        </stoppingPlace>
+        <stoppingPlace id="stp152" isSignalized="true">
+          <name language="NO" name="STOP"/>
+          <spotLocation applicationDirection="reverse" id="stp152_sloc01" netElementRef="ne_109" pos="3934.0">
+            <linearCoordinate measure="339850.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+        </stoppingPlace>
+        <stoppingPlace id="stp161" isSignalized="true">
+          <name language="NO" name="KJOSFOSSEN"/>
+          <spotLocation applicationDirection="normal" id="stp161_sloc01" netElementRef="ne_109" pos="4011.0">
+            <linearCoordinate measure="339927.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+        </stoppingPlace>
+        <stoppingPlace id="stp179" isSignalized="true">
+          <name language="NO" name="STOP"/>
+          <spotLocation applicationDirection="reverse" id="stp179_sloc01" netElementRef="ne_109" pos="8274.0">
+            <linearCoordinate measure="344190.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+        </stoppingPlace>
+        <stoppingPlace id="stp186" isSignalized="true">
+          <name language="NO" name="STOP"/>
+          <spotLocation applicationDirection="normal" id="stp186_sloc01" netElementRef="ne_109" pos="8294.0">
+            <linearCoordinate measure="344210.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+        </stoppingPlace>
+        <stoppingPlace id="stp252" isSignalized="true">
+          <name language="NO" name="STOP"/>
+          <spotLocation applicationDirection="reverse" id="stp252_sloc01" netElementRef="ne_210" pos="6370.0">
+            <linearCoordinate measure="353000.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+        </stoppingPlace>
+        <stoppingPlace id="stp259" isSignalized="true">
+          <name language="NO" name="STOP"/>
+          <spotLocation applicationDirection="normal" id="stp259_sloc01" netElementRef="ne_210" pos="6390.0">
+            <linearCoordinate measure="353020.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+        </stoppingPlace>
+        <stoppingPlace id="stp266" isSignalized="true">
+          <name language="NO" name="STOP"/>
+          <spotLocation applicationDirection="reverse" id="stp266_sloc01" netElementRef="ne_210" pos="7750.0">
+            <linearCoordinate measure="354380.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+        </stoppingPlace>
+        <stoppingPlace id="stp273" isSignalized="true">
+          <name language="NO" name="STOP"/>
+          <spotLocation applicationDirection="normal" id="stp273_sloc01" netElementRef="ne_210" pos="7800.0">
+            <linearCoordinate measure="354430.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+        </stoppingPlace>
+      </stoppingPlaces>
+      <switchesIS>
+        <switchIS branchCourse="left" continueCourse="right" id="swi56" type="ordinarySwitch">
+          <name language="NO" name="SPV-7"/>
+          <spotLocation applicationDirection="normal" id="swi56_sloc01" intrinsicCoord="0.0" netElementRef="ne_27" pos="0.0">
+            <linearCoordinate measure="355890.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+          <leftBranch netRelationRef="nr_42_1_49_0"/>
+          <rightBranch netRelationRef="nr_27_0_42_1"/>
+        </switchIS>
+        <switchIS branchCourse="left" continueCourse="right" id="swi92" type="ordinarySwitch">
+          <name language="NO" name="02"/>
+          <spotLocation applicationDirection="normal" id="swi92_sloc01" intrinsicCoord="0.0" netElementRef="ne_73" pos="0.0">
+            <linearCoordinate measure="355900.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+          <leftBranch netRelationRef="nr_49_1_84_0"/>
+          <rightBranch netRelationRef="nr_49_1_73_0"/>
+        </switchIS>
+        <switchIS branchCourse="left" continueCourse="right" id="swi93" type="ordinarySwitch">
+          <name language="NO" name="SPV-2 1:9 V"/>
+          <spotLocation applicationDirection="reverse" id="swi93_sloc01" intrinsicCoord="0.0" netElementRef="ne_330" pos="0.0">
+            <linearCoordinate measure="356000.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+          <leftBranch netRelationRef="nr_84_1_330_0"/>
+          <rightBranch netRelationRef="nr_326_1_330_0"/>
+        </switchIS>
+        <switchIS branchCourse="right" continueCourse="left" id="swi209" type="ordinarySwitch">
+          <name language="NO" name="SPV-1 1:9 H"/>
+          <spotLocation applicationDirection="normal" id="swi209_sloc01" intrinsicCoord="0.0" netElementRef="ne_206" pos="0.0">
+            <linearCoordinate measure="346073.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+          <leftBranch netRelationRef="nr_109_1_206_0"/>
+          <rightBranch netRelationRef="nr_57_0_109_1"/>
+        </switchIS>
+        <switchIS branchCourse="right" continueCourse="left" id="swi310" type="ordinarySwitch">
+          <name language="NO" name="SPV-2 1:9 H"/>
+          <spotLocation applicationDirection="reverse" id="swi310_sloc01" intrinsicCoord="0.0" netElementRef="ne_307" pos="0.0">
+            <linearCoordinate measure="346390.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+          <leftBranch netRelationRef="nr_279_1_307_0"/>
+          <rightBranch netRelationRef="nr_23_1_307_0"/>
+        </switchIS>
+        <switchIS branchCourse="left" continueCourse="right" id="swi325" type="ordinarySwitch">
+          <name language="NO" name="SPV-1 1:9 H"/>
+          <spotLocation applicationDirection="normal" id="swi325_sloc01" intrinsicCoord="0.0" netElementRef="ne_322" pos="0.0">
+            <linearCoordinate measure="355806.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+          <leftBranch netRelationRef="nr_94_0_311_1"/>
+          <rightBranch netRelationRef="nr_311_1_322_0"/>
+        </switchIS>
+        <switchIS branchCourse="right" continueCourse="left" id="swi329" type="ordinarySwitch">
+          <name language="NO" name="SPV-3 1:9 H"/>
+          <spotLocation applicationDirection="normal" id="swi329_sloc01" intrinsicCoord="0.0" netElementRef="ne_326" pos="0.0">
+            <linearCoordinate measure="355830.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+          <leftBranch netRelationRef="nr_322_1_326_0"/>
+          <rightBranch netRelationRef="nr_42_0_322_1"/>
+        </switchIS>
+      </switchesIS>
+      <tracks>
+        <track id="trc1">
+          <name language="NO" name="01"/>
+          <linearLocation id="trc1_lloc01">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_9" posBegin="0.0" posEnd="30.0" sequence="1"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_23" posBegin="0.0" posEnd="50.0" sequence="2"/>
+          </linearLocation>
+          <length type="physical" value="80.0"/>
+        </track>
+        <track id="trc2">
+          <name language="NO" name="01"/>
+          <linearLocation id="trc2_lloc01">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_42" posBegin="0.0" posEnd="60.0" sequence="1"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_27" posBegin="0.0" posEnd="90.0" sequence="2"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_38" posBegin="0.0" posEnd="60.0" sequence="3"/>
+          </linearLocation>
+          <length type="physical" value="210.0"/>
+        </track>
+        <track id="trc3">
+          <name language="NO" name="02"/>
+          <linearLocation id="trc3_lloc01">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_49" posBegin="0.0" posEnd="10.0" sequence="1"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_73" posBegin="0.0" posEnd="140.0" sequence="2"/>
+          </linearLocation>
+          <length type="physical" value="150.0"/>
+        </track>
+        <track id="trc4">
+          <name language="NO" name="02"/>
+          <linearLocation id="trc4_lloc01">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_57" posBegin="0.0" posEnd="54.0" sequence="1"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_69" posBegin="0.0" posEnd="183.0" sequence="2"/>
+          </linearLocation>
+          <length type="physical" value="237.0"/>
+        </track>
+        <track id="trc5">
+          <name language="NO" name="02-04"/>
+          <linearLocation id="trc5_lloc01">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_84" posBegin="0.0" posEnd="100.0"/>
+          </linearLocation>
+          <length type="physical" value="100.0"/>
+        </track>
+        <track id="trc6">
+          <name language="NO" name="05"/>
+          <linearLocation id="trc6_lloc01">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_94" posBegin="0.0" posEnd="94.0" sequence="1"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_105" posBegin="0.0" posEnd="165.0" sequence="2"/>
+          </linearLocation>
+          <length type="physical" value="259.0"/>
+        </track>
+        <track id="trc7" type="mainTrack">
+          <name language="NO" name="M01"/>
+          <linearLocation id="trc7_lloc01">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_109" posBegin="0.0" posEnd="10157.0" sequence="1"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_206" posBegin="0.0" posEnd="237.0" sequence="2"/>
+          </linearLocation>
+          <length type="physical" value="10394.0"/>
+        </track>
+        <track id="trc8" type="mainTrack">
+          <name language="NO" name="M01"/>
+          <linearLocation id="trc8_lloc01">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_210" posBegin="0.0" posEnd="8935.0"/>
+          </linearLocation>
+          <length type="physical" value="8935.0"/>
+        </track>
+        <track id="trc9" type="mainTrack">
+          <name language="NO" name="M02"/>
+          <linearLocation id="trc9_lloc01">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_279" posBegin="0.0" posEnd="80.0" sequence="1"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_307" posBegin="0.0" posEnd="240.0" sequence="2"/>
+          </linearLocation>
+          <length type="physical" value="320.0"/>
+        </track>
+        <track id="trc10" type="mainTrack">
+          <name language="NO" name="M04"/>
+          <linearLocation id="trc10_lloc01">
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_311" posBegin="0.0" posEnd="241.0" sequence="1"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_322" posBegin="0.0" posEnd="24.0" sequence="2"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_326" posBegin="0.0" posEnd="170.0" sequence="3"/>
+            <associatedNetElement keepsOrientation="true" netElementRef="ne_330" posBegin="0.0" posEnd="65.0" sequence="4"/>
+          </linearLocation>
+          <length type="physical" value="500.0"/>
+        </track>
+      </tracks>
+      <trainDetectionElements>
+        <trainDetectionElement id="tde20" type="axleCounter">
+          <name language="NO" name="B"/>
+          <spotLocation applicationDirection="both" id="tde20_sloc01" netElementRef="ne_9" pos="30.0">
+            <linearCoordinate measure="346340.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+        </trainDetectionElement>
+        <trainDetectionElement id="tde66" type="axleCounter">
+          <name language="NO" name="02"/>
+          <spotLocation applicationDirection="both" id="tde66_sloc01" netElementRef="ne_57" pos="54.0">
+            <linearCoordinate measure="346127.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+        </trainDetectionElement>
+        <trainDetectionElement id="tde189" type="axleCounter">
+          <name language="NO" name="M"/>
+          <spotLocation applicationDirection="both" id="tde189_sloc01" netElementRef="ne_109" pos="9542.0">
+            <linearCoordinate measure="345458.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+        </trainDetectionElement>
+        <trainDetectionElement id="tde195" type="axleCounter">
+          <name language="NO" name="A"/>
+          <spotLocation applicationDirection="both" id="tde195_sloc01" netElementRef="ne_109" pos="9820.0">
+            <linearCoordinate measure="345736.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+        </trainDetectionElement>
+        <trainDetectionElement id="tde203" type="axleCounter">
+          <name language="NO" name="01"/>
+          <spotLocation applicationDirection="both" id="tde203_sloc01" netElementRef="ne_206" pos="54.0">
+            <linearCoordinate measure="346127.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+        </trainDetectionElement>
+        <trainDetectionElement id="tde217" type="axleCounter">
+          <name language="NO" name="L"/>
+          <spotLocation applicationDirection="both" id="tde217_sloc01" netElementRef="ne_210" pos="0.0">
+            <linearCoordinate measure="346630.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+        </trainDetectionElement>
+        <trainDetectionElement id="tde220" type="axleCounter">
+          <spotLocation applicationDirection="both" id="tde220_sloc01" netElementRef="ne_210" pos="334.0">
+            <linearCoordinate measure="346964.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+        </trainDetectionElement>
+        <trainDetectionElement id="tde289" type="axleCounter">
+          <name language="NO" name="B"/>
+          <spotLocation applicationDirection="both" id="tde289_sloc01" netElementRef="ne_279" pos="30.0">
+            <linearCoordinate measure="346340.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+        </trainDetectionElement>
+        <trainDetectionElement id="tde296" type="axleCounter">
+          <name language="NO" name="C"/>
+          <spotLocation applicationDirection="both" id="tde296_sloc01" netElementRef="ne_307" pos="18.0">
+            <linearCoordinate measure="346408.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+        </trainDetectionElement>
+        <trainDetectionElement id="tde300" type="axleCounter">
+          <name language="NO" name="B"/>
+          <spotLocation applicationDirection="both" id="tde300_sloc01" netElementRef="ne_307" pos="38.0">
+            <linearCoordinate measure="346428.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+        </trainDetectionElement>
+      </trainDetectionElements>
+      <underCrossings>
+        <underCrossing constructionType="tunnel" id="tun146">
+          <name language="NO" name="VATNAHALSEN NEDRE"/>
+          <spotLocation applicationDirection="normal" id="tun146_sloc01" netElementRef="ne_109" pos="2497.0">
+            <linearCoordinate measure="338413.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+          <length type="physical" value="1447.0"/>
+        </underCrossing>
+        <underCrossing constructionType="tunnel" id="tun160">
+          <name language="NO" name="KJOSFOSSEN"/>
+          <spotLocation applicationDirection="normal" id="tun160_sloc01" netElementRef="ne_109" pos="4011.0">
+            <linearCoordinate measure="339927.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+          <length type="physical" value="4233.0"/>
+        </underCrossing>
+        <underCrossing constructionType="tunnel" id="tun246">
+          <name language="NO" name="FURUBERGET"/>
+          <spotLocation applicationDirection="normal" id="tun246_sloc01" netElementRef="ne_210" pos="4501.0">
+            <linearCoordinate measure="351131.0" positioningSystemRef="lps01"/>
+          </spotLocation>
+          <length type="physical" value="1879.0"/>
+        </underCrossing>
+      </underCrossings>
+    </functionalInfrastructure>
+    <infrastructureVisualizations>
+      <visualization id="vis_01">
+        <name language="EN" name="railOscope"/>
+        <spotElementProjection refersToElement="ne_322_aps01_ic2">
+          <coordinate x="980.0" y="970.0"/>
+        </spotElementProjection>
+        <spotElementProjection refersToElement="ne_105_aps01_ic2">
+          <coordinate x="1070.0" y="1000.0"/>
+        </spotElementProjection>
+        <spotElementProjection refersToElement="ne_105_aps01_ic1">
+          <coordinate x="1010.0" y="1000.0"/>
+        </spotElementProjection>
+        <spotElementProjection refersToElement="ne_322_aps01_ic1">
+          <coordinate x="950.0" y="970.0"/>
+        </spotElementProjection>
+        <spotElementProjection refersToElement="ne_42_aps01_ic2">
+          <coordinate x="1000.0" y="940.0"/>
+        </spotElementProjection>
+        <spotElementProjection refersToElement="ne_42_aps01_ic1">
+          <coordinate x="980.0" y="970.0"/>
+        </spotElementProjection>
+        <spotElementProjection refersToElement="ne_9_aps01_ic2">
+          <coordinate x="540.0" y="1000.0"/>
+        </spotElementProjection>
+        <spotElementProjection refersToElement="ne_307_aps01_ic1">
+          <coordinate x="560.0" y="970.0"/>
+        </spotElementProjection>
+        <spotElementProjection refersToElement="ne_307_aps01_ic2">
+          <coordinate x="620.0" y="970.0"/>
+        </spotElementProjection>
+        <spotElementProjection refersToElement="ne_57_aps01_ic1">
+          <coordinate x="470.0" y="1000.0"/>
+        </spotElementProjection>
+        <spotElementProjection refersToElement="ne_326_aps01_ic1">
+          <coordinate x="980.0" y="970.0"/>
+        </spotElementProjection>
+        <spotElementProjection refersToElement="ne_57_aps01_ic2">
+          <coordinate x="490.0" y="970.0"/>
+        </spotElementProjection>
+        <spotElementProjection refersToElement="ne_9_aps01_ic1">
+          <coordinate x="520.0" y="1000.0"/>
+        </spotElementProjection>
+        <spotElementProjection refersToElement="ne_38_aps01_ic1">
+          <coordinate x="1030.0" y="910.0"/>
+        </spotElementProjection>
+        <spotElementProjection refersToElement="ne_326_aps01_ic2">
+          <coordinate x="1040.0" y="970.0"/>
+        </spotElementProjection>
+        <spotElementProjection refersToElement="ne_330_aps01_ic2">
+          <coordinate x="1070.0" y="970.0"/>
+        </spotElementProjection>
+        <spotElementProjection refersToElement="ne_38_aps01_ic2">
+          <coordinate x="1060.0" y="910.0"/>
+        </spotElementProjection>
+        <spotElementProjection refersToElement="ne_330_aps01_ic1">
+          <coordinate x="1040.0" y="970.0"/>
+        </spotElementProjection>
+        <spotElementProjection refersToElement="ne_23_aps01_ic1">
+          <coordinate x="540.0" y="1000.0"/>
+        </spotElementProjection>
+        <spotElementProjection refersToElement="ne_23_aps01_ic2">
+          <coordinate x="560.0" y="970.0"/>
+        </spotElementProjection>
+        <spotElementProjection refersToElement="ne_49_aps01_ic1">
+          <coordinate x="1000.0" y="940.0"/>
+        </spotElementProjection>
+        <spotElementProjection refersToElement="ne_49_aps01_ic2">
+          <coordinate x="1010.0" y="940.0"/>
+        </spotElementProjection>
+        <spotElementProjection refersToElement="ne_84_aps01_ic2">
+          <coordinate x="1040.0" y="970.0"/>
+        </spotElementProjection>
+        <spotElementProjection refersToElement="ne_84_aps01_ic1">
+          <coordinate x="1010.0" y="940.0"/>
+        </spotElementProjection>
+        <spotElementProjection refersToElement="ne_311_aps01_ic1">
+          <coordinate x="910.0" y="970.0"/>
+        </spotElementProjection>
+        <spotElementProjection refersToElement="ne_311_aps01_ic2">
+          <coordinate x="950.0" y="970.0"/>
+        </spotElementProjection>
+        <spotElementProjection refersToElement="ne_210_aps01_ic2">
+          <coordinate x="910.0" y="970.0"/>
+        </spotElementProjection>
+        <spotElementProjection refersToElement="ne_27_aps01_ic1">
+          <coordinate x="1000.0" y="940.0"/>
+        </spotElementProjection>
+        <spotElementProjection refersToElement="ne_73_aps01_ic1">
+          <coordinate x="1010.0" y="940.0"/>
+        </spotElementProjection>
+        <spotElementProjection refersToElement="ne_279_aps01_ic1">
+          <coordinate x="520.0" y="970.0"/>
+        </spotElementProjection>
+        <spotElementProjection refersToElement="ne_73_aps01_ic2">
+          <coordinate x="1060.0" y="940.0"/>
+        </spotElementProjection>
+        <spotElementProjection refersToElement="ne_210_aps01_ic1">
+          <coordinate x="620.0" y="970.0"/>
+        </spotElementProjection>
+        <spotElementProjection refersToElement="ne_279_aps01_ic2">
+          <coordinate x="560.0" y="970.0"/>
+        </spotElementProjection>
+        <spotElementProjection refersToElement="ne_27_aps01_ic2">
+          <coordinate x="1030.0" y="910.0"/>
+        </spotElementProjection>
+        <spotElementProjection refersToElement="ne_94_aps01_ic1">
+          <coordinate x="950.0" y="970.0"/>
+        </spotElementProjection>
+        <spotElementProjection refersToElement="ne_94_aps01_ic2">
+          <coordinate x="1010.0" y="1000.0"/>
+        </spotElementProjection>
+        <spotElementProjection refersToElement="ne_109_aps01_ic1">
+          <coordinate x="40.0" y="1000.0"/>
+        </spotElementProjection>
+        <spotElementProjection refersToElement="ne_109_aps01_ic2">
+          <coordinate x="470.0" y="1000.0"/>
+        </spotElementProjection>
+        <spotElementProjection refersToElement="ne_206_aps01_ic2">
+          <coordinate x="520.0" y="1000.0"/>
+        </spotElementProjection>
+        <spotElementProjection refersToElement="ne_69_aps01_ic2">
+          <coordinate x="520.0" y="970.0"/>
+        </spotElementProjection>
+        <spotElementProjection refersToElement="ne_206_aps01_ic1">
+          <coordinate x="470.0" y="1000.0"/>
+        </spotElementProjection>
+        <spotElementProjection refersToElement="ne_69_aps01_ic1">
+          <coordinate x="490.0" y="970.0"/>
+        </spotElementProjection>
+        <spotElementProjection refersToElement="opp1">
+          <coordinate x="100.0" y="975.0"/>
+        </spotElementProjection>
+        <spotElementProjection refersToElement="opp2">
+          <coordinate x="160.0" y="975.0"/>
+        </spotElementProjection>
+        <spotElementProjection refersToElement="opp3">
+          <coordinate x="240.0" y="975.0"/>
+        </spotElementProjection>
+        <spotElementProjection refersToElement="opp4">
+          <coordinate x="400.0" y="1035.0"/>
+        </spotElementProjection>
+        <spotElementProjection refersToElement="opp5">
+          <coordinate x="520.0" y="1035.0"/>
+        </spotElementProjection>
+        <spotElementProjection refersToElement="opp6">
+          <coordinate x="800.0" y="1005.0"/>
+        </spotElementProjection>
+        <spotElementProjection refersToElement="opp7">
+          <coordinate x="860.0" y="1005.0"/>
+        </spotElementProjection>
+        <spotElementProjection refersToElement="opp8">
+          <coordinate x="1090.0" y="985.0"/>
+        </spotElementProjection>
+      </visualization>
+    </infrastructureVisualizations>
+  </infrastructure>
+  <interlocking>
+    <assetsForIL>
+      <tvdSections>
+        <tvdSection id="trs344" partialRouteReleaseDelay="PT0S" residualRouteCancellationDelay="PT0S">
+          <designator entry="B" register="_Banedata"/>
+          <hasDemarcatingTraindetector ref="tde20"/>
+          <hasDemarcatingTraindetector ref="tde289"/>
+          <hasDemarcatingTraindetector ref="tde296"/>
+        </tvdSection>
+        <tvdSection id="trs345" partialRouteReleaseDelay="PT0S" residualRouteCancellationDelay="PT0S">
+          <designator entry="01" register="_Banedata"/>
+          <hasDemarcatingTraindetector ref="tde20"/>
+          <hasDemarcatingTraindetector ref="tde203"/>
+        </tvdSection>
+        <tvdSection id="trs346" partialRouteReleaseDelay="PT0S" residualRouteCancellationDelay="PT0S">
+          <designator entry="02" register="_Banedata"/>
+          <hasDemarcatingTraindetector ref="tde66"/>
+          <hasDemarcatingTraindetector ref="tde289"/>
+        </tvdSection>
+        <tvdSection id="trs347" partialRouteReleaseDelay="PT0S" residualRouteCancellationDelay="PT0S">
+          <designator entry="A" register="_Banedata"/>
+          <hasDemarcatingTraindetector ref="tde66"/>
+          <hasDemarcatingTraindetector ref="tde195"/>
+          <hasDemarcatingTraindetector ref="tde203"/>
+        </tvdSection>
+        <tvdSection id="trs348" partialRouteReleaseDelay="PT0S" residualRouteCancellationDelay="PT0S">
+          <designator entry="M" register="_Banedata"/>
+          <hasDemarcatingTraindetector ref="tde189"/>
+          <hasDemarcatingTraindetector ref="tde195"/>
+        </tvdSection>
+        <tvdSection id="trs349" partialRouteReleaseDelay="PT0S" residualRouteCancellationDelay="PT0S">
+          <hasDemarcatingTraindetector ref="tde189"/>
+        </tvdSection>
+        <tvdSection id="trs350" partialRouteReleaseDelay="PT0S" residualRouteCancellationDelay="PT0S">
+          <designator entry="L" register="_Banedata"/>
+          <hasDemarcatingTraindetector ref="tde217"/>
+          <hasDemarcatingTraindetector ref="tde220"/>
+        </tvdSection>
+        <tvdSection id="trs351" partialRouteReleaseDelay="PT0S" residualRouteCancellationDelay="PT0S">
+          <designator entry="B" register="_Banedata"/>
+          <hasDemarcatingTraindetector ref="tde217"/>
+          <hasDemarcatingTraindetector ref="tde300"/>
+        </tvdSection>
+        <tvdSection id="trs352" partialRouteReleaseDelay="PT0S" residualRouteCancellationDelay="PT0S">
+          <hasDemarcatingBufferstop ref="bus30"/>
+          <hasDemarcatingBufferstop ref="bus76"/>
+          <hasDemarcatingBufferstop ref="bus97"/>
+          <hasDemarcatingBufferstop ref="bus333"/>
+          <hasDemarcatingTraindetector ref="tde220"/>
+        </tvdSection>
+        <tvdSection id="trs353" partialRouteReleaseDelay="PT0S" residualRouteCancellationDelay="PT0S">
+          <designator entry="C" register="_Banedata"/>
+          <hasDemarcatingTraindetector ref="tde296"/>
+          <hasDemarcatingTraindetector ref="tde300"/>
+        </tvdSection>
+      </tvdSections>
+      <switchesIL>
+        <switchIL id="swiIL56" isKeyLocked="false" maxThrowTime="PT10S">
+          <refersTo ref="swi56"/>
+          <hasTvdSection ref="trs352"/>
+          <branchLeft ref="trc3"/>
+          <branchRight ref="trc2"/>
+        </switchIL>
+        <switchIL id="swiIL92" isKeyLocked="false" maxThrowTime="PT10S">
+          <refersTo ref="swi92"/>
+          <hasTvdSection ref="trs352"/>
+          <branchLeft ref="trc5"/>
+          <branchRight ref="trc3"/>
+        </switchIL>
+        <switchIL id="swiIL93" isKeyLocked="false" maxThrowTime="PT10S">
+          <refersTo ref="swi93"/>
+          <hasTvdSection ref="trs352"/>
+          <branchLeft ref="trc5"/>
+          <branchRight ref="trc10"/>
+        </switchIL>
+        <switchIL id="swiIL209" isKeyLocked="false" maxThrowTime="PT10S">
+          <refersTo ref="swi209"/>
+          <hasTvdSection ref="trs347"/>
+          <branchLeft ref="trc7"/>
+          <branchRight ref="trc4"/>
+        </switchIL>
+        <switchIL id="swiIL310" isKeyLocked="false" maxThrowTime="PT10S">
+          <refersTo ref="swi310"/>
+          <hasTvdSection ref="trs344"/>
+          <branchLeft ref="trc9"/>
+          <branchRight ref="trc1"/>
+        </switchIL>
+        <switchIL id="swiIL325" isKeyLocked="false" maxThrowTime="PT10S">
+          <refersTo ref="swi325"/>
+          <hasTvdSection ref="trs352"/>
+          <branchLeft ref="trc6"/>
+          <branchRight ref="trc10"/>
+        </switchIL>
+        <switchIL id="swiIL329" isKeyLocked="false" maxThrowTime="PT10S">
+          <refersTo ref="swi329"/>
+          <hasTvdSection ref="trs352"/>
+          <branchLeft ref="trc10"/>
+          <branchRight ref="trc2"/>
+        </switchIL>
+      </switchesIL>
+      <signalsIL>
+        <signalIL function="exit" id="sigIL19" isVirtual="true" sightDistance="400.0">
+          <refersTo ref="sig19"/>
+        </signalIL>
+        <signalIL function="exit" id="sigIL34" isVirtual="true" sightDistance="400.0">
+          <refersTo ref="sig34"/>
+        </signalIL>
+        <signalIL function="exit" id="sigIL37" isVirtual="true" sightDistance="400.0">
+          <refersTo ref="sig37"/>
+        </signalIL>
+        <signalIL function="exit" id="sigIL65" isVirtual="true" sightDistance="400.0">
+          <refersTo ref="sig65"/>
+        </signalIL>
+        <signalIL function="exit" id="sigIL83" isVirtual="true" sightDistance="400.0">
+          <refersTo ref="sig83"/>
+        </signalIL>
+        <signalIL function="exit" id="sigIL90" isVirtual="true" sightDistance="400.0">
+          <refersTo ref="sig90"/>
+        </signalIL>
+        <signalIL function="exit" id="sigIL101" isVirtual="true" sightDistance="400.0">
+          <refersTo ref="sig101"/>
+        </signalIL>
+        <signalIL function="exit" id="sigIL104" isVirtual="true" sightDistance="400.0">
+          <refersTo ref="sig104"/>
+        </signalIL>
+        <signalIL id="sigIL117" isVirtual="false" sightDistance="400.0">
+          <refersTo ref="sig117"/>
+        </signalIL>
+        <signalIL function="entry" id="sigIL194" isVirtual="false" sightDistance="400.0">
+          <refersTo ref="sig194"/>
+        </signalIL>
+        <signalIL function="exit" id="sigIL202" isVirtual="true" sightDistance="400.0">
+          <refersTo ref="sig202"/>
+        </signalIL>
+        <signalIL function="entry" id="sigIL216" isVirtual="false" sightDistance="400.0">
+          <refersTo ref="sig216"/>
+        </signalIL>
+        <signalIL function="entry" id="sigIL278" isVirtual="false" sightDistance="400.0">
+          <refersTo ref="sig278"/>
+        </signalIL>
+        <signalIL function="exit" id="sigIL288" isVirtual="true" sightDistance="400.0">
+          <refersTo ref="sig288"/>
+        </signalIL>
+        <signalIL function="exit" id="sigIL320" isVirtual="true" sightDistance="400.0">
+          <refersTo ref="sig320"/>
+        </signalIL>
+        <signalIL function="exit" id="sigIL339" isVirtual="true" sightDistance="400.0">
+          <refersTo ref="sig339"/>
+        </signalIL>
+      </signalsIL>
+      <routeReleaseGroupsRear>
+        <routeReleaseGroupRear id="prg_350_352">
+          <hasTvdSection ref="trs350"/>
+          <hasTvdSection ref="trs352"/>
+        </routeReleaseGroupRear>
+        <routeReleaseGroupRear id="prg_345">
+          <hasTvdSection ref="trs345"/>
+        </routeReleaseGroupRear>
+        <routeReleaseGroupRear id="prg_346">
+          <hasTvdSection ref="trs346"/>
+        </routeReleaseGroupRear>
+        <routeReleaseGroupRear id="prg_347">
+          <hasTvdSection ref="trs347"/>
+        </routeReleaseGroupRear>
+        <routeReleaseGroupRear id="prg_351_353_344">
+          <hasTvdSection ref="trs344"/>
+          <hasTvdSection ref="trs351"/>
+          <hasTvdSection ref="trs353"/>
+        </routeReleaseGroupRear>
+      </routeReleaseGroupsRear>
+      <routes>
+        <route id="rte354">
+          <designator entry="R:BER_01_HSB Berekvam-BER_01" register="_Banedata"/>
+          <facingSwitchInPosition inPosition="right">
+            <refersToSwitch ref="swi310"/>
+          </facingSwitchInPosition>
+          <routeEntry>
+            <refersTo ref="sig216"/>
+          </routeEntry>
+          <hasReleaseGroup ref="prg_351_353_344"/>
+          <hasReleaseGroup ref="prg_345"/>
+          <routeExit>
+            <refersTo ref="sig202"/>
+            <hasOverlap ref="ovl_202_209"/>
+          </routeExit>
+        </route>
+        <route id="rte355">
+          <designator entry="R:FM_01_HSA-FM_STOP 01" register="_Banedata"/>
+          <facingSwitchInPosition inPosition="right">
+            <refersToSwitch ref="swi325"/>
+          </facingSwitchInPosition>
+          <facingSwitchInPosition inPosition="right">
+            <refersToSwitch ref="swi329"/>
+          </facingSwitchInPosition>
+          <facingSwitchInPosition inPosition="right">
+            <refersToSwitch ref="swi56"/>
+          </facingSwitchInPosition>
+          <routeEntry>
+            <refersTo ref="sig278"/>
+          </routeEntry>
+          <routeExit>
+            <refersTo ref="sig37"/>
+          </routeExit>
+        </route>
+        <route id="rte356">
+          <designator entry="R:BER_02-FM_01_HSA" register="_Banedata"/>
+          <facingSwitchInPosition inPosition="left">
+            <refersToSwitch ref="swi310"/>
+          </facingSwitchInPosition>
+          <routeEntry>
+            <refersTo ref="sig288"/>
+          </routeEntry>
+          <hasReleaseGroup ref="prg_344_353_351"/>
+          <hasReleaseGroup ref="prg_350_352"/>
+          <routeExit>
+            <refersTo ref="sig278"/>
+          </routeExit>
+        </route>
+        <route id="rte357">
+          <designator entry="R:BER_01_HSB Berekvam-BER_02" register="_Banedata"/>
+          <facingSwitchInPosition inPosition="left">
+            <refersToSwitch ref="swi310"/>
+          </facingSwitchInPosition>
+          <routeEntry>
+            <refersTo ref="sig216"/>
+          </routeEntry>
+          <hasReleaseGroup ref="prg_351_353_344"/>
+          <hasReleaseGroup ref="prg_346"/>
+          <routeExit>
+            <refersTo ref="sig65"/>
+            <hasOverlap ref="ovl_65_209"/>
+          </routeExit>
+        </route>
+        <route id="rte358">
+          <designator entry="R:BER_01-FM_01_HSA" register="_Banedata"/>
+          <facingSwitchInPosition inPosition="right">
+            <refersToSwitch ref="swi310"/>
+          </facingSwitchInPosition>
+          <routeEntry>
+            <refersTo ref="sig19"/>
+          </routeEntry>
+          <hasReleaseGroup ref="prg_344_353_351"/>
+          <hasReleaseGroup ref="prg_350_352"/>
+          <routeExit>
+            <refersTo ref="sig278"/>
+          </routeExit>
+        </route>
+        <route id="rte359">
+          <designator entry="R:BER_01_HSA Berekvam-BER_01" register="_Banedata"/>
+          <facingSwitchInPosition inPosition="left">
+            <refersToSwitch ref="swi209"/>
+          </facingSwitchInPosition>
+          <routeEntry>
+            <refersTo ref="sig194"/>
+          </routeEntry>
+          <hasReleaseGroup ref="prg_347"/>
+          <hasReleaseGroup ref="prg_345"/>
+          <routeExit>
+            <refersTo ref="sig19"/>
+          </routeExit>
+        </route>
+        <route id="rte360">
+          <designator entry="R:FM_04-BER_01_HSB Berekvam" register="_Banedata"/>
+          <facingSwitchInPosition inPosition="left">
+            <refersToSwitch ref="swi329"/>
+          </facingSwitchInPosition>
+          <facingSwitchInPosition inPosition="right">
+            <refersToSwitch ref="swi325"/>
+          </facingSwitchInPosition>
+          <routeEntry>
+            <refersTo ref="sig320"/>
+          </routeEntry>
+          <routeExit>
+            <refersTo ref="sig216"/>
+          </routeExit>
+        </route>
+        <route id="rte361">
+          <designator entry="R:FM_01_HSA-FM_STOP 05" register="_Banedata"/>
+          <facingSwitchInPosition inPosition="left">
+            <refersToSwitch ref="swi325"/>
+          </facingSwitchInPosition>
+          <routeEntry>
+            <refersTo ref="sig278"/>
+          </routeEntry>
+          <routeExit>
+            <refersTo ref="sig104"/>
+          </routeExit>
+        </route>
+        <route id="rte363">
+          <designator entry="R:FM_01-BER_01_HSB Berekvam" register="_Banedata"/>
+          <facingSwitchInPosition inPosition="right">
+            <refersToSwitch ref="swi56"/>
+          </facingSwitchInPosition>
+          <facingSwitchInPosition inPosition="right">
+            <refersToSwitch ref="swi329"/>
+          </facingSwitchInPosition>
+          <facingSwitchInPosition inPosition="right">
+            <refersToSwitch ref="swi325"/>
+          </facingSwitchInPosition>
+          <routeEntry>
+            <refersTo ref="sig34"/>
+          </routeEntry>
+          <routeExit>
+            <refersTo ref="sig216"/>
+          </routeExit>
+        </route>
+        <route id="rte364">
+          <designator entry="R:FM_05-BER_01_HSB Berekvam" register="_Banedata"/>
+          <facingSwitchInPosition inPosition="left">
+            <refersToSwitch ref="swi325"/>
+          </facingSwitchInPosition>
+          <routeEntry>
+            <refersTo ref="sig101"/>
+          </routeEntry>
+          <routeExit>
+            <refersTo ref="sig216"/>
+          </routeExit>
+        </route>
+        <route id="rte365">
+          <designator entry="R:FM_01_HSA-FM_STOP 02" register="_Banedata"/>
+          <facingSwitchInPosition inPosition="right">
+            <refersToSwitch ref="swi325"/>
+          </facingSwitchInPosition>
+          <facingSwitchInPosition inPosition="right">
+            <refersToSwitch ref="swi329"/>
+          </facingSwitchInPosition>
+          <facingSwitchInPosition inPosition="left">
+            <refersToSwitch ref="swi56"/>
+          </facingSwitchInPosition>
+          <facingSwitchInPosition inPosition="right">
+            <refersToSwitch ref="swi92"/>
+          </facingSwitchInPosition>
+          <routeEntry>
+            <refersTo ref="sig278"/>
+          </routeEntry>
+          <routeExit>
+            <refersTo ref="sig83"/>
+          </routeExit>
+        </route>
+        <route id="rte367">
+          <designator entry="R:FM_01_HSA-FM_STOP 04" register="_Banedata"/>
+          <facingSwitchInPosition inPosition="right">
+            <refersToSwitch ref="swi325"/>
+          </facingSwitchInPosition>
+          <facingSwitchInPosition inPosition="left">
+            <refersToSwitch ref="swi329"/>
+          </facingSwitchInPosition>
+          <facingSwitchInPosition inPosition="right">
+            <refersToSwitch ref="swi93"/>
+          </facingSwitchInPosition>
+          <routeEntry>
+            <refersTo ref="sig278"/>
+          </routeEntry>
+          <routeExit>
+            <refersTo ref="sig339"/>
+          </routeExit>
+        </route>
+        <route id="rte368">
+          <designator entry="R:BER_01_HSA Berekvam-BER_02" register="_Banedata"/>
+          <facingSwitchInPosition inPosition="right">
+            <refersToSwitch ref="swi209"/>
+          </facingSwitchInPosition>
+          <routeEntry>
+            <refersTo ref="sig194"/>
+          </routeEntry>
+          <hasReleaseGroup ref="prg_347"/>
+          <hasReleaseGroup ref="prg_346"/>
+          <routeExit>
+            <refersTo ref="sig288"/>
+            <hasOverlap ref="ovl_288_310"/>
+          </routeExit>
+        </route>
+        <route id="rte369">
+          <designator entry="R:FM_02-BER_01_HSB Berekvam" register="_Banedata"/>
+          <facingSwitchInPosition inPosition="left">
+            <refersToSwitch ref="swi56"/>
+          </facingSwitchInPosition>
+          <facingSwitchInPosition inPosition="right">
+            <refersToSwitch ref="swi329"/>
+          </facingSwitchInPosition>
+          <facingSwitchInPosition inPosition="right">
+            <refersToSwitch ref="swi325"/>
+          </facingSwitchInPosition>
+          <routeEntry>
+            <refersTo ref="sig90"/>
+          </routeEntry>
+          <routeExit>
+            <refersTo ref="sig216"/>
+          </routeExit>
+        </route>
+      </routes>
+      <overlaps>
+        <overlap id="ovl_202_209" overlapValidityTime="PT2M30S">
+          <isLimitedBy ref="swi209"/>
+        </overlap>
+        <overlap id="ovl_65_209" overlapValidityTime="PT2M30S">
+          <isLimitedBy ref="swi209"/>
+        </overlap>
+        <overlap id="ovl_288_310" overlapValidityTime="PT2M30S">
+          <isLimitedBy ref="swi310"/>
+        </overlap>
+      </overlaps>
+    </assetsForIL>
+  </interlocking>
+</railML>
