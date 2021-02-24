@@ -1,0 +1,149 @@
+prefixes:
+  idlab-fn: "http://example.com/idlab/function/"
+  grel: "http://users.ugent.be/~bjdmeest/function/grel.ttl#"
+  rdfs: "http://www.w3.org/2000/01/rdf-schema#"
+  era: "http://era.europa.eu/ns#"
+  xsd: "http://www.w3.org/2001/XMLSchema#"
+  era-nv: "http://era.europa.eu/concepts/navigabilities#"
+
+variables:
+  connection: 
+    access: &host //10.10.160.21:1433
+    type: &typeMSSQL mssql
+    credentials: &credentials
+      username: SA
+      password: ChooChoo2020
+    queryFormulation: &queryFormulation sql2008 
+    referenceFormulation: &referenceFormulation csv
+
+mappings:
+  # ------------Link RINF operational points to RailML Meso NetElements--------------
+
+  rinf-operational-points: # NOTE: RINF query is restricted to Norwegian operational points only.
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT TRIM(UOPID) AS UOPID, CONCAT(LineReferences.Kilometer * 1000, '.0') AS Kilometer FROM RINF.dbo.OperationalPoints, RINF.dbo.LineReferences, RINF.dbo.MemberStateVersions, RINF.dbo.MemberStates WHERE OperationalPoints.ID = LineReferences.OperationalPointId AND OperationalPoints.VersionID = LineReferences.VersionID AND OperationalPoints.VersionID = MemberStateVersions.ID AND MemberStateVersions.MemberStateID = MemberStates.ID AND MemberStates.Code = 'NO';
+    s: http://era.europa.eu/functionalInfrastructure/operationalPoints#$(UOPID)
+    po:
+      - p: era:hasAbstraction
+        o: 
+          - mapping: railml-operational-points
+            condition:
+              function: idlab-fn:equal
+              parameters:
+                - [grel:valueParameter, $(Kilometer), s]
+                - [grel:valueParameter2, $(spotLocation/linearCoordinate/@measure), o]
+
+  
+  # ------------Define Meso NetElements (operational point-related only) and link back to RINF operational points--------------
+
+  railml-operational-points: 
+    sources:
+      - [data/norway-railml/RUB.railml~xpath, "//operationalPoint"]
+    s: # NOTE: If at least one of the references in an IRI template does not resolve, the IRI is not produced.
+       # In contrast, with the function below the IRI is always produced with whatever gets resolved.
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$((ancestor::infrastructure//netElement[@id=current(\\)/areaLocation/associatedNetElement/@netElementRef]\\)/name/@name)"]
+        - [grel:p_array_a, "$(areaLocation/associatedNetElement/@netElementRef)"]
+    condition: # This condition filters out <operationalPoint>s without an associated <netElement>. They serve no purpose.
+      function: idlab-fn:equal
+      parameters:
+        - [grel:valueParameter, "$(areaLocation/associatedNetElement/@netElementRef)"]
+        - [grel:valueParameter2, "$(ancestor::infrastructure//netElement[@id=current(\\)/areaLocation/associatedNetElement/@netElementRef]/@id)"]
+    po:
+      - [a, era:NetElement]
+      - [rdfs:label, $(name/@name)]
+      - p: era:hasImplementation
+        o: 
+          - mapping: rinf-operational-points
+            condition:
+              function: idlab-fn:equal
+              parameters:
+                - [grel:valueParameter, $(spotLocation/linearCoordinate/@measure), s]
+                - [grel:valueParameter2, $(Kilometer), o]
+
+  # ------------Define Micro NetElements--------------
+
+  railml-micro-net-elements:
+    sources:
+      - [data/norway-railml/RUB.railml~xpath, "//netElement[@length]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$((ancestor::netElements//elementCollectionUnordered/elementPart[@ref=current(\\)/@id]\\)/../../name/@name)"]
+        - [grel:p_array_a, $(@id)]
+    po:
+      - [a, era:NetElement]
+      - [era:length, "$(@length)", xsd:double]
+
+  # ------------Define Micro NetRelations--------------
+
+  railml-micro-net-relations:
+    sources:
+      - [data/norway-railml/RUB.railml~xpath, "//netRelation[@navigability]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netRelations#"]
+        - [grel:p_array_a, "$((ancestor::topology//elementCollectionUnordered/elementPart[@ref=current(\\)/elementA/@ref]\\)/../../name/@name)"]
+        - [grel:p_array_a, "$(elementA/@ref)"]
+        - [grel:p_array_a, "$((ancestor::topology//elementCollectionUnordered/elementPart[@ref=current(\\)/elementB/@ref]\\)/../../name/@name)"]
+        - [grel:p_array_a, "$(elementB/@ref)"]
+    po:
+      - [a, era:NetRelation]
+      - [era:navigability, era-nv:$(@navigability)~iri]
+      - p: era:elementA
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//elementCollectionUnordered/elementPart[@ref=current(\\)/elementA/@ref]\\)/../../name/@name)"]
+            - [grel:p_array_a, "$(elementA/@ref)"]
+          type: iri
+      - p: era:elementB
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//elementCollectionUnordered/elementPart[@ref=current(\\)/elementB/@ref]\\)/../../name/@name)"]
+            - [grel:p_array_a, "$(elementB/@ref)"]
+          type: iri
+
+  # ------------Define which Micro NetElements belong inside Meso NetElements (only for operational points)--------------
+
+  railml-operational-point-aggregations: 
+    sources:
+      - [data/norway-railml/RUB.railml~xpath, "//elementCollectionUnordered/elementPart"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$(ancestor::netElement/name/@name)"]
+        - [grel:p_array_a, "$(ancestor::netElement/@id)"]
+    po:
+      - p: era:elementPart
+        o: 
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$(ancestor::netElement/name/@name)"]
+            - [grel:p_array_a, "$(@ref)"]
+          type: iri
+        condition: # This condition verifies that there is only one <elementPart> referencing a given <netElement>. 
+                   # This filters out <netElement>s that belong to more than one operational point, 
+                   # which is a condition for <netElement>s related to a section of line. 
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(@ref)]
+            - parameter: grel:valueParameter2
+              value:
+                function: grel:array_join
+                parameters:
+                  - [grel:p_array_a, "$((ancestor::netElements//elementCollectionUnordered/elementPart[@ref=current(\\)/@ref]\\)/@ref)"]
