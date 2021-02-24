@@ -4,6 +4,9 @@
 @prefix fnml: <http://semweb.mmlab.be/ns/fnml#>.
 @prefix fno: <https://w3id.org/function/ontology#>.
 @prefix d2rq: <http://www.wiwiss.fu-berlin.de/suhl/bizer/D2RQ/0.1#>.
+@prefix void: <http://rdfs.org/ns/void#>.
+@prefix dc: <http://purl.org/dc/terms/>.
+@prefix foaf: <http://xmlns.com/foaf/0.1/>.
 @prefix rml: <http://semweb.mmlab.be/ns/rml#>.
 @prefix ql: <http://semweb.mmlab.be/ns/ql#>.
 @prefix : <http://mapping.example.com/>.
@@ -15,431 +18,438 @@
 @prefix era: <http://era.europa.eu/ns#>.
 @prefix era-rsf: <http://era.europa.eu/concepts/rolling-stock-fire#>.
 
-:map_tunnel_0 rml:logicalSource :source_0.
-:source_0 a rml:LogicalSource;
-    rml:source :database_0;
+:rules_000 a void:Dataset;
+    void:exampleResource :map_tunnel_000.
+:map_tunnel_000 rml:logicalSource :source_000.
+:source_000 a rml:LogicalSource;
+    rml:source :database_000;
     rml:query "SELECT Tracks.UUID AS TRACK_ID, Tunnels.UUID AS TUNNEL_LABEL, REPLACE(Tunnels.UUID, ' ', '_') AS TUNNEL_URI, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, ROUND(ABS(Tunnels.EndKm - Tunnels.StartKm), 2) AS TunnelLength, Tunnels.StartLat, Tunnels.StartLong, Tunnels.EndLat, Tunnels.EndLong, MemberStates.Code FROM RINF.dbo.LineEdges, RINF.dbo.SectionOfLines, RINF.dbo.SOLTracks, RINF.dbo.TrackTunnels, RINF.dbo.Tracks, RINF.dbo.Tunnels, RINF.dbo.MemberStateVersions, RINF.dbo.MemberStates WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SectionOfLines.ID = SOLTracks.SectionOfLineID AND SectionOfLines.VersionID = SOLTracks.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID AND SOLTracks.TrackID = TrackTunnels.TrackID AND SOLTracks.VersionID = TrackTunnels.VersionID AND TrackTunnels.TunnelID = Tunnels.ID AND TrackTunnels.VersionID = Tunnels.VersionID AND Tunnels.VersionID = MemberStateVersions.ID AND MemberStateVersions.MemberStateID = MemberStates.ID;".
-:database_0 a d2rq:Database;
+:database_000 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_0 rml:referenceFormulation ql:CSV.
-:map_tunnel_0 a rr:TriplesMap;
+:source_000 rml:referenceFormulation ql:CSV.
+:map_tunnel_000 a rr:TriplesMap;
     rdfs:label "tunnel".
-:s_0 a rr:SubjectMap.
-:map_tunnel_0 rr:subjectMap :s_0.
-:s_0 rr:template "http://era.europa.eu/implementation#TN_{TUNNEL_URI}".
-:pom_0 a rr:PredicateObjectMap.
-:map_tunnel_0 rr:predicateObjectMap :pom_0.
-:pm_0 a rr:PredicateMap.
-:pom_0 rr:predicateMap :pm_0.
-:pm_0 rr:constant rdf:type.
-:pom_0 rr:objectMap :om_0.
-:om_0 a rr:ObjectMap;
+:s_000 a rr:SubjectMap.
+:map_tunnel_000 rr:subjectMap :s_000.
+:s_000 rr:template "http://era.europa.eu/implementation#TN_{TUNNEL_URI}".
+:pom_000 a rr:PredicateObjectMap.
+:map_tunnel_000 rr:predicateObjectMap :pom_000.
+:pm_000 a rr:PredicateMap.
+:pom_000 rr:predicateMap :pm_000.
+:pm_000 rr:constant rdf:type.
+:pom_000 rr:objectMap :om_000.
+:om_000 a rr:ObjectMap;
     rr:constant "http://era.europa.eu/ns#Tunnel";
     rr:termType rr:IRI.
-:pom_1 a rr:PredicateObjectMap.
-:map_tunnel_0 rr:predicateObjectMap :pom_1.
-:pm_1 a rr:PredicateMap.
-:pom_1 rr:predicateMap :pm_1.
-:pm_1 rr:constant rdfs:label.
-:pom_1 rr:objectMap :om_1.
-:om_1 a rr:ObjectMap;
+:pom_001 a rr:PredicateObjectMap.
+:map_tunnel_000 rr:predicateObjectMap :pom_001.
+:pm_001 a rr:PredicateMap.
+:pom_001 rr:predicateMap :pm_001.
+:pm_001 rr:constant rdfs:label.
+:pom_001 rr:objectMap :om_001.
+:om_001 a rr:ObjectMap;
     rml:reference "TUNNEL_LABEL";
     rr:termType rr:Literal.
-:pom_2 a rr:PredicateObjectMap.
-:map_tunnel_0 rr:predicateObjectMap :pom_2.
-:pm_2 a rr:PredicateMap.
-:pom_2 rr:predicateMap :pm_2.
-:pm_2 rr:constant era:tunnelLength.
-:pom_2 rr:objectMap :om_2.
-:om_2 a rr:ObjectMap;
+:pom_002 a rr:PredicateObjectMap.
+:map_tunnel_000 rr:predicateObjectMap :pom_002.
+:pm_002 a rr:PredicateMap.
+:pom_002 rr:predicateMap :pm_002.
+:pm_002 rr:constant era:tunnelLength.
+:pom_002 rr:objectMap :om_002.
+:om_002 a rr:ObjectMap;
     rml:reference "TunnelLength";
     rr:termType rr:Literal.
-:pom_3 a rr:PredicateObjectMap.
-:map_tunnel_0 rr:predicateObjectMap :pom_3.
-:pm_3 a rr:PredicateMap.
-:pom_3 rr:predicateMap :pm_3.
-:pm_3 rr:constant era:startLocation.
-:pom_3 rr:objectMap :om_3.
-:om_3 a rr:ObjectMap;
+:pom_003 a rr:PredicateObjectMap.
+:map_tunnel_000 rr:predicateObjectMap :pom_003.
+:pm_003 a rr:PredicateMap.
+:pom_003 rr:predicateMap :pm_003.
+:pm_003 rr:constant era:startLocation.
+:pom_003 rr:objectMap :om_003.
+:om_003 a rr:ObjectMap;
     rr:template "http://era.europa.eu/location#GEO/{StartLong}/{StartLat}";
     rr:termType rr:IRI.
-:pom_4 a rr:PredicateObjectMap.
-:map_tunnel_0 rr:predicateObjectMap :pom_4.
-:pm_4 a rr:PredicateMap.
-:pom_4 rr:predicateMap :pm_4.
-:pm_4 rr:constant era:endLocation.
-:pom_4 rr:objectMap :om_4.
-:om_4 a rr:ObjectMap;
+:pom_004 a rr:PredicateObjectMap.
+:map_tunnel_000 rr:predicateObjectMap :pom_004.
+:pm_004 a rr:PredicateMap.
+:pom_004 rr:predicateMap :pm_004.
+:pm_004 rr:constant era:endLocation.
+:pom_004 rr:objectMap :om_004.
+:om_004 a rr:ObjectMap;
     rr:template "http://era.europa.eu/location#GEO/{EndLong}/{EndLat}";
     rr:termType rr:IRI.
-:pom_5 a rr:PredicateObjectMap.
-:map_tunnel_0 rr:predicateObjectMap :pom_5.
-:pm_5 a rr:PredicateMap.
-:pom_5 rr:predicateMap :pm_5.
-:pm_5 rr:constant era:hasTrack.
-:pom_5 rr:objectMap :om_5.
-:om_5 a rr:ObjectMap;
+:pom_005 a rr:PredicateObjectMap.
+:map_tunnel_000 rr:predicateObjectMap :pom_005.
+:pm_005 a rr:PredicateMap.
+:pom_005 rr:predicateMap :pm_005.
+:pm_005 rr:constant era:hasTrack.
+:pom_005 rr:objectMap :om_005.
+:om_005 a rr:ObjectMap;
     rr:template "http://era.europa.eu/implementation#T_{FROM_NODE}_{TRACK_ID}_{TO_NODE}";
     rr:termType rr:IRI.
-:pom_6 a rr:PredicateObjectMap.
-:map_tunnel_0 rr:predicateObjectMap :pom_6.
-:pm_6 a rr:PredicateMap.
-:pom_6 rr:predicateMap :pm_6.
-:pm_6 rr:constant era:inCountry.
-:pom_6 rr:objectMap :om_6.
-:map_start-location_0 rml:logicalSource :source_1.
-:source_1 a rml:LogicalSource;
-    rml:source :database_1;
+:pom_006 a rr:PredicateObjectMap.
+:map_tunnel_000 rr:predicateObjectMap :pom_006.
+:pm_006 a rr:PredicateMap.
+:pom_006 rr:predicateMap :pm_006.
+:pm_006 rr:constant era:inCountry.
+:pom_006 rr:objectMap :om_006.
+:rules_000 void:exampleResource :map_start-location_000.
+:map_start-location_000 rml:logicalSource :source_001.
+:source_001 a rml:LogicalSource;
+    rml:source :database_001;
     rml:query "SELECT Tunnels.StartLat, Tunnels.StartLong FROM RINF.dbo.SectionOfLines, RINF.dbo.SOLTracks, RINF.dbo.TrackTunnels, RINF.dbo.Tunnels WHERE SectionOfLines.ID = SOLTracks.SectionOfLineID AND SectionOfLines.VersionID = SOLTracks.VersionID AND SOLTracks.TrackID = TrackTunnels.TrackID AND SOLTracks.VersionID = TrackTunnels.VersionID AND TrackTunnels.TunnelID = Tunnels.ID AND TrackTunnels.VersionID = Tunnels.VersionID;".
-:database_1 a d2rq:Database;
+:database_001 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_1 rml:referenceFormulation ql:CSV.
-:map_start-location_0 a rr:TriplesMap;
+:source_001 rml:referenceFormulation ql:CSV.
+:map_start-location_000 a rr:TriplesMap;
     rdfs:label "start-location".
-:s_1 a rr:SubjectMap.
-:map_start-location_0 rr:subjectMap :s_1.
-:s_1 rr:template "http://era.europa.eu/location#GEO/{StartLong}/{StartLat}".
-:pom_7 a rr:PredicateObjectMap.
-:map_start-location_0 rr:predicateObjectMap :pom_7.
-:pm_7 a rr:PredicateMap.
-:pom_7 rr:predicateMap :pm_7.
-:pm_7 rr:constant rdf:type.
-:pom_7 rr:objectMap :om_7.
-:om_7 a rr:ObjectMap;
+:s_001 a rr:SubjectMap.
+:map_start-location_000 rr:subjectMap :s_001.
+:s_001 rr:template "http://era.europa.eu/location#GEO/{StartLong}/{StartLat}".
+:pom_007 a rr:PredicateObjectMap.
+:map_start-location_000 rr:predicateObjectMap :pom_007.
+:pm_007 a rr:PredicateMap.
+:pom_007 rr:predicateMap :pm_007.
+:pm_007 rr:constant rdf:type.
+:pom_007 rr:objectMap :om_007.
+:om_007 a rr:ObjectMap;
     rr:constant "http://www.w3.org/2003/01/geo/wgs84_pos#Point";
     rr:termType rr:IRI.
-:pom_8 a rr:PredicateObjectMap.
-:map_start-location_0 rr:predicateObjectMap :pom_8.
-:pm_8 a rr:PredicateMap.
-:pom_8 rr:predicateMap :pm_8.
-:pm_8 rr:constant rdf:type.
-:pom_8 rr:objectMap :om_8.
-:om_8 a rr:ObjectMap;
+:pom_008 a rr:PredicateObjectMap.
+:map_start-location_000 rr:predicateObjectMap :pom_008.
+:pm_008 a rr:PredicateMap.
+:pom_008 rr:predicateMap :pm_008.
+:pm_008 rr:constant rdf:type.
+:pom_008 rr:objectMap :om_008.
+:om_008 a rr:ObjectMap;
     rr:constant "http://www.opengis.net/ont/geosparql#Geometry";
     rr:termType rr:IRI.
-:pom_9 a rr:PredicateObjectMap.
-:map_start-location_0 rr:predicateObjectMap :pom_9.
-:pm_9 a rr:PredicateMap.
-:pom_9 rr:predicateMap :pm_9.
-:pm_9 rr:constant wgs:lat.
-:pom_9 rr:objectMap :om_9.
-:om_9 a rr:ObjectMap;
+:pom_009 a rr:PredicateObjectMap.
+:map_start-location_000 rr:predicateObjectMap :pom_009.
+:pm_009 a rr:PredicateMap.
+:pom_009 rr:predicateMap :pm_009.
+:pm_009 rr:constant wgs:lat.
+:pom_009 rr:objectMap :om_009.
+:om_009 a rr:ObjectMap;
     rml:reference "StartLat";
     rr:termType rr:Literal;
     rr:datatype xsd:double.
-:pom_10 a rr:PredicateObjectMap.
-:map_start-location_0 rr:predicateObjectMap :pom_10.
-:pm_10 a rr:PredicateMap.
-:pom_10 rr:predicateMap :pm_10.
-:pm_10 rr:constant wgs:long.
-:pom_10 rr:objectMap :om_10.
-:om_10 a rr:ObjectMap;
+:pom_010 a rr:PredicateObjectMap.
+:map_start-location_000 rr:predicateObjectMap :pom_010.
+:pm_010 a rr:PredicateMap.
+:pom_010 rr:predicateMap :pm_010.
+:pm_010 rr:constant wgs:long.
+:pom_010 rr:objectMap :om_010.
+:om_010 a rr:ObjectMap;
     rml:reference "StartLong";
     rr:termType rr:Literal;
     rr:datatype xsd:double.
-:pom_11 a rr:PredicateObjectMap.
-:map_start-location_0 rr:predicateObjectMap :pom_11.
-:pm_11 a rr:PredicateMap.
-:pom_11 rr:predicateMap :pm_11.
-:pm_11 rr:constant geosparql:asWKT.
-:pom_11 rr:objectMap :om_11.
-:om_11 a rr:ObjectMap;
+:pom_011 a rr:PredicateObjectMap.
+:map_start-location_000 rr:predicateObjectMap :pom_011.
+:pm_011 a rr:PredicateMap.
+:pom_011 rr:predicateMap :pm_011.
+:pm_011 rr:constant geosparql:asWKT.
+:pom_011 rr:objectMap :om_011.
+:om_011 a rr:ObjectMap;
     rr:template "POINT ({StartLong} {StartLat})";
     rr:termType rr:Literal;
     rr:datatype geosparql:wktLiteral.
-:map_end-location_0 rml:logicalSource :source_2.
-:source_2 a rml:LogicalSource;
-    rml:source :database_2;
+:rules_000 void:exampleResource :map_end-location_000.
+:map_end-location_000 rml:logicalSource :source_002.
+:source_002 a rml:LogicalSource;
+    rml:source :database_002;
     rml:query "SELECT Tunnels.EndLat, Tunnels.EndLong FROM RINF.dbo.SectionOfLines, RINF.dbo.SOLTracks, RINF.dbo.TrackTunnels, RINF.dbo.Tunnels WHERE SectionOfLines.ID = SOLTracks.SectionOfLineID AND SectionOfLines.VersionID = SOLTracks.VersionID AND SOLTracks.TrackID = TrackTunnels.TrackID AND SOLTracks.VersionID = TrackTunnels.VersionID AND TrackTunnels.TunnelID = Tunnels.ID AND TrackTunnels.VersionID = Tunnels.VersionID;".
-:database_2 a d2rq:Database;
+:database_002 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_2 rml:referenceFormulation ql:CSV.
-:map_end-location_0 a rr:TriplesMap;
+:source_002 rml:referenceFormulation ql:CSV.
+:map_end-location_000 a rr:TriplesMap;
     rdfs:label "end-location".
-:s_2 a rr:SubjectMap.
-:map_end-location_0 rr:subjectMap :s_2.
-:s_2 rr:template "http://era.europa.eu/location#GEO/{EndLong}/{EndLat}".
-:pom_12 a rr:PredicateObjectMap.
-:map_end-location_0 rr:predicateObjectMap :pom_12.
-:pm_12 a rr:PredicateMap.
-:pom_12 rr:predicateMap :pm_12.
-:pm_12 rr:constant rdf:type.
-:pom_12 rr:objectMap :om_12.
-:om_12 a rr:ObjectMap;
+:s_002 a rr:SubjectMap.
+:map_end-location_000 rr:subjectMap :s_002.
+:s_002 rr:template "http://era.europa.eu/location#GEO/{EndLong}/{EndLat}".
+:pom_012 a rr:PredicateObjectMap.
+:map_end-location_000 rr:predicateObjectMap :pom_012.
+:pm_012 a rr:PredicateMap.
+:pom_012 rr:predicateMap :pm_012.
+:pm_012 rr:constant rdf:type.
+:pom_012 rr:objectMap :om_012.
+:om_012 a rr:ObjectMap;
     rr:constant "http://www.w3.org/2003/01/geo/wgs84_pos#Point";
     rr:termType rr:IRI.
-:pom_13 a rr:PredicateObjectMap.
-:map_end-location_0 rr:predicateObjectMap :pom_13.
-:pm_13 a rr:PredicateMap.
-:pom_13 rr:predicateMap :pm_13.
-:pm_13 rr:constant rdf:type.
-:pom_13 rr:objectMap :om_13.
-:om_13 a rr:ObjectMap;
+:pom_013 a rr:PredicateObjectMap.
+:map_end-location_000 rr:predicateObjectMap :pom_013.
+:pm_013 a rr:PredicateMap.
+:pom_013 rr:predicateMap :pm_013.
+:pm_013 rr:constant rdf:type.
+:pom_013 rr:objectMap :om_013.
+:om_013 a rr:ObjectMap;
     rr:constant "http://www.opengis.net/ont/geosparql#Geometry";
     rr:termType rr:IRI.
-:pom_14 a rr:PredicateObjectMap.
-:map_end-location_0 rr:predicateObjectMap :pom_14.
-:pm_14 a rr:PredicateMap.
-:pom_14 rr:predicateMap :pm_14.
-:pm_14 rr:constant wgs:lat.
-:pom_14 rr:objectMap :om_14.
-:om_14 a rr:ObjectMap;
+:pom_014 a rr:PredicateObjectMap.
+:map_end-location_000 rr:predicateObjectMap :pom_014.
+:pm_014 a rr:PredicateMap.
+:pom_014 rr:predicateMap :pm_014.
+:pm_014 rr:constant wgs:lat.
+:pom_014 rr:objectMap :om_014.
+:om_014 a rr:ObjectMap;
     rml:reference "EndLat";
     rr:termType rr:Literal;
     rr:datatype xsd:double.
-:pom_15 a rr:PredicateObjectMap.
-:map_end-location_0 rr:predicateObjectMap :pom_15.
-:pm_15 a rr:PredicateMap.
-:pom_15 rr:predicateMap :pm_15.
-:pm_15 rr:constant wgs:long.
-:pom_15 rr:objectMap :om_15.
-:om_15 a rr:ObjectMap;
+:pom_015 a rr:PredicateObjectMap.
+:map_end-location_000 rr:predicateObjectMap :pom_015.
+:pm_015 a rr:PredicateMap.
+:pom_015 rr:predicateMap :pm_015.
+:pm_015 rr:constant wgs:long.
+:pom_015 rr:objectMap :om_015.
+:om_015 a rr:ObjectMap;
     rml:reference "EndLong";
     rr:termType rr:Literal;
     rr:datatype xsd:double.
-:pom_16 a rr:PredicateObjectMap.
-:map_end-location_0 rr:predicateObjectMap :pom_16.
-:pm_16 a rr:PredicateMap.
-:pom_16 rr:predicateMap :pm_16.
-:pm_16 rr:constant geosparql:asWKT.
-:pom_16 rr:objectMap :om_16.
-:om_16 a rr:ObjectMap;
+:pom_016 a rr:PredicateObjectMap.
+:map_end-location_000 rr:predicateObjectMap :pom_016.
+:pm_016 a rr:PredicateMap.
+:pom_016 rr:predicateMap :pm_016.
+:pm_016 rr:constant geosparql:asWKT.
+:pom_016 rr:objectMap :om_016.
+:om_016 a rr:ObjectMap;
     rr:template "POINT ({EndLong} {EndLat})";
     rr:termType rr:Literal;
     rr:datatype geosparql:wktLiteral.
-:map_eu-country_0 rml:logicalSource :source_3.
-:source_3 a rml:LogicalSource;
+:rules_000 void:exampleResource :map_eu-country_000.
+:map_eu-country_000 rml:logicalSource :source_003.
+:source_003 a rml:LogicalSource;
     rml:source "data/countries.csv";
     rml:referenceFormulation ql:CSV.
-:map_eu-country_0 a rr:TriplesMap;
+:map_eu-country_000 a rr:TriplesMap;
     rdfs:label "eu-country".
-:s_3 a rr:SubjectMap.
-:map_eu-country_0 rr:subjectMap :s_3.
-:s_3 rml:reference "eu".
-:map_required-rolling-stock-fire-category_0 rml:logicalSource :source_4.
-:source_4 a rml:LogicalSource;
-    rml:source :database_3;
+:s_003 a rr:SubjectMap.
+:map_eu-country_000 rr:subjectMap :s_003.
+:s_003 rml:reference "eu".
+:rules_000 void:exampleResource :map_required-rolling-stock-fire-category_000.
+:map_required-rolling-stock-fire-category_000 rml:logicalSource :source_004.
+:source_004 a rml:LogicalSource;
+    rml:source :database_003;
     rml:query "SELECT REPLACE(Tunnels.UUID, ' ', '_') AS TUNNEL_URI, LookupValues.[Value] FROM RINF.dbo.TrackTunnels, RINF.dbo.Tunnels, RINF.dbo.TunnelParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE TrackTunnels.TunnelID = Tunnels.ID AND TrackTunnels.VersionID = Tunnels.VersionID AND TunnelParameters.TunnelID = TrackTunnels.TunnelID AND TunnelParameters.VersionID = TrackTunnels.VersionID AND TunnelParameters.ParameterId = Parameters.ID AND Parameters.[Index] = '1.1.1.1.8.10' AND TunnelParameters.LookupValueID = LookupValues.ID;".
-:database_3 a d2rq:Database;
+:database_003 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_4 rml:referenceFormulation ql:CSV.
-:map_required-rolling-stock-fire-category_0 a rr:TriplesMap;
+:source_004 rml:referenceFormulation ql:CSV.
+:map_required-rolling-stock-fire-category_000 a rr:TriplesMap;
     rdfs:label "required-rolling-stock-fire-category".
-:s_4 a rr:SubjectMap.
-:map_required-rolling-stock-fire-category_0 rr:subjectMap :s_4.
-:s_4 rr:template "http://era.europa.eu/implementation#TN_{TUNNEL_URI}".
-:pom_17 a rr:PredicateObjectMap.
-:map_required-rolling-stock-fire-category_0 rr:predicateObjectMap :pom_17.
-:pm_17 a rr:PredicateMap.
-:pom_17 rr:predicateMap :pm_17.
-:pm_17 rr:constant era:rollingStockFireCategory.
-:pom_17 rr:objectMap :om_17.
-:om_17 a fnml:FunctionTermMap;
+:s_004 a rr:SubjectMap.
+:map_required-rolling-stock-fire-category_000 rr:subjectMap :s_004.
+:s_004 rr:template "http://era.europa.eu/implementation#TN_{TUNNEL_URI}".
+:pom_017 a rr:PredicateObjectMap.
+:map_required-rolling-stock-fire-category_000 rr:predicateObjectMap :pom_017.
+:pm_017 a rr:PredicateMap.
+:pom_017 rr:predicateMap :pm_017.
+:pm_017 rr:constant era:rollingStockFireCategory.
+:pom_017 rr:objectMap :om_017.
+:om_017 a fnml:FunctionTermMap;
     rr:termType rr:IRI;
-    fnml:functionValue :fn_0.
-:fn_0 rml:logicalSource :source_4;
-    rr:predicateObjectMap :pomexec_0.
-:pomexec_0 rr:predicateMap :pmexec_0.
-:pmexec_0 rr:constant fno:executes.
-:pomexec_0 rr:objectMap :omexec_0.
-:omexec_0 rr:constant "http://example.com/idlab/function/trueCondition";
+    fnml:functionValue :fn_000.
+:fn_000 rml:logicalSource :source_004;
+    rr:predicateObjectMap :pomexec_000.
+:pomexec_000 rr:predicateMap :pmexec_000.
+:pmexec_000 rr:constant fno:executes.
+:pomexec_000 rr:objectMap :omexec_000.
+:omexec_000 rr:constant "http://example.com/idlab/function/trueCondition";
     rr:termType rr:IRI.
-:fn_0 rr:predicateObjectMap :pom_18.
-:pom_18 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_18.
-:pm_18 a rr:PredicateMap;
+:fn_000 rr:predicateObjectMap :pom_018.
+:pom_018 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_018.
+:pm_018 a rr:PredicateMap;
     rr:constant idlab-fn:strBoolean.
-:pom_18 rr:objectMap :om_18.
-:om_18 a rr:ObjectMap, fnml:FunctionTermMap;
-    fnml:functionValue :fn_1.
-:fn_1 rml:logicalSource :source_4;
-    rr:predicateObjectMap :pomexec_1.
-:pomexec_1 rr:predicateMap :pmexec_1.
-:pmexec_1 rr:constant fno:executes.
-:pomexec_1 rr:objectMap :omexec_1.
-:omexec_1 rr:constant "http://example.com/idlab/function/equal";
+:pom_018 rr:objectMap :om_018.
+:om_018 a rr:ObjectMap, fnml:FunctionTermMap;
+    fnml:functionValue :fn_001.
+:fn_001 rml:logicalSource :source_004;
+    rr:predicateObjectMap :pomexec_001.
+:pomexec_001 rr:predicateMap :pmexec_001.
+:pmexec_001 rr:constant fno:executes.
+:pomexec_001 rr:objectMap :omexec_001.
+:omexec_001 rr:constant "http://example.com/idlab/function/equal";
     rr:termType rr:IRI.
-:fn_1 rr:predicateObjectMap :pom_19.
-:pom_19 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_19.
-:pm_19 a rr:PredicateMap;
+:fn_001 rr:predicateObjectMap :pom_019.
+:pom_019 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_019.
+:pm_019 a rr:PredicateMap;
     rr:constant grel:valueParameter.
-:pom_19 rr:objectMap :om_19.
-:om_19 a rr:ObjectMap;
+:pom_019 rr:objectMap :om_019.
+:om_019 a rr:ObjectMap;
     rml:reference "Value";
     rr:termType rr:Literal.
-:fn_1 rr:predicateObjectMap :pom_20.
-:pom_20 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_20.
-:pm_20 a rr:PredicateMap;
+:fn_001 rr:predicateObjectMap :pom_020.
+:pom_020 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_020.
+:pm_020 a rr:PredicateMap;
     rr:constant grel:valueParameter2.
-:pom_20 rr:objectMap :om_20.
-:om_20 a rr:ObjectMap;
+:pom_020 rr:objectMap :om_020.
+:om_020 a rr:ObjectMap;
     rr:constant "A";
     rr:termType rr:Literal.
-:fn_0 rr:predicateObjectMap :pom_21.
-:pom_21 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_21.
-:pm_21 a rr:PredicateMap;
+:fn_000 rr:predicateObjectMap :pom_021.
+:pom_021 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_021.
+:pm_021 a rr:PredicateMap;
     rr:constant idlab-fn:str.
-:pom_21 rr:objectMap :om_21.
-:om_21 a rr:ObjectMap;
+:pom_021 rr:objectMap :om_021.
+:om_021 a rr:ObjectMap;
     rr:constant "http://era.europa.eu/concepts/rolling-stock-fire#a";
     rr:termType rr:IRI.
-:pom_22 a rr:PredicateObjectMap.
-:map_required-rolling-stock-fire-category_0 rr:predicateObjectMap :pom_22.
-:pm_22 a rr:PredicateMap.
-:pom_22 rr:predicateMap :pm_22.
-:pm_22 rr:constant era:rollingStockFireCategory.
-:pom_22 rr:objectMap :om_22.
-:om_22 a fnml:FunctionTermMap;
+:pom_022 a rr:PredicateObjectMap.
+:map_required-rolling-stock-fire-category_000 rr:predicateObjectMap :pom_022.
+:pm_022 a rr:PredicateMap.
+:pom_022 rr:predicateMap :pm_022.
+:pm_022 rr:constant era:rollingStockFireCategory.
+:pom_022 rr:objectMap :om_022.
+:om_022 a fnml:FunctionTermMap;
     rr:termType rr:IRI;
-    fnml:functionValue :fn_2.
-:fn_2 rml:logicalSource :source_4;
-    rr:predicateObjectMap :pomexec_2.
-:pomexec_2 rr:predicateMap :pmexec_2.
-:pmexec_2 rr:constant fno:executes.
-:pomexec_2 rr:objectMap :omexec_2.
-:omexec_2 rr:constant "http://example.com/idlab/function/trueCondition";
+    fnml:functionValue :fn_002.
+:fn_002 rml:logicalSource :source_004;
+    rr:predicateObjectMap :pomexec_002.
+:pomexec_002 rr:predicateMap :pmexec_002.
+:pmexec_002 rr:constant fno:executes.
+:pomexec_002 rr:objectMap :omexec_002.
+:omexec_002 rr:constant "http://example.com/idlab/function/trueCondition";
     rr:termType rr:IRI.
-:fn_2 rr:predicateObjectMap :pom_23.
-:pom_23 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_23.
-:pm_23 a rr:PredicateMap;
+:fn_002 rr:predicateObjectMap :pom_023.
+:pom_023 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_023.
+:pm_023 a rr:PredicateMap;
     rr:constant idlab-fn:strBoolean.
-:pom_23 rr:objectMap :om_23.
-:om_23 a rr:ObjectMap, fnml:FunctionTermMap;
-    fnml:functionValue :fn_3.
-:fn_3 rml:logicalSource :source_4;
-    rr:predicateObjectMap :pomexec_3.
-:pomexec_3 rr:predicateMap :pmexec_3.
-:pmexec_3 rr:constant fno:executes.
-:pomexec_3 rr:objectMap :omexec_3.
-:omexec_3 rr:constant "http://example.com/idlab/function/equal";
+:pom_023 rr:objectMap :om_023.
+:om_023 a rr:ObjectMap, fnml:FunctionTermMap;
+    fnml:functionValue :fn_003.
+:fn_003 rml:logicalSource :source_004;
+    rr:predicateObjectMap :pomexec_003.
+:pomexec_003 rr:predicateMap :pmexec_003.
+:pmexec_003 rr:constant fno:executes.
+:pomexec_003 rr:objectMap :omexec_003.
+:omexec_003 rr:constant "http://example.com/idlab/function/equal";
     rr:termType rr:IRI.
-:fn_3 rr:predicateObjectMap :pom_24.
-:pom_24 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_24.
-:pm_24 a rr:PredicateMap;
+:fn_003 rr:predicateObjectMap :pom_024.
+:pom_024 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_024.
+:pm_024 a rr:PredicateMap;
     rr:constant grel:valueParameter.
-:pom_24 rr:objectMap :om_24.
-:om_24 a rr:ObjectMap;
+:pom_024 rr:objectMap :om_024.
+:om_024 a rr:ObjectMap;
     rml:reference "Value";
     rr:termType rr:Literal.
-:fn_3 rr:predicateObjectMap :pom_25.
-:pom_25 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_25.
-:pm_25 a rr:PredicateMap;
+:fn_003 rr:predicateObjectMap :pom_025.
+:pom_025 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_025.
+:pm_025 a rr:PredicateMap;
     rr:constant grel:valueParameter2.
-:pom_25 rr:objectMap :om_25.
-:om_25 a rr:ObjectMap;
+:pom_025 rr:objectMap :om_025.
+:om_025 a rr:ObjectMap;
     rr:constant "B";
     rr:termType rr:Literal.
-:fn_2 rr:predicateObjectMap :pom_26.
-:pom_26 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_26.
-:pm_26 a rr:PredicateMap;
+:fn_002 rr:predicateObjectMap :pom_026.
+:pom_026 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_026.
+:pm_026 a rr:PredicateMap;
     rr:constant idlab-fn:str.
-:pom_26 rr:objectMap :om_26.
-:om_26 a rr:ObjectMap;
+:pom_026 rr:objectMap :om_026.
+:om_026 a rr:ObjectMap;
     rr:constant "http://era.europa.eu/concepts/rolling-stock-fire#b";
     rr:termType rr:IRI.
-:pom_27 a rr:PredicateObjectMap.
-:map_required-rolling-stock-fire-category_0 rr:predicateObjectMap :pom_27.
-:pm_27 a rr:PredicateMap.
-:pom_27 rr:predicateMap :pm_27.
-:pm_27 rr:constant era:rollingStockFireCategory.
-:pom_27 rr:objectMap :om_27.
-:om_27 a fnml:FunctionTermMap;
+:pom_027 a rr:PredicateObjectMap.
+:map_required-rolling-stock-fire-category_000 rr:predicateObjectMap :pom_027.
+:pm_027 a rr:PredicateMap.
+:pom_027 rr:predicateMap :pm_027.
+:pm_027 rr:constant era:rollingStockFireCategory.
+:pom_027 rr:objectMap :om_027.
+:om_027 a fnml:FunctionTermMap;
     rr:termType rr:IRI;
-    fnml:functionValue :fn_4.
-:fn_4 rml:logicalSource :source_4;
-    rr:predicateObjectMap :pomexec_4.
-:pomexec_4 rr:predicateMap :pmexec_4.
-:pmexec_4 rr:constant fno:executes.
-:pomexec_4 rr:objectMap :omexec_4.
-:omexec_4 rr:constant "http://example.com/idlab/function/trueCondition";
+    fnml:functionValue :fn_004.
+:fn_004 rml:logicalSource :source_004;
+    rr:predicateObjectMap :pomexec_004.
+:pomexec_004 rr:predicateMap :pmexec_004.
+:pmexec_004 rr:constant fno:executes.
+:pomexec_004 rr:objectMap :omexec_004.
+:omexec_004 rr:constant "http://example.com/idlab/function/trueCondition";
     rr:termType rr:IRI.
-:fn_4 rr:predicateObjectMap :pom_28.
-:pom_28 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_28.
-:pm_28 a rr:PredicateMap;
+:fn_004 rr:predicateObjectMap :pom_028.
+:pom_028 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_028.
+:pm_028 a rr:PredicateMap;
     rr:constant idlab-fn:strBoolean.
-:pom_28 rr:objectMap :om_28.
-:om_28 a rr:ObjectMap, fnml:FunctionTermMap;
-    fnml:functionValue :fn_5.
-:fn_5 rml:logicalSource :source_4;
-    rr:predicateObjectMap :pomexec_5.
-:pomexec_5 rr:predicateMap :pmexec_5.
-:pmexec_5 rr:constant fno:executes.
-:pomexec_5 rr:objectMap :omexec_5.
-:omexec_5 rr:constant "http://example.com/idlab/function/equal";
+:pom_028 rr:objectMap :om_028.
+:om_028 a rr:ObjectMap, fnml:FunctionTermMap;
+    fnml:functionValue :fn_005.
+:fn_005 rml:logicalSource :source_004;
+    rr:predicateObjectMap :pomexec_005.
+:pomexec_005 rr:predicateMap :pmexec_005.
+:pmexec_005 rr:constant fno:executes.
+:pomexec_005 rr:objectMap :omexec_005.
+:omexec_005 rr:constant "http://example.com/idlab/function/equal";
     rr:termType rr:IRI.
-:fn_5 rr:predicateObjectMap :pom_29.
-:pom_29 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_29.
-:pm_29 a rr:PredicateMap;
+:fn_005 rr:predicateObjectMap :pom_029.
+:pom_029 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_029.
+:pm_029 a rr:PredicateMap;
     rr:constant grel:valueParameter.
-:pom_29 rr:objectMap :om_29.
-:om_29 a rr:ObjectMap;
+:pom_029 rr:objectMap :om_029.
+:om_029 a rr:ObjectMap;
     rml:reference "Value";
     rr:termType rr:Literal.
-:fn_5 rr:predicateObjectMap :pom_30.
-:pom_30 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_30.
-:pm_30 a rr:PredicateMap;
+:fn_005 rr:predicateObjectMap :pom_030.
+:pom_030 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_030.
+:pm_030 a rr:PredicateMap;
     rr:constant grel:valueParameter2.
-:pom_30 rr:objectMap :om_30.
-:om_30 a rr:ObjectMap;
+:pom_030 rr:objectMap :om_030.
+:om_030 a rr:ObjectMap;
     rr:constant "none";
     rr:termType rr:Literal.
-:fn_4 rr:predicateObjectMap :pom_31.
-:pom_31 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_31.
-:pm_31 a rr:PredicateMap;
+:fn_004 rr:predicateObjectMap :pom_031.
+:pom_031 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_031.
+:pm_031 a rr:PredicateMap;
     rr:constant idlab-fn:str.
-:pom_31 rr:objectMap :om_31.
-:om_31 a rr:ObjectMap;
+:pom_031 rr:objectMap :om_031.
+:om_031 a rr:ObjectMap;
     rr:constant "http://era.europa.eu/concepts/rolling-stock-fire#none";
     rr:termType rr:IRI.
-:map_required-national-rolling-stock-fire-category_0 rml:logicalSource :source_5.
-:source_5 a rml:LogicalSource;
-    rml:source :database_4;
+:rules_000 void:exampleResource :map_required-national-rolling-stock-fire-category_000.
+:map_required-national-rolling-stock-fire-category_000 rml:logicalSource :source_005.
+:source_005 a rml:LogicalSource;
+    rml:source :database_004;
     rml:query "SELECT REPLACE(Tunnels.UUID, ' ', '_') AS TUNNEL_URI, LookupValues.[Value] FROM RINF.dbo.TrackTunnels, RINF.dbo.Tunnels, RINF.dbo.TunnelParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE TrackTunnels.TunnelID = Tunnels.ID AND TrackTunnels.VersionID = Tunnels.VersionID AND TunnelParameters.TunnelID = TrackTunnels.TunnelID AND TunnelParameters.VersionID = TrackTunnels.VersionID AND TunnelParameters.ParameterId = Parameters.ID AND Parameters.[Index] = '1.1.1.1.8.11' AND TunnelParameters.LookupValueID = LookupValues.ID;".
-:database_4 a d2rq:Database;
+:database_004 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_5 rml:referenceFormulation ql:CSV.
-:map_required-national-rolling-stock-fire-category_0 a rr:TriplesMap;
+:source_005 rml:referenceFormulation ql:CSV.
+:map_required-national-rolling-stock-fire-category_000 a rr:TriplesMap;
     rdfs:label "required-national-rolling-stock-fire-category".
-:s_5 a rr:SubjectMap.
-:map_required-national-rolling-stock-fire-category_0 rr:subjectMap :s_5.
-:s_5 rr:template "http://era.europa.eu/implementation#TN_{VersionID}_{TunnelID}".
-:pom_32 a rr:PredicateObjectMap.
-:map_required-national-rolling-stock-fire-category_0 rr:predicateObjectMap :pom_32.
-:pm_32 a rr:PredicateMap.
-:pom_32 rr:predicateMap :pm_32.
-:pm_32 rr:constant era:nationalRollingStockFireCategory.
-:pom_32 rr:objectMap :om_32.
-:om_32 a rr:ObjectMap;
+:s_005 a rr:SubjectMap.
+:map_required-national-rolling-stock-fire-category_000 rr:subjectMap :s_005.
+:s_005 rr:template "http://era.europa.eu/implementation#TN_{VersionID}_{TunnelID}".
+:pom_032 a rr:PredicateObjectMap.
+:map_required-national-rolling-stock-fire-category_000 rr:predicateObjectMap :pom_032.
+:pm_032 a rr:PredicateMap.
+:pom_032 rr:predicateMap :pm_032.
+:pm_032 rr:constant era:nationalRollingStockFireCategory.
+:pom_032 rr:objectMap :om_032.
+:om_032 a rr:ObjectMap;
     rml:reference "Value";
     rr:termType rr:Literal.
-:om_6 a rr:ObjectMap;
-    rr:parentTriplesMap :map_eu-country_0;
-    rr:joinCondition :jc_0.
-:jc_0 rr:child "Code";
+:om_006 a rr:ObjectMap;
+    rr:parentTriplesMap :map_eu-country_000;
+    rr:joinCondition :jc_000.
+:jc_000 rr:child "Code";
     rr:parent "code".
