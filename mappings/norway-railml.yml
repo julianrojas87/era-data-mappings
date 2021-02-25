@@ -166,9 +166,9 @@ mappings:
             - [grel:p_array_a, "$(elementB/@ref)"]
           type: iri
 
-  # ------------Define which Micro NetElements belong inside Meso NetElements (only for operational points)--------------
+  # ------------Define which Micro NetElements belong inside Meso NetElements--------------
 
-  railml-operational-point-aggregations: 
+  railml-aggregations: 
     sources:
       - [data/norway-railml/RUB.railml~xpath, "//elementCollectionUnordered/elementPart"]
     s:
@@ -183,17 +183,6 @@ mappings:
           function: grel:array_join
           parameters:
             - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
-            - [grel:p_array_a, "$(ancestor::netElement/name/@name)"]
+            - [grel:p_array_a, "$(ancestor::netElements/netElement[./elementCollectionUnordered/elementPart/@ref=current(\\)/@ref]/name/@name)"]
             - [grel:p_array_a, "$(@ref)"]
           type: iri
-        condition: # This condition verifies that there is only one <elementPart> referencing a given <netElement>. 
-                   # This filters out <netElement>s that belong to more than one operational point, 
-                   # which is a condition for <netElement>s related to a section of line. 
-          function: idlab-fn:equal
-          parameters:
-            - [grel:valueParameter, $(@ref)]
-            - parameter: grel:valueParameter2
-              value:
-                function: grel:array_join
-                parameters:
-                  - [grel:p_array_a, "$((ancestor::netElements//elementCollectionUnordered/elementPart[@ref=current(\\)/@ref]\\)/@ref)"]

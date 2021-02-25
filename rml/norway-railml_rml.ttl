@@ -582,154 +582,90 @@
 :pomexec_009 rr:predicateMap :pmexec_009.
 :pmexec_009 rr:constant fno:executes.
 :pomexec_009 rr:objectMap :omexec_009.
-:omexec_009 rr:constant "http://example.com/idlab/function/trueCondition";
+:omexec_009 rr:constant "http://users.ugent.be/~bjdmeest/function/grel.ttl#array_join";
     rr:termType rr:IRI.
 :fn_009 rr:predicateObjectMap :pom_045.
 :pom_045 a rr:PredicateObjectMap;
     rr:predicateMap :pm_045.
 :pm_045 a rr:PredicateMap;
-    rr:constant idlab-fn:strBoolean.
+    rr:constant grel:p_array_a.
 :pom_045 rr:objectMap :om_045.
-:om_045 a rr:ObjectMap, fnml:FunctionTermMap;
-    fnml:functionValue :fn_010.
-:fn_010 rml:logicalSource :source_006;
-    rr:predicateObjectMap :pomexec_010.
-:pomexec_010 rr:predicateMap :pmexec_010.
-:pmexec_010 rr:constant fno:executes.
-:pomexec_010 rr:objectMap :omexec_010.
-:omexec_010 rr:constant "http://example.com/idlab/function/equal";
-    rr:termType rr:IRI.
-:fn_010 rr:predicateObjectMap :pom_046.
+:om_045 a rr:ObjectMap;
+    rr:constant "http://era.europa.eu/topology/netElements#";
+    rr:termType rr:Literal.
+:fn_009 rr:predicateObjectMap :pom_046.
 :pom_046 a rr:PredicateObjectMap;
     rr:predicateMap :pm_046.
 :pm_046 a rr:PredicateMap;
-    rr:constant grel:valueParameter.
+    rr:constant grel:p_array_a.
 :pom_046 rr:objectMap :om_046.
 :om_046 a rr:ObjectMap;
-    rml:reference "@ref";
+    rml:reference "ancestor::netElements/netElement[./elementCollectionUnordered/elementPart/@ref=current()/@ref]/name/@name";
     rr:termType rr:Literal.
-:fn_010 rr:predicateObjectMap :pom_047.
+:fn_009 rr:predicateObjectMap :pom_047.
 :pom_047 a rr:PredicateObjectMap;
     rr:predicateMap :pm_047.
 :pm_047 a rr:PredicateMap;
-    rr:constant grel:valueParameter2.
+    rr:constant grel:p_array_a.
 :pom_047 rr:objectMap :om_047.
-:om_047 a rr:ObjectMap, fnml:FunctionTermMap;
-    fnml:functionValue :fn_011.
-:fn_011 rml:logicalSource :source_006;
-    rr:predicateObjectMap :pomexec_011.
-:pomexec_011 rr:predicateMap :pmexec_011.
-:pmexec_011 rr:constant fno:executes.
-:pomexec_011 rr:objectMap :omexec_011.
-:omexec_011 rr:constant "http://users.ugent.be/~bjdmeest/function/grel.ttl#array_join";
-    rr:termType rr:IRI.
-:fn_011 rr:predicateObjectMap :pom_048.
-:pom_048 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_048.
-:pm_048 a rr:PredicateMap;
-    rr:constant grel:p_array_a.
-:pom_048 rr:objectMap :om_048.
-:om_048 a rr:ObjectMap;
-    rml:reference "(ancestor::netElements//elementCollectionUnordered/elementPart[@ref=current()/@ref])/@ref";
-    rr:termType rr:Literal.
-:fn_009 rr:predicateObjectMap :pom_049.
-:pom_049 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_049.
-:pm_049 a rr:PredicateMap;
-    rr:constant idlab-fn:str.
-:pom_049 rr:objectMap :om_049.
-:om_049 a rr:ObjectMap, fnml:FunctionTermMap;
-    rr:termType rr:IRI;
-    fnml:functionValue :fn_012.
-:fn_012 rml:logicalSource :source_006;
-    rr:predicateObjectMap :pomexec_012.
-:pomexec_012 rr:predicateMap :pmexec_012.
-:pmexec_012 rr:constant fno:executes.
-:pomexec_012 rr:objectMap :omexec_012.
-:omexec_012 rr:constant "http://users.ugent.be/~bjdmeest/function/grel.ttl#array_join";
-    rr:termType rr:IRI.
-:fn_012 rr:predicateObjectMap :pom_050.
-:pom_050 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_050.
-:pm_050 a rr:PredicateMap;
-    rr:constant grel:p_array_a.
-:pom_050 rr:objectMap :om_050.
-:om_050 a rr:ObjectMap;
-    rr:constant "http://era.europa.eu/topology/netElements#";
-    rr:termType rr:Literal.
-:fn_012 rr:predicateObjectMap :pom_051.
-:pom_051 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_051.
-:pm_051 a rr:PredicateMap;
-    rr:constant grel:p_array_a.
-:pom_051 rr:objectMap :om_051.
-:om_051 a rr:ObjectMap;
-    rml:reference "ancestor::netElement/name/@name";
-    rr:termType rr:Literal.
-:fn_012 rr:predicateObjectMap :pom_052.
-:pom_052 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_052.
-:pm_052 a rr:PredicateMap;
-    rr:constant grel:p_array_a.
-:pom_052 rr:objectMap :om_052.
-:om_052 a rr:ObjectMap;
+:om_047 a rr:ObjectMap;
     rml:reference "@ref";
     rr:termType rr:Literal.
 :om_000 a rr:ObjectMap;
     rr:parentTriplesMap :map_railml-meso-net-elements_000;
     rml:joinCondition :jc_000.
 :jc_000 a fnml:FunctionTermMap;
-    fnml:functionValue :fn_013.
-:fn_013 rr:predicateObjectMap :pomexec_013.
-:pomexec_013 rr:predicateMap :pmexec_013.
-:pmexec_013 rr:constant fno:executes.
-:pomexec_013 rr:objectMap :omexec_013.
-:omexec_013 rr:constant "http://example.com/idlab/function/equal";
+    fnml:functionValue :fn_010.
+:fn_010 rr:predicateObjectMap :pomexec_010.
+:pomexec_010 rr:predicateMap :pmexec_010.
+:pmexec_010 rr:constant fno:executes.
+:pomexec_010 rr:objectMap :omexec_010.
+:omexec_010 rr:constant "http://example.com/idlab/function/equal";
     rr:termType rr:IRI.
-:fn_013 rr:predicateObjectMap :pom_053.
-:pom_053 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_053.
-:pm_053 a rr:PredicateMap;
+:fn_010 rr:predicateObjectMap :pom_048.
+:pom_048 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_048.
+:pm_048 a rr:PredicateMap;
     rr:constant grel:valueParameter.
-:pom_053 rr:objectMap :om_053.
-:om_053 a rr:ObjectMap;
+:pom_048 rr:objectMap :om_048.
+:om_048 a rr:ObjectMap;
     rml:reference "Kilometer";
     rr:termType rr:Literal.
-:fn_013 rr:predicateObjectMap :pom_054.
-:pom_054 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_054.
-:pm_054 a rr:PredicateMap;
+:fn_010 rr:predicateObjectMap :pom_049.
+:pom_049 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_049.
+:pm_049 a rr:PredicateMap;
     rr:constant grel:valueParameter2.
-:pom_054 rr:objectMap :om_054.
-:om_054 a rr:ObjectMap;
+:pom_049 rr:objectMap :om_049.
+:om_049 a rr:ObjectMap;
     rml:parentTermMap :ptm_000.
 :ptm_000 rml:reference "ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current()/@id]/spotLocation/linearCoordinate/@measure".
 :om_006 a rr:ObjectMap;
     rr:parentTriplesMap :map_rinf-operational-points_000;
     rml:joinCondition :jc_001.
 :jc_001 a fnml:FunctionTermMap;
-    fnml:functionValue :fn_014.
-:fn_014 rr:predicateObjectMap :pomexec_014.
-:pomexec_014 rr:predicateMap :pmexec_014.
-:pmexec_014 rr:constant fno:executes.
-:pomexec_014 rr:objectMap :omexec_014.
-:omexec_014 rr:constant "http://example.com/idlab/function/equal";
+    fnml:functionValue :fn_011.
+:fn_011 rr:predicateObjectMap :pomexec_011.
+:pomexec_011 rr:predicateMap :pmexec_011.
+:pmexec_011 rr:constant fno:executes.
+:pomexec_011 rr:objectMap :omexec_011.
+:omexec_011 rr:constant "http://example.com/idlab/function/equal";
     rr:termType rr:IRI.
-:fn_014 rr:predicateObjectMap :pom_055.
-:pom_055 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_055.
-:pm_055 a rr:PredicateMap;
+:fn_011 rr:predicateObjectMap :pom_050.
+:pom_050 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_050.
+:pm_050 a rr:PredicateMap;
     rr:constant grel:valueParameter.
-:pom_055 rr:objectMap :om_055.
-:om_055 a rr:ObjectMap;
+:pom_050 rr:objectMap :om_050.
+:om_050 a rr:ObjectMap;
     rml:reference "ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current()/@id]/spotLocation/linearCoordinate/@measure";
     rr:termType rr:Literal.
-:fn_014 rr:predicateObjectMap :pom_056.
-:pom_056 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_056.
-:pm_056 a rr:PredicateMap;
+:fn_011 rr:predicateObjectMap :pom_051.
+:pom_051 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_051.
+:pm_051 a rr:PredicateMap;
     rr:constant grel:valueParameter2.
-:pom_056 rr:objectMap :om_056.
-:om_056 a rr:ObjectMap;
+:pom_051 rr:objectMap :om_051.
+:om_051 a rr:ObjectMap;
     rml:parentTermMap :ptm_001.
 :ptm_001 rml:reference "Kilometer".
