@@ -49,15 +49,19 @@ mappings:
         referenceFormulation: *referenceFormulation
         query: SELECT (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT CONCAT(LineReferences.Kilometer * 1000, '.0') FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes, RINF.dbo.LineReferences WHERE LineNodes.OperationalPointID=OperationalPoints.ID AND OperationalPoints.ID = LineReferences.OperationalPointId AND OperationalPoints.VersionID = LineReferences.VersionID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_KM, Tracks.UUID, (SELECT CONCAT(LineReferences.Kilometer * 1000, '.0') FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes, RINF.dbo.LineReferences WHERE LineNodes.OperationalPointID=OperationalPoints.ID AND OperationalPoints.ID = LineReferences.OperationalPointId AND OperationalPoints.VersionID = LineReferences.VersionID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_KM, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, LookupValues.[Value] AS Direction, SectionOfLines.Length FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.MemberStateVersions, RINF.dbo.MemberStates, RINF.dbo.LookupValues WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID AND SOLTracks.Direction = LookupValues.ID AND Tracks.VersionID = MemberStateVersions.ID AND MemberStateVersions.MemberStateID = MemberStates.ID AND MemberStates.Code = 'NO';
     s: http://era.europa.eu/functionalInfrastructure/tracks#$(FROM_NODE)_$(UUID)_$(TO_NODE)
-    #po:
-    #  - p: era:hasAbstraction
-    #    o:
-    #      - mapping: railml-micro-net-relations
-    #        condition:
-    #          function: idlab-fn:equal
-    #          parameters:
-    #            - [grel:valueParameter, $(FROM_KM), s]
-    #            - [grel:valueParameter2, "$()", o]
+    po:
+      #- p: era:hasAbstraction
+      #  o:
+      #    - mapping: railml-meso-net-elements
+      #      condition:
+      #        - function: idlab-fn:equal
+      #          parameters:
+      #            - [grel:valueParameter, $(FROM_KM), s]
+      #            - [grel:valueParameter2, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/ancestor::topology//netRelation[./elementA/@ref=current(\\)/@id]/elementB/@ref]/spotLocation/linearCoordinate/@measure)", o]
+      #        - function: idlab-fn:equal
+      #          parameters:
+      #            - [grel:valueParameter, $(TO_KM), s]
+      #            - [grel:valueParameter2, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/ancestor::topology//netRelation[./elementA/@ref=current(\\)/@id]/elementB/@ref]/spotLocation/linearCoordinate/@measure)", o]
 
 
   # ------------Define Meso NetElements and link back to RINF Operational Points and SOLTracks--------------
@@ -130,7 +134,9 @@ mappings:
         - [grel:p_array_a, $(@id)]
     po:
       - [a, era:NetElement]
-      - [era:length, "$(@length)", xsd:double]
+      - [era:length, $(@length), xsd:double]
+      - [era:startKilometerPoint, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='0.0']/linearCoordinate/@measure)", xsd:double]
+      - [era:endKilometerPoint, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='1.0']/linearCoordinate/@measure)", xsd:double]
 
 
   # ------------Define Micro NetRelations--------------
@@ -186,3 +192,24 @@ mappings:
             - [grel:p_array_a, "$(ancestor::netElements/netElement[./elementCollectionUnordered/elementPart/@ref=current(\\)/@ref]/name/@name)"]
             - [grel:p_array_a, "$(@ref)"]
           type: iri
+
+  # ------------Define <signalIS>s and link to correspondent micro <netElement>s--------------
+
+  railml-infrastructure-signals:
+    sources:
+      - [data/norway-railml/RUB.railml~xpath, "//signalIS"]
+    s: "http://era.europa.eu/functionalInfrastructure/signals#$(ancestor::infrastructure//netElement[@id=current(\\)/spotLocation/@netElementRef]/@id)$(name/@name)"
+    po:
+      - [a, era:Signal]
+      - [rdfs:label, $(name/@name)]
+      - [era:isSwitchable, $(@isSwitchable), xsd:boolean]
+      - [era:relativePosition, $(spotLocation/@pos), xsd:double]
+      - [era:kilometerPoint, $(spotLocation/linearCoordinate/@measure), xsd:double]
+      - p: era:netElementRef
+        o:
+          - mapping: railml-micro-net-elements
+            condition:
+              function: idlab-fn:equal
+              parameters:
+                - [grel:valueParameter, $(spotLocation/@netElementRef), s]
+                - [grel:valueParameter2, $(@id), o]
