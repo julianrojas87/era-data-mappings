@@ -25,6 +25,7 @@ mappings:
     s: http://era.europa.eu/abstraction#INL_$(INCOMING_REMOTE_OP)_$(INCOMING)_$(UOPID)_$(OUTGOING)_$(OUTGOING_REMOTE_OP)
     po:
       - [a, era:InternalNodeLink]
+      - [rdfs:label, "INL_$(INCOMING_REMOTE_OP)_$(INCOMING)_$(UOPID)_$(OUTGOING)_$(OUTGOING_REMOTE_OP)"]
       - [era:bidirectional, "false", xsd:boolean]
       - [era:startPort, http://era.europa.eu/abstraction#NP_$(UOPID)_$(INCOMING)_$(INCOMING_REMOTE_OP)~iri]
       - [era:endPort, http://era.europa.eu/abstraction#NP_$(UOPID)_$(OUTGOING)_$(OUTGOING_REMOTE_OP)~iri]
@@ -40,6 +41,7 @@ mappings:
     s: http://era.europa.eu/abstraction#INL_$(INCOMING_REMOTE_OP)_$(INCOMING)_$(UOPID)_$(OUTGOING)_$(OUTGOING_REMOTE_OP)
     po:
       - [a, era:InternalNodeLink]
+      - [rdfs:label, "INL_$(INCOMING_REMOTE_OP)_$(INCOMING)_$(UOPID)_$(OUTGOING)_$(OUTGOING_REMOTE_OP)"]
       - [era:bidirectional, "false", xsd:boolean]
       - [era:startPort, http://era.europa.eu/abstraction#NP_$(UOPID)_$(INCOMING)_$(INCOMING_REMOTE_OP)~iri]
       - [era:endPort, http://era.europa.eu/abstraction#NP_$(UOPID)_$(OUTGOING)_$(OUTGOING_REMOTE_OP)~iri]
@@ -55,6 +57,7 @@ mappings:
     s: http://era.europa.eu/abstraction#INL_$(INCOMING_REMOTE_OP)_$(INCOMING)_$(UOPID)_$(OUTGOING)_$(OUTGOING_REMOTE_OP)
     po:
       - [a, era:InternalNodeLink]
+      - [rdfs:label, "INL_$(INCOMING_REMOTE_OP)_$(INCOMING)_$(UOPID)_$(OUTGOING)_$(OUTGOING_REMOTE_OP)"]
       - [era:bidirectional, "false", xsd:boolean]
       - [era:startPort, http://era.europa.eu/abstraction#NP_$(UOPID)_$(INCOMING)_$(INCOMING_REMOTE_OP)~iri]
       - [era:endPort, http://era.europa.eu/abstraction#NP_$(UOPID)_$(OUTGOING)_$(OUTGOING_REMOTE_OP)~iri]
@@ -70,6 +73,7 @@ mappings:
     s: http://era.europa.eu/abstraction#INL_$(INCOMING_REMOTE_OP)_$(INCOMING)_$(UOPID)_$(OUTGOING)_$(OUTGOING_REMOTE_OP)
     po:
       - [a, era:InternalNodeLink]
+      - [rdfs:label, "INL_$(INCOMING_REMOTE_OP)_$(INCOMING)_$(UOPID)_$(OUTGOING)_$(OUTGOING_REMOTE_OP)"]
       - [era:bidirectional, "false", xsd:boolean]
       - [era:startPort, http://era.europa.eu/abstraction#NP_$(UOPID)_$(INCOMING)_$(INCOMING_REMOTE_OP)~iri]
       - [era:endPort, http://era.europa.eu/abstraction#NP_$(UOPID)_$(OUTGOING)_$(OUTGOING_REMOTE_OP)~iri]
