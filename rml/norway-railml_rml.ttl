@@ -372,6 +372,12 @@
     rml:reference "associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='1.0']/linearCoordinate/@measure";
     rr:termType rr:Literal;
     rr:datatype xsd:double.
+:pom_028 a rr:PredicateObjectMap.
+:map_railml-micro-net-elements_000 rr:predicateObjectMap :pom_028.
+:pm_028 a rr:PredicateMap.
+:pom_028 rr:predicateMap :pm_028.
+:pm_028 rr:constant era:hasSignal.
+:pom_028 rr:objectMap :om_028.
 :rules_000 void:exampleResource :map_railml-micro-net-relations_000.
 :map_railml-micro-net-relations_000 rml:logicalSource :source_005.
 :source_005 a rml:LogicalSource;
@@ -392,15 +398,6 @@
 :pomexec_005 rr:objectMap :omexec_005.
 :omexec_005 rr:constant "http://users.ugent.be/~bjdmeest/function/grel.ttl#array_join";
     rr:termType rr:IRI.
-:fn_005 rr:predicateObjectMap :pom_028.
-:pom_028 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_028.
-:pm_028 a rr:PredicateMap;
-    rr:constant grel:p_array_a.
-:pom_028 rr:objectMap :om_028.
-:om_028 a rr:ObjectMap;
-    rr:constant "http://era.europa.eu/topology/netRelations#";
-    rr:termType rr:Literal.
 :fn_005 rr:predicateObjectMap :pom_029.
 :pom_029 a rr:PredicateObjectMap;
     rr:predicateMap :pm_029.
@@ -408,7 +405,7 @@
     rr:constant grel:p_array_a.
 :pom_029 rr:objectMap :om_029.
 :om_029 a rr:ObjectMap;
-    rml:reference "(ancestor::topology//elementCollectionUnordered/elementPart[@ref=current()/elementA/@ref])/../../name/@name";
+    rr:constant "http://era.europa.eu/topology/netRelations#";
     rr:termType rr:Literal.
 :fn_005 rr:predicateObjectMap :pom_030.
 :pom_030 a rr:PredicateObjectMap;
@@ -417,7 +414,7 @@
     rr:constant grel:p_array_a.
 :pom_030 rr:objectMap :om_030.
 :om_030 a rr:ObjectMap;
-    rml:reference "elementA/@ref";
+    rml:reference "(ancestor::topology//elementCollectionUnordered/elementPart[@ref=current()/elementA/@ref])/../../name/@name";
     rr:termType rr:Literal.
 :fn_005 rr:predicateObjectMap :pom_031.
 :pom_031 a rr:PredicateObjectMap;
@@ -426,7 +423,7 @@
     rr:constant grel:p_array_a.
 :pom_031 rr:objectMap :om_031.
 :om_031 a rr:ObjectMap;
-    rml:reference "(ancestor::topology//elementCollectionUnordered/elementPart[@ref=current()/elementB/@ref])/../../name/@name";
+    rml:reference "elementA/@ref";
     rr:termType rr:Literal.
 :fn_005 rr:predicateObjectMap :pom_032.
 :pom_032 a rr:PredicateObjectMap;
@@ -435,33 +432,42 @@
     rr:constant grel:p_array_a.
 :pom_032 rr:objectMap :om_032.
 :om_032 a rr:ObjectMap;
-    rml:reference "elementB/@ref";
+    rml:reference "(ancestor::topology//elementCollectionUnordered/elementPart[@ref=current()/elementB/@ref])/../../name/@name";
     rr:termType rr:Literal.
-:pom_033 a rr:PredicateObjectMap.
-:map_railml-micro-net-relations_000 rr:predicateObjectMap :pom_033.
-:pm_033 a rr:PredicateMap.
-:pom_033 rr:predicateMap :pm_033.
-:pm_033 rr:constant rdf:type.
+:fn_005 rr:predicateObjectMap :pom_033.
+:pom_033 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_033.
+:pm_033 a rr:PredicateMap;
+    rr:constant grel:p_array_a.
 :pom_033 rr:objectMap :om_033.
 :om_033 a rr:ObjectMap;
-    rr:constant "http://era.europa.eu/ns#NetRelation";
-    rr:termType rr:IRI.
+    rml:reference "elementB/@ref";
+    rr:termType rr:Literal.
 :pom_034 a rr:PredicateObjectMap.
 :map_railml-micro-net-relations_000 rr:predicateObjectMap :pom_034.
 :pm_034 a rr:PredicateMap.
 :pom_034 rr:predicateMap :pm_034.
-:pm_034 rr:constant era:navigability.
+:pm_034 rr:constant rdf:type.
 :pom_034 rr:objectMap :om_034.
 :om_034 a rr:ObjectMap;
-    rr:template "http://era.europa.eu/concepts/navigabilities#{@navigability}";
+    rr:constant "http://era.europa.eu/ns#NetRelation";
     rr:termType rr:IRI.
 :pom_035 a rr:PredicateObjectMap.
 :map_railml-micro-net-relations_000 rr:predicateObjectMap :pom_035.
 :pm_035 a rr:PredicateMap.
 :pom_035 rr:predicateMap :pm_035.
-:pm_035 rr:constant era:elementA.
+:pm_035 rr:constant era:navigability.
 :pom_035 rr:objectMap :om_035.
-:om_035 a fnml:FunctionTermMap;
+:om_035 a rr:ObjectMap;
+    rr:template "http://era.europa.eu/concepts/navigabilities#{@navigability}";
+    rr:termType rr:IRI.
+:pom_036 a rr:PredicateObjectMap.
+:map_railml-micro-net-relations_000 rr:predicateObjectMap :pom_036.
+:pm_036 a rr:PredicateMap.
+:pom_036 rr:predicateMap :pm_036.
+:pm_036 rr:constant era:elementA.
+:pom_036 rr:objectMap :om_036.
+:om_036 a fnml:FunctionTermMap;
     rr:termType rr:IRI;
     fnml:functionValue :fn_006.
 :fn_006 rml:logicalSource :source_005;
@@ -471,15 +477,6 @@
 :pomexec_006 rr:objectMap :omexec_006.
 :omexec_006 rr:constant "http://users.ugent.be/~bjdmeest/function/grel.ttl#array_join";
     rr:termType rr:IRI.
-:fn_006 rr:predicateObjectMap :pom_036.
-:pom_036 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_036.
-:pm_036 a rr:PredicateMap;
-    rr:constant grel:p_array_a.
-:pom_036 rr:objectMap :om_036.
-:om_036 a rr:ObjectMap;
-    rr:constant "http://era.europa.eu/topology/netElements#";
-    rr:termType rr:Literal.
 :fn_006 rr:predicateObjectMap :pom_037.
 :pom_037 a rr:PredicateObjectMap;
     rr:predicateMap :pm_037.
@@ -487,7 +484,7 @@
     rr:constant grel:p_array_a.
 :pom_037 rr:objectMap :om_037.
 :om_037 a rr:ObjectMap;
-    rml:reference "(ancestor::topology//elementCollectionUnordered/elementPart[@ref=current()/elementA/@ref])/../../name/@name";
+    rr:constant "http://era.europa.eu/topology/netElements#";
     rr:termType rr:Literal.
 :fn_006 rr:predicateObjectMap :pom_038.
 :pom_038 a rr:PredicateObjectMap;
@@ -496,15 +493,24 @@
     rr:constant grel:p_array_a.
 :pom_038 rr:objectMap :om_038.
 :om_038 a rr:ObjectMap;
+    rml:reference "(ancestor::topology//elementCollectionUnordered/elementPart[@ref=current()/elementA/@ref])/../../name/@name";
+    rr:termType rr:Literal.
+:fn_006 rr:predicateObjectMap :pom_039.
+:pom_039 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_039.
+:pm_039 a rr:PredicateMap;
+    rr:constant grel:p_array_a.
+:pom_039 rr:objectMap :om_039.
+:om_039 a rr:ObjectMap;
     rml:reference "elementA/@ref";
     rr:termType rr:Literal.
-:pom_039 a rr:PredicateObjectMap.
-:map_railml-micro-net-relations_000 rr:predicateObjectMap :pom_039.
-:pm_039 a rr:PredicateMap.
-:pom_039 rr:predicateMap :pm_039.
-:pm_039 rr:constant era:elementB.
-:pom_039 rr:objectMap :om_039.
-:om_039 a fnml:FunctionTermMap;
+:pom_040 a rr:PredicateObjectMap.
+:map_railml-micro-net-relations_000 rr:predicateObjectMap :pom_040.
+:pm_040 a rr:PredicateMap.
+:pom_040 rr:predicateMap :pm_040.
+:pm_040 rr:constant era:elementB.
+:pom_040 rr:objectMap :om_040.
+:om_040 a fnml:FunctionTermMap;
     rr:termType rr:IRI;
     fnml:functionValue :fn_007.
 :fn_007 rml:logicalSource :source_005;
@@ -514,15 +520,6 @@
 :pomexec_007 rr:objectMap :omexec_007.
 :omexec_007 rr:constant "http://users.ugent.be/~bjdmeest/function/grel.ttl#array_join";
     rr:termType rr:IRI.
-:fn_007 rr:predicateObjectMap :pom_040.
-:pom_040 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_040.
-:pm_040 a rr:PredicateMap;
-    rr:constant grel:p_array_a.
-:pom_040 rr:objectMap :om_040.
-:om_040 a rr:ObjectMap;
-    rr:constant "http://era.europa.eu/topology/netElements#";
-    rr:termType rr:Literal.
 :fn_007 rr:predicateObjectMap :pom_041.
 :pom_041 a rr:PredicateObjectMap;
     rr:predicateMap :pm_041.
@@ -530,7 +527,7 @@
     rr:constant grel:p_array_a.
 :pom_041 rr:objectMap :om_041.
 :om_041 a rr:ObjectMap;
-    rml:reference "(ancestor::topology//elementCollectionUnordered/elementPart[@ref=current()/elementB/@ref])/../../name/@name";
+    rr:constant "http://era.europa.eu/topology/netElements#";
     rr:termType rr:Literal.
 :fn_007 rr:predicateObjectMap :pom_042.
 :pom_042 a rr:PredicateObjectMap;
@@ -539,6 +536,15 @@
     rr:constant grel:p_array_a.
 :pom_042 rr:objectMap :om_042.
 :om_042 a rr:ObjectMap;
+    rml:reference "(ancestor::topology//elementCollectionUnordered/elementPart[@ref=current()/elementB/@ref])/../../name/@name";
+    rr:termType rr:Literal.
+:fn_007 rr:predicateObjectMap :pom_043.
+:pom_043 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_043.
+:pm_043 a rr:PredicateMap;
+    rr:constant grel:p_array_a.
+:pom_043 rr:objectMap :om_043.
+:om_043 a rr:ObjectMap;
     rml:reference "elementB/@ref";
     rr:termType rr:Literal.
 :rules_000 void:exampleResource :map_railml-aggregations_000.
@@ -561,15 +567,6 @@
 :pomexec_008 rr:objectMap :omexec_008.
 :omexec_008 rr:constant "http://users.ugent.be/~bjdmeest/function/grel.ttl#array_join";
     rr:termType rr:IRI.
-:fn_008 rr:predicateObjectMap :pom_043.
-:pom_043 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_043.
-:pm_043 a rr:PredicateMap;
-    rr:constant grel:p_array_a.
-:pom_043 rr:objectMap :om_043.
-:om_043 a rr:ObjectMap;
-    rr:constant "http://era.europa.eu/topology/netElements#";
-    rr:termType rr:Literal.
 :fn_008 rr:predicateObjectMap :pom_044.
 :pom_044 a rr:PredicateObjectMap;
     rr:predicateMap :pm_044.
@@ -577,7 +574,7 @@
     rr:constant grel:p_array_a.
 :pom_044 rr:objectMap :om_044.
 :om_044 a rr:ObjectMap;
-    rml:reference "ancestor::netElement/name/@name";
+    rr:constant "http://era.europa.eu/topology/netElements#";
     rr:termType rr:Literal.
 :fn_008 rr:predicateObjectMap :pom_045.
 :pom_045 a rr:PredicateObjectMap;
@@ -586,15 +583,24 @@
     rr:constant grel:p_array_a.
 :pom_045 rr:objectMap :om_045.
 :om_045 a rr:ObjectMap;
+    rml:reference "ancestor::netElement/name/@name";
+    rr:termType rr:Literal.
+:fn_008 rr:predicateObjectMap :pom_046.
+:pom_046 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_046.
+:pm_046 a rr:PredicateMap;
+    rr:constant grel:p_array_a.
+:pom_046 rr:objectMap :om_046.
+:om_046 a rr:ObjectMap;
     rml:reference "ancestor::netElement/@id";
     rr:termType rr:Literal.
-:pom_046 a rr:PredicateObjectMap.
-:map_railml-aggregations_000 rr:predicateObjectMap :pom_046.
-:pm_046 a rr:PredicateMap.
-:pom_046 rr:predicateMap :pm_046.
-:pm_046 rr:constant era:elementPart.
-:pom_046 rr:objectMap :om_046.
-:om_046 a fnml:FunctionTermMap;
+:pom_047 a rr:PredicateObjectMap.
+:map_railml-aggregations_000 rr:predicateObjectMap :pom_047.
+:pm_047 a rr:PredicateMap.
+:pom_047 rr:predicateMap :pm_047.
+:pm_047 rr:constant era:elementPart.
+:pom_047 rr:objectMap :om_047.
+:om_047 a fnml:FunctionTermMap;
     rr:termType rr:IRI;
     fnml:functionValue :fn_009.
 :fn_009 rml:logicalSource :source_006;
@@ -604,15 +610,6 @@
 :pomexec_009 rr:objectMap :omexec_009.
 :omexec_009 rr:constant "http://users.ugent.be/~bjdmeest/function/grel.ttl#array_join";
     rr:termType rr:IRI.
-:fn_009 rr:predicateObjectMap :pom_047.
-:pom_047 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_047.
-:pm_047 a rr:PredicateMap;
-    rr:constant grel:p_array_a.
-:pom_047 rr:objectMap :om_047.
-:om_047 a rr:ObjectMap;
-    rr:constant "http://era.europa.eu/topology/netElements#";
-    rr:termType rr:Literal.
 :fn_009 rr:predicateObjectMap :pom_048.
 :pom_048 a rr:PredicateObjectMap;
     rr:predicateMap :pm_048.
@@ -620,7 +617,7 @@
     rr:constant grel:p_array_a.
 :pom_048 rr:objectMap :om_048.
 :om_048 a rr:ObjectMap;
-    rml:reference "ancestor::netElements/netElement[./elementCollectionUnordered/elementPart/@ref=current()/@ref]/name/@name";
+    rr:constant "http://era.europa.eu/topology/netElements#";
     rr:termType rr:Literal.
 :fn_009 rr:predicateObjectMap :pom_049.
 :pom_049 a rr:PredicateObjectMap;
@@ -629,6 +626,15 @@
     rr:constant grel:p_array_a.
 :pom_049 rr:objectMap :om_049.
 :om_049 a rr:ObjectMap;
+    rml:reference "ancestor::netElements/netElement[./elementCollectionUnordered/elementPart/@ref=current()/@ref]/name/@name";
+    rr:termType rr:Literal.
+:fn_009 rr:predicateObjectMap :pom_050.
+:pom_050 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_050.
+:pm_050 a rr:PredicateMap;
+    rr:constant grel:p_array_a.
+:pom_050 rr:objectMap :om_050.
+:om_050 a rr:ObjectMap;
     rml:reference "@ref";
     rr:termType rr:Literal.
 :rules_000 void:exampleResource :map_railml-infrastructure-signals_000.
@@ -642,60 +648,60 @@
 :s_007 a rr:SubjectMap.
 :map_railml-infrastructure-signals_000 rr:subjectMap :s_007.
 :s_007 rr:template "http://era.europa.eu/functionalInfrastructure/signals#{ancestor::infrastructure//netElement[@id=current()/spotLocation/@netElementRef]/@id}{name/@name}".
-:pom_050 a rr:PredicateObjectMap.
-:map_railml-infrastructure-signals_000 rr:predicateObjectMap :pom_050.
-:pm_050 a rr:PredicateMap.
-:pom_050 rr:predicateMap :pm_050.
-:pm_050 rr:constant rdf:type.
-:pom_050 rr:objectMap :om_050.
-:om_050 a rr:ObjectMap;
-    rr:constant "http://era.europa.eu/ns#Signal";
-    rr:termType rr:IRI.
 :pom_051 a rr:PredicateObjectMap.
 :map_railml-infrastructure-signals_000 rr:predicateObjectMap :pom_051.
 :pm_051 a rr:PredicateMap.
 :pom_051 rr:predicateMap :pm_051.
-:pm_051 rr:constant rdfs:label.
+:pm_051 rr:constant rdf:type.
 :pom_051 rr:objectMap :om_051.
 :om_051 a rr:ObjectMap;
-    rml:reference "name/@name";
-    rr:termType rr:Literal.
+    rr:constant "http://era.europa.eu/ns#Signal";
+    rr:termType rr:IRI.
 :pom_052 a rr:PredicateObjectMap.
 :map_railml-infrastructure-signals_000 rr:predicateObjectMap :pom_052.
 :pm_052 a rr:PredicateMap.
 :pom_052 rr:predicateMap :pm_052.
-:pm_052 rr:constant era:isSwitchable.
+:pm_052 rr:constant rdfs:label.
 :pom_052 rr:objectMap :om_052.
 :om_052 a rr:ObjectMap;
-    rml:reference "@isSwitchable";
-    rr:termType rr:Literal;
-    rr:datatype xsd:boolean.
+    rml:reference "name/@name";
+    rr:termType rr:Literal.
 :pom_053 a rr:PredicateObjectMap.
 :map_railml-infrastructure-signals_000 rr:predicateObjectMap :pom_053.
 :pm_053 a rr:PredicateMap.
 :pom_053 rr:predicateMap :pm_053.
-:pm_053 rr:constant era:relativePosition.
+:pm_053 rr:constant era:isSwitchable.
 :pom_053 rr:objectMap :om_053.
 :om_053 a rr:ObjectMap;
-    rml:reference "spotLocation/@pos";
+    rml:reference "@isSwitchable";
     rr:termType rr:Literal;
-    rr:datatype xsd:double.
+    rr:datatype xsd:boolean.
 :pom_054 a rr:PredicateObjectMap.
 :map_railml-infrastructure-signals_000 rr:predicateObjectMap :pom_054.
 :pm_054 a rr:PredicateMap.
 :pom_054 rr:predicateMap :pm_054.
-:pm_054 rr:constant era:kilometerPoint.
+:pm_054 rr:constant era:relativePosition.
 :pom_054 rr:objectMap :om_054.
 :om_054 a rr:ObjectMap;
-    rml:reference "spotLocation/linearCoordinate/@measure";
+    rml:reference "spotLocation/@pos";
     rr:termType rr:Literal;
     rr:datatype xsd:double.
 :pom_055 a rr:PredicateObjectMap.
 :map_railml-infrastructure-signals_000 rr:predicateObjectMap :pom_055.
 :pm_055 a rr:PredicateMap.
 :pom_055 rr:predicateMap :pm_055.
-:pm_055 rr:constant era:netElementRef.
+:pm_055 rr:constant era:kilometerPoint.
 :pom_055 rr:objectMap :om_055.
+:om_055 a rr:ObjectMap;
+    rml:reference "spotLocation/linearCoordinate/@measure";
+    rr:termType rr:Literal;
+    rr:datatype xsd:double.
+:pom_056 a rr:PredicateObjectMap.
+:map_railml-infrastructure-signals_000 rr:predicateObjectMap :pom_056.
+:pm_056 a rr:PredicateMap.
+:pom_056 rr:predicateMap :pm_056.
+:pm_056 rr:constant era:netElementRef.
+:pom_056 rr:objectMap :om_056.
 :om_000 a rr:ObjectMap;
     rr:parentTriplesMap :map_railml-meso-net-elements_000;
     rml:joinCondition :jc_000.
@@ -707,22 +713,22 @@
 :pomexec_010 rr:objectMap :omexec_010.
 :omexec_010 rr:constant "http://example.com/idlab/function/equal";
     rr:termType rr:IRI.
-:fn_010 rr:predicateObjectMap :pom_056.
-:pom_056 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_056.
-:pm_056 a rr:PredicateMap;
-    rr:constant grel:valueParameter.
-:pom_056 rr:objectMap :om_056.
-:om_056 a rr:ObjectMap;
-    rml:reference "Kilometer";
-    rr:termType rr:Literal.
 :fn_010 rr:predicateObjectMap :pom_057.
 :pom_057 a rr:PredicateObjectMap;
     rr:predicateMap :pm_057.
 :pm_057 a rr:PredicateMap;
-    rr:constant grel:valueParameter2.
+    rr:constant grel:valueParameter.
 :pom_057 rr:objectMap :om_057.
 :om_057 a rr:ObjectMap;
+    rml:reference "Kilometer";
+    rr:termType rr:Literal.
+:fn_010 rr:predicateObjectMap :pom_058.
+:pom_058 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_058.
+:pm_058 a rr:PredicateMap;
+    rr:constant grel:valueParameter2.
+:pom_058 rr:objectMap :om_058.
+:om_058 a rr:ObjectMap;
     rml:parentTermMap :ptm_000.
 :ptm_000 rml:reference "ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current()/@id]/spotLocation/linearCoordinate/@measure".
 :om_006 a rr:ObjectMap;
@@ -736,26 +742,26 @@
 :pomexec_011 rr:objectMap :omexec_011.
 :omexec_011 rr:constant "http://example.com/idlab/function/equal";
     rr:termType rr:IRI.
-:fn_011 rr:predicateObjectMap :pom_058.
-:pom_058 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_058.
-:pm_058 a rr:PredicateMap;
-    rr:constant grel:valueParameter.
-:pom_058 rr:objectMap :om_058.
-:om_058 a rr:ObjectMap;
-    rml:reference "ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current()/@id]/spotLocation/linearCoordinate/@measure";
-    rr:termType rr:Literal.
 :fn_011 rr:predicateObjectMap :pom_059.
 :pom_059 a rr:PredicateObjectMap;
     rr:predicateMap :pm_059.
 :pm_059 a rr:PredicateMap;
-    rr:constant grel:valueParameter2.
+    rr:constant grel:valueParameter.
 :pom_059 rr:objectMap :om_059.
 :om_059 a rr:ObjectMap;
+    rml:reference "ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current()/@id]/spotLocation/linearCoordinate/@measure";
+    rr:termType rr:Literal.
+:fn_011 rr:predicateObjectMap :pom_060.
+:pom_060 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_060.
+:pm_060 a rr:PredicateMap;
+    rr:constant grel:valueParameter2.
+:pom_060 rr:objectMap :om_060.
+:om_060 a rr:ObjectMap;
     rml:parentTermMap :ptm_001.
 :ptm_001 rml:reference "Kilometer".
-:om_055 a rr:ObjectMap;
-    rr:parentTriplesMap :map_railml-micro-net-elements_000;
+:om_028 a rr:ObjectMap;
+    rr:parentTriplesMap :map_railml-infrastructure-signals_000;
     rml:joinCondition :jc_002.
 :jc_002 a fnml:FunctionTermMap;
     fnml:functionValue :fn_012.
@@ -765,21 +771,50 @@
 :pomexec_012 rr:objectMap :omexec_012.
 :omexec_012 rr:constant "http://example.com/idlab/function/equal";
     rr:termType rr:IRI.
-:fn_012 rr:predicateObjectMap :pom_060.
-:pom_060 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_060.
-:pm_060 a rr:PredicateMap;
-    rr:constant grel:valueParameter.
-:pom_060 rr:objectMap :om_060.
-:om_060 a rr:ObjectMap;
-    rml:reference "spotLocation/@netElementRef";
-    rr:termType rr:Literal.
 :fn_012 rr:predicateObjectMap :pom_061.
 :pom_061 a rr:PredicateObjectMap;
     rr:predicateMap :pm_061.
 :pm_061 a rr:PredicateMap;
-    rr:constant grel:valueParameter2.
+    rr:constant grel:valueParameter.
 :pom_061 rr:objectMap :om_061.
 :om_061 a rr:ObjectMap;
+    rml:reference "@id";
+    rr:termType rr:Literal.
+:fn_012 rr:predicateObjectMap :pom_062.
+:pom_062 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_062.
+:pm_062 a rr:PredicateMap;
+    rr:constant grel:valueParameter2.
+:pom_062 rr:objectMap :om_062.
+:om_062 a rr:ObjectMap;
     rml:parentTermMap :ptm_002.
-:ptm_002 rml:reference "@id".
+:ptm_002 rml:reference "spotLocation/@netElementRef".
+:om_056 a rr:ObjectMap;
+    rr:parentTriplesMap :map_railml-micro-net-elements_000;
+    rml:joinCondition :jc_003.
+:jc_003 a fnml:FunctionTermMap;
+    fnml:functionValue :fn_013.
+:fn_013 rr:predicateObjectMap :pomexec_013.
+:pomexec_013 rr:predicateMap :pmexec_013.
+:pmexec_013 rr:constant fno:executes.
+:pomexec_013 rr:objectMap :omexec_013.
+:omexec_013 rr:constant "http://example.com/idlab/function/equal";
+    rr:termType rr:IRI.
+:fn_013 rr:predicateObjectMap :pom_063.
+:pom_063 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_063.
+:pm_063 a rr:PredicateMap;
+    rr:constant grel:valueParameter.
+:pom_063 rr:objectMap :om_063.
+:om_063 a rr:ObjectMap;
+    rml:reference "spotLocation/@netElementRef";
+    rr:termType rr:Literal.
+:fn_013 rr:predicateObjectMap :pom_064.
+:pom_064 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_064.
+:pm_064 a rr:PredicateMap;
+    rr:constant grel:valueParameter2.
+:pom_064 rr:objectMap :om_064.
+:om_064 a rr:ObjectMap;
+    rml:parentTermMap :ptm_003.
+:ptm_003 rml:reference "@id".

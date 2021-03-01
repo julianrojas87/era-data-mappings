@@ -38,31 +38,6 @@ mappings:
                 - [grel:valueParameter, $(Kilometer), s]
                 - [grel:valueParameter2, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
 
-  # ------------Link RINF SOLTracks to RailML Micro NetElements related to section of line tracks--------------
-
-  rinf-sol-tracks: # NOTE: RINF query is restricted to Norwegian tracks only.
-    sources:
-      - access: *host
-        type: *typeMSSQL
-        credentials: *credentials
-        queryFormulation: *queryFormulation
-        referenceFormulation: *referenceFormulation
-        query: SELECT (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT CONCAT(LineReferences.Kilometer * 1000, '.0') FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes, RINF.dbo.LineReferences WHERE LineNodes.OperationalPointID=OperationalPoints.ID AND OperationalPoints.ID = LineReferences.OperationalPointId AND OperationalPoints.VersionID = LineReferences.VersionID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_KM, Tracks.UUID, (SELECT CONCAT(LineReferences.Kilometer * 1000, '.0') FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes, RINF.dbo.LineReferences WHERE LineNodes.OperationalPointID=OperationalPoints.ID AND OperationalPoints.ID = LineReferences.OperationalPointId AND OperationalPoints.VersionID = LineReferences.VersionID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_KM, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, LookupValues.[Value] AS Direction, SectionOfLines.Length FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.MemberStateVersions, RINF.dbo.MemberStates, RINF.dbo.LookupValues WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID AND SOLTracks.Direction = LookupValues.ID AND Tracks.VersionID = MemberStateVersions.ID AND MemberStateVersions.MemberStateID = MemberStates.ID AND MemberStates.Code = 'NO';
-    s: http://era.europa.eu/functionalInfrastructure/tracks#$(FROM_NODE)_$(UUID)_$(TO_NODE)
-    po:
-      #- p: era:hasAbstraction
-      #  o:
-      #    - mapping: railml-meso-net-elements
-      #      condition:
-      #        - function: idlab-fn:equal
-      #          parameters:
-      #            - [grel:valueParameter, $(FROM_KM), s]
-      #            - [grel:valueParameter2, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/ancestor::topology//netRelation[./elementA/@ref=current(\\)/@id]/elementB/@ref]/spotLocation/linearCoordinate/@measure)", o]
-      #        - function: idlab-fn:equal
-      #          parameters:
-      #            - [grel:valueParameter, $(TO_KM), s]
-      #            - [grel:valueParameter2, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/ancestor::topology//netRelation[./elementA/@ref=current(\\)/@id]/elementB/@ref]/spotLocation/linearCoordinate/@measure)", o]
-
 
   # ------------Define Meso NetElements and link back to RINF Operational Points and SOLTracks--------------
   
@@ -137,6 +112,14 @@ mappings:
       - [era:length, $(@length), xsd:double]
       - [era:startKilometerPoint, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='0.0']/linearCoordinate/@measure)", xsd:double]
       - [era:endKilometerPoint, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='1.0']/linearCoordinate/@measure)", xsd:double]
+      - p: era:hasSignal
+        o:
+          - mapping: railml-infrastructure-signals
+            condition:
+              function: idlab-fn:equal
+              parameters:
+                - [grel:valueParameter, $(@id), s]
+                - [grel:valueParameter2, $(spotLocation/@netElementRef), o]
 
 
   # ------------Define Micro NetRelations--------------
@@ -213,3 +196,37 @@ mappings:
               parameters:
                 - [grel:valueParameter, $(spotLocation/@netElementRef), s]
                 - [grel:valueParameter2, $(@id), o]
+
+  ############## TODO:
+
+  # ------------Link RINF SOLTracks to RailML Micro NetElements related to section of line tracks--------------
+
+  rinf-sol-tracks: # NOTE: RINF query is restricted to Norwegian tracks only.
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT CONCAT(LineReferences.Kilometer * 1000, '.0') FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes, RINF.dbo.LineReferences WHERE LineNodes.OperationalPointID=OperationalPoints.ID AND OperationalPoints.ID = LineReferences.OperationalPointId AND OperationalPoints.VersionID = LineReferences.VersionID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_KM, Tracks.UUID, (SELECT CONCAT(LineReferences.Kilometer * 1000, '.0') FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes, RINF.dbo.LineReferences WHERE LineNodes.OperationalPointID=OperationalPoints.ID AND OperationalPoints.ID = LineReferences.OperationalPointId AND OperationalPoints.VersionID = LineReferences.VersionID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_KM, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, LookupValues.[Value] AS Direction, SectionOfLines.Length FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.MemberStateVersions, RINF.dbo.MemberStates, RINF.dbo.LookupValues WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID AND SOLTracks.Direction = LookupValues.ID AND Tracks.VersionID = MemberStateVersions.ID AND MemberStateVersions.MemberStateID = MemberStates.ID AND MemberStates.Code = 'NO';
+    s: http://era.europa.eu/functionalInfrastructure/tracks#$(FROM_NODE)_$(UUID)_$(TO_NODE)
+    po:
+      #- p: era:hasAbstraction
+      #  o:
+      #    - mapping: railml-meso-net-elements
+      #      condition:
+      #        - function: idlab-fn:equal
+      #          parameters:
+      #            - [grel:valueParameter, $(FROM_KM), s]
+      #            - [grel:valueParameter2, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/ancestor::topology//netRelation[./elementA/@ref=current(\\)/@id]/elementB/@ref]/spotLocation/linearCoordinate/@measure)", o]
+      #        - function: idlab-fn:equal
+      #          parameters:
+      #            - [grel:valueParameter, $(TO_KM), s]
+      #            - [grel:valueParameter2, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/ancestor::topology//netRelation[./elementA/@ref=current(\\)/@id]/elementB/@ref]/spotLocation/linearCoordinate/@measure)", o]
+  
+
+  # ------------Link NetElements across RailML files via <border> elements --------------
+
+  # ------------Define <stopLocation>s and link to correspondent micro <netElement>s--------------
+
+  # ------------Define <switchIS>s and link to correspondent micro <netElement>s--------------
