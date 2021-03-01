@@ -12,7 +12,7 @@ mkdir -p ${rml_directory}
 downloadYARRRML() {
     local yarrrml_dir="yarrrml-parser"
     if [ ! -d $yarrrml_dir ]; then
-        git clone --branch v1.1.1 https://github.com/RMLio/yarrrml-parser.git $yarrrml_dir
+        git clone https://github.com/RMLio/yarrrml-parser.git $yarrrml_dir
         cd $yarrrml_dir
         npm i
         cd -
@@ -35,7 +35,7 @@ mapRML() {
         echo "$file_path has already been mapped"
     else
         echo "Mapping '$file_path' and storing output in '$output_file'"
-        time java -Xmx4096m -cp rmlmapper-4.7.0-r210.jar:mssql-jdbc-8.2.0.jre11.jar be.ugent.rml.cli.Main -m $file_path > $output_file
+        time java -Xmx4096m -cp rmlmapper-4.9.1.jar:mssql-jdbc-8.2.0.jre11.jar be.ugent.rml.cli.Main -m $file_path > $output_file
     fi
 }
 
