@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-# [v1.2.0](https://github.com/julianrojas87/era-data-mappings/compare/v1.1.1...v1.2.0) (2021-01-29)
+## [v1.2.0](https://github.com/julianrojas87/era-data-mappings/compare/v1.1.1...v1.2.0) (2021-01-29)
 
 ### Raw Data: [ERA-KG-v1.2.0](https://github.com/julianrojas87/era-data-mappings/raw/master/knowledge-graph/era-kg-v1.2.0.ttl.gz)
 
@@ -13,7 +13,7 @@ All notable changes to this project will be documented in this file.
 * Create `era:InternalNodeLink` based on every related track (both arriving and departing) instead of for every related Section Of Line
 * Adjust mappings to create real `era:InternalNodeLink` instances based on a given [connectivity table data source](https://github.com/julianrojas87/era-data-mappings/blob/master/data/op_internal_connectivity.csv)
 
-# [v1.1.1](https://github.com/julianrojas87/era-data-mappings/compare/v1.1.0...v1.1.1) (2020-11-24)
+## [v1.1.1](https://github.com/julianrojas87/era-data-mappings/compare/v1.1.0...v1.1.1) (2020-11-24)
 
 ### Raw Data: [ERA-KG-v1.1.1](https://github.com/julianrojas87/era-data-mappings/raw/master/knowledge-graph/era-kg-v1.1.1.ttl.gz)
 
@@ -21,7 +21,7 @@ All notable changes to this project will be documented in this file.
 
 * Added `era:vehicleNumber` predicate
 
-# [v1.1.0](https://github.com/julianrojas87/era-data-mappings/compare/v1.0.0...v1.1.0) (2020-11-24)
+## [v1.1.0](https://github.com/julianrojas87/era-data-mappings/compare/v1.0.0...v1.1.0) (2020-11-24)
 
 ### Raw Data: [ERA-KG-v1.1.0](https://github.com/julianrojas87/era-data-mappings/raw/master/knowledge-graph/era-kg-v1.1.0.ttl.gz)
 
@@ -42,7 +42,7 @@ All notable changes to this project will be documented in this file.
 
 * Merge predicates with "other" alternative
 
-# [v0.9.3](https://github.com/julianrojas87/era-data-mappings/compare/v0.9.2...v0.9.3) (2020-09-30)
+## [v0.9.3](https://github.com/julianrojas87/era-data-mappings/compare/v0.9.2...v0.9.3) (2020-09-30)
 
 ### Raw Data: [ERA-KG-v0.9.3](https://github.com/julianrojas87/era-data-mappings/raw/master/knowledge-graph/era-kg-v0.9.3.ttl.gz)
 
@@ -50,7 +50,7 @@ All notable changes to this project will be documented in this file.
 
 * Fix for [#12](https://github.com/julianrojas87/era-data-mappings/issues/12)
 
-# [v0.9.2](https://github.com/julianrojas87/era-data-mappings/compare/v0.9.1...v0.9.2) (2020-09-30)
+## [v0.9.2](https://github.com/julianrojas87/era-data-mappings/compare/v0.9.1...v0.9.2) (2020-09-30)
 
 ### Raw Data: [ERA-KG-v0.9.2](https://github.com/julianrojas87/era-data-mappings/raw/master/knowledge-graph/era-kg-v0.9.2.ttl.gz)
 
@@ -65,7 +65,7 @@ All notable changes to this project will be documented in this file.
 * Change mappings of UIC codes to national line ids
 * Fix contact strip materials mappings from ERATV
 
-# [v0.9.1](https://github.com/julianrojas87/era-data-mappings/compare/v0.9.0...v0.9.1) (2020-09-09)
+## [v0.9.1](https://github.com/julianrojas87/era-data-mappings/compare/v0.9.0...v0.9.1) (2020-09-09)
 
 ### Raw Data: [ERA-KG-v0.9.1](https://github.com/julianrojas87/era-data-mappings/raw/master/knowledge-graph/era-kg-v0.9.1.ttl.gz)
 
@@ -75,7 +75,7 @@ All notable changes to this project will be documented in this file.
 * Fix `era:otherPantographHead` predicate typo
 * Add mappings for Internal Node Links inside border Micro Nodes
 
-# [v0.9.0](https://github.com/julianrojas87/era-data-mappings/compare/v0.3.9...v0.9.0) (2020-09-09)
+## [v0.9.0](https://github.com/julianrojas87/era-data-mappings/compare/v0.3.9...v0.9.0) (2020-09-09)
 
 ### Raw Data: [ERA-KG-v0.9.0](https://github.com/julianrojas87/era-data-mappings/raw/master/knowledge-graph/era-kg-v0.9.0.ttl.gz)
 
@@ -102,7 +102,7 @@ All notable changes to this project will be documented in this file.
 * Exclude operational point type related triples from KG as they belong in the ERA-skos vocabulary
 * Fix rolling stocks prefix for tunnels
 
-# v0.3.9
+## v0.3.9
 
 ### Raw Data: [ERA-KG-v0.3.9](https://github.com/julianrojas87/era-data-mappings/raw/master/knowledge-graph/era-kg-v0.3.9.ttl.gz)
 
