@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [v1.2.1](https://github.com/julianrojas87/era-data-mappings/compare/v1.2.0...v1.2.1) (2021-03-03)
+
+### Raw Data: [ERA-KG-v1.2.1](https://github.com/julianrojas87/era-data-mappings/raw/master/knowledge-graph/era-kg-v1.2.1.ttl.gz)
+
+### Features and Bug Fixes
+
+* Use proper WGS84 predicates for lat and long. Fixes [#25](https://github.com/julianrojas87/era-data-mappings/issues/25).
+* Update YARRRML parser and RML Mapper to their latest versions
+* Add `rdfs:label` to abstraction entities. Fixes [#24](https://github.com/julianrojas87/era-data-mappings/issues/24).
+* Adjust mapping execution script to merge and compress the resulting KG
+* Track the KG raw files using git-lfs
+
 ## [v1.2.0](https://github.com/julianrojas87/era-data-mappings/compare/v1.1.1...v1.2.0) (2021-01-29)
 
 ### Raw Data: [ERA-KG-v1.2.0](https://github.com/julianrojas87/era-data-mappings/raw/master/knowledge-graph/era-kg-v1.2.0.ttl.gz)
