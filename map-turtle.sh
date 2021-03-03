@@ -77,4 +77,4 @@ if [ ! -d ${output_directory}/${knowledge_graph}$1.ttl.gz ]; then
     echo "Compressing resulting RDF file"
     gzip ${output_directory}/${knowledge_graph}$1.ttl
 fi
-echo "The ERA Knowledge Graph v$1 has created successfully!"
+echo "The ERA Knowledge Graph v$1 has created successfully and compressed into ${output_directory}/${knowledge_graph}$1.ttl.gz file!"
