@@ -26,4 +26,5 @@ mappings:
     s: http://era.europa.eu/abstraction#MN_$(UOPID)
     po:
       - [a, era:MicroNode]
+      - [rdfs:label, MN_$(UOPID)]
       - [era:hasImplementation, http://era.europa.eu/implementation#OP_$(UOPID)~iri]

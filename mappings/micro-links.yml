@@ -26,6 +26,7 @@ mappings:
     s: http://era.europa.eu/abstraction#ML_$(FROM_NODE)_$(UUID)_$(TO_NODE)
     po:
       - [a, era:MicroLink]
+      - [rdfs:label, ML_$(FROM_NODE)_$(UUID)_$(TO_NODE)]
       - [era:hasImplementation, http://era.europa.eu/implementation#T_$(FROM_NODE)_$(UUID)_$(TO_NODE)~iri]
       - p: era:startPort
         o: http://era.europa.eu/abstraction#NP_$(FROM_NODE)_$(UUID)_$(TO_NODE)~iri
