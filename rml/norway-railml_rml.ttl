@@ -39,36 +39,20 @@
 :pom_000 rr:predicateMap :pm_000.
 :pm_000 rr:constant era:hasAbstraction.
 :pom_000 rr:objectMap :om_000.
-:rules_000 void:exampleResource :map_rinf-sol-tracks_000.
-:map_rinf-sol-tracks_000 rml:logicalSource :source_001.
-:source_001 a rml:LogicalSource;
-    rml:source :database_001;
-    rml:query "SELECT (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT CONCAT(LineReferences.Kilometer * 1000, '.0') FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes, RINF.dbo.LineReferences WHERE LineNodes.OperationalPointID=OperationalPoints.ID AND OperationalPoints.ID = LineReferences.OperationalPointId AND OperationalPoints.VersionID = LineReferences.VersionID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_KM, Tracks.UUID, (SELECT CONCAT(LineReferences.Kilometer * 1000, '.0') FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes, RINF.dbo.LineReferences WHERE LineNodes.OperationalPointID=OperationalPoints.ID AND OperationalPoints.ID = LineReferences.OperationalPointId AND OperationalPoints.VersionID = LineReferences.VersionID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_KM, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, LookupValues.[Value] AS Direction, SectionOfLines.Length FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.MemberStateVersions, RINF.dbo.MemberStates, RINF.dbo.LookupValues WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID AND SOLTracks.Direction = LookupValues.ID AND Tracks.VersionID = MemberStateVersions.ID AND MemberStateVersions.MemberStateID = MemberStates.ID AND MemberStates.Code = 'NO';".
-:database_001 a d2rq:Database;
-    d2rq:jdbcDSN "//10.10.160.21:1433";
-    d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-    d2rq:username "SA";
-    d2rq:password "ChooChoo2020".
-:source_001 rml:referenceFormulation ql:CSV.
-:map_rinf-sol-tracks_000 a rr:TriplesMap;
-    rdfs:label "rinf-sol-tracks".
-:s_001 a rr:SubjectMap.
-:map_rinf-sol-tracks_000 rr:subjectMap :s_001.
-:s_001 rr:template "http://era.europa.eu/functionalInfrastructure/tracks#{FROM_NODE}_{UUID}_{TO_NODE}".
 :rules_000 void:exampleResource :map_railml-meso-net-elements_000.
-:map_railml-meso-net-elements_000 rml:logicalSource :source_002.
-:source_002 a rml:LogicalSource;
+:map_railml-meso-net-elements_000 rml:logicalSource :source_001.
+:source_001 a rml:LogicalSource;
     rml:source "data/norway-railml/RUB.railml";
     rml:iterator "//netElement[not(@length)]";
     rml:referenceFormulation ql:XPath.
 :map_railml-meso-net-elements_000 a rr:TriplesMap;
     rdfs:label "railml-meso-net-elements".
-:s_002 a rr:SubjectMap.
-:map_railml-meso-net-elements_000 rr:subjectMap :s_002.
-:s_002 a fnml:FunctionTermMap;
+:s_001 a rr:SubjectMap.
+:map_railml-meso-net-elements_000 rr:subjectMap :s_001.
+:s_001 a fnml:FunctionTermMap;
     rr:termType rr:IRI;
     fnml:functionValue :fn_000.
-:fn_000 rml:logicalSource :source_002;
+:fn_000 rml:logicalSource :source_001;
     rr:predicateObjectMap :pomexec_000.
 :pomexec_000 rr:predicateMap :pmexec_000.
 :pmexec_000 rr:constant fno:executes.
@@ -127,19 +111,19 @@
 :pm_006 rr:constant era:hasImplementation.
 :pom_006 rr:objectMap :om_006.
 :rules_000 void:exampleResource :map_railml-meso-net-relations_000.
-:map_railml-meso-net-relations_000 rml:logicalSource :source_003.
-:source_003 a rml:LogicalSource;
+:map_railml-meso-net-relations_000 rml:logicalSource :source_002.
+:source_002 a rml:LogicalSource;
     rml:source "data/norway-railml/RUB.railml";
     rml:iterator "//netRelation[not(@navigability)]";
     rml:referenceFormulation ql:XPath.
 :map_railml-meso-net-relations_000 a rr:TriplesMap;
     rdfs:label "railml-meso-net-relations".
-:s_003 a rr:SubjectMap.
-:map_railml-meso-net-relations_000 rr:subjectMap :s_003.
-:s_003 a fnml:FunctionTermMap;
+:s_002 a rr:SubjectMap.
+:map_railml-meso-net-relations_000 rr:subjectMap :s_002.
+:s_002 a fnml:FunctionTermMap;
     rr:termType rr:IRI;
     fnml:functionValue :fn_001.
-:fn_001 rml:logicalSource :source_003;
+:fn_001 rml:logicalSource :source_002;
     rr:predicateObjectMap :pomexec_001.
 :pomexec_001 rr:predicateMap :pmexec_001.
 :pmexec_001 rr:constant fno:executes.
@@ -209,7 +193,7 @@
 :om_013 a fnml:FunctionTermMap;
     rr:termType rr:IRI;
     fnml:functionValue :fn_002.
-:fn_002 rml:logicalSource :source_003;
+:fn_002 rml:logicalSource :source_002;
     rr:predicateObjectMap :pomexec_002.
 :pomexec_002 rr:predicateMap :pmexec_002.
 :pmexec_002 rr:constant fno:executes.
@@ -252,7 +236,7 @@
 :om_017 a fnml:FunctionTermMap;
     rr:termType rr:IRI;
     fnml:functionValue :fn_003.
-:fn_003 rml:logicalSource :source_003;
+:fn_003 rml:logicalSource :source_002;
     rr:predicateObjectMap :pomexec_003.
 :pomexec_003 rr:predicateMap :pmexec_003.
 :pmexec_003 rr:constant fno:executes.
@@ -287,19 +271,19 @@
     rml:reference "elementB/@ref";
     rr:termType rr:Literal.
 :rules_000 void:exampleResource :map_railml-micro-net-elements_000.
-:map_railml-micro-net-elements_000 rml:logicalSource :source_004.
-:source_004 a rml:LogicalSource;
+:map_railml-micro-net-elements_000 rml:logicalSource :source_003.
+:source_003 a rml:LogicalSource;
     rml:source "data/norway-railml/RUB.railml";
     rml:iterator "//netElement[@length]";
     rml:referenceFormulation ql:XPath.
 :map_railml-micro-net-elements_000 a rr:TriplesMap;
     rdfs:label "railml-micro-net-elements".
-:s_004 a rr:SubjectMap.
-:map_railml-micro-net-elements_000 rr:subjectMap :s_004.
-:s_004 a fnml:FunctionTermMap;
+:s_003 a rr:SubjectMap.
+:map_railml-micro-net-elements_000 rr:subjectMap :s_003.
+:s_003 a fnml:FunctionTermMap;
     rr:termType rr:IRI;
     fnml:functionValue :fn_004.
-:fn_004 rml:logicalSource :source_004;
+:fn_004 rml:logicalSource :source_003;
     rr:predicateObjectMap :pomexec_004.
 :pomexec_004 rr:predicateMap :pmexec_004.
 :pmexec_004 rr:constant fno:executes.
@@ -379,19 +363,19 @@
 :pm_028 rr:constant era:hasSignal.
 :pom_028 rr:objectMap :om_028.
 :rules_000 void:exampleResource :map_railml-micro-net-relations_000.
-:map_railml-micro-net-relations_000 rml:logicalSource :source_005.
-:source_005 a rml:LogicalSource;
+:map_railml-micro-net-relations_000 rml:logicalSource :source_004.
+:source_004 a rml:LogicalSource;
     rml:source "data/norway-railml/RUB.railml";
     rml:iterator "//netRelation[@navigability]";
     rml:referenceFormulation ql:XPath.
 :map_railml-micro-net-relations_000 a rr:TriplesMap;
     rdfs:label "railml-micro-net-relations".
-:s_005 a rr:SubjectMap.
-:map_railml-micro-net-relations_000 rr:subjectMap :s_005.
-:s_005 a fnml:FunctionTermMap;
+:s_004 a rr:SubjectMap.
+:map_railml-micro-net-relations_000 rr:subjectMap :s_004.
+:s_004 a fnml:FunctionTermMap;
     rr:termType rr:IRI;
     fnml:functionValue :fn_005.
-:fn_005 rml:logicalSource :source_005;
+:fn_005 rml:logicalSource :source_004;
     rr:predicateObjectMap :pomexec_005.
 :pomexec_005 rr:predicateMap :pmexec_005.
 :pmexec_005 rr:constant fno:executes.
@@ -470,7 +454,7 @@
 :om_036 a fnml:FunctionTermMap;
     rr:termType rr:IRI;
     fnml:functionValue :fn_006.
-:fn_006 rml:logicalSource :source_005;
+:fn_006 rml:logicalSource :source_004;
     rr:predicateObjectMap :pomexec_006.
 :pomexec_006 rr:predicateMap :pmexec_006.
 :pmexec_006 rr:constant fno:executes.
@@ -513,7 +497,7 @@
 :om_040 a fnml:FunctionTermMap;
     rr:termType rr:IRI;
     fnml:functionValue :fn_007.
-:fn_007 rml:logicalSource :source_005;
+:fn_007 rml:logicalSource :source_004;
     rr:predicateObjectMap :pomexec_007.
 :pomexec_007 rr:predicateMap :pmexec_007.
 :pmexec_007 rr:constant fno:executes.
@@ -548,19 +532,19 @@
     rml:reference "elementB/@ref";
     rr:termType rr:Literal.
 :rules_000 void:exampleResource :map_railml-aggregations_000.
-:map_railml-aggregations_000 rml:logicalSource :source_006.
-:source_006 a rml:LogicalSource;
+:map_railml-aggregations_000 rml:logicalSource :source_005.
+:source_005 a rml:LogicalSource;
     rml:source "data/norway-railml/RUB.railml";
     rml:iterator "//elementCollectionUnordered/elementPart";
     rml:referenceFormulation ql:XPath.
 :map_railml-aggregations_000 a rr:TriplesMap;
     rdfs:label "railml-aggregations".
-:s_006 a rr:SubjectMap.
-:map_railml-aggregations_000 rr:subjectMap :s_006.
-:s_006 a fnml:FunctionTermMap;
+:s_005 a rr:SubjectMap.
+:map_railml-aggregations_000 rr:subjectMap :s_005.
+:s_005 a fnml:FunctionTermMap;
     rr:termType rr:IRI;
     fnml:functionValue :fn_008.
-:fn_008 rml:logicalSource :source_006;
+:fn_008 rml:logicalSource :source_005;
     rr:predicateObjectMap :pomexec_008.
 :pomexec_008 rr:predicateMap :pmexec_008.
 :pmexec_008 rr:constant fno:executes.
@@ -603,7 +587,7 @@
 :om_047 a fnml:FunctionTermMap;
     rr:termType rr:IRI;
     fnml:functionValue :fn_009.
-:fn_009 rml:logicalSource :source_006;
+:fn_009 rml:logicalSource :source_005;
     rr:predicateObjectMap :pomexec_009.
 :pomexec_009 rr:predicateMap :pmexec_009.
 :pmexec_009 rr:constant fno:executes.
@@ -638,16 +622,16 @@
     rml:reference "@ref";
     rr:termType rr:Literal.
 :rules_000 void:exampleResource :map_railml-infrastructure-signals_000.
-:map_railml-infrastructure-signals_000 rml:logicalSource :source_007.
-:source_007 a rml:LogicalSource;
+:map_railml-infrastructure-signals_000 rml:logicalSource :source_006.
+:source_006 a rml:LogicalSource;
     rml:source "data/norway-railml/RUB.railml";
     rml:iterator "//signalIS";
     rml:referenceFormulation ql:XPath.
 :map_railml-infrastructure-signals_000 a rr:TriplesMap;
     rdfs:label "railml-infrastructure-signals".
-:s_007 a rr:SubjectMap.
-:map_railml-infrastructure-signals_000 rr:subjectMap :s_007.
-:s_007 rr:template "http://era.europa.eu/functionalInfrastructure/signals#{ancestor::infrastructure//netElement[@id=current()/spotLocation/@netElementRef]/@id}{name/@name}".
+:s_006 a rr:SubjectMap.
+:map_railml-infrastructure-signals_000 rr:subjectMap :s_006.
+:s_006 rr:template "http://era.europa.eu/functionalInfrastructure/signals#{ancestor::infrastructure//netElement[@id=current()/spotLocation/@netElementRef]/@id}{name/@name}".
 :pom_051 a rr:PredicateObjectMap.
 :map_railml-infrastructure-signals_000 rr:predicateObjectMap :pom_051.
 :pm_051 a rr:PredicateMap.
@@ -702,6 +686,22 @@
 :pom_056 rr:predicateMap :pm_056.
 :pm_056 rr:constant era:netElementRef.
 :pom_056 rr:objectMap :om_056.
+:rules_000 void:exampleResource :map_rinf-sol-tracks_000.
+:map_rinf-sol-tracks_000 rml:logicalSource :source_007.
+:source_007 a rml:LogicalSource;
+    rml:source :database_001;
+    rml:query "SELECT (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT CONCAT(LineReferences.Kilometer * 1000, '.0') FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes, RINF.dbo.LineReferences WHERE LineNodes.OperationalPointID=OperationalPoints.ID AND OperationalPoints.ID = LineReferences.OperationalPointId AND OperationalPoints.VersionID = LineReferences.VersionID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_KM, Tracks.UUID, (SELECT CONCAT(LineReferences.Kilometer * 1000, '.0') FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes, RINF.dbo.LineReferences WHERE LineNodes.OperationalPointID=OperationalPoints.ID AND OperationalPoints.ID = LineReferences.OperationalPointId AND OperationalPoints.VersionID = LineReferences.VersionID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_KM, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, LookupValues.[Value] AS Direction, SectionOfLines.Length FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.MemberStateVersions, RINF.dbo.MemberStates, RINF.dbo.LookupValues WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID AND SOLTracks.Direction = LookupValues.ID AND Tracks.VersionID = MemberStateVersions.ID AND MemberStateVersions.MemberStateID = MemberStates.ID AND MemberStates.Code = 'NO';".
+:database_001 a d2rq:Database;
+    d2rq:jdbcDSN "//10.10.160.21:1433";
+    d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
+    d2rq:username "SA";
+    d2rq:password "ChooChoo2020".
+:source_007 rml:referenceFormulation ql:CSV.
+:map_rinf-sol-tracks_000 a rr:TriplesMap;
+    rdfs:label "rinf-sol-tracks".
+:s_007 a rr:SubjectMap.
+:map_rinf-sol-tracks_000 rr:subjectMap :s_007.
+:s_007 rr:template "http://era.europa.eu/functionalInfrastructure/tracks#{FROM_NODE}_{UUID}_{TO_NODE}".
 :om_000 a rr:ObjectMap;
     rr:parentTriplesMap :map_railml-meso-net-elements_000;
     rml:joinCondition :jc_000.
