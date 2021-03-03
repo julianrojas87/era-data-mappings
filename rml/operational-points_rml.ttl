@@ -4,6 +4,9 @@
 @prefix fnml: <http://semweb.mmlab.be/ns/fnml#>.
 @prefix fno: <https://w3id.org/function/ontology#>.
 @prefix d2rq: <http://www.wiwiss.fu-berlin.de/suhl/bizer/D2RQ/0.1#>.
+@prefix void: <http://rdfs.org/ns/void#>.
+@prefix dc: <http://purl.org/dc/terms/>.
+@prefix foaf: <http://xmlns.com/foaf/0.1/>.
 @prefix rml: <http://semweb.mmlab.be/ns/rml#>.
 @prefix ql: <http://semweb.mmlab.be/ns/ql#>.
 @prefix : <http://mapping.example.com/>.
@@ -16,300 +19,307 @@
 @prefix era: <http://era.europa.eu/ns#>.
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
 
-:map_operational-point_0 rml:logicalSource :source_0.
-:source_0 a rml:LogicalSource;
-    rml:source :database_0;
+:rules_000 a void:Dataset;
+    void:exampleResource :map_operational-point_000.
+:map_operational-point_000 rml:logicalSource :source_000.
+:source_000 a rml:LogicalSource;
+    rml:source :database_000;
     rml:query "SELECT TRIM(UOPID) AS UOPID, TRIM(OperationalPoints.Name) AS OPName, MemberStates.Code, MemberStates.Name AS country, LookupValues.[Value], LineNodes.Latitude, LineNodes.Longitude, OPTafTAPCodes.[Value] AS TafTapCode FROM RINF.dbo.OperationalPoints, RINF.dbo.MemberStates, RINF.dbo.MemberStateVersions, RINF.dbo.LookupValues, RINF.dbo.LineNodes, RINF.dbo.OPTafTAPCodes WHERE OperationalPoints.ID = LineNodes.OperationalPointID AND OperationalPoints.VersionID = LineNodes.VersionID AND OperationalPoints.Type = LookupValues.ID AND OperationalPoints.VersionID = MemberStateVersions.ID AND MemberStateVersions.MemberStateID = MemberStates.ID AND OperationalPoints.ID = OPTafTAPCodes.OperationalPointID AND OperationalPoints.VersionID = OPTafTAPCodes.VersionID;".
-:database_0 a d2rq:Database;
+:database_000 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_0 rml:referenceFormulation ql:CSV.
-:map_operational-point_0 a rr:TriplesMap;
+:source_000 rml:referenceFormulation ql:CSV.
+:map_operational-point_000 a rr:TriplesMap;
     rdfs:label "operational-point".
-:s_0 a rr:SubjectMap.
-:map_operational-point_0 rr:subjectMap :s_0.
-:s_0 rr:template "http://era.europa.eu/implementation#OP_{UOPID}".
-:pom_0 a rr:PredicateObjectMap.
-:map_operational-point_0 rr:predicateObjectMap :pom_0.
-:pm_0 a rr:PredicateMap.
-:pom_0 rr:predicateMap :pm_0.
-:pm_0 rr:constant rdf:type.
-:pom_0 rr:objectMap :om_0.
-:om_0 a rr:ObjectMap;
+:s_000 a rr:SubjectMap.
+:map_operational-point_000 rr:subjectMap :s_000.
+:s_000 rr:template "http://era.europa.eu/implementation#OP_{UOPID}".
+:pom_000 a rr:PredicateObjectMap.
+:map_operational-point_000 rr:predicateObjectMap :pom_000.
+:pm_000 a rr:PredicateMap.
+:pom_000 rr:predicateMap :pm_000.
+:pm_000 rr:constant rdf:type.
+:pom_000 rr:objectMap :om_000.
+:om_000 a rr:ObjectMap;
     rr:constant "http://era.europa.eu/ns#OperationalPoint";
     rr:termType rr:IRI.
-:pom_1 a rr:PredicateObjectMap.
-:map_operational-point_0 rr:predicateObjectMap :pom_1.
-:pm_1 a rr:PredicateMap.
-:pom_1 rr:predicateMap :pm_1.
-:pm_1 rr:constant era:uopid.
-:pom_1 rr:objectMap :om_1.
-:om_1 a rr:ObjectMap;
+:pom_001 a rr:PredicateObjectMap.
+:map_operational-point_000 rr:predicateObjectMap :pom_001.
+:pm_001 a rr:PredicateMap.
+:pom_001 rr:predicateMap :pm_001.
+:pm_001 rr:constant era:uopid.
+:pom_001 rr:objectMap :om_001.
+:om_001 a rr:ObjectMap;
     rml:reference "UOPID";
     rr:termType rr:Literal.
-:pom_2 a rr:PredicateObjectMap.
-:map_operational-point_0 rr:predicateObjectMap :pom_2.
-:pm_2 a rr:PredicateMap.
-:pom_2 rr:predicateMap :pm_2.
-:pm_2 rr:constant rdfs:label.
-:pom_2 rr:objectMap :om_2.
-:om_2 a rr:ObjectMap;
+:pom_002 a rr:PredicateObjectMap.
+:map_operational-point_000 rr:predicateObjectMap :pom_002.
+:pm_002 a rr:PredicateMap.
+:pom_002 rr:predicateMap :pm_002.
+:pm_002 rr:constant rdfs:label.
+:pom_002 rr:objectMap :om_002.
+:om_002 a rr:ObjectMap;
     rml:reference "OPName";
     rr:termType rr:Literal.
-:pom_3 a rr:PredicateObjectMap.
-:map_operational-point_0 rr:predicateObjectMap :pom_3.
-:pm_3 a rr:PredicateMap.
-:pom_3 rr:predicateMap :pm_3.
-:pm_3 rr:constant geosparql:hasGeometry.
-:pom_3 rr:objectMap :om_3.
-:om_3 a rr:ObjectMap;
+:pom_003 a rr:PredicateObjectMap.
+:map_operational-point_000 rr:predicateObjectMap :pom_003.
+:pm_003 a rr:PredicateMap.
+:pom_003 rr:predicateMap :pm_003.
+:pm_003 rr:constant geosparql:hasGeometry.
+:pom_003 rr:objectMap :om_003.
+:om_003 a rr:ObjectMap;
     rr:template "http://era.europa.eu/location#GEO/{Longitude}/{Latitude}";
     rr:termType rr:IRI.
-:pom_4 a rr:PredicateObjectMap.
-:map_operational-point_0 rr:predicateObjectMap :pom_4.
-:pm_4 a rr:PredicateMap.
-:pom_4 rr:predicateMap :pm_4.
-:pm_4 rr:constant wgs:location.
-:pom_4 rr:objectMap :om_4.
-:om_4 a rr:ObjectMap;
+:pom_004 a rr:PredicateObjectMap.
+:map_operational-point_000 rr:predicateObjectMap :pom_004.
+:pm_004 a rr:PredicateMap.
+:pom_004 rr:predicateMap :pm_004.
+:pm_004 rr:constant wgs:location.
+:pom_004 rr:objectMap :om_004.
+:om_004 a rr:ObjectMap;
     rr:template "http://era.europa.eu/location#GEO/{Longitude}/{Latitude}";
     rr:termType rr:IRI.
-:pom_5 a rr:PredicateObjectMap.
-:map_operational-point_0 rr:predicateObjectMap :pom_5.
-:pm_5 a rr:PredicateMap.
-:pom_5 rr:predicateMap :pm_5.
-:pm_5 rr:constant era:hasAbstraction.
-:pom_5 rr:objectMap :om_5.
-:om_5 a rr:ObjectMap;
+:pom_005 a rr:PredicateObjectMap.
+:map_operational-point_000 rr:predicateObjectMap :pom_005.
+:pm_005 a rr:PredicateMap.
+:pom_005 rr:predicateMap :pm_005.
+:pm_005 rr:constant era:hasAbstraction.
+:pom_005 rr:objectMap :om_005.
+:om_005 a rr:ObjectMap;
     rr:template "http://era.europa.eu/abstraction#MN_{UOPID}";
     rr:termType rr:IRI.
-:pom_6 a rr:PredicateObjectMap.
-:map_operational-point_0 rr:predicateObjectMap :pom_6.
-:pm_6 a rr:PredicateMap.
-:pom_6 rr:predicateMap :pm_6.
-:pm_6 rr:constant era:inCountry.
-:pom_6 rr:objectMap :om_6.
-:pom_7 a rr:PredicateObjectMap.
-:map_operational-point_0 rr:predicateObjectMap :pom_7.
-:pm_7 a rr:PredicateMap.
-:pom_7 rr:predicateMap :pm_7.
-:pm_7 rr:constant era:tafTAPCode.
-:pom_7 rr:objectMap :om_7.
-:om_7 a fnml:FunctionTermMap;
+:pom_006 a rr:PredicateObjectMap.
+:map_operational-point_000 rr:predicateObjectMap :pom_006.
+:pm_006 a rr:PredicateMap.
+:pom_006 rr:predicateMap :pm_006.
+:pm_006 rr:constant era:inCountry.
+:pom_006 rr:objectMap :om_006.
+:pom_007 a rr:PredicateObjectMap.
+:map_operational-point_000 rr:predicateObjectMap :pom_007.
+:pm_007 a rr:PredicateMap.
+:pom_007 rr:predicateMap :pm_007.
+:pm_007 rr:constant era:tafTAPCode.
+:pom_007 rr:objectMap :om_007.
+:om_007 a fnml:FunctionTermMap;
     rr:termType rr:Literal;
-    fnml:functionValue :fn_0.
-:fn_0 rml:logicalSource :source_0;
-    rr:predicateObjectMap :pomexec_0.
-:pomexec_0 rr:predicateMap :pmexec_0.
-:pmexec_0 rr:constant fno:executes.
-:pomexec_0 rr:objectMap :omexec_0.
-:omexec_0 rr:constant "http://example.com/idlab/function/trueCondition";
+    fnml:functionValue :fn_000.
+:fn_000 rml:logicalSource :source_000;
+    rr:predicateObjectMap :pomexec_000.
+:pomexec_000 rr:predicateMap :pmexec_000.
+:pmexec_000 rr:constant fno:executes.
+:pomexec_000 rr:objectMap :omexec_000.
+:omexec_000 rr:constant "http://example.com/idlab/function/trueCondition";
     rr:termType rr:IRI.
-:fn_0 rr:predicateObjectMap :pom_8.
-:pom_8 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_8.
-:pm_8 a rr:PredicateMap;
+:fn_000 rr:predicateObjectMap :pom_008.
+:pom_008 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_008.
+:pm_008 a rr:PredicateMap;
     rr:constant idlab-fn:strBoolean.
-:pom_8 rr:objectMap :om_8.
-:om_8 a rr:ObjectMap, fnml:FunctionTermMap;
-    fnml:functionValue :fn_1.
-:fn_1 rml:logicalSource :source_0;
-    rr:predicateObjectMap :pomexec_1.
-:pomexec_1 rr:predicateMap :pmexec_1.
-:pmexec_1 rr:constant fno:executes.
-:pomexec_1 rr:objectMap :omexec_1.
-:omexec_1 rr:constant "http://example.com/idlab/function/notEqual";
+:pom_008 rr:objectMap :om_008.
+:om_008 a rr:ObjectMap, fnml:FunctionTermMap;
+    fnml:functionValue :fn_001.
+:fn_001 rml:logicalSource :source_000;
+    rr:predicateObjectMap :pomexec_001.
+:pomexec_001 rr:predicateMap :pmexec_001.
+:pmexec_001 rr:constant fno:executes.
+:pomexec_001 rr:objectMap :omexec_001.
+:omexec_001 rr:constant "http://example.com/idlab/function/notEqual";
     rr:termType rr:IRI.
-:fn_1 rr:predicateObjectMap :pom_9.
-:pom_9 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_9.
-:pm_9 a rr:PredicateMap;
+:fn_001 rr:predicateObjectMap :pom_009.
+:pom_009 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_009.
+:pm_009 a rr:PredicateMap;
     rr:constant grel:valueParameter.
-:pom_9 rr:objectMap :om_9.
-:om_9 a rr:ObjectMap;
+:pom_009 rr:objectMap :om_009.
+:om_009 a rr:ObjectMap;
     rml:reference "TafTapCode";
     rr:termType rr:Literal.
-:fn_1 rr:predicateObjectMap :pom_10.
-:pom_10 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_10.
-:pm_10 a rr:PredicateMap;
+:fn_001 rr:predicateObjectMap :pom_010.
+:pom_010 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_010.
+:pm_010 a rr:PredicateMap;
     rr:constant grel:valueParameter2.
-:pom_10 rr:objectMap :om_10.
-:om_10 a rr:ObjectMap;
+:pom_010 rr:objectMap :om_010.
+:om_010 a rr:ObjectMap;
     rr:constant "";
     rr:termType rr:Literal.
-:fn_0 rr:predicateObjectMap :pom_11.
-:pom_11 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_11.
-:pm_11 a rr:PredicateMap;
+:fn_000 rr:predicateObjectMap :pom_011.
+:pom_011 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_011.
+:pm_011 a rr:PredicateMap;
     rr:constant idlab-fn:str.
-:pom_11 rr:objectMap :om_11.
-:om_11 a rr:ObjectMap;
+:pom_011 rr:objectMap :om_011.
+:om_011 a rr:ObjectMap;
     rml:reference "TafTapCode";
     rr:termType rr:Literal.
-:pom_12 a rr:PredicateObjectMap.
-:map_operational-point_0 rr:predicateObjectMap :pom_12.
-:pm_12 a rr:PredicateMap.
-:pom_12 rr:predicateMap :pm_12.
-:pm_12 rr:constant era:opType.
-:pom_12 rr:objectMap :om_12.
-:map_op-line-reference_0 rml:logicalSource :source_1.
-:source_1 a rml:LogicalSource;
-    rml:source :database_1;
+:pom_012 a rr:PredicateObjectMap.
+:map_operational-point_000 rr:predicateObjectMap :pom_012.
+:pm_012 a rr:PredicateMap.
+:pom_012 rr:predicateMap :pm_012.
+:pm_012 rr:constant era:opType.
+:pom_012 rr:objectMap :om_012.
+:rules_000 void:exampleResource :map_op-line-reference_000.
+:map_op-line-reference_000 rml:logicalSource :source_001.
+:source_001 a rml:LogicalSource;
+    rml:source :database_001;
     rml:query "SELECT TRIM(UOPID) AS UOPID, LineReferences.Kilometer, UICLines.UICCode FROM RINF.dbo.OperationalPoints, RINF.dbo.LineReferences, RINF.dbo.UICLines WHERE OperationalPoints.ID = LineReferences.OperationalPointId AND OperationalPoints.VersionID = LineReferences.VersionID AND LineReferences.UICLineId = UICLines.ID AND LineReferences.VersionID = UICLines.VersionID;".
-:database_1 a d2rq:Database;
+:database_001 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_1 rml:referenceFormulation ql:CSV.
-:map_op-line-reference_0 a rr:TriplesMap;
+:source_001 rml:referenceFormulation ql:CSV.
+:map_op-line-reference_000 a rr:TriplesMap;
     rdfs:label "op-line-reference".
-:s_1 a rr:SubjectMap.
-:map_op-line-reference_0 rr:subjectMap :s_1.
-:s_1 rr:template "http://era.europa.eu/implementation#OP_{UOPID}".
-:pom_13 a rr:PredicateObjectMap.
-:map_op-line-reference_0 rr:predicateObjectMap :pom_13.
-:pm_13 a rr:PredicateMap.
-:pom_13 rr:predicateMap :pm_13.
-:pm_13 rr:constant era:lineReference.
-:pom_13 rr:objectMap :om_13.
-:om_13 a rr:ObjectMap;
+:s_001 a rr:SubjectMap.
+:map_op-line-reference_000 rr:subjectMap :s_001.
+:s_001 rr:template "http://era.europa.eu/implementation#OP_{UOPID}".
+:pom_013 a rr:PredicateObjectMap.
+:map_op-line-reference_000 rr:predicateObjectMap :pom_013.
+:pm_013 a rr:PredicateMap.
+:pom_013 rr:predicateMap :pm_013.
+:pm_013 rr:constant era:lineReference.
+:pom_013 rr:objectMap :om_013.
+:om_013 a rr:ObjectMap;
     rr:template "http://era.europa.eu/abstraction#LR_{UICCode}_{Kilometer}";
     rr:termType rr:IRI.
-:map_line-reference_0 rml:logicalSource :source_2.
-:source_2 a rml:LogicalSource;
-    rml:source :database_2;
+:rules_000 void:exampleResource :map_line-reference_000.
+:map_line-reference_000 rml:logicalSource :source_002.
+:source_002 a rml:LogicalSource;
+    rml:source :database_002;
     rml:query "SELECT TRIM(UOPID) AS UOPID, LineReferences.Kilometer, UICLines.UICCode FROM RINF.dbo.OperationalPoints, RINF.dbo.LineReferences, RINF.dbo.UICLines WHERE OperationalPoints.ID = LineReferences.OperationalPointId AND OperationalPoints.VersionID = LineReferences.VersionID AND LineReferences.UICLineId = UICLines.ID AND LineReferences.VersionID = UICLines.VersionID;".
-:database_2 a d2rq:Database;
+:database_002 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_2 rml:referenceFormulation ql:CSV.
-:map_line-reference_0 a rr:TriplesMap;
+:source_002 rml:referenceFormulation ql:CSV.
+:map_line-reference_000 a rr:TriplesMap;
     rdfs:label "line-reference".
-:s_2 a rr:SubjectMap.
-:map_line-reference_0 rr:subjectMap :s_2.
-:s_2 rr:template "http://era.europa.eu/abstraction#LR_{UICCode}_{Kilometer}".
-:pom_14 a rr:PredicateObjectMap.
-:map_line-reference_0 rr:predicateObjectMap :pom_14.
-:pm_14 a rr:PredicateMap.
-:pom_14 rr:predicateMap :pm_14.
-:pm_14 rr:constant rdf:type.
-:pom_14 rr:objectMap :om_14.
-:om_14 a rr:ObjectMap;
+:s_002 a rr:SubjectMap.
+:map_line-reference_000 rr:subjectMap :s_002.
+:s_002 rr:template "http://era.europa.eu/abstraction#LR_{UICCode}_{Kilometer}".
+:pom_014 a rr:PredicateObjectMap.
+:map_line-reference_000 rr:predicateObjectMap :pom_014.
+:pm_014 a rr:PredicateMap.
+:pom_014 rr:predicateMap :pm_014.
+:pm_014 rr:constant rdf:type.
+:pom_014 rr:objectMap :om_014.
+:om_014 a rr:ObjectMap;
     rr:constant "http://era.europa.eu/ns#LineReference";
     rr:termType rr:IRI.
-:pom_15 a rr:PredicateObjectMap.
-:map_line-reference_0 rr:predicateObjectMap :pom_15.
-:pm_15 a rr:PredicateMap.
-:pom_15 rr:predicateMap :pm_15.
-:pm_15 rr:constant era:lineNationalId.
-:pom_15 rr:objectMap :om_15.
-:om_15 a rr:ObjectMap;
+:pom_015 a rr:PredicateObjectMap.
+:map_line-reference_000 rr:predicateObjectMap :pom_015.
+:pm_015 a rr:PredicateMap.
+:pom_015 rr:predicateMap :pm_015.
+:pm_015 rr:constant era:lineNationalId.
+:pom_015 rr:objectMap :om_015.
+:om_015 a rr:ObjectMap;
     rr:template "http://era.europa.eu/implementation#LNI_{UICCode}";
     rr:termType rr:IRI.
-:pom_16 a rr:PredicateObjectMap.
-:map_line-reference_0 rr:predicateObjectMap :pom_16.
-:pm_16 a rr:PredicateMap.
-:pom_16 rr:predicateMap :pm_16.
-:pm_16 rr:constant era:kilometer.
-:pom_16 rr:objectMap :om_16.
-:om_16 a rr:ObjectMap;
+:pom_016 a rr:PredicateObjectMap.
+:map_line-reference_000 rr:predicateObjectMap :pom_016.
+:pm_016 a rr:PredicateMap.
+:pom_016 rr:predicateMap :pm_016.
+:pm_016 rr:constant era:kilometer.
+:pom_016 rr:objectMap :om_016.
+:om_016 a rr:ObjectMap;
     rml:reference "Kilometer";
     rr:termType rr:Literal;
     rr:datatype xsd:double.
-:map_location_0 rml:logicalSource :source_3.
-:source_3 a rml:LogicalSource;
-    rml:source :database_3;
+:rules_000 void:exampleResource :map_location_000.
+:map_location_000 rml:logicalSource :source_003.
+:source_003 a rml:LogicalSource;
+    rml:source :database_003;
     rml:query "SELECT LineNodes.Latitude, LineNodes.Longitude FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPoints.ID = LineNodes.OperationalPointID AND OperationalPoints.VersionID = LineNodes.VersionID;".
-:database_3 a d2rq:Database;
+:database_003 a d2rq:Database;
     d2rq:jdbcDSN "//10.10.160.21:1433";
     d2rq:jdbcDriver "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     d2rq:username "SA";
     d2rq:password "ChooChoo2020".
-:source_3 rml:referenceFormulation ql:CSV.
-:map_location_0 a rr:TriplesMap;
+:source_003 rml:referenceFormulation ql:CSV.
+:map_location_000 a rr:TriplesMap;
     rdfs:label "location".
-:s_3 a rr:SubjectMap.
-:map_location_0 rr:subjectMap :s_3.
-:s_3 rr:template "http://era.europa.eu/location#GEO/{Longitude}/{Latitude}".
-:pom_17 a rr:PredicateObjectMap.
-:map_location_0 rr:predicateObjectMap :pom_17.
-:pm_17 a rr:PredicateMap.
-:pom_17 rr:predicateMap :pm_17.
-:pm_17 rr:constant rdf:type.
-:pom_17 rr:objectMap :om_17.
-:om_17 a rr:ObjectMap;
+:s_003 a rr:SubjectMap.
+:map_location_000 rr:subjectMap :s_003.
+:s_003 rr:template "http://era.europa.eu/location#GEO/{Longitude}/{Latitude}".
+:pom_017 a rr:PredicateObjectMap.
+:map_location_000 rr:predicateObjectMap :pom_017.
+:pm_017 a rr:PredicateMap.
+:pom_017 rr:predicateMap :pm_017.
+:pm_017 rr:constant rdf:type.
+:pom_017 rr:objectMap :om_017.
+:om_017 a rr:ObjectMap;
     rr:constant "http://www.w3.org/2003/01/geo/wgs84_pos#Point";
     rr:termType rr:IRI.
-:pom_18 a rr:PredicateObjectMap.
-:map_location_0 rr:predicateObjectMap :pom_18.
-:pm_18 a rr:PredicateMap.
-:pom_18 rr:predicateMap :pm_18.
-:pm_18 rr:constant rdf:type.
-:pom_18 rr:objectMap :om_18.
-:om_18 a rr:ObjectMap;
+:pom_018 a rr:PredicateObjectMap.
+:map_location_000 rr:predicateObjectMap :pom_018.
+:pm_018 a rr:PredicateMap.
+:pom_018 rr:predicateMap :pm_018.
+:pm_018 rr:constant rdf:type.
+:pom_018 rr:objectMap :om_018.
+:om_018 a rr:ObjectMap;
     rr:constant "http://www.opengis.net/ont/geosparql#Geometry";
     rr:termType rr:IRI.
-:pom_19 a rr:PredicateObjectMap.
-:map_location_0 rr:predicateObjectMap :pom_19.
-:pm_19 a rr:PredicateMap.
-:pom_19 rr:predicateMap :pm_19.
-:pm_19 rr:constant wgs:latitude.
-:pom_19 rr:objectMap :om_19.
-:om_19 a rr:ObjectMap;
+:pom_019 a rr:PredicateObjectMap.
+:map_location_000 rr:predicateObjectMap :pom_019.
+:pm_019 a rr:PredicateMap.
+:pom_019 rr:predicateMap :pm_019.
+:pm_019 rr:constant wgs:lat.
+:pom_019 rr:objectMap :om_019.
+:om_019 a rr:ObjectMap;
     rml:reference "Latitude";
     rr:termType rr:Literal;
     rr:datatype xsd:double.
-:pom_20 a rr:PredicateObjectMap.
-:map_location_0 rr:predicateObjectMap :pom_20.
-:pm_20 a rr:PredicateMap.
-:pom_20 rr:predicateMap :pm_20.
-:pm_20 rr:constant wgs:longitude.
-:pom_20 rr:objectMap :om_20.
-:om_20 a rr:ObjectMap;
+:pom_020 a rr:PredicateObjectMap.
+:map_location_000 rr:predicateObjectMap :pom_020.
+:pm_020 a rr:PredicateMap.
+:pom_020 rr:predicateMap :pm_020.
+:pm_020 rr:constant wgs:long.
+:pom_020 rr:objectMap :om_020.
+:om_020 a rr:ObjectMap;
     rml:reference "Longitude";
     rr:termType rr:Literal;
     rr:datatype xsd:double.
-:pom_21 a rr:PredicateObjectMap.
-:map_location_0 rr:predicateObjectMap :pom_21.
-:pm_21 a rr:PredicateMap.
-:pom_21 rr:predicateMap :pm_21.
-:pm_21 rr:constant geosparql:asWKT.
-:pom_21 rr:objectMap :om_21.
-:om_21 a rr:ObjectMap;
+:pom_021 a rr:PredicateObjectMap.
+:map_location_000 rr:predicateObjectMap :pom_021.
+:pm_021 a rr:PredicateMap.
+:pom_021 rr:predicateMap :pm_021.
+:pm_021 rr:constant geosparql:asWKT.
+:pom_021 rr:objectMap :om_021.
+:om_021 a rr:ObjectMap;
     rr:template "POINT ({Longitude} {Latitude})";
     rr:termType rr:Literal;
     rr:datatype geosparql:wktLiteral.
-:map_op-type_0 rml:logicalSource :source_4.
-:source_4 a rml:LogicalSource;
+:rules_000 void:exampleResource :map_op-type_000.
+:map_op-type_000 rml:logicalSource :source_004.
+:source_004 a rml:LogicalSource;
     rml:source "data/op_types.csv";
     rml:referenceFormulation ql:CSV.
-:map_op-type_0 a rr:TriplesMap;
+:map_op-type_000 a rr:TriplesMap;
     rdfs:label "op-type".
-:s_4 a rr:SubjectMap.
-:map_op-type_0 rr:subjectMap :s_4.
-:s_4 rr:template "http://era.europa.eu/concepts/op-types#{type}".
-:map_eu-country_0 rml:logicalSource :source_5.
-:source_5 a rml:LogicalSource;
+:s_004 a rr:SubjectMap.
+:map_op-type_000 rr:subjectMap :s_004.
+:s_004 rr:template "http://era.europa.eu/concepts/op-types#{type}".
+:rules_000 void:exampleResource :map_eu-country_000.
+:map_eu-country_000 rml:logicalSource :source_005.
+:source_005 a rml:LogicalSource;
     rml:source "data/countries.csv";
     rml:referenceFormulation ql:CSV.
-:map_eu-country_0 a rr:TriplesMap;
+:map_eu-country_000 a rr:TriplesMap;
     rdfs:label "eu-country".
-:s_5 a rr:SubjectMap.
-:map_eu-country_0 rr:subjectMap :s_5.
-:s_5 rml:reference "eu".
-:om_6 a rr:ObjectMap;
-    rr:parentTriplesMap :map_eu-country_0;
-    rr:joinCondition :jc_0.
-:jc_0 rr:child "Code";
+:s_005 a rr:SubjectMap.
+:map_eu-country_000 rr:subjectMap :s_005.
+:s_005 rml:reference "eu".
+:om_006 a rr:ObjectMap;
+    rr:parentTriplesMap :map_eu-country_000;
+    rr:joinCondition :jc_000.
+:jc_000 rr:child "Code";
     rr:parent "code".
-:om_12 a rr:ObjectMap;
-    rr:parentTriplesMap :map_op-type_0;
-    rr:joinCondition :jc_1.
-:jc_1 rr:child "Value";
+:om_012 a rr:ObjectMap;
+    rr:parentTriplesMap :map_op-type_000;
+    rr:joinCondition :jc_001.
+:jc_001 rr:child "Value";
     rr:parent "label".

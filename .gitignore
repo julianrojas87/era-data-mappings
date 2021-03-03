@@ -1,2 +1,3 @@
 yarrrml-parser/
-knowledge-graph/
+ttl-merge/
+*.ttl

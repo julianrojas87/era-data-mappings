@@ -26,8 +26,9 @@ mappings:
     s: http://era.europa.eu/abstraction#NP_$(FROM_NODE)_$(UUID)_$(TO_NODE)
     po:
       - [a, era:NodePort]
-      - [wgs:latitude, $(Latitude), xsd:double]
-      - [wgs:longitude, $(Longitude), xsd:double]
+      - [rdfs:label, NP_$(FROM_NODE)_$(UUID)_$(TO_NODE)]
+      - [wgs:lat, $(Latitude), xsd:double]
+      - [wgs:long, $(Longitude), xsd:double]
       - [geosparql:asWKT, POINT ($(Longitude) $(Latitude)), geosparql:wktLiteral]
       - [era:belongsToNode, http://era.europa.eu/abstraction#MN_$(FROM_NODE)~iri]
   
@@ -42,7 +43,8 @@ mappings:
     s: http://era.europa.eu/abstraction#NP_$(TO_NODE)_$(UUID)_$(FROM_NODE)
     po:
       - [a, era:NodePort]
-      - [wgs:latitude, $(Latitude), xsd:double]
-      - [wgs:longitude, $(Longitude), xsd:double]
+      - [rdfs:label, NP_$(TO_NODE)_$(UUID)_$(FROM_NODE)]
+      - [wgs:lat, $(Latitude), xsd:double]
+      - [wgs:long, $(Longitude), xsd:double]
       - [geosparql:asWKT, POINT ($(Longitude) $(Latitude)), geosparql:wktLiteral]
       - [era:belongsToNode, http://era.europa.eu/abstraction#MN_$(TO_NODE)~iri]

@@ -27,6 +27,7 @@ mappings:
         - [grel:valueParameter2, "YES"]
     po:
       - [a, era:InternalNodeLink]
+      - [rdfs:label, INL_$(IncomingRemoteOP)_$(IncomingTrack)_$(UOPID)_$(OutgoingTrack)_$(OutgoingRemoteOP)]
       - [era:bidirectional, "true", xsd:boolean] # this is still uncertain
       - [era:startPort, http://era.europa.eu/abstraction#NP_$(UOPID)_$(IncomingTrack)_$(IncomingRemoteOP)~iri]
       - [era:endPort, http://era.europa.eu/abstraction#NP_$(UOPID)_$(OutgoingTrack)_$(OutgoingRemoteOP)~iri]

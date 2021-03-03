@@ -1,6 +1,6 @@
 # era-data-mappings
 
-[RML](https://rml.io) mappings to generate the ERA Knowledge Graph. The mappings are defined using the [YARRRML](https://rml.io/yarrrml/) syntax.
+[RML](https://rml.io) mappings to generate the ERA Knowledge Graph. The mappings are defined using the [YARRRML](https://rml.io/yarrrml/) syntax. See the latest changes in [CHANGELOG.md](https://github.com/julianrojas87/era-data-mappings/blob/master/CHANGELOG.md).
 
 ## Requirements
 
@@ -9,17 +9,17 @@
 
 ## Execute mappings
 
-The mappings can be executed using the `map-turtle.sh`  or `map-ntriples.sh` scripts. These scripts will run the mapping process for all the YARRRML files present in the `mappings/` folder. The resulting Linked Data files will be stored in the `knowledge-graph/` folder.
+The mappings can be executed using the `map-turtle.sh {x.x.x}` script where `x.x.x` should be replaced by the version number that wants to be generated. This script will run the mapping process for all the YARRRML files present in the `mappings/` folder. The resulting Linked Data files will be stored in the `knowledge-graph/` folder and will be merged and compressed into a single file.
 
 ```bash
-./map-turtle.sh
+./map-turtle.sh 1.2.2
 ```
 
 ## See also
 
 1. [ERA vocabulary](https://github.com/julianrojas87/era-vocabulary) which provides the formal definitions for the concepts, entities and properties used in the Knowledge Graph. The vocabulary is defined as an RDF ontology following the W3C standards and recommendations.
-2. [SPARQL query interface](https://test-linked.ec-dataplatform.eu/sparql) for the ERA Knowledge Graph.
-3. [TPF query interface](http://era.ilabt.imec.be/query/) for the ERA Knowledge Graph, based on the [Linked Data Fragments](https://linkeddatafragments.org/) approach and powered by [Comunica](https://comunica.dev/). 
+2. [ERA Reference Data](http://era.ilabt.imec.be/era-vocabulary/era-skos#) that includes [SKOS](http://www.w3.org/2004/02/skos/core)-based taxonomies related to the railway domain.
+3. [SPARQL query interface](https://linked.ec-dataplatform.eu/sparql) for the ERA Knowledge Graph. ERA's triples are contained within the named graph `https://linked.ec-dataplatform.eu/era`.
 
 ## Issues
 
