@@ -2,18 +2,59 @@
 
 [RML](https://rml.io) mappings to generate the ERA Knowledge Graph. The mappings are defined using the [YARRRML](https://rml.io/yarrrml/) syntax. See the latest changes in [CHANGELOG.md](https://github.com/julianrojas87/era-data-mappings/blob/master/CHANGELOG.md).
 
-## Requirements
-
-- Node.js
-- Java JRE
-
 ## Execute mappings
 
-The mappings can be executed using the `map-turtle.sh {x.x.x}` script where `x.x.x` should be replaced by the version number that wants to be generated. This script will run the mapping process for all the YARRRML files present in the `mappings/` folder. The resulting Linked Data files will be stored in the `knowledge-graph/` folder and will be merged and compressed into a single file.
+The mappings can be run in two different ways:
 
-```bash
-./map-turtle.sh 1.2.2
-```
+### Run WITH Docker
+
+This application have been dockerized to facilitate its execution. Follow the next steps:
+
+1. Make sure to have a recent version of [Docker](https://docs.docker.com/engine/install/) installed.
+
+2. Set the environment variables in the [`conf.env`](https://github.com/julianrojas87/era-data-mappings/blob/master/conf.env) file.
+
+3. Build the docker image:
+
+   ```bash
+   docker build -t era-data-mappings ./
+   ```
+
+4. Run the mapping process:
+
+   ```bash
+   docker run --volume=/path/to/output/folder:/opt/era-data-mappings/knowledge-graph --env-file=conf.env era-data-mappings
+   ```
+
+   Replace `/path/to/output/folder` in the `--volume` parameter for the path of the folder where you expect to store the resulting Knowledge Graph.
+
+### Run WITHOUT Docker
+
+To directly execute these mappings you need to install first:
+
+- [Node.js](https://nodejs.org/en/download/)  at least v12.
+- [Java JRE](https://openjdk.java.net/projects/jdk/11/) at least v11.
+
+Then follow the next steps:
+
+1. Replace the DB connection parameters for RINF and ERATV in each of the [YARRRML](https://github.com/julianrojas87/era-data-mappings/tree/master/mappings) mapping files that needs them. For example in [`operational-points.yml`](https://github.com/julianrojas87/era-data-mappings/blob/master/mappings/operational-points.yml)  only the connection parameters for RINF are needed:
+
+   ```yaml
+   connection: 
+       access: &host ${RINF_HOST} # e.g. //127.0.0.1:1434
+         username: ${RINF_USER} # e.g. SA
+         password: ${RINF_PWD} # e.g. your_password
+   ```
+
+2. Once all the mapping files have been properly configured, you can start the mapping process with the following command:
+
+   ```bash
+   ./map-turtle.sh x.x.x
+   ```
+
+   Replace `x.x.x` for the version number of your Knowledge Graph
+
+3. The resulting Linked Data files will be stored in the local `knowledge-graph/` folder and will be merged and compressed into a single file, but individual [`Turtle`](https://www.w3.org/TR/turtle/) files per mapping file will also be available.
 
 ## See also
 

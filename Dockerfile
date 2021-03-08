@@ -1,5 +1,6 @@
 # Start from a Node.js ready container
 FROM node:latest
+
 # Install OpenJDK-11
 RUN apt-get update \
     && apt-get install -y --no-install-recommends tzdata curl ca-certificates fontconfig locales \
@@ -46,6 +47,7 @@ RUN set -eux; \
 
 ENV JAVA_HOME=/opt/java/openjdk \
     PATH="/opt/java/openjdk/bin:$PATH"
+
 # Create a new directory for app files
 RUN mkdir -p /opt/era-data-mappings
 # Set working directory in the container
@@ -56,5 +58,8 @@ COPY . /opt/era-data-mappings/
 COPY mappings /opt/era-data-mappings
 # Set output volume path
 VOLUME [ "/opt/era-data-mappings/knowledge-graph" ]
-# Execute mappings
-CMD [ "./map-turtle.sh", "1.2.1" ]
+# Install envsub to parse environment variables at runtime
+RUN npm install -g envsub
+# Setup container's entrypoint script
+RUN chmod +x run.sh 
+ENTRYPOINT [ "./run.sh" ]
