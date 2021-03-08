@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 
 ### Features and Bug Fixes
 
+* KG built from latest RINF (05-02-2021) and ERATV (17-02-2021) versions
 * Use proper WGS84 predicates for lat and long. Fixes [#25](https://github.com/julianrojas87/era-data-mappings/issues/25).
 * Update YARRRML parser and RML Mapper to their latest versions
 * Add `rdfs:label` to abstraction entities. Fixes [#24](https://github.com/julianrojas87/era-data-mappings/issues/24).
