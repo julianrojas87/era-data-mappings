@@ -4,15 +4,6 @@ prefixes:
   rdfs: "http://www.w3.org/2000/01/rdf-schema#"
   era: "http://era.europa.eu/ns#"
   xsd: "http://www.w3.org/2001/XMLSchema#"
-variables:
-  connection: 
-    access: &host //10.10.160.21:1433
-    type: &typeMSSQL mssql
-    credentials: &credentials
-      username: SA
-      password: ChooChoo2020
-    queryFormulation: &queryFormulation sql2008 
-    referenceFormulation: &referenceFormulation csv
 
 mappings:
   #### Real internal node links based on external connectivity table ###

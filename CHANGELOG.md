@@ -4,10 +4,11 @@ All notable changes to this project will be documented in this file.
 
 ## [v1.2.1](https://github.com/julianrojas87/era-data-mappings/compare/v1.2.0...v1.2.1) (2021-03-03)
 
-### Raw Data: [ERA-KG-v1.2.1](https://github.com/julianrojas87/era-data-mappings/raw/master/knowledge-graph/era-kg-v1.2.1.ttl.gz)
+### Raw Data: [ERA-KG-v1.2.1](https://drive.google.com/file/d/1KofPzYx2ovgAz85rLuO5J98SEs2BjWbO/view?usp=sharing)
 
 ### Features and Bug Fixes
 
+* KG built from latest RINF (05-02-2021) and ERATV (17-02-2021) versions
 * Use proper WGS84 predicates for lat and long. Fixes [#25](https://github.com/julianrojas87/era-data-mappings/issues/25).
 * Update YARRRML parser and RML Mapper to their latest versions
 * Add `rdfs:label` to abstraction entities. Fixes [#24](https://github.com/julianrojas87/era-data-mappings/issues/24).
@@ -16,7 +17,7 @@ All notable changes to this project will be documented in this file.
 
 ## [v1.2.0](https://github.com/julianrojas87/era-data-mappings/compare/v1.1.1...v1.2.0) (2021-01-29)
 
-### Raw Data: [ERA-KG-v1.2.0](https://github.com/julianrojas87/era-data-mappings/raw/master/knowledge-graph/era-kg-v1.2.0.ttl.gz)
+### Raw Data: [ERA-KG-v1.2.0](https://drive.google.com/file/d/1Il85r_CnuoGMjcKLBF6f08ThllAslyLH/view?usp=sharing)
 
 ### Features and Bug Fixes
 
@@ -27,7 +28,7 @@ All notable changes to this project will be documented in this file.
 
 ## [v1.1.1](https://github.com/julianrojas87/era-data-mappings/compare/v1.1.0...v1.1.1) (2020-11-24)
 
-### Raw Data: [ERA-KG-v1.1.1](https://github.com/julianrojas87/era-data-mappings/raw/master/knowledge-graph/era-kg-v1.1.1.ttl.gz)
+### Raw Data: [ERA-KG-v1.1.1](https://drive.google.com/file/d/1hW1H3zMd33Jr0U8RwCBXv94XKE9Lh0KO/view?usp=sharing)
 
 ### Features and Bug Fixes
 
@@ -35,7 +36,7 @@ All notable changes to this project will be documented in this file.
 
 ## [v1.1.0](https://github.com/julianrojas87/era-data-mappings/compare/v1.0.0...v1.1.0) (2020-11-24)
 
-### Raw Data: [ERA-KG-v1.1.0](https://github.com/julianrojas87/era-data-mappings/raw/master/knowledge-graph/era-kg-v1.1.0.ttl.gz)
+### Raw Data: [ERA-KG-v1.1.0](https://drive.google.com/file/d/17WTVloUx5dNbibweP-cvL0U8b9TH4JO9/view?usp=sharing)
 
 ### Features and Bug Fixes
 
@@ -48,7 +49,7 @@ All notable changes to this project will be documented in this file.
 
 # [v1.0.0](https://github.com/julianrojas87/era-data-mappings/compare/v0.9.3...v1.0.0) (2020-10-21)
 
-### Raw Data: [ERA-KG-v1.0.0](https://github.com/julianrojas87/era-data-mappings/raw/master/knowledge-graph/era-kg-v1.0.0.ttl.gz)
+### Raw Data: [ERA-KG-v1.0.0](https://drive.google.com/file/d/1tHX6m-_W1xFfQrjJS31t-JQfc3tbtsRI/view?usp=sharing)
 
 ### Features and Bug Fixes
 
@@ -56,7 +57,7 @@ All notable changes to this project will be documented in this file.
 
 ## [v0.9.3](https://github.com/julianrojas87/era-data-mappings/compare/v0.9.2...v0.9.3) (2020-09-30)
 
-### Raw Data: [ERA-KG-v0.9.3](https://github.com/julianrojas87/era-data-mappings/raw/master/knowledge-graph/era-kg-v0.9.3.ttl.gz)
+### Raw Data: [ERA-KG-v0.9.3](https://drive.google.com/file/d/1XCqPDeKoBpbaMlaAha-dN1tLIU3h7yAR/view?usp=sharing)
 
 ### Features and Bug Fixes
 
@@ -64,7 +65,7 @@ All notable changes to this project will be documented in this file.
 
 ## [v0.9.2](https://github.com/julianrojas87/era-data-mappings/compare/v0.9.1...v0.9.2) (2020-09-30)
 
-### Raw Data: [ERA-KG-v0.9.2](https://github.com/julianrojas87/era-data-mappings/raw/master/knowledge-graph/era-kg-v0.9.2.ttl.gz)
+### Raw Data: [ERA-KG-v0.9.2](https://drive.google.com/file/d/1i1ji2SyAPR4jX8diU5PKfjqO5EbQ0ioA/view?usp=sharing)
 
 ### Features and Bug Fixes
 
@@ -79,7 +80,7 @@ All notable changes to this project will be documented in this file.
 
 ## [v0.9.1](https://github.com/julianrojas87/era-data-mappings/compare/v0.9.0...v0.9.1) (2020-09-09)
 
-### Raw Data: [ERA-KG-v0.9.1](https://github.com/julianrojas87/era-data-mappings/raw/master/knowledge-graph/era-kg-v0.9.1.ttl.gz)
+### Raw Data: [ERA-KG-v0.9.1](https://drive.google.com/file/d/1ic5uS5L8XHWxHOhMII5gxeI-m3vtxPM7/view?usp=sharing)
 
 ### Features and Bug Fixes
 
@@ -89,7 +90,7 @@ All notable changes to this project will be documented in this file.
 
 ## [v0.9.0](https://github.com/julianrojas87/era-data-mappings/compare/v0.3.9...v0.9.0) (2020-09-09)
 
-### Raw Data: [ERA-KG-v0.9.0](https://github.com/julianrojas87/era-data-mappings/raw/master/knowledge-graph/era-kg-v0.9.0.ttl.gz)
+### Raw Data: [ERA-KG-v0.9.0](https://drive.google.com/file/d/1hxBeMLSUrpGFpQVDI_zsymllvXe-D0ZB/view?usp=sharing)
 
 ### Features and Bug Fixes
 
@@ -105,7 +106,7 @@ All notable changes to this project will be documented in this file.
 * Add mappings for Class B taxonomy and map as a named entity
 * Remove unnecessary prefixes for "other" taxonomies
 * Add mappings for max speed cant deficiencies taxonomy and map as a named entity
-* Add mappings for gauge changeover facilites taxonomy and map as a named entity
+* Add mappings for gauge changeover facilities taxonomy and map as a named entity
 * Add mappings for emergency brakes taxonomy and map as a named entity
 * Add mappings for bake wight percentages taxonomy and map as a named entity
 * Map other axle bearing monitoring
@@ -116,7 +117,7 @@ All notable changes to this project will be documented in this file.
 
 ## v0.3.9
 
-### Raw Data: [ERA-KG-v0.3.9](https://github.com/julianrojas87/era-data-mappings/raw/master/knowledge-graph/era-kg-v0.3.9.ttl.gz)
+### Raw Data: [ERA-KG-v0.3.9](https://drive.google.com/file/d/1UsOJxtAQP6q4bhf-iF78GbC1qy4TjVJ7/view?usp=sharing)
 
 ### Features and Bug Fixes
 

@@ -1,0 +1,7 @@
+rml/
+knowledge-graph/
+ttl-merge/
+yarrrml-parser/
+*.md
+*.env
+LICENSE

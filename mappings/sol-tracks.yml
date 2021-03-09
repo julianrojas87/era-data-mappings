@@ -20,11 +20,11 @@ prefixes:
   era-lrs: "http://era.europa.eu/concepts/legacy-radio-systems#"
 variables:
   connection:
-    access: &host //10.10.160.21:1433
+    access: &host ${RINF_HOST}
     type: &typeMSSQL mssql
     credentials: &credentials
-      username: SA
-      password: ChooChoo2020
+      username: ${RINF_USER}
+      password: ${RINF_PWD}
     queryFormulation: &queryFormulation sql2008
     referenceFormulation: &referenceFormulation csv
 
