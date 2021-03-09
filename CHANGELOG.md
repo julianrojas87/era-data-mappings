@@ -13,7 +13,7 @@ All notable changes to this project will be documented in this file.
 * Update YARRRML parser and RML Mapper to their latest versions
 * Add `rdfs:label` to abstraction entities. Fixes [#24](https://github.com/julianrojas87/era-data-mappings/issues/24).
 * Adjust mapping execution script to merge and compress the resulting KG
-* Track the KG raw files using git-lfs
+* Dockerized application
 
 ## [v1.2.0](https://github.com/julianrojas87/era-data-mappings/compare/v1.1.1...v1.2.0) (2021-01-29)
 
