@@ -27,20 +27,24 @@ prefixes:
   era-lrs: "http://era.europa.eu/concepts/legacy-radio-systems#"
 variables:
   connection: 
-    access: &host //10.10.160.21:1433
+    accessRinf: &hostRinf ${RINF_HOST}
+    accessEratv: &hostEratv ${ERATV_HOST}
     type: &typeMSSQL mssql
-    credentials: &credentials
-      username: SA
-      password: ChooChoo2020
+    credentialsRinf: &credentialsRinf
+      username: ${RINF_USER}
+      password: ${RINF_PWD}
+    credentialsEratv: &credentialsEratv
+      username: ${ERATV_USER}
+      password: ${ERATV_PWD}
     queryFormulation: &queryFormulation sql2008 
     referenceFormulation: &referenceFormulation csv
 
 mappings:
   load-capability:
     sources:
-      - access: *host
+      - access: *hostRinf
         type: *typeMSSQL
-        credentials: *credentials
+        credentials: *credentialsRinf
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT CONCAT(LookupValues.[Value], '-' , TrackParameters.Value) AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.LookupValues WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.1.1.1.2.4') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
@@ -51,9 +55,9 @@ mappings:
 
   gauging-profile-rinf:
     sources:
-      - access: *host
+      - access: *hostRinf
         type: *typeMSSQL
-        credentials: *credentials
+        credentials: *credentialsRinf
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT LookupValues.[Value] FROM RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE Parameters.[Index] IN ('1.1.1.1.3.1.1') AND Parameters.ID = LookupValues.ParameterId;
@@ -64,9 +68,9 @@ mappings:
 
   gauging-profile-eratv:
     sources:
-      - access: *host
+      - access: *hostEratv
         type: *typeMSSQL
-        credentials: *credentials
+        credentials: *credentialsEratv
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId) AS ParameterValue, RegistrationParameters.OtherValue, REPLACE((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId), ' ', '_') AS ParameterURI, REPLACE(RegistrationParameters.OtherValue, ' ', '_') AS OtherURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.2.1'));
@@ -89,9 +93,9 @@ mappings:
   
   other-gauging-profile-eratv:
     sources:
-      - access: *host
+      - access: *hostEratv
         type: *typeMSSQL
-        credentials: *credentials
+        credentials: *credentialsEratv
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId) AS ParameterValue, RegistrationParameters.OtherValue, REPLACE((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId), ' ', '_') AS ParameterURI, REPLACE(RegistrationParameters.OtherValue, ' ', '_') AS OtherURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.2.1'));
@@ -114,9 +118,9 @@ mappings:
   
   axle-positions:
     sources:
-      - access: *host
+      - access: *hostEratv
         type: *typeMSSQL
-        credentials: *credentials
+        credentials: *credentialsEratv
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT RegistrationParameters.Value AS ParameterValue, REPLACE(RegistrationParameters.Value, ' ', '_') AS ParameterURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.5.3.4'));
@@ -127,9 +131,9 @@ mappings:
   
   train-detection-system:
     sources:
-      - access: *host
+      - access: *hostRinf
         type: *typeMSSQL
-        credentials: *credentials
+        credentials: *credentialsRinf
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT LookupValues.[Value] AS Label, REPLACE(LookupValues.[Value], ' ', '_') AS Value FROM RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE Parameters.[Index] IN ('1.1.1.3.7.1.1') AND Parameters.ID = LookupValues.ParameterId;
@@ -140,9 +144,9 @@ mappings:
   
   axle-bearing-monitoring:
     sources:
-      - access: *host
+      - access: *hostEratv
         type: *typeMSSQL
-        credentials: *credentials
+        credentials: *credentialsEratv
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId) AS ParameterValue, RegistrationParameters.OtherValue, REPLACE((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId), ' ', '_') AS ParameterURI, REPLACE(RegistrationParameters.OtherValue, ' ', '_') AS OtherURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.9.2'));
@@ -165,9 +169,9 @@ mappings:
   
   other-axle-bearing-monitoring:
     sources:
-      - access: *host
+      - access: *hostEratv
         type: *typeMSSQL
-        credentials: *credentials
+        credentials: *credentialsEratv
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId) AS ParameterValue, RegistrationParameters.OtherValue, REPLACE((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId), ' ', '_') AS ParameterURI, REPLACE(RegistrationParameters.OtherValue, ' ', '_') AS OtherURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.9.2'));
@@ -184,9 +188,9 @@ mappings:
   
   max-speed-cant-deficiency:
     sources:
-      - access: *host
+      - access: *hostEratv
         type: *typeMSSQL
-        credentials: *credentials
+        credentials: *credentialsEratv
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT RegistrationParameters.Value AS ParameterValue, REPLACE(RegistrationParameters.Value, ' ', '_') AS ParameterURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.6.4'));
@@ -197,9 +201,9 @@ mappings:
 
   rail-inclinations-eratv:
     sources:
-      - access: *host
+      - access: *hostEratv
         type: *typeMSSQL
-        credentials: *credentials
+        credentials: *credentialsEratv
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId) AS ParameterValue, RegistrationParameters.OtherValue, REPLACE((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId), ' ', '_') AS ParameterURI, REPLACE(RegistrationParameters.OtherValue, ' ', '_') AS OtherURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.6.5'));
@@ -222,9 +226,9 @@ mappings:
   
   rail-inclinations-rinf:
     sources:
-      - access: *host
+      - access: *hostRinf
         type: *typeMSSQL
-        credentials: *credentials
+        credentials: *credentialsRinf
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT TrackParameters.Value AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.1.4.3') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
@@ -235,9 +239,9 @@ mappings:
       
   other-rail-inclinations:
     sources:
-      - access: *host
+      - access: *hostEratv
         type: *typeMSSQL
-        credentials: *credentials
+        credentials: *credentialsEratv
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId) AS ParameterValue, RegistrationParameters.OtherValue, REPLACE((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId), ' ', '_') AS ParameterURI, REPLACE(RegistrationParameters.OtherValue, ' ', '_') AS OtherURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.6.5'));
@@ -254,9 +258,9 @@ mappings:
 
   gauge-changeover-facilities-eratv:
     sources:
-      - access: *host
+      - access: *hostEratv
         type: *typeMSSQL
-        credentials: *credentials
+        credentials: *credentialsEratv
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId) AS ParameterValue, RegistrationParameters.OtherValue, REPLACE((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId), ' ', '_') AS ParameterURI, REPLACE(RegistrationParameters.OtherValue, ' ', '_') AS OtherURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.1.11'));
@@ -279,9 +283,9 @@ mappings:
 
   other-gauge-changeover-facilities:
     sources:
-      - access: *host
+      - access: *hostEratv
         type: *typeMSSQL
-        credentials: *credentials
+        credentials: *credentialsEratv
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId) AS ParameterValue, RegistrationParameters.OtherValue, REPLACE((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId), ' ', '_') AS ParameterURI, REPLACE(RegistrationParameters.OtherValue, ' ', '_') AS OtherURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.1.11'));
@@ -298,9 +302,9 @@ mappings:
   
   emergency-braking-profiles:
     sources:
-      - access: *host
+      - access: *hostEratv
         type: *typeMSSQL
-        credentials: *credentials
+        credentials: *credentialsEratv
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT RegistrationParameters.Value AS ParameterValue, REPLACE(RegistrationParameters.Value, ' ', '_') AS ParameterURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.7.5'));
@@ -311,9 +315,9 @@ mappings:
   
   brake-weight-percentages:
     sources:
-      - access: *host
+      - access: *hostEratv
         type: *typeMSSQL
-        credentials: *credentials
+        credentials: *credentialsEratv
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT RegistrationParameters.Value AS ParameterValue, REPLACE(RegistrationParameters.Value, ' ', '_') AS ParameterURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.7.6'));
@@ -324,9 +328,9 @@ mappings:
 
   thermal-capacity-tsi:
     sources:
-      - access: *host
+      - access: *hostEratv
         type: *typeMSSQL
-        credentials: *credentials
+        credentials: *credentialsEratv
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue, REPLACE(CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)), ' ', '_') AS UriName FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.7.2.1.1'));
@@ -337,9 +341,9 @@ mappings:
   
   snow-ice-hail-conditions:
     sources:
-      - access: *host
+      - access: *hostEratv
         type: *typeMSSQL
-        credentials: *credentials
+        credentials: *credentialsEratv
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId) AS ParameterValue, RegistrationParameters.OtherValue, REPLACE((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId), ' ', '_') AS ParameterURI, REPLACE(RegistrationParameters.OtherValue, ' ', '_') AS OtherURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.3.3'));
@@ -362,9 +366,9 @@ mappings:
   
   other-snow-ice-hail-conditions:
     sources:
-      - access: *host
+      - access: *hostEratv
         type: *typeMSSQL
-        credentials: *credentials
+        credentials: *credentialsEratv
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId) AS ParameterValue, RegistrationParameters.OtherValue, REPLACE((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId), ' ', '_') AS ParameterURI, REPLACE(RegistrationParameters.OtherValue, ' ', '_') AS OtherURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.3.3'));
@@ -381,9 +385,9 @@ mappings:
   
   contact-line-systems:
     sources:
-      - access: *host
+      - access: *hostRinf
         type: *typeMSSQL
-        credentials: *credentials
+        credentials: *credentialsRinf
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue, REPLACE(CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, ''), ' ', '_') AS UriName FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.2.2.1.1') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
@@ -394,9 +398,9 @@ mappings:
   
   energy-supply-systems-eratv:
     sources:
-      - access: *host
+      - access: *hostEratv
         type: *typeMSSQL
-        credentials: *credentials
+        credentials: *credentialsEratv
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId) AS ParameterValue, RegistrationParameters.OtherValue, REPLACE((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId), ' ', '_') AS ParameterURI, REPLACE(RegistrationParameters.OtherValue, ' ', '_') AS OtherURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.10.1'));
@@ -419,9 +423,9 @@ mappings:
   
   energy-supply-systems-rinf:
     sources:
-      - access: *host
+      - access: *hostRinf
         type: *typeMSSQL
-        credentials: *credentials
+        credentials: *credentialsRinf
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT (SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID) AS ParameterValue, REPLACE((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), ' ', '_') AS ParameterURI FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.2.2.1.2') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
@@ -444,9 +448,9 @@ mappings:
       
   other-energy-supply-systems-eratv:
     sources:
-      - access: *host
+      - access: *hostEratv
         type: *typeMSSQL
-        credentials: *credentials
+        credentials: *credentialsEratv
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId) AS ParameterValue, RegistrationParameters.OtherValue, REPLACE((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId), ' ', '_') AS ParameterURI, REPLACE(RegistrationParameters.OtherValue, ' ', '_') AS OtherURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.10.1'));
@@ -463,9 +467,9 @@ mappings:
   
   tsi-pantograph-heads:
     sources:
-      - access: *host
+      - access: *hostRinf
         type: *typeMSSQL
-        credentials: *credentials
+        credentials: *credentialsRinf
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue, REPLACE(CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, ''), ' ', '_') AS UriName FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.2.3.1') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
@@ -477,9 +481,9 @@ mappings:
   
   other-pantograph-heads-rinf:
     sources:
-      - access: *host
+      - access: *hostRinf
         type: *typeMSSQL
-        credentials: *credentials
+        credentials: *credentialsRinf
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue, REPLACE(CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, ''), ' ', '_') AS UriName FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.2.3.2') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
@@ -491,9 +495,9 @@ mappings:
   
   contact-strip-materials-eratv:
     sources:
-      - access: *host
+      - access: *hostEratv
         type: *typeMSSQL
-        credentials: *credentials
+        credentials: *credentialsEratv
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId) AS ParameterValue, RegistrationParameters.OtherValue, REPLACE(LOWER((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)), ' ', '_') AS ParameterURI, REPLACE(RegistrationParameters.OtherValue, ' ', '_') AS OtherURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.10.10'));
@@ -516,9 +520,9 @@ mappings:
   
   contact-strip-materials-rinf:
     sources:
-      - access: *host
+      - access: *hostRinf
         type: *typeMSSQL
-        credentials: *credentials
+        credentials: *credentialsRinf
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT (SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID) AS ParameterValue, REPLACE((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), ' ', '_') AS ParameterURI FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.2.3.4') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
@@ -541,9 +545,9 @@ mappings:
       
   other-contact-strip-materials-eratv:
     sources:
-      - access: *host
+      - access: *hostEratv
         type: *typeMSSQL
-        credentials: *credentials
+        credentials: *credentialsEratv
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId) AS ParameterValue, RegistrationParameters.OtherValue, REPLACE((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId), ' ', '_') AS ParameterURI, REPLACE(RegistrationParameters.OtherValue, ' ', '_') AS OtherURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.10.10'));
@@ -560,9 +564,9 @@ mappings:
   
   platform-heights-eratv:
     sources:
-      - access: *host
+      - access: *hostEratv
         type: *typeMSSQL
-        credentials: *credentials
+        credentials: *credentialsEratv
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT SUBSTRING(TRIM((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)), 1, 3) AS ParameterValue, RegistrationParameters.OtherValue, REPLACE(RegistrationParameters.OtherValue, ' ', '_') AS OtherURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.12.3.1'));
@@ -585,9 +589,9 @@ mappings:
 
   platform-heights-rinf:
     sources:
-      - access: *host
+      - access: *hostRinf
         type: *typeMSSQL
-        credentials: *credentials
+        credentials: *credentialsRinf
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT LookupValues.[Value] AS ParameterValue FROM RINF.dbo.Parameters, RINF.dbo.PlatformParameters, RINF.dbo.LookupValues WHERE PlatformParameters.ParameterID = Parameters.ID AND PlatformParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.2.1.0.6.5');
@@ -610,9 +614,9 @@ mappings:
   
   other-platform-heights-eratv:
     sources:
-      - access: *host
+      - access: *hostEratv
         type: *typeMSSQL
-        credentials: *credentials
+        credentials: *credentialsEratv
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT SUBSTRING(TRIM((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)), 1, 3) AS ParameterValue, RegistrationParameters.OtherValue, REPLACE(RegistrationParameters.OtherValue, ' ', '_') AS OtherURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.12.3.1'));
@@ -629,9 +633,9 @@ mappings:
   
   gsm-r-networks:
     sources:
-      - access: *host
+      - access: *hostRinf
         type: *typeMSSQL
-        credentials: *credentials
+        credentials: *credentialsRinf
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue, REPLACE(CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, ''), ' ', '_') AS ParameterURI FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.3.3.5') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
@@ -642,9 +646,9 @@ mappings:
   
   train-protection-legacy-systems-rinf:
     sources:
-      - access: *host
+      - access: *hostRinf
         type: *typeMSSQL
-        credentials: *credentials
+        credentials: *credentialsRinf
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue, REPLACE(CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, ''), ' ', '_') AS ParameterURI FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.3.5.3') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
@@ -655,9 +659,9 @@ mappings:
   
   train-protection-legacy-systems-eratv:
     sources:
-      - access: *host
+      - access: *hostEratv
         type: *typeMSSQL
-        credentials: *credentials
+        credentials: *credentialsEratv
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId) AS ParameterValue, RegistrationParameters.OtherValue, REPLACE((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId), ' ', '_') AS ParameterURI, REPLACE(RegistrationParameters.OtherValue, ' ', '_') AS OtherURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.13.1.5'));
@@ -680,9 +684,9 @@ mappings:
     
   other-train-protection-legacy-systems:
     sources:
-      - access: *host
+      - access: *hostEratv
         type: *typeMSSQL
-        credentials: *credentials
+        credentials: *credentialsEratv
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId) AS ParameterValue, RegistrationParameters.OtherValue, REPLACE((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId), ' ', '_') AS ParameterURI, REPLACE(RegistrationParameters.OtherValue, ' ', '_') AS OtherURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.13.1.5'));
@@ -699,9 +703,9 @@ mappings:
   
   legacy-radio-systems-rinf:
     sources:
-      - access: *host
+      - access: *hostRinf
         type: *typeMSSQL
-        credentials: *credentials
+        credentials: *credentialsRinf
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue, REPLACE(CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, ''), ' ', '_') AS ParameterURI FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.3.6.1') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
@@ -738,9 +742,9 @@ mappings:
   
   legacy-radio-systems-eratv:
     sources:
-      - access: *host
+      - access: *hostEratv
         type: *typeMSSQL
-        credentials: *credentials
+        credentials: *credentialsEratv
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId) AS ParameterValue, RegistrationParameters.OtherValue, REPLACE((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId), ' ', '_') AS ParameterURI, REPLACE(RegistrationParameters.OtherValue, ' ', '_') AS OtherURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.13.2.3'));
@@ -763,9 +767,9 @@ mappings:
     
   other-legacy-radio-systems:
     sources:
-      - access: *host
+      - access: *hostEratv
         type: *typeMSSQL
-        credentials: *credentials
+        credentials: *credentialsEratv
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId) AS ParameterValue, RegistrationParameters.OtherValue, REPLACE((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId), ' ', '_') AS ParameterURI, REPLACE(RegistrationParameters.OtherValue, ' ', '_') AS OtherURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.13.1.5'));
