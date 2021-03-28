@@ -8,6 +8,7 @@ RUN apt-get update \
     && locale-gen en_US.UTF-8 \
     && rm -rf /var/lib/apt/lists/*
 
+ENV LC_ALL en_US.UTF-8
 ENV JAVA_VERSION jdk-11.0.10+9
 
 RUN set -eux; \
@@ -54,8 +55,6 @@ RUN mkdir -p /opt/era-data-mappings
 WORKDIR /opt/era-data-mappings
 # Copy source files
 COPY . /opt/era-data-mappings/
-# Copy YARRRML mappings
-COPY mappings /opt/era-data-mappings
 # Set output volume path
 VOLUME [ "/opt/era-data-mappings/knowledge-graph" ]
 # Install envsub to parse environment variables at runtime
