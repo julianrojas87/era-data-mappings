@@ -87,9 +87,9 @@ mappings:
             - [grel:valueParameter, $(RESTRICTION_CODES)]
             - [grel:string_sub, "2.7.7"]
 
-  vehicles-rsdr:
+  vehicles-rsrd:
     sources:
-      - ["data/wagons_rsdr.csv~csv"]
+      - ["data/wagons_rsrd.csv~csv"]
     s: "http://era.europa.eu/implementation#V_$(Wagon Number)"
     po:
       - [a, era:Vehicle]

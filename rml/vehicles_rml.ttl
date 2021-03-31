@@ -574,18 +574,18 @@
 :om_047 a rr:ObjectMap;
     rr:constant "http://era.europa.eu/concepts/restrictions#2.7.7";
     rr:termType rr:IRI.
-:rules_000 void:exampleResource :map_vehicles-rsdr_000.
-:map_vehicles-rsdr_000 rml:logicalSource :source_001.
+:rules_000 void:exampleResource :map_vehicles-rsrd_000.
+:map_vehicles-rsrd_000 rml:logicalSource :source_001.
 :source_001 a rml:LogicalSource;
-    rml:source "data/wagons_rsdr.csv";
+    rml:source "data/wagons_rsrd.csv";
     rml:referenceFormulation ql:CSV.
-:map_vehicles-rsdr_000 a rr:TriplesMap;
-    rdfs:label "vehicles-rsdr".
+:map_vehicles-rsrd_000 a rr:TriplesMap;
+    rdfs:label "vehicles-rsrd".
 :s_001 a rr:SubjectMap.
-:map_vehicles-rsdr_000 rr:subjectMap :s_001.
+:map_vehicles-rsrd_000 rr:subjectMap :s_001.
 :s_001 rr:template "http://era.europa.eu/implementation#V_{Wagon Number}".
 :pom_048 a rr:PredicateObjectMap.
-:map_vehicles-rsdr_000 rr:predicateObjectMap :pom_048.
+:map_vehicles-rsrd_000 rr:predicateObjectMap :pom_048.
 :pm_048 a rr:PredicateMap.
 :pom_048 rr:predicateMap :pm_048.
 :pm_048 rr:constant rdf:type.
@@ -594,7 +594,7 @@
     rr:constant "http://era.europa.eu/ns#Vehicle";
     rr:termType rr:IRI.
 :pom_049 a rr:PredicateObjectMap.
-:map_vehicles-rsdr_000 rr:predicateObjectMap :pom_049.
+:map_vehicles-rsrd_000 rr:predicateObjectMap :pom_049.
 :pm_049 a rr:PredicateMap.
 :pom_049 rr:predicateMap :pm_049.
 :pm_049 rr:constant era:vehicleNumber.
@@ -603,7 +603,7 @@
     rml:reference "Wagon Number";
     rr:termType rr:Literal.
 :pom_050 a rr:PredicateObjectMap.
-:map_vehicles-rsdr_000 rr:predicateObjectMap :pom_050.
+:map_vehicles-rsrd_000 rr:predicateObjectMap :pom_050.
 :pm_050 a rr:PredicateMap.
 :pom_050 rr:predicateMap :pm_050.
 :pm_050 rr:constant era:vehicleKeeper.
@@ -612,7 +612,7 @@
     rr:template "http://era.europa.eu/keepers#{Keeper}";
     rr:termType rr:IRI.
 :pom_051 a rr:PredicateObjectMap.
-:map_vehicles-rsdr_000 rr:predicateObjectMap :pom_051.
+:map_vehicles-rsrd_000 rr:predicateObjectMap :pom_051.
 :pm_051 a rr:PredicateMap.
 :pom_051 rr:predicateMap :pm_051.
 :pm_051 rr:constant era:vehicleType.
@@ -670,7 +670,7 @@
     rr:template "http://era.europa.eu/implementation#VT_{ERATVReference}";
     rr:termType rr:IRI.
 :pom_056 a rr:PredicateObjectMap.
-:map_vehicles-rsdr_000 rr:predicateObjectMap :pom_056.
+:map_vehicles-rsrd_000 rr:predicateObjectMap :pom_056.
 :pm_056 a rr:PredicateMap.
 :pom_056 rr:predicateMap :pm_056.
 :pm_056 rr:constant era:compositeBrakeBlockRetrofitted.
@@ -729,7 +729,7 @@
     rr:constant "true";
     rr:termType rr:Literal.
 :pom_061 a rr:PredicateObjectMap.
-:map_vehicles-rsdr_000 rr:predicateObjectMap :pom_061.
+:map_vehicles-rsrd_000 rr:predicateObjectMap :pom_061.
 :pm_061 a rr:PredicateMap.
 :pom_061 rr:predicateMap :pm_061.
 :pm_061 rr:constant era:compositeBrakeBlockRetrofitted.
@@ -788,7 +788,7 @@
     rr:constant "false";
     rr:termType rr:Literal.
 :pom_066 a rr:PredicateObjectMap.
-:map_vehicles-rsdr_000 rr:predicateObjectMap :pom_066.
+:map_vehicles-rsrd_000 rr:predicateObjectMap :pom_066.
 :pm_066 a rr:PredicateMap.
 :pom_066 rr:predicateMap :pm_066.
 :pm_066 rr:constant era:quieterRoutesExemptedCountry.
@@ -846,7 +846,7 @@
     rr:constant "http://publications.europa.eu/resource/authority/country/GRC";
     rr:termType rr:IRI.
 :pom_071 a rr:PredicateObjectMap.
-:map_vehicles-rsdr_000 rr:predicateObjectMap :pom_071.
+:map_vehicles-rsrd_000 rr:predicateObjectMap :pom_071.
 :pm_071 a rr:PredicateMap.
 :pom_071 rr:predicateMap :pm_071.
 :pm_071 rr:constant era:quieterRoutesExemptedCountry.
@@ -904,7 +904,7 @@
     rr:constant "http://publications.europa.eu/resource/authority/country/DEU";
     rr:termType rr:IRI.
 :pom_076 a rr:PredicateObjectMap.
-:map_vehicles-rsdr_000 rr:predicateObjectMap :pom_076.
+:map_vehicles-rsrd_000 rr:predicateObjectMap :pom_076.
 :pm_076 a rr:PredicateMap.
 :pom_076 rr:predicateMap :pm_076.
 :pm_076 rr:constant era:quieterRoutesExemptedCountry.
@@ -962,7 +962,7 @@
     rr:constant "http://publications.europa.eu/resource/authority/country/FRA";
     rr:termType rr:IRI.
 :pom_081 a rr:PredicateObjectMap.
-:map_vehicles-rsdr_000 rr:predicateObjectMap :pom_081.
+:map_vehicles-rsrd_000 rr:predicateObjectMap :pom_081.
 :pm_081 a rr:PredicateMap.
 :pom_081 rr:predicateMap :pm_081.
 :pm_081 rr:constant era:quieterRoutesExemptedCountry.
@@ -1020,7 +1020,7 @@
     rr:constant "http://publications.europa.eu/resource/authority/country/GBR";
     rr:termType rr:IRI.
 :pom_086 a rr:PredicateObjectMap.
-:map_vehicles-rsdr_000 rr:predicateObjectMap :pom_086.
+:map_vehicles-rsrd_000 rr:predicateObjectMap :pom_086.
 :pm_086 a rr:PredicateMap.
 :pom_086 rr:predicateMap :pm_086.
 :pm_086 rr:constant era:quieterRoutesExemptedCountry.
@@ -1078,7 +1078,7 @@
     rr:constant "http://publications.europa.eu/resource/authority/country/AUT";
     rr:termType rr:IRI.
 :pom_091 a rr:PredicateObjectMap.
-:map_vehicles-rsdr_000 rr:predicateObjectMap :pom_091.
+:map_vehicles-rsrd_000 rr:predicateObjectMap :pom_091.
 :pm_091 a rr:PredicateMap.
 :pom_091 rr:predicateMap :pm_091.
 :pm_091 rr:constant era:quieterRoutesExemptedCountry.
@@ -1136,7 +1136,7 @@
     rr:constant "http://publications.europa.eu/resource/authority/country/BEL";
     rr:termType rr:IRI.
 :pom_096 a rr:PredicateObjectMap.
-:map_vehicles-rsdr_000 rr:predicateObjectMap :pom_096.
+:map_vehicles-rsrd_000 rr:predicateObjectMap :pom_096.
 :pm_096 a rr:PredicateMap.
 :pom_096 rr:predicateMap :pm_096.
 :pm_096 rr:constant era:quieterRoutesExemptedCountry.
@@ -1194,7 +1194,7 @@
     rr:constant "http://publications.europa.eu/resource/authority/country/BGR";
     rr:termType rr:IRI.
 :pom_101 a rr:PredicateObjectMap.
-:map_vehicles-rsdr_000 rr:predicateObjectMap :pom_101.
+:map_vehicles-rsrd_000 rr:predicateObjectMap :pom_101.
 :pm_101 a rr:PredicateMap.
 :pom_101 rr:predicateMap :pm_101.
 :pm_101 rr:constant era:quieterRoutesExemptedCountry.
@@ -1252,7 +1252,7 @@
     rr:constant "http://publications.europa.eu/resource/authority/country/CHE";
     rr:termType rr:IRI.
 :pom_106 a rr:PredicateObjectMap.
-:map_vehicles-rsdr_000 rr:predicateObjectMap :pom_106.
+:map_vehicles-rsrd_000 rr:predicateObjectMap :pom_106.
 :pm_106 a rr:PredicateMap.
 :pom_106 rr:predicateMap :pm_106.
 :pm_106 rr:constant era:quieterRoutesExemptedCountry.
@@ -1310,7 +1310,7 @@
     rr:constant "http://publications.europa.eu/resource/authority/country/CYP";
     rr:termType rr:IRI.
 :pom_111 a rr:PredicateObjectMap.
-:map_vehicles-rsdr_000 rr:predicateObjectMap :pom_111.
+:map_vehicles-rsrd_000 rr:predicateObjectMap :pom_111.
 :pm_111 a rr:PredicateMap.
 :pom_111 rr:predicateMap :pm_111.
 :pm_111 rr:constant era:quieterRoutesExemptedCountry.
@@ -1368,7 +1368,7 @@
     rr:constant "http://publications.europa.eu/resource/authority/country/CZE";
     rr:termType rr:IRI.
 :pom_116 a rr:PredicateObjectMap.
-:map_vehicles-rsdr_000 rr:predicateObjectMap :pom_116.
+:map_vehicles-rsrd_000 rr:predicateObjectMap :pom_116.
 :pm_116 a rr:PredicateMap.
 :pom_116 rr:predicateMap :pm_116.
 :pm_116 rr:constant era:quieterRoutesExemptedCountry.
@@ -1426,7 +1426,7 @@
     rr:constant "http://publications.europa.eu/resource/authority/country/DNK";
     rr:termType rr:IRI.
 :pom_121 a rr:PredicateObjectMap.
-:map_vehicles-rsdr_000 rr:predicateObjectMap :pom_121.
+:map_vehicles-rsrd_000 rr:predicateObjectMap :pom_121.
 :pm_121 a rr:PredicateMap.
 :pom_121 rr:predicateMap :pm_121.
 :pm_121 rr:constant era:quieterRoutesExemptedCountry.
@@ -1484,7 +1484,7 @@
     rr:constant "http://publications.europa.eu/resource/authority/country/EST";
     rr:termType rr:IRI.
 :pom_126 a rr:PredicateObjectMap.
-:map_vehicles-rsdr_000 rr:predicateObjectMap :pom_126.
+:map_vehicles-rsrd_000 rr:predicateObjectMap :pom_126.
 :pm_126 a rr:PredicateMap.
 :pom_126 rr:predicateMap :pm_126.
 :pm_126 rr:constant era:quieterRoutesExemptedCountry.
@@ -1542,7 +1542,7 @@
     rr:constant "http://publications.europa.eu/resource/authority/country/ESP";
     rr:termType rr:IRI.
 :pom_131 a rr:PredicateObjectMap.
-:map_vehicles-rsdr_000 rr:predicateObjectMap :pom_131.
+:map_vehicles-rsrd_000 rr:predicateObjectMap :pom_131.
 :pm_131 a rr:PredicateMap.
 :pom_131 rr:predicateMap :pm_131.
 :pm_131 rr:constant era:quieterRoutesExemptedCountry.
@@ -1600,7 +1600,7 @@
     rr:constant "http://publications.europa.eu/resource/authority/country/FIN";
     rr:termType rr:IRI.
 :pom_136 a rr:PredicateObjectMap.
-:map_vehicles-rsdr_000 rr:predicateObjectMap :pom_136.
+:map_vehicles-rsrd_000 rr:predicateObjectMap :pom_136.
 :pm_136 a rr:PredicateMap.
 :pom_136 rr:predicateMap :pm_136.
 :pm_136 rr:constant era:quieterRoutesExemptedCountry.
@@ -1658,7 +1658,7 @@
     rr:constant "http://publications.europa.eu/resource/authority/country/HRV";
     rr:termType rr:IRI.
 :pom_141 a rr:PredicateObjectMap.
-:map_vehicles-rsdr_000 rr:predicateObjectMap :pom_141.
+:map_vehicles-rsrd_000 rr:predicateObjectMap :pom_141.
 :pm_141 a rr:PredicateMap.
 :pom_141 rr:predicateMap :pm_141.
 :pm_141 rr:constant era:quieterRoutesExemptedCountry.
@@ -1716,7 +1716,7 @@
     rr:constant "http://publications.europa.eu/resource/authority/country/HUN";
     rr:termType rr:IRI.
 :pom_146 a rr:PredicateObjectMap.
-:map_vehicles-rsdr_000 rr:predicateObjectMap :pom_146.
+:map_vehicles-rsrd_000 rr:predicateObjectMap :pom_146.
 :pm_146 a rr:PredicateMap.
 :pom_146 rr:predicateMap :pm_146.
 :pm_146 rr:constant era:quieterRoutesExemptedCountry.
@@ -1774,7 +1774,7 @@
     rr:constant "http://publications.europa.eu/resource/authority/country/IRL";
     rr:termType rr:IRI.
 :pom_151 a rr:PredicateObjectMap.
-:map_vehicles-rsdr_000 rr:predicateObjectMap :pom_151.
+:map_vehicles-rsrd_000 rr:predicateObjectMap :pom_151.
 :pm_151 a rr:PredicateMap.
 :pom_151 rr:predicateMap :pm_151.
 :pm_151 rr:constant era:quieterRoutesExemptedCountry.
@@ -1832,7 +1832,7 @@
     rr:constant "http://publications.europa.eu/resource/authority/country/ITA";
     rr:termType rr:IRI.
 :pom_156 a rr:PredicateObjectMap.
-:map_vehicles-rsdr_000 rr:predicateObjectMap :pom_156.
+:map_vehicles-rsrd_000 rr:predicateObjectMap :pom_156.
 :pm_156 a rr:PredicateMap.
 :pom_156 rr:predicateMap :pm_156.
 :pm_156 rr:constant era:quieterRoutesExemptedCountry.
@@ -1890,7 +1890,7 @@
     rr:constant "http://publications.europa.eu/resource/authority/country/LTU";
     rr:termType rr:IRI.
 :pom_161 a rr:PredicateObjectMap.
-:map_vehicles-rsdr_000 rr:predicateObjectMap :pom_161.
+:map_vehicles-rsrd_000 rr:predicateObjectMap :pom_161.
 :pm_161 a rr:PredicateMap.
 :pom_161 rr:predicateMap :pm_161.
 :pm_161 rr:constant era:quieterRoutesExemptedCountry.
@@ -1948,7 +1948,7 @@
     rr:constant "http://publications.europa.eu/resource/authority/country/LU";
     rr:termType rr:IRI.
 :pom_166 a rr:PredicateObjectMap.
-:map_vehicles-rsdr_000 rr:predicateObjectMap :pom_166.
+:map_vehicles-rsrd_000 rr:predicateObjectMap :pom_166.
 :pm_166 a rr:PredicateMap.
 :pom_166 rr:predicateMap :pm_166.
 :pm_166 rr:constant era:quieterRoutesExemptedCountry.
@@ -2006,7 +2006,7 @@
     rr:constant "http://publications.europa.eu/resource/authority/country/LVA";
     rr:termType rr:IRI.
 :pom_171 a rr:PredicateObjectMap.
-:map_vehicles-rsdr_000 rr:predicateObjectMap :pom_171.
+:map_vehicles-rsrd_000 rr:predicateObjectMap :pom_171.
 :pm_171 a rr:PredicateMap.
 :pom_171 rr:predicateMap :pm_171.
 :pm_171 rr:constant era:quieterRoutesExemptedCountry.
@@ -2064,7 +2064,7 @@
     rr:constant "http://publications.europa.eu/resource/authority/country/MLT";
     rr:termType rr:IRI.
 :pom_176 a rr:PredicateObjectMap.
-:map_vehicles-rsdr_000 rr:predicateObjectMap :pom_176.
+:map_vehicles-rsrd_000 rr:predicateObjectMap :pom_176.
 :pm_176 a rr:PredicateMap.
 :pom_176 rr:predicateMap :pm_176.
 :pm_176 rr:constant era:quieterRoutesExemptedCountry.
@@ -2122,7 +2122,7 @@
     rr:constant "http://publications.europa.eu/resource/authority/country/NLD";
     rr:termType rr:IRI.
 :pom_181 a rr:PredicateObjectMap.
-:map_vehicles-rsdr_000 rr:predicateObjectMap :pom_181.
+:map_vehicles-rsrd_000 rr:predicateObjectMap :pom_181.
 :pm_181 a rr:PredicateMap.
 :pom_181 rr:predicateMap :pm_181.
 :pm_181 rr:constant era:quieterRoutesExemptedCountry.
@@ -2180,7 +2180,7 @@
     rr:constant "http://publications.europa.eu/resource/authority/country/NOR";
     rr:termType rr:IRI.
 :pom_186 a rr:PredicateObjectMap.
-:map_vehicles-rsdr_000 rr:predicateObjectMap :pom_186.
+:map_vehicles-rsrd_000 rr:predicateObjectMap :pom_186.
 :pm_186 a rr:PredicateMap.
 :pom_186 rr:predicateMap :pm_186.
 :pm_186 rr:constant era:quieterRoutesExemptedCountry.
@@ -2238,7 +2238,7 @@
     rr:constant "http://publications.europa.eu/resource/authority/country/POL";
     rr:termType rr:IRI.
 :pom_191 a rr:PredicateObjectMap.
-:map_vehicles-rsdr_000 rr:predicateObjectMap :pom_191.
+:map_vehicles-rsrd_000 rr:predicateObjectMap :pom_191.
 :pm_191 a rr:PredicateMap.
 :pom_191 rr:predicateMap :pm_191.
 :pm_191 rr:constant era:quieterRoutesExemptedCountry.
@@ -2296,7 +2296,7 @@
     rr:constant "http://publications.europa.eu/resource/authority/country/PRT";
     rr:termType rr:IRI.
 :pom_196 a rr:PredicateObjectMap.
-:map_vehicles-rsdr_000 rr:predicateObjectMap :pom_196.
+:map_vehicles-rsrd_000 rr:predicateObjectMap :pom_196.
 :pm_196 a rr:PredicateMap.
 :pom_196 rr:predicateMap :pm_196.
 :pm_196 rr:constant era:quieterRoutesExemptedCountry.
@@ -2354,7 +2354,7 @@
     rr:constant "http://publications.europa.eu/resource/authority/country/ROU";
     rr:termType rr:IRI.
 :pom_201 a rr:PredicateObjectMap.
-:map_vehicles-rsdr_000 rr:predicateObjectMap :pom_201.
+:map_vehicles-rsrd_000 rr:predicateObjectMap :pom_201.
 :pm_201 a rr:PredicateMap.
 :pom_201 rr:predicateMap :pm_201.
 :pm_201 rr:constant era:quieterRoutesExemptedCountry.
@@ -2412,7 +2412,7 @@
     rr:constant "http://publications.europa.eu/resource/authority/country/SWE";
     rr:termType rr:IRI.
 :pom_206 a rr:PredicateObjectMap.
-:map_vehicles-rsdr_000 rr:predicateObjectMap :pom_206.
+:map_vehicles-rsrd_000 rr:predicateObjectMap :pom_206.
 :pm_206 a rr:PredicateMap.
 :pom_206 rr:predicateMap :pm_206.
 :pm_206 rr:constant era:quieterRoutesExemptedCountry.
@@ -2470,7 +2470,7 @@
     rr:constant "http://publications.europa.eu/resource/authority/country/SVN";
     rr:termType rr:IRI.
 :pom_211 a rr:PredicateObjectMap.
-:map_vehicles-rsdr_000 rr:predicateObjectMap :pom_211.
+:map_vehicles-rsrd_000 rr:predicateObjectMap :pom_211.
 :pm_211 a rr:PredicateMap.
 :pom_211 rr:predicateMap :pm_211.
 :pm_211 rr:constant era:quieterRoutesExemptedCountry.
