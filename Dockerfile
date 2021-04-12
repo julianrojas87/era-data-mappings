@@ -1,5 +1,11 @@
-# Start from a Node.js ready container
-FROM node:latest
+# Start from a Debian 
+FROM debian:latest
+
+# Install Node.js v14
+RUN apt-get update; apt-get install -y curl \
+    && curl -sL https://deb.nodesource.com/setup_14.x | bash - \
+    && apt-get install -y nodejs \
+    && curl -L https://www.npmjs.com/install.sh | sh
 
 # Install OpenJDK-11
 RUN apt-get update \
@@ -48,6 +54,13 @@ RUN set -eux; \
 
 ENV JAVA_HOME=/opt/java/openjdk \
     PATH="/opt/java/openjdk/bin:$PATH"
+
+# Install git
+RUN apt-get update && apt-get install -y git
+
+# Install GNU parallel (http://www.gnu.org/software/parallel/)
+RUN apt-get update \
+    && apt-get -y install parallel
 
 # Create a new directory for app files
 RUN mkdir -p /opt/era-data-mappings

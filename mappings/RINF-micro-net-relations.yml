@@ -1,0 +1,626 @@
+prefixes:
+  xsd: "http://www.w3.org/2001/XMLSchema#"
+  idlab-fn: "http://example.com/idlab/function/"
+  grel: "http://users.ugent.be/~bjdmeest/function/grel.ttl#"
+  rdfs: "http://www.w3.org/2000/01/rdf-schema#"
+  eu-country: "http://publications.europa.eu/resource/authority/country/"
+  era: "http://era.europa.eu/ns#"
+  era-nv: "http://era.europa.eu/concepts/navigabilities#"
+  era-pos: "http://era.europa.eu/concepts/relation-positions#"
+
+variables:
+  connection:
+    access: &host ${RINF_HOST}
+    type: &typeMSSQL mssql
+    credentials: &credentials
+      username: ${RINF_USER}
+      password: ${RINF_PWD}
+    queryFormulation: &queryFormulation sql2008
+    referenceFormulation: &referenceFormulation csv
+
+mappings:
+
+  # ----------------------Define Micro NetRelations for artificial net elements inside OPs---------------------
+
+  net-relations-in-out-1:
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT UICLines2.UICCode AS INCOMING_LINE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE LineNodes.OperationalPointID = OperationalPoints.ID AND LineNodes.ID = LineEdges2.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS INCOMING_REMOTE_OP, Tracks2.UUID AS INCOMING, LookupValues2.[Value] AS INCOMING_DIRECTION, TRIM(OP2.UOPID) AS UOPID, Tracks1.UUID AS OUTGOING, LookupValues1.[Value] AS OUTGOING_DIRECTION, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE LineNodes.OperationalPointID = OperationalPoints.ID AND LineNodes.ID = LineEdges1.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS OUTGOING_REMOTE_OP, UICLines1.UICCode AS OUTGOING_LINE FROM RINF.dbo.Tracks AS Tracks2, RINF.dbo.SOLTracks AS SOLTracks2, RINF.dbo.SectionOfLines AS SectionOfLines2, RINF.dbo.LookupValues AS LookupValues2, RINF.dbo.UICLines AS UICLines2, RINF.dbo.Tracks AS Tracks1, RINF.dbo.SOLTracks AS SOLTracks1, RINF.dbo.SectionOfLines AS SectionOfLines1, RINF.dbo.LookupValues AS LookupValues1, RINF.dbo.UICLines AS UICLines1, RINF.dbo.LineEdges AS LineEdges2, RINF.dbo.LineEdges AS LineEdges1, RINF.dbo.LineNodes AS LineNodes1, RINF.dbo.LineNodes AS LineNodes2, RINF.dbo.OperationalPoints AS OP1, RINF.dbo.OperationalPoints AS OP2, RINF.dbo.LookupValues, RINF.dbo.MemberStateVersions, RINF.dbo.MemberStates WHERE Tracks2.ID = SOLTracks2.TrackID AND Tracks2.VersionID = SOLTracks2.VersionID AND SOLTracks2.Direction = LookupValues2.ID AND SOLTracks2.SectionOfLineID = SectionOfLines2.ID AND SectionOfLines2.UICLineID = UICLines2.ID AND SectionOfLines2.VersionID = UICLines2.VersionID AND SectionOfLines2.LineEdgeID = LineEdges2.ID AND Tracks2.VersionID = LineEdges2.VersionID AND Tracks1.ID = SOLTracks1.TrackID AND Tracks1.VersionID = SOLTracks1.VersionID AND SOLTracks1.Direction = LookupValues1.ID AND SOLTracks1.SectionOfLineID = SectionOfLines1.ID AND SectionOfLines1.UICLineID = UICLines1.ID AND SectionOfLines1.VersionID = UICLines1.VersionID AND SectionOfLines1.LineEdgeID = LineEdges1.ID AND Tracks1.VersionID = LineEdges1.VersionID AND LineEdges2.LineNodeEndID = LineNodes2.ID AND LineEdges2.VersionID = LineNodes2.VersionID AND LineEdges1.LineNodeStartID = LineNodes1.ID AND LineEdges1.VersionID = LineNodes1.VersionID AND LineEdges1.ID != LineEdges2.ID AND LineNodes2.OperationalPointID = OP2.ID AND LineNodes1.OperationalPointID = OP1.ID AND LineNodes2.VersionID = OP2.VersionID AND LineNodes1.VersionID = OP1.VersionID AND SectionOfLines2.VersionID = MemberStateVersions.ID AND MemberStateVersions.MemberStateID = MemberStates.ID AND OP2.UOPID = OP1.UOPID AND OP1.[Type] = LookupValues.ID AND OP2.[Type] = LookupValues.ID AND MemberStates.Code != 'NO' AND OP1.UOPID NOT IN ('NLBHV', 'NLBKLA', 'NLBKP', 'NLBLOA', 'NLDB', 'NLDLD', 'NLHMLA', 'NLMAS', 'NLUT', 'NLUTZA', 'NLVTN');
+    s: http://era.europa.eu/topology/netRelations#$(INCOMING_LINE)_$(INCOMING_REMOTE_OP)_$(INCOMING)_$(UOPID)_$(INCOMING_REMOTE_OP)_$(INCOMING)_$(UOPID)_$(OUTGOING)_$(OUTGOING_REMOTE_OP)
+    po:
+      - [a, era:NetRelation]
+      - [era:elementA, http://era.europa.eu/topology/netElements#$(INCOMING_LINE)_$(INCOMING_REMOTE_OP)_$(INCOMING)_$(UOPID)~iri]
+      - [era:elementB, http://era.europa.eu/topology/netElements#$(INCOMING_REMOTE_OP)_$(INCOMING)_$(UOPID)_$(OUTGOING)_$(OUTGOING_REMOTE_OP)~iri]
+      - p: era:navigability
+        o: era-nv:AB~iri
+        condition:
+          function: idlab-fn:stringContainsOtherString
+          parameters:
+            - [idlab-fn:str, "NN,NB,BN"]
+            - [idlab-fn:otherStr, "$(INCOMING_DIRECTION)$(OUTGOING_DIRECTION)"]
+            - [idlab-fn:delimiter, ","]
+      - p: era:navigability
+        o: era-nv:BA~iri
+        condition:
+          function: idlab-fn:stringContainsOtherString
+          parameters:
+            - [idlab-fn:str, "OO,OB,BO"]
+            - [idlab-fn:otherStr, "$(INCOMING_DIRECTION)$(OUTGOING_DIRECTION)"]
+            - [idlab-fn:delimiter, ","]
+      - p: era:navigability
+        o: era-nv:None~iri
+        condition:
+          function: idlab-fn:stringContainsOtherString
+          parameters:
+            - [idlab-fn:str, "NO,ON"]
+            - [idlab-fn:otherStr, "$(INCOMING_DIRECTION)$(OUTGOING_DIRECTION)"]
+            - [idlab-fn:delimiter, ","]
+      - p: era:navigability
+        o: era-nv:Both~iri
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, "BB"]
+            - [grel:valueParameter2, "$(INCOMING_DIRECTION)$(OUTGOING_DIRECTION)"]
+      - p: era:positionOnA
+        o: era-pos:Start~iri
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, "O"]
+            - [grel:valueParameter2, "$(INCOMING_DIRECTION)"]
+      - p: era:positionOnA
+        o: era-pos:End~iri
+        condition:
+          function: idlab-fn:stringContainsOtherString
+          parameters:
+            - [idlab-fn:str, "N,B"]
+            - [idlab-fn:otherStr, "$(INCOMING_DIRECTION)"]
+            - [idlab-fn:delimiter, ","]
+      - p: era:positionOnB
+        o: era-pos:Start~iri
+        condition:
+          function: idlab-fn:stringContainsOtherString
+          parameters:
+            - [idlab-fn:str, "N,B"]
+            - [idlab-fn:otherStr, "$(OUTGOING_DIRECTION)"]
+            - [idlab-fn:delimiter, ","]
+      - p: era:positionOnB
+        o: era-pos:End~iri
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, "O"]
+            - [grel:valueParameter2, "$(OUTGOING_DIRECTION)"]
+
+  net-relations-in-out-2:
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT UICLines2.UICCode AS INCOMING_LINE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE LineNodes.OperationalPointID = OperationalPoints.ID AND LineNodes.ID = LineEdges2.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS INCOMING_REMOTE_OP, Tracks2.UUID AS INCOMING, LookupValues2.[Value] AS INCOMING_DIRECTION, TRIM(OP2.UOPID) AS UOPID, Tracks1.UUID AS OUTGOING, LookupValues1.[Value] AS OUTGOING_DIRECTION, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE LineNodes.OperationalPointID = OperationalPoints.ID AND LineNodes.ID = LineEdges1.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS OUTGOING_REMOTE_OP, UICLines1.UICCode AS OUTGOING_LINE FROM RINF.dbo.Tracks AS Tracks2, RINF.dbo.SOLTracks AS SOLTracks2, RINF.dbo.SectionOfLines AS SectionOfLines2, RINF.dbo.LookupValues AS LookupValues2, RINF.dbo.UICLines AS UICLines2, RINF.dbo.Tracks AS Tracks1, RINF.dbo.SOLTracks AS SOLTracks1, RINF.dbo.SectionOfLines AS SectionOfLines1, RINF.dbo.LookupValues AS LookupValues1, RINF.dbo.UICLines AS UICLines1, RINF.dbo.LineEdges AS LineEdges2, RINF.dbo.LineEdges AS LineEdges1, RINF.dbo.LineNodes AS LineNodes1, RINF.dbo.LineNodes AS LineNodes2, RINF.dbo.OperationalPoints AS OP1, RINF.dbo.OperationalPoints AS OP2, RINF.dbo.LookupValues, RINF.dbo.MemberStateVersions, RINF.dbo.MemberStates WHERE Tracks2.ID = SOLTracks2.TrackID AND Tracks2.VersionID = SOLTracks2.VersionID AND SOLTracks2.Direction = LookupValues2.ID AND SOLTracks2.SectionOfLineID = SectionOfLines2.ID AND SectionOfLines2.UICLineID = UICLines2.ID AND SectionOfLines2.VersionID = UICLines2.VersionID AND SectionOfLines2.LineEdgeID = LineEdges2.ID AND Tracks2.VersionID = LineEdges2.VersionID AND Tracks1.ID = SOLTracks1.TrackID AND Tracks1.VersionID = SOLTracks1.VersionID AND SOLTracks1.Direction = LookupValues1.ID AND SOLTracks1.SectionOfLineID = SectionOfLines1.ID AND SectionOfLines1.UICLineID = UICLines1.ID AND SectionOfLines1.VersionID = UICLines1.VersionID AND SectionOfLines1.LineEdgeID = LineEdges1.ID AND Tracks1.VersionID = LineEdges1.VersionID AND LineEdges2.LineNodeEndID = LineNodes2.ID AND LineEdges2.VersionID = LineNodes2.VersionID AND LineEdges1.LineNodeStartID = LineNodes1.ID AND LineEdges1.VersionID = LineNodes1.VersionID AND LineEdges1.ID != LineEdges2.ID AND LineNodes2.OperationalPointID = OP2.ID AND LineNodes1.OperationalPointID = OP1.ID AND LineNodes2.VersionID = OP2.VersionID AND LineNodes1.VersionID = OP1.VersionID AND SectionOfLines2.VersionID = MemberStateVersions.ID AND MemberStateVersions.MemberStateID = MemberStates.ID AND OP2.UOPID = OP1.UOPID AND OP1.[Type] = LookupValues.ID AND OP2.[Type] = LookupValues.ID AND MemberStates.Code != 'NO' AND OP1.UOPID NOT IN ('NLBHV', 'NLBKLA', 'NLBKP', 'NLBLOA', 'NLDB', 'NLDLD', 'NLHMLA', 'NLMAS', 'NLUT', 'NLUTZA', 'NLVTN');
+    s: http://era.europa.eu/topology/netRelations#$(INCOMING_REMOTE_OP)_$(INCOMING)_$(UOPID)_$(OUTGOING)_$(OUTGOING_REMOTE_OP)_$(OUTGOING_LINE)_$(UOPID)_$(OUTGOING)_$(OUTGOING_REMOTE_OP)
+    po:
+      - [a, era:NetRelation]
+      - [era:elementA, http://era.europa.eu/topology/netElements#$(INCOMING_REMOTE_OP)_$(INCOMING)_$(UOPID)_$(OUTGOING)_$(OUTGOING_REMOTE_OP)~iri]
+      - [era:elementB, http://era.europa.eu/topology/netElements#$(OUTGOING_LINE)_$(UOPID)_$(OUTGOING)_$(OUTGOING_REMOTE_OP)~iri]
+      - p: era:navigability
+        o: era-nv:AB~iri
+        condition:
+          function: idlab-fn:stringContainsOtherString
+          parameters:
+            - [idlab-fn:str, "NN,NB,BN"]
+            - [idlab-fn:otherStr, "$(INCOMING_DIRECTION)$(OUTGOING_DIRECTION)"]
+            - [idlab-fn:delimiter, ","]
+      - p: era:navigability
+        o: era-nv:BA~iri
+        condition:
+          function: idlab-fn:stringContainsOtherString
+          parameters:
+            - [idlab-fn:str, "OO,OB,BO"]
+            - [idlab-fn:otherStr, "$(INCOMING_DIRECTION)$(OUTGOING_DIRECTION)"]
+            - [idlab-fn:delimiter, ","]
+      - p: era:navigability
+        o: era-nv:None~iri
+        condition:
+          function: idlab-fn:stringContainsOtherString
+          parameters:
+            - [idlab-fn:str, "NO,ON"]
+            - [idlab-fn:otherStr, "$(INCOMING_DIRECTION)$(OUTGOING_DIRECTION)"]
+            - [idlab-fn:delimiter, ","]
+      - p: era:navigability
+        o: era-nv:Both~iri
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, "BB"]
+            - [grel:valueParameter2, "$(INCOMING_DIRECTION)$(OUTGOING_DIRECTION)"]
+      - p: era:positionOnA
+        o: era-pos:Start~iri
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, "O"]
+            - [grel:valueParameter2, "$(INCOMING_DIRECTION)"]
+      - p: era:positionOnA
+        o: era-pos:End~iri
+        condition:
+          function: idlab-fn:stringContainsOtherString
+          parameters:
+            - [idlab-fn:str, "N,B"]
+            - [idlab-fn:otherStr, "$(INCOMING_DIRECTION)"]
+            - [idlab-fn:delimiter, ","]
+      - p: era:positionOnB
+        o: era-pos:Start~iri
+        condition:
+          function: idlab-fn:stringContainsOtherString
+          parameters:
+            - [idlab-fn:str, "N,B"]
+            - [idlab-fn:otherStr, "$(OUTGOING_DIRECTION)"]
+            - [idlab-fn:delimiter, ","]
+      - p: era:positionOnB
+        o: era-pos:End~iri
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, "O"]
+            - [grel:valueParameter2, "$(OUTGOING_DIRECTION)"]
+  
+  net-relations-no-out-1:
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT UICLines2.UICCode AS INCOMING_LINE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE LineNodes.OperationalPointID = OperationalPoints.ID AND LineNodes.ID = LineEdges2.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS INCOMING_REMOTE_OP, Tracks2.UUID AS INCOMING, LookupValues2.[Value] AS INCOMING_DIRECTION, TRIM(OP2.UOPID) AS UOPID, Tracks1.UUID AS OUTGOING, LookupValues1.[Value] AS OUTGOING_DIRECTION, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE LineNodes.OperationalPointID = OperationalPoints.ID AND LineNodes.ID = LineEdges1.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS OUTGOING_REMOTE_OP, UICLines1.UICCode AS OUTGOING_LINE FROM RINF.dbo.Tracks AS Tracks2, RINF.dbo.SOLTracks AS SOLTracks2, RINF.dbo.SectionOfLines AS SectionOfLines2, RINF.dbo.LookupValues AS LookupValues2, RINF.dbo.UICLines AS UICLines2, RINF.dbo.Tracks AS Tracks1, RINF.dbo.SOLTracks AS SOLTracks1, RINF.dbo.SectionOfLines AS SectionOfLines1, RINF.dbo.LookupValues AS LookupValues1, RINF.dbo.UICLines AS UICLines1, RINF.dbo.LineEdges AS LineEdges2, RINF.dbo.LineEdges AS LineEdges1, RINF.dbo.LineNodes AS LineNodes1, RINF.dbo.LineNodes AS LineNodes2, RINF.dbo.OperationalPoints AS OP1, RINF.dbo.OperationalPoints AS OP2, RINF.dbo.LookupValues, RINF.dbo.MemberStateVersions, RINF.dbo.MemberStates WHERE Tracks2.ID = SOLTracks2.TrackID AND Tracks2.VersionID = SOLTracks2.VersionID AND SOLTracks2.Direction = LookupValues2.ID AND SOLTracks2.SectionOfLineID = SectionOfLines2.ID AND SectionOfLines2.UICLineID = UICLines2.ID AND SectionOfLines2.VersionID = UICLines2.VersionID AND SectionOfLines2.LineEdgeID = LineEdges2.ID AND Tracks2.VersionID = LineEdges2.VersionID AND Tracks1.ID = SOLTracks1.TrackID AND SOLTracks1.SectionOfLineID = SectionOfLines1.ID AND SectionOfLines1.UICLineID = UICLines1.ID AND SectionOfLines1.VersionID = UICLines1.VersionID AND SectionOfLines1.LineEdgeID = LineEdges1.ID AND Tracks1.VersionID = LineEdges1.VersionID AND Tracks1.VersionID = SOLTracks1.VersionID AND SOLTracks1.Direction = LookupValues1.ID AND Tracks2.ID != Tracks1.ID AND LineEdges2.LineNodeEndID = LineNodes2.ID AND LineEdges2.VersionID = LineNodes2.VersionID AND LineEdges1.LineNodeEndID = LineNodes1.ID AND LineEdges1.VersionID = LineNodes1.VersionID AND LineNodes2.OperationalPointID = OP2.ID AND LineNodes1.OperationalPointID = OP1.ID AND LineNodes2.VersionID = OP2.VersionID AND LineNodes1.VersionID = OP1.VersionID AND SectionOfLines2.VersionID = MemberStateVersions.ID AND MemberStateVersions.MemberStateID = MemberStates.ID AND OP2.UOPID = OP1.UOPID AND OP1.[Type] = LookupValues.ID AND OP2.[Type] = LookupValues.ID AND MemberStates.Code != 'NO' AND OP1.UOPID NOT IN ('NLBHV', 'NLBKLA', 'NLBKP', 'NLBLOA', 'NLDB', 'NLDLD', 'NLHMLA', 'NLMAS', 'NLUT', 'NLUTZA', 'NLVTN')
+    s: http://era.europa.eu/topology/netRelations#$(INCOMING_LINE)_$(INCOMING_REMOTE_OP)_$(INCOMING)_$(UOPID)_$(INCOMING_REMOTE_OP)_$(INCOMING)_$(UOPID)_$(OUTGOING)_$(OUTGOING_REMOTE_OP)
+    po:
+      - [a, era:NetRelation]
+      - [era:elementA, http://era.europa.eu/topology/netElements#$(INCOMING_LINE)_$(INCOMING_REMOTE_OP)_$(INCOMING)_$(UOPID)~iri]
+      - [era:elementB, http://era.europa.eu/topology/netElements#$(INCOMING_REMOTE_OP)_$(INCOMING)_$(UOPID)_$(OUTGOING)_$(OUTGOING_REMOTE_OP)~iri]
+      - p: era:navigability
+        o: era-nv:AB~iri
+        condition:
+          function: idlab-fn:stringContainsOtherString
+          parameters:
+            - [idlab-fn:str, "NO,NB,BO"]
+            - [idlab-fn:otherStr, "$(INCOMING_DIRECTION)$(OUTGOING_DIRECTION)"]
+            - [idlab-fn:delimiter, ","]
+      - p: era:navigability
+        o: era-nv:BA~iri
+        condition:
+          function: idlab-fn:stringContainsOtherString
+          parameters:
+            - [idlab-fn:str, "ON,OB,BN"]
+            - [idlab-fn:otherStr, "$(INCOMING_DIRECTION)$(OUTGOING_DIRECTION)"]
+            - [idlab-fn:delimiter, ","]
+      - p: era:navigability
+        o: era-nv:None~iri
+        condition:
+          function: idlab-fn:stringContainsOtherString
+          parameters:
+            - [idlab-fn:str, "NN,OO"]
+            - [idlab-fn:otherStr, "$(INCOMING_DIRECTION)$(OUTGOING_DIRECTION)"]
+            - [idlab-fn:delimiter, ","]
+      - p: era:navigability
+        o: era-nv:Both~iri
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, "BB"]
+            - [grel:valueParameter2, "$(INCOMING_DIRECTION)$(OUTGOING_DIRECTION)"]
+      - p: era:positionOnA
+        o: era-pos:Start~iri
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, "O"]
+            - [grel:valueParameter2, "$(INCOMING_DIRECTION)"]
+      - p: era:positionOnA
+        o: era-pos:End~iri
+        condition:
+          function: idlab-fn:stringContainsOtherString
+          parameters:
+            - [idlab-fn:str, "N,B"]
+            - [idlab-fn:otherStr, "$(INCOMING_DIRECTION)"]
+            - [idlab-fn:delimiter, ","]
+      - p: era:positionOnB
+        o: era-pos:Start~iri
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, "O"]
+            - [grel:valueParameter2, "$(OUTGOING_DIRECTION)"]
+      - p: era:positionOnB
+        o: era-pos:End~iri
+        condition:
+          function: idlab-fn:stringContainsOtherString
+          parameters:
+            - [idlab-fn:str, "N,B"]
+            - [idlab-fn:otherStr, "$(OUTGOING_DIRECTION)"]
+            - [idlab-fn:delimiter, ","]
+
+  net-relations-no-out-2:
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT UICLines2.UICCode AS INCOMING_LINE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE LineNodes.OperationalPointID = OperationalPoints.ID AND LineNodes.ID = LineEdges2.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS INCOMING_REMOTE_OP, Tracks2.UUID AS INCOMING, LookupValues2.[Value] AS INCOMING_DIRECTION, TRIM(OP2.UOPID) AS UOPID, Tracks1.UUID AS OUTGOING, LookupValues1.[Value] AS OUTGOING_DIRECTION, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE LineNodes.OperationalPointID = OperationalPoints.ID AND LineNodes.ID = LineEdges1.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS OUTGOING_REMOTE_OP, UICLines1.UICCode AS OUTGOING_LINE FROM RINF.dbo.Tracks AS Tracks2, RINF.dbo.SOLTracks AS SOLTracks2, RINF.dbo.SectionOfLines AS SectionOfLines2, RINF.dbo.LookupValues AS LookupValues2, RINF.dbo.UICLines AS UICLines2, RINF.dbo.Tracks AS Tracks1, RINF.dbo.SOLTracks AS SOLTracks1, RINF.dbo.SectionOfLines AS SectionOfLines1, RINF.dbo.LookupValues AS LookupValues1, RINF.dbo.UICLines AS UICLines1, RINF.dbo.LineEdges AS LineEdges2, RINF.dbo.LineEdges AS LineEdges1, RINF.dbo.LineNodes AS LineNodes1, RINF.dbo.LineNodes AS LineNodes2, RINF.dbo.OperationalPoints AS OP1, RINF.dbo.OperationalPoints AS OP2, RINF.dbo.LookupValues, RINF.dbo.MemberStateVersions, RINF.dbo.MemberStates WHERE Tracks2.ID = SOLTracks2.TrackID AND Tracks2.VersionID = SOLTracks2.VersionID AND SOLTracks2.Direction = LookupValues2.ID AND SOLTracks2.SectionOfLineID = SectionOfLines2.ID AND SectionOfLines2.UICLineID = UICLines2.ID AND SectionOfLines2.VersionID = UICLines2.VersionID AND SectionOfLines2.LineEdgeID = LineEdges2.ID AND Tracks2.VersionID = LineEdges2.VersionID AND Tracks1.ID = SOLTracks1.TrackID AND SOLTracks1.SectionOfLineID = SectionOfLines1.ID AND SectionOfLines1.UICLineID = UICLines1.ID AND SectionOfLines1.VersionID = UICLines1.VersionID AND SectionOfLines1.LineEdgeID = LineEdges1.ID AND Tracks1.VersionID = LineEdges1.VersionID AND Tracks1.VersionID = SOLTracks1.VersionID AND SOLTracks1.Direction = LookupValues1.ID AND Tracks2.ID != Tracks1.ID AND LineEdges2.LineNodeEndID = LineNodes2.ID AND LineEdges2.VersionID = LineNodes2.VersionID AND LineEdges1.LineNodeEndID = LineNodes1.ID AND LineEdges1.VersionID = LineNodes1.VersionID AND LineNodes2.OperationalPointID = OP2.ID AND LineNodes1.OperationalPointID = OP1.ID AND LineNodes2.VersionID = OP2.VersionID AND LineNodes1.VersionID = OP1.VersionID AND SectionOfLines2.VersionID = MemberStateVersions.ID AND MemberStateVersions.MemberStateID = MemberStates.ID AND OP2.UOPID = OP1.UOPID AND OP1.[Type] = LookupValues.ID AND OP2.[Type] = LookupValues.ID AND MemberStates.Code != 'NO' AND OP1.UOPID NOT IN ('NLBHV', 'NLBKLA', 'NLBKP', 'NLBLOA', 'NLDB', 'NLDLD', 'NLHMLA', 'NLMAS', 'NLUT', 'NLUTZA', 'NLVTN')
+    s: http://era.europa.eu/topology/netRelations#$(INCOMING_REMOTE_OP)_$(INCOMING)_$(UOPID)_$(OUTGOING)_$(OUTGOING_REMOTE_OP)_$(OUTGOING_LINE)_$(OUTGOING_REMOTE_OP)_$(OUTGOING)_$(UOPID)
+    po:
+      - [a, era:NetRelation]
+      - [era:elementA, http://era.europa.eu/topology/netElements#$(INCOMING_REMOTE_OP)_$(INCOMING)_$(UOPID)_$(OUTGOING)_$(OUTGOING_REMOTE_OP)~iri]
+      - [era:elementB, http://era.europa.eu/topology/netElements#$(OUTGOING_LINE)_$(OUTGOING_REMOTE_OP)_$(OUTGOING)_$(UOPID)~iri]
+      - p: era:navigability
+        o: era-nv:AB~iri
+        condition:
+          function: idlab-fn:stringContainsOtherString
+          parameters:
+            - [idlab-fn:str, "NO,NB,BO"]
+            - [idlab-fn:otherStr, "$(INCOMING_DIRECTION)$(OUTGOING_DIRECTION)"]
+            - [idlab-fn:delimiter, ","]
+      - p: era:navigability
+        o: era-nv:BA~iri
+        condition:
+          function: idlab-fn:stringContainsOtherString
+          parameters:
+            - [idlab-fn:str, "ON,OB,BN"]
+            - [idlab-fn:otherStr, "$(INCOMING_DIRECTION)$(OUTGOING_DIRECTION)"]
+            - [idlab-fn:delimiter, ","]
+      - p: era:navigability
+        o: era-nv:None~iri
+        condition:
+          function: idlab-fn:stringContainsOtherString
+          parameters:
+            - [idlab-fn:str, "NN,OO"]
+            - [idlab-fn:otherStr, "$(INCOMING_DIRECTION)$(OUTGOING_DIRECTION)"]
+            - [idlab-fn:delimiter, ","]
+      - p: era:navigability
+        o: era-nv:Both~iri
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, "BB"]
+            - [grel:valueParameter2, "$(INCOMING_DIRECTION)$(OUTGOING_DIRECTION)"]
+      - p: era:positionOnA
+        o: era-pos:Start~iri
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, "O"]
+            - [grel:valueParameter2, "$(INCOMING_DIRECTION)"]
+      - p: era:positionOnA
+        o: era-pos:End~iri
+        condition:
+          function: idlab-fn:stringContainsOtherString
+          parameters:
+            - [idlab-fn:str, "N,B"]
+            - [idlab-fn:otherStr, "$(INCOMING_DIRECTION)"]
+            - [idlab-fn:delimiter, ","]
+      - p: era:positionOnB
+        o: era-pos:Start~iri
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, "O"]
+            - [grel:valueParameter2, "$(OUTGOING_DIRECTION)"]
+      - p: era:positionOnB
+        o: era-pos:End~iri
+        condition:
+          function: idlab-fn:stringContainsOtherString
+          parameters:
+            - [idlab-fn:str, "N,B"]
+            - [idlab-fn:otherStr, "$(OUTGOING_DIRECTION)"]
+            - [idlab-fn:delimiter, ","]
+
+  net-relations-no-in-1:
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT UICLines2.UICCode AS INCOMING_LINE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE LineNodes.OperationalPointID = OperationalPoints.ID AND LineNodes.ID = LineEdges2.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS INCOMING_REMOTE_OP, Tracks2.UUID AS INCOMING, LookupValues2.[Value] AS INCOMING_DIRECTION, TRIM(OP2.UOPID) AS UOPID, Tracks1.UUID AS OUTGOING, LookupValues1.[Value] AS OUTGOING_DIRECTION, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE LineNodes.OperationalPointID = OperationalPoints.ID AND LineNodes.ID = LineEdges1.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS OUTGOING_REMOTE_OP, UICLines1.UICCode AS OUTGOING_LINE FROM RINF.dbo.Tracks AS Tracks2, RINF.dbo.SOLTracks AS SOLTracks2, RINF.dbo.SectionOfLines AS SectionOfLines2, RINF.dbo.LookupValues AS LookupValues2, RINF.dbo.UICLines AS UICLines2, RINF.dbo.Tracks AS Tracks1, RINF.dbo.SOLTracks AS SOLTracks1, RINF.dbo.SectionOfLines AS SectionOfLines1, RINF.dbo.LookupValues AS LookupValues1, RINF.dbo.UICLines AS UICLines1, RINF.dbo.LineEdges AS LineEdges2, RINF.dbo.LineEdges AS LineEdges1, RINF.dbo.LineNodes AS LineNodes1, RINF.dbo.LineNodes AS LineNodes2, RINF.dbo.OperationalPoints AS OP1, RINF.dbo.OperationalPoints AS OP2, RINF.dbo.LookupValues, RINF.dbo.MemberStateVersions, RINF.dbo.MemberStates WHERE Tracks2.ID = SOLTracks2.TrackID AND Tracks2.VersionID = SOLTracks2.VersionID AND SOLTracks2.Direction = LookupValues2.ID AND SOLTracks2.SectionOfLineID = SectionOfLines2.ID AND SectionOfLines2.UICLineID = UICLines2.ID AND SectionOfLines2.VersionID = UICLines2.VersionID AND SectionOfLines2.LineEdgeID = LineEdges2.ID AND Tracks2.VersionID = LineEdges2.VersionID AND Tracks1.ID = SOLTracks1.TrackID AND Tracks1.VersionID = SOLTracks1.VersionID AND SOLTracks1.Direction = LookupValues1.ID AND SOLTracks1.SectionOfLineID = SectionOfLines1.ID AND SectionOfLines1.UICLineID = UICLines1.ID AND SectionOfLines1.VersionID = UICLines1.VersionID AND SectionOfLines1.LineEdgeID = LineEdges1.ID AND Tracks1.VersionID = LineEdges1.VersionID AND Tracks2.ID != Tracks1.ID AND LineEdges2.LineNodeStartID = LineNodes2.ID AND LineEdges2.VersionID = LineNodes2.VersionID AND LineEdges1.LineNodeStartID = LineNodes1.ID AND LineEdges1.VersionID = LineNodes1.VersionID AND LineNodes2.OperationalPointID = OP2.ID AND LineNodes1.OperationalPointID = OP1.ID AND LineNodes2.VersionID = OP2.VersionID AND LineNodes1.VersionID = OP1.VersionID AND SectionOfLines2.VersionID = MemberStateVersions.ID AND MemberStateVersions.MemberStateID = MemberStates.ID AND OP2.UOPID = OP1.UOPID AND OP1.[Type] = LookupValues.ID AND OP2.[Type] = LookupValues.ID AND MemberStates.Code != 'NO' AND OP1.UOPID NOT IN ('NLBHV', 'NLBKLA', 'NLBKP', 'NLBLOA', 'NLDB', 'NLDLD', 'NLHMLA', 'NLMAS', 'NLUT', 'NLUTZA', 'NLVTN')
+    s: http://era.europa.eu/topology/netRelations#$(INCOMING_LINE)_$(UOPID)_$(INCOMING)_$(INCOMING_REMOTE_OP)_$(INCOMING_REMOTE_OP)_$(INCOMING)_$(UOPID)_$(OUTGOING)_$(OUTGOING_REMOTE_OP)
+    po:
+      - [a, era:NetRelation]
+      - [era:elementA, http://era.europa.eu/topology/netElements#$(INCOMING_LINE)_$(UOPID)_$(INCOMING)_$(INCOMING_REMOTE_OP)~iri]
+      - [era:elementB, http://era.europa.eu/topology/netElements#$(INCOMING_REMOTE_OP)_$(INCOMING)_$(UOPID)_$(OUTGOING)_$(OUTGOING_REMOTE_OP)~iri]
+      - p: era:navigability
+        o: era-nv:AB~iri
+        condition:
+          function: idlab-fn:stringContainsOtherString
+          parameters:
+            - [idlab-fn:str, "ON,BN,OB"]
+            - [idlab-fn:otherStr, "$(INCOMING_DIRECTION)$(OUTGOING_DIRECTION)"]
+            - [idlab-fn:delimiter, ","]
+      - p: era:navigability
+        o: era-nv:BA~iri
+        condition:
+          function: idlab-fn:stringContainsOtherString
+          parameters:
+            - [idlab-fn:str, "NO,BO,NB"]
+            - [idlab-fn:otherStr, "$(INCOMING_DIRECTION)$(OUTGOING_DIRECTION)"]
+            - [idlab-fn:delimiter, ","]
+      - p: era:navigability
+        o: era-nv:None~iri
+        condition:
+          function: idlab-fn:stringContainsOtherString
+          parameters:
+            - [idlab-fn:str, "NN,OO"]
+            - [idlab-fn:otherStr, "$(INCOMING_DIRECTION)$(OUTGOING_DIRECTION)"]
+            - [idlab-fn:delimiter, ","]
+      - p: era:navigability
+        o: era-nv:Both~iri
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, "BB"]
+            - [grel:valueParameter2, "$(INCOMING_DIRECTION)$(OUTGOING_DIRECTION)"]
+      - p: era:positionOnA
+        o: era-pos:Start~iri
+        condition:
+          function: idlab-fn:stringContainsOtherString
+          parameters:
+            - [idlab-fn:str, "N,B"]
+            - [idlab-fn:otherStr, "$(INCOMING_DIRECTION)"]
+            - [idlab-fn:delimiter, ","]
+      - p: era:positionOnA
+        o: era-pos:End~iri
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, "O"]
+            - [grel:valueParameter2, "$(INCOMING_DIRECTION)"]
+      - p: era:positionOnB
+        o: era-pos:Start~iri
+        condition:
+          function: idlab-fn:stringContainsOtherString
+          parameters:
+            - [idlab-fn:str, "N,B"]
+            - [idlab-fn:otherStr, "$(OUTGOING_DIRECTION)"]
+            - [idlab-fn:delimiter, ","]
+      - p: era:positionOnB
+        o: era-pos:End~iri
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, "O"]
+            - [grel:valueParameter2, "$(OUTGOING_DIRECTION)"]
+
+  net-relations-no-in-2:
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT UICLines2.UICCode AS INCOMING_LINE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE LineNodes.OperationalPointID = OperationalPoints.ID AND LineNodes.ID = LineEdges2.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS INCOMING_REMOTE_OP, Tracks2.UUID AS INCOMING, LookupValues2.[Value] AS INCOMING_DIRECTION, TRIM(OP2.UOPID) AS UOPID, Tracks1.UUID AS OUTGOING, LookupValues1.[Value] AS OUTGOING_DIRECTION, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE LineNodes.OperationalPointID = OperationalPoints.ID AND LineNodes.ID = LineEdges1.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS OUTGOING_REMOTE_OP, UICLines1.UICCode AS OUTGOING_LINE FROM RINF.dbo.Tracks AS Tracks2, RINF.dbo.SOLTracks AS SOLTracks2, RINF.dbo.SectionOfLines AS SectionOfLines2, RINF.dbo.LookupValues AS LookupValues2, RINF.dbo.UICLines AS UICLines2, RINF.dbo.Tracks AS Tracks1, RINF.dbo.SOLTracks AS SOLTracks1, RINF.dbo.SectionOfLines AS SectionOfLines1, RINF.dbo.LookupValues AS LookupValues1, RINF.dbo.UICLines AS UICLines1, RINF.dbo.LineEdges AS LineEdges2, RINF.dbo.LineEdges AS LineEdges1, RINF.dbo.LineNodes AS LineNodes1, RINF.dbo.LineNodes AS LineNodes2, RINF.dbo.OperationalPoints AS OP1, RINF.dbo.OperationalPoints AS OP2, RINF.dbo.LookupValues, RINF.dbo.MemberStateVersions, RINF.dbo.MemberStates WHERE Tracks2.ID = SOLTracks2.TrackID AND Tracks2.VersionID = SOLTracks2.VersionID AND SOLTracks2.Direction = LookupValues2.ID AND SOLTracks2.SectionOfLineID = SectionOfLines2.ID AND SectionOfLines2.UICLineID = UICLines2.ID AND SectionOfLines2.VersionID = UICLines2.VersionID AND SectionOfLines2.LineEdgeID = LineEdges2.ID AND Tracks2.VersionID = LineEdges2.VersionID AND Tracks1.ID = SOLTracks1.TrackID AND Tracks1.VersionID = SOLTracks1.VersionID AND SOLTracks1.Direction = LookupValues1.ID AND SOLTracks1.SectionOfLineID = SectionOfLines1.ID AND SectionOfLines1.UICLineID = UICLines1.ID AND SectionOfLines1.VersionID = UICLines1.VersionID AND SectionOfLines1.LineEdgeID = LineEdges1.ID AND Tracks1.VersionID = LineEdges1.VersionID AND Tracks2.ID != Tracks1.ID AND LineEdges2.LineNodeStartID = LineNodes2.ID AND LineEdges2.VersionID = LineNodes2.VersionID AND LineEdges1.LineNodeStartID = LineNodes1.ID AND LineEdges1.VersionID = LineNodes1.VersionID AND LineNodes2.OperationalPointID = OP2.ID AND LineNodes1.OperationalPointID = OP1.ID AND LineNodes2.VersionID = OP2.VersionID AND LineNodes1.VersionID = OP1.VersionID AND SectionOfLines2.VersionID = MemberStateVersions.ID AND MemberStateVersions.MemberStateID = MemberStates.ID AND OP2.UOPID = OP1.UOPID AND OP1.[Type] = LookupValues.ID AND OP2.[Type] = LookupValues.ID AND MemberStates.Code != 'NO' AND OP1.UOPID NOT IN ('NLBHV', 'NLBKLA', 'NLBKP', 'NLBLOA', 'NLDB', 'NLDLD', 'NLHMLA', 'NLMAS', 'NLUT', 'NLUTZA', 'NLVTN')
+    s: http://era.europa.eu/topology/netRelations#$(INCOMING_REMOTE_OP)_$(INCOMING)_$(UOPID)_$(OUTGOING)_$(OUTGOING_REMOTE_OP)_$(OUTGOING_LINE)_$(UOPID)_$(OUTGOING)_$(OUTGOING_REMOTE_OP)
+    po:
+      - [a, era:NetRelation]
+      - [era:elementA, http://era.europa.eu/topology/netElements#$(INCOMING_REMOTE_OP)_$(INCOMING)_$(UOPID)_$(OUTGOING)_$(OUTGOING_REMOTE_OP)~iri]
+      - [era:elementB, http://era.europa.eu/topology/netElements#$(OUTGOING_LINE)_$(UOPID)_$(OUTGOING)_$(OUTGOING_REMOTE_OP)~iri]
+      - p: era:navigability
+        o: era-nv:AB~iri
+        condition:
+          function: idlab-fn:stringContainsOtherString
+          parameters:
+            - [idlab-fn:str, "ON,BN,OB"]
+            - [idlab-fn:otherStr, "$(INCOMING_DIRECTION)$(OUTGOING_DIRECTION)"]
+            - [idlab-fn:delimiter, ","]
+      - p: era:navigability
+        o: era-nv:BA~iri
+        condition:
+          function: idlab-fn:stringContainsOtherString
+          parameters:
+            - [idlab-fn:str, "NO,BO,NB"]
+            - [idlab-fn:otherStr, "$(INCOMING_DIRECTION)$(OUTGOING_DIRECTION)"]
+            - [idlab-fn:delimiter, ","]
+      - p: era:navigability
+        o: era-nv:None~iri
+        condition:
+          function: idlab-fn:stringContainsOtherString
+          parameters:
+            - [idlab-fn:str, "NN,OO"]
+            - [idlab-fn:otherStr, "$(INCOMING_DIRECTION)$(OUTGOING_DIRECTION)"]
+            - [idlab-fn:delimiter, ","]
+      - p: era:navigability
+        o: era-nv:Both~iri
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, "BB"]
+            - [grel:valueParameter2, "$(INCOMING_DIRECTION)$(OUTGOING_DIRECTION)"]
+      - p: era:positionOnA
+        o: era-pos:Start~iri
+        condition:
+          function: idlab-fn:stringContainsOtherString
+          parameters:
+            - [idlab-fn:str, "N,B"]
+            - [idlab-fn:otherStr, "$(INCOMING_DIRECTION)"]
+            - [idlab-fn:delimiter, ","]
+      - p: era:positionOnA
+        o: era-pos:End~iri
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, "O"]
+            - [grel:valueParameter2, "$(INCOMING_DIRECTION)"]
+      - p: era:positionOnB
+        o: era-pos:Start~iri
+        condition:
+          function: idlab-fn:stringContainsOtherString
+          parameters:
+            - [idlab-fn:str, "N,B"]
+            - [idlab-fn:otherStr, "$(OUTGOING_DIRECTION)"]
+            - [idlab-fn:delimiter, ","]
+      - p: era:positionOnB
+        o: era-pos:End~iri
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, "O"]
+            - [grel:valueParameter2, "$(OUTGOING_DIRECTION)"]
+
+
+  # ----------------------Define Micro NetRelations for real net elements inside OPs---------------------
+
+  net-relations-connectivity-table-1:
+    sources:
+      - ["data/op_internal_connectivity.csv~csv"]
+    s: http://era.europa.eu/topology/netRelations#$(INCOMING_LINE)_$(INCOMING_REMOTE_OP)_$(INCOMING)_$(UOPID)_$(INCOMING_REMOTE_OP)_$(INCOMING)_$(UOPID)_$(OUTGOING)_$(OUTGOING_REMOTE_OP)
+    condition:
+      function: idlab-fn:equal
+      parameters:
+        - [grel:valueParameter, $(Connected)]
+        - [grel:valueParameter2, "YES"]
+    po:
+      - [a, era:NetRelation]
+      - [era:elementA, http://era.europa.eu/topology/netElements#$(INCOMING_LINE)_$(INCOMING_REMOTE_OP)_$(INCOMING)_$(UOPID)~iri]
+      - [era:elementB, http://era.europa.eu/topology/netElements#$(INCOMING_REMOTE_OP)_$(INCOMING)_$(UOPID)_$(OUTGOING)_$(OUTGOING_REMOTE_OP)~iri]
+      - p: era:navigability
+        o: era-nv:AB~iri
+        condition:
+          function: idlab-fn:stringContainsOtherString
+          parameters:
+            - [idlab-fn:str, "NN,NB,BN"]
+            - [idlab-fn:otherStr, "$(INCOMING_DIRECTION)$(OUTGOING_DIRECTION)"]
+            - [idlab-fn:delimiter, ","]
+      - p: era:navigability
+        o: era-nv:BA~iri
+        condition:
+          function: idlab-fn:stringContainsOtherString
+          parameters:
+            - [idlab-fn:str, "OO,OB,BO"]
+            - [idlab-fn:otherStr, "$(INCOMING_DIRECTION)$(OUTGOING_DIRECTION)"]
+            - [idlab-fn:delimiter, ","]
+      - p: era:navigability
+        o: era-nv:None~iri
+        condition:
+          function: idlab-fn:stringContainsOtherString
+          parameters:
+            - [idlab-fn:str, "NO,ON"]
+            - [idlab-fn:otherStr, "$(INCOMING_DIRECTION)$(OUTGOING_DIRECTION)"]
+            - [idlab-fn:delimiter, ","]
+      - p: era:navigability
+        o: era-nv:Both~iri
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, "BB"]
+            - [grel:valueParameter2, "$(INCOMING_DIRECTION)$(OUTGOING_DIRECTION)"]
+      - p: era:positionOnA
+        o: era-pos:Start~iri
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, "O"]
+            - [grel:valueParameter2, "$(INCOMING_DIRECTION)"]
+      - p: era:positionOnA
+        o: era-pos:End~iri
+        condition:
+          function: idlab-fn:stringContainsOtherString
+          parameters:
+            - [idlab-fn:str, "N,B"]
+            - [idlab-fn:otherStr, "$(INCOMING_DIRECTION)"]
+            - [idlab-fn:delimiter, ","]
+      - p: era:positionOnB
+        o: era-pos:Start~iri
+        condition:
+          function: idlab-fn:stringContainsOtherString
+          parameters:
+            - [idlab-fn:str, "N,B"]
+            - [idlab-fn:otherStr, "$(OUTGOING_DIRECTION)"]
+            - [idlab-fn:delimiter, ","]
+      - p: era:positionOnB
+        o: era-pos:End~iri
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, "O"]
+            - [grel:valueParameter2, "$(OUTGOING_DIRECTION)"]
+
+  net-relations-connectivity-table-2:
+    sources:
+      - ["data/op_internal_connectivity.csv~csv"]
+    s: http://era.europa.eu/topology/netRelations#$(INCOMING_REMOTE_OP)_$(INCOMING)_$(UOPID)_$(OUTGOING)_$(OUTGOING_REMOTE_OP)_$(OUTGOING_LINE)_$(UOPID)_$(OUTGOING)_$(OUTGOING_REMOTE_OP)
+    condition:
+      function: idlab-fn:equal
+      parameters:
+        - [grel:valueParameter, $(Connected)]
+        - [grel:valueParameter2, "YES"]
+    po:
+      - [a, era:NetRelation]
+      - [era:elementA, http://era.europa.eu/topology/netElements#$(INCOMING_REMOTE_OP)_$(INCOMING)_$(UOPID)_$(OUTGOING)_$(OUTGOING_REMOTE_OP)~iri]
+      - [era:elementB, http://era.europa.eu/topology/netElements#$(OUTGOING_LINE)_$(UOPID)_$(OUTGOING)_$(OUTGOING_REMOTE_OP)~iri]
+      - p: era:navigability
+        o: era-nv:AB~iri
+        condition:
+          function: idlab-fn:stringContainsOtherString
+          parameters:
+            - [idlab-fn:str, "NN,NB,BN"]
+            - [idlab-fn:otherStr, "$(INCOMING_DIRECTION)$(OUTGOING_DIRECTION)"]
+            - [idlab-fn:delimiter, ","]
+      - p: era:navigability
+        o: era-nv:BA~iri
+        condition:
+          function: idlab-fn:stringContainsOtherString
+          parameters:
+            - [idlab-fn:str, "OO,OB,BO"]
+            - [idlab-fn:otherStr, "$(INCOMING_DIRECTION)$(OUTGOING_DIRECTION)"]
+            - [idlab-fn:delimiter, ","]
+      - p: era:navigability
+        o: era-nv:None~iri
+        condition:
+          function: idlab-fn:stringContainsOtherString
+          parameters:
+            - [idlab-fn:str, "NO,ON"]
+            - [idlab-fn:otherStr, "$(INCOMING_DIRECTION)$(OUTGOING_DIRECTION)"]
+            - [idlab-fn:delimiter, ","]
+      - p: era:navigability
+        o: era-nv:Both~iri
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, "BB"]
+            - [grel:valueParameter2, "$(INCOMING_DIRECTION)$(OUTGOING_DIRECTION)"]
+      - p: era:positionOnA
+        o: era-pos:Start~iri
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, "O"]
+            - [grel:valueParameter2, "$(INCOMING_DIRECTION)"]
+      - p: era:positionOnA
+        o: era-pos:End~iri
+        condition:
+          function: idlab-fn:stringContainsOtherString
+          parameters:
+            - [idlab-fn:str, "N,B"]
+            - [idlab-fn:otherStr, "$(INCOMING_DIRECTION)"]
+            - [idlab-fn:delimiter, ","]
+      - p: era:positionOnB
+        o: era-pos:Start~iri
+        condition:
+          function: idlab-fn:stringContainsOtherString
+          parameters:
+            - [idlab-fn:str, "N,B"]
+            - [idlab-fn:otherStr, "$(OUTGOING_DIRECTION)"]
+            - [idlab-fn:delimiter, ","]
+      - p: era:positionOnB
+        o: era-pos:End~iri
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, "O"]
+            - [grel:valueParameter2, "$(OUTGOING_DIRECTION)"]

@@ -1,0 +1,1211 @@
+prefixes:
+  idlab-fn: "http://example.com/idlab/function/"
+  grel: "http://users.ugent.be/~bjdmeest/function/grel.ttl#"
+  rdfs: "http://www.w3.org/2000/01/rdf-schema#"
+  era: "http://era.europa.eu/ns#"
+  xsd: "http://www.w3.org/2001/XMLSchema#"
+  era-nv: "http://era.europa.eu/concepts/navigabilities#"
+
+mappings:
+
+  # ------------Define Meso <netRelation>s--------------
+  
+  ARB-meso-net-relations:
+    source:
+      - [data/norway-railml/ARB.railml~xpath, "//netRelation[not(@navigability)]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netRelations#"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementA/@ref)"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementB/@ref)"]
+    po:
+      - [a, era:NetRelation]
+      - p: era:elementA
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementA/@ref)"]
+          type: iri
+      - p: era:elementB
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementB/@ref)"]
+          type: iri
+
+  BB-meso-net-relations:
+    source:
+      - [data/norway-railml/BB.railml~xpath, "//netRelation[not(@navigability)]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netRelations#"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementA/@ref)"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementB/@ref)"]
+    po:
+      - [a, era:NetRelation]
+      - p: era:elementA
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementA/@ref)"]
+          type: iri
+      - p: era:elementB
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementB/@ref)"]
+          type: iri
+
+  BRB-meso-net-relations:
+    source:
+      - [data/norway-railml/BRB.railml~xpath, "//netRelation[not(@navigability)]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netRelations#"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementA/@ref)"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementB/@ref)"]
+    po:
+      - [a, era:NetRelation]
+      - p: era:elementA
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementA/@ref)"]
+          type: iri
+      - p: era:elementB
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementB/@ref)"]
+          type: iri
+
+  DB1-meso-net-relations:
+    source:
+      - [data/norway-railml/DB1.railml~xpath, "//netRelation[not(@navigability)]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netRelations#"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementA/@ref)"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementB/@ref)"]
+    po:
+      - [a, era:NetRelation]
+      - p: era:elementA
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementA/@ref)"]
+          type: iri
+      - p: era:elementB
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementB/@ref)"]
+          type: iri
+
+  DB2-meso-net-relations:
+    source:
+      - [data/norway-railml/DB2.railml~xpath, "//netRelation[not(@navigability)]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netRelations#"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementA/@ref)"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementB/@ref)"]
+    po:
+      - [a, era:NetRelation]
+      - p: era:elementA
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementA/@ref)"]
+          type: iri
+      - p: era:elementB
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementB/@ref)"]
+          type: iri
+
+  DOB1-meso-net-relations:
+    source:
+      - [data/norway-railml/DOB1.railml~xpath, "//netRelation[not(@navigability)]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netRelations#"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementA/@ref)"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementB/@ref)"]
+    po:
+      - [a, era:NetRelation]
+      - p: era:elementA
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementA/@ref)"]
+          type: iri
+      - p: era:elementB
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementB/@ref)"]
+          type: iri
+
+  DOB2-meso-net-relations:
+    source:
+      - [data/norway-railml/DOB2.railml~xpath, "//netRelation[not(@navigability)]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netRelations#"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementA/@ref)"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementB/@ref)"]
+    po:
+      - [a, era:NetRelation]
+      - p: era:elementA
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementA/@ref)"]
+          type: iri
+      - p: era:elementB
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementB/@ref)"]
+          type: iri
+
+  DOB3-meso-net-relations:
+    source:
+      - [data/norway-railml/DOB3.railml~xpath, "//netRelation[not(@navigability)]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netRelations#"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementA/@ref)"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementB/@ref)"]
+    po:
+      - [a, era:NetRelation]
+      - p: era:elementA
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementA/@ref)"]
+          type: iri
+      - p: era:elementB
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementB/@ref)"]
+          type: iri
+
+  DOB4-meso-net-relations:
+    source:
+      - [data/norway-railml/DOB4.railml~xpath, "//netRelation[not(@navigability)]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netRelations#"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementA/@ref)"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementB/@ref)"]
+    po:
+      - [a, era:NetRelation]
+      - p: era:elementA
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementA/@ref)"]
+          type: iri
+      - p: era:elementB
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementB/@ref)"]
+          type: iri
+
+  FLB-meso-net-relations:
+    source:
+      - [data/norway-railml/FLB.railml~xpath, "//netRelation[not(@navigability)]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netRelations#"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementA/@ref)"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementB/@ref)"]
+    po:
+      - [a, era:NetRelation]
+      - p: era:elementA
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementA/@ref)"]
+          type: iri
+      - p: era:elementB
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementB/@ref)"]
+          type: iri
+  
+  GB-meso-net-relations:
+    source:
+      - [data/norway-railml/GB.railml~xpath, "//netRelation[not(@navigability)]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netRelations#"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementA/@ref)"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementB/@ref)"]
+    po:
+      - [a, era:NetRelation]
+      - p: era:elementA
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementA/@ref)"]
+          type: iri
+      - p: era:elementB
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementB/@ref)"]
+          type: iri
+
+  GMB1-meso-net-relations:
+    source:
+      - [data/norway-railml/GMB1.railml~xpath, "//netRelation[not(@navigability)]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netRelations#"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementA/@ref)"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementB/@ref)"]
+    po:
+      - [a, era:NetRelation]
+      - p: era:elementA
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementA/@ref)"]
+          type: iri
+      - p: era:elementB
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementB/@ref)"]
+          type: iri
+
+  GMB2-meso-net-relations:
+    source:
+      - [data/norway-railml/GMB2.railml~xpath, "//netRelation[not(@navigability)]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netRelations#"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementA/@ref)"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementB/@ref)"]
+    po:
+      - [a, era:NetRelation]
+      - p: era:elementA
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementA/@ref)"]
+          type: iri
+      - p: era:elementB
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementB/@ref)"]
+          type: iri
+
+  GMB3-meso-net-relations:
+    source:
+      - [data/norway-railml/GMB3.railml~xpath, "//netRelation[not(@navigability)]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netRelations#"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementA/@ref)"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementB/@ref)"]
+    po:
+      - [a, era:NetRelation]
+      - p: era:elementA
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementA/@ref)"]
+          type: iri
+      - p: era:elementB
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementB/@ref)"]
+          type: iri
+
+  GMB4-meso-net-relations:
+    source:
+      - [data/norway-railml/GMB4.railml~xpath, "//netRelation[not(@navigability)]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netRelations#"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementA/@ref)"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementB/@ref)"]
+    po:
+      - [a, era:NetRelation]
+      - p: era:elementA
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementA/@ref)"]
+          type: iri
+      - p: era:elementB
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementB/@ref)"]
+          type: iri
+
+  HB1-meso-net-relations:
+    source:
+      - [data/norway-railml/HB1.railml~xpath, "//netRelation[not(@navigability)]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netRelations#"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementA/@ref)"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementB/@ref)"]
+    po:
+      - [a, era:NetRelation]
+      - p: era:elementA
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementA/@ref)"]
+          type: iri
+      - p: era:elementB
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementB/@ref)"]
+          type: iri
+
+  HB2-meso-net-relations:
+    source:
+      - [data/norway-railml/HB2.railml~xpath, "//netRelation[not(@navigability)]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netRelations#"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementA/@ref)"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementB/@ref)"]
+    po:
+      - [a, era:NetRelation]
+      - p: era:elementA
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementA/@ref)"]
+          type: iri
+      - p: era:elementB
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementB/@ref)"]
+          type: iri
+
+  KB1-meso-net-relations:
+    source:
+      - [data/norway-railml/KB1.railml~xpath, "//netRelation[not(@navigability)]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netRelations#"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementA/@ref)"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementB/@ref)"]
+    po:
+      - [a, era:NetRelation]
+      - p: era:elementA
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementA/@ref)"]
+          type: iri
+      - p: era:elementB
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementB/@ref)"]
+          type: iri
+
+  KB2-meso-net-relations:
+    source:
+      - [data/norway-railml/KB2.railml~xpath, "//netRelation[not(@navigability)]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netRelations#"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementA/@ref)"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementB/@ref)"]
+    po:
+      - [a, era:NetRelation]
+      - p: era:elementA
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementA/@ref)"]
+          type: iri
+      - p: era:elementB
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementB/@ref)"]
+          type: iri
+
+  MB-meso-net-relations:
+    source:
+      - [data/norway-railml/MB.railml~xpath, "//netRelation[not(@navigability)]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netRelations#"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementA/@ref)"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementB/@ref)"]
+    po:
+      - [a, era:NetRelation]
+      - p: era:elementA
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementA/@ref)"]
+          type: iri
+      - p: era:elementB
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementB/@ref)"]
+          type: iri
+  
+  NB1-meso-net-relations:
+    source:
+      - [data/norway-railml/NB1.railml~xpath, "//netRelation[not(@navigability)]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netRelations#"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementA/@ref)"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementB/@ref)"]
+    po:
+      - [a, era:NetRelation]
+      - p: era:elementA
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementA/@ref)"]
+          type: iri
+      - p: era:elementB
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementB/@ref)"]
+          type: iri
+
+  NB2-meso-net-relations:
+    source:
+      - [data/norway-railml/NB2.railml~xpath, "//netRelation[not(@navigability)]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netRelations#"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementA/@ref)"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementB/@ref)"]
+    po:
+      - [a, era:NetRelation]
+      - p: era:elementA
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementA/@ref)"]
+          type: iri
+      - p: era:elementB
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementB/@ref)"]
+          type: iri
+
+  OB-meso-net-relations:
+    source:
+      - [data/norway-railml/OB.railml~xpath, "//netRelation[not(@navigability)]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netRelations#"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementA/@ref)"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementB/@ref)"]
+    po:
+      - [a, era:NetRelation]
+      - p: era:elementA
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementA/@ref)"]
+          type: iri
+      - p: era:elementB
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementB/@ref)"]
+          type: iri
+
+  OEB1-meso-net-relations:
+    source:
+      - [data/norway-railml/OEB1.railml~xpath, "//netRelation[not(@navigability)]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netRelations#"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementA/@ref)"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementB/@ref)"]
+    po:
+      - [a, era:NetRelation]
+      - p: era:elementA
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementA/@ref)"]
+          type: iri
+      - p: era:elementB
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementB/@ref)"]
+          type: iri
+
+  OEB2-meso-net-relations:
+    source:
+      - [data/norway-railml/OEB2.railml~xpath, "//netRelation[not(@navigability)]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netRelations#"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementA/@ref)"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementB/@ref)"]
+    po:
+      - [a, era:NetRelation]
+      - p: era:elementA
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementA/@ref)"]
+          type: iri
+      - p: era:elementB
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementB/@ref)"]
+          type: iri
+
+  OEB3-meso-net-relations:
+    source:
+      - [data/norway-railml/OEB3.railml~xpath, "//netRelation[not(@navigability)]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netRelations#"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementA/@ref)"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementB/@ref)"]
+    po:
+      - [a, era:NetRelation]
+      - p: era:elementA
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementA/@ref)"]
+          type: iri
+      - p: era:elementB
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementB/@ref)"]
+          type: iri
+
+  OEOEB-meso-net-relations:
+    source:
+      - [data/norway-railml/OEOEB.railml~xpath, "//netRelation[not(@navigability)]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netRelations#"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementA/@ref)"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementB/@ref)"]
+    po:
+      - [a, era:NetRelation]
+      - p: era:elementA
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementA/@ref)"]
+          type: iri
+      - p: era:elementB
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementB/@ref)"]
+          type: iri
+
+  OSL-meso-net-relations:
+    source:
+      - [data/norway-railml/OSL.railml~xpath, "//netRelation[not(@navigability)]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netRelations#"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementA/@ref)"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementB/@ref)"]
+    po:
+      - [a, era:NetRelation]
+      - p: era:elementA
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementA/@ref)"]
+          type: iri
+      - p: era:elementB
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementB/@ref)"]
+          type: iri
+
+  RAB-meso-net-relations:
+    source:
+      - [data/norway-railml/RAB.railml~xpath, "//netRelation[not(@navigability)]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netRelations#"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementA/@ref)"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementB/@ref)"]
+    po:
+      - [a, era:NetRelation]
+      - p: era:elementA
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementA/@ref)"]
+          type: iri
+      - p: era:elementB
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementB/@ref)"]
+          type: iri
+
+  RB-meso-net-relations:
+    source:
+      - [data/norway-railml/RB.railml~xpath, "//netRelation[not(@navigability)]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netRelations#"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementA/@ref)"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementB/@ref)"]
+    po:
+      - [a, era:NetRelation]
+      - p: era:elementA
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementA/@ref)"]
+          type: iri
+      - p: era:elementB
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementB/@ref)"]
+          type: iri
+
+  RHB-meso-net-relations:
+    source:
+      - [data/norway-railml/RHB.railml~xpath, "//netRelation[not(@navigability)]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netRelations#"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementA/@ref)"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementB/@ref)"]
+    po:
+      - [a, era:NetRelation]
+      - p: era:elementA
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementA/@ref)"]
+          type: iri
+      - p: era:elementB
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementB/@ref)"]
+          type: iri
+
+  RUB-meso-net-relations:
+    source:
+      - [data/norway-railml/RUB.railml~xpath, "//netRelation[not(@navigability)]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netRelations#"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementA/@ref)"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementB/@ref)"]
+    po:
+      - [a, era:NetRelation]
+      - p: era:elementA
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementA/@ref)"]
+          type: iri
+      - p: era:elementB
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementB/@ref)"]
+          type: iri
+
+  SB1-meso-net-relations:
+    source:
+      - [data/norway-railml/SB1.railml~xpath, "//netRelation[not(@navigability)]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netRelations#"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementA/@ref)"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementB/@ref)"]
+    po:
+      - [a, era:NetRelation]
+      - p: era:elementA
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementA/@ref)"]
+          type: iri
+      - p: era:elementB
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementB/@ref)"]
+          type: iri
+
+  SB2-meso-net-relations:
+    source:
+      - [data/norway-railml/SB2.railml~xpath, "//netRelation[not(@navigability)]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netRelations#"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementA/@ref)"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementB/@ref)"]
+    po:
+      - [a, era:NetRelation]
+      - p: era:elementA
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementA/@ref)"]
+          type: iri
+      - p: era:elementB
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementB/@ref)"]
+          type: iri
+
+  SB3-meso-net-relations:
+    source:
+      - [data/norway-railml/SB3.railml~xpath, "//netRelation[not(@navigability)]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netRelations#"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementA/@ref)"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementB/@ref)"]
+    po:
+      - [a, era:NetRelation]
+      - p: era:elementA
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementA/@ref)"]
+          type: iri
+      - p: era:elementB
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementB/@ref)"]
+          type: iri
+
+  SOB-meso-net-relations:
+    source:
+      - [data/norway-railml/SOB.railml~xpath, "//netRelation[not(@navigability)]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netRelations#"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementA/@ref)"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementB/@ref)"]
+    po:
+      - [a, era:NetRelation]
+      - p: era:elementA
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementA/@ref)"]
+          type: iri
+      - p: era:elementB
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementB/@ref)"]
+          type: iri
+
+  SPB-meso-net-relations:
+    source:
+      - [data/norway-railml/SPB.railml~xpath, "//netRelation[not(@navigability)]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netRelations#"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementA/@ref)"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementB/@ref)"]
+    po:
+      - [a, era:NetRelation]
+      - p: era:elementA
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementA/@ref)"]
+          type: iri
+      - p: era:elementB
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementB/@ref)"]
+          type: iri
+
+  TIB-meso-net-relations:
+    source:
+      - [data/norway-railml/TIB.railml~xpath, "//netRelation[not(@navigability)]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netRelations#"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementA/@ref)"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementB/@ref)"]
+    po:
+      - [a, era:NetRelation]
+      - p: era:elementA
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementA/@ref)"]
+          type: iri
+      - p: era:elementB
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementB/@ref)"]
+          type: iri
+
+  VB1-meso-net-relations:
+    source:
+      - [data/norway-railml/VB1.railml~xpath, "//netRelation[not(@navigability)]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netRelations#"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementA/@ref)"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementB/@ref)"]
+    po:
+      - [a, era:NetRelation]
+      - p: era:elementA
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementA/@ref)"]
+          type: iri
+      - p: era:elementB
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementB/@ref)"]
+          type: iri
+
+  VB2-meso-net-relations:
+    source:
+      - [data/norway-railml/VB2.railml~xpath, "//netRelation[not(@navigability)]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netRelations#"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementA/@ref)"]
+        - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+        - [grel:p_array_a, "$(elementB/@ref)"]
+    po:
+      - [a, era:NetRelation]
+      - p: era:elementA
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementA/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementA/@ref)"]
+          type: iri
+      - p: era:elementB
+        o:
+          function: grel:array_join
+          parameters:
+            - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+            - [grel:p_array_a, "$((ancestor::topology//netElement[@id=current(\\)/elementB/@ref]\\)/name/@name)"]
+            - [grel:p_array_a, "$(elementB/@ref)"]
+          type: iri

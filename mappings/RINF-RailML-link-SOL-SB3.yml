@@ -1,0 +1,71 @@
+prefixes:
+  idlab-fn: "http://example.com/idlab/function/"
+  grel: "http://users.ugent.be/~bjdmeest/function/grel.ttl#"
+  rdfs: "http://www.w3.org/2000/01/rdf-schema#"
+  era: "http://era.europa.eu/ns#"
+  xsd: "http://www.w3.org/2001/XMLSchema#"
+  era-nv: "http://era.europa.eu/concepts/navigabilities#"
+
+variables:
+  connection: 
+    access: &host ${RINF_HOST}
+    type: &typeMSSQL mssql
+    credentials: &credentials
+      username: ${RINF_USER}
+      password: ${RINF_PWD}
+    queryFormulation: &queryFormulation sql2008 
+    referenceFormulation: &referenceFormulation csv
+
+mappings:
+  # ------------Link RINF Sections of Line to correspondent RailML Meso NetElements--------------
+
+  # NOTE: RINF query is restricted to Norwegian tracks only.
+    
+  SB3-rinf-sections-of-line:
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT UICLines.UICCode, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT CONCAT(LineReferences.Kilometer * 1000, '.0') FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes, RINF.dbo.LineReferences WHERE LineNodes.OperationalPointID=OperationalPoints.ID AND OperationalPoints.ID = LineReferences.OperationalPointId AND OperationalPoints.VersionID = LineReferences.VersionID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_KM, (SELECT CONCAT(LineReferences.Kilometer * 1000, '.0') FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes, RINF.dbo.LineReferences WHERE LineNodes.OperationalPointID=OperationalPoints.ID AND OperationalPoints.ID = LineReferences.OperationalPointId AND OperationalPoints.VersionID = LineReferences.VersionID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_KM, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, SectionOfLines.Length FROM RINF.dbo.LineEdges, RINF.dbo.UICLines, RINF.dbo.SectionOfLines, RINF.dbo.MemberStateVersions, RINF.dbo.MemberStates WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SectionOfLines.UICLineID = UICLines.ID AND SectionOfLines.VersionID = UICLines.VersionID AND SectionOfLines.VersionID = MemberStateVersions.ID AND MemberStateVersions.MemberStateID = MemberStates.ID AND MemberStates.Code = 'NO';
+    s: http://era.europa.eu/functionalInfrastructure/sectionsOfLine#$(UICCode)_$(FROM_NODE)_$(TO_NODE)
+    po:
+      - p: era:hasAbstraction
+        o:
+          - mapping: SB3-railml-meso-net-elements
+            condition:
+              - function: idlab-fn:listContainsElement
+                parameters:
+                  - [idlab-fn:str, $(FROM_KM), s]
+                  - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=//netRelation[./elementA/@ref=current(\\)/@id]/elementB/@ref][1]/spotLocation[1]/linearCoordinate/@measure | ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=//netRelation[./elementA/@ref=current(\\)/@id]/elementB/@ref][2]/spotLocation[1]/linearCoordinate/@measure)", o]
+              - function: idlab-fn:listContainsElement
+                parameters:
+                  - [idlab-fn:str, $(TO_KM), s]
+                  - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=//netRelation[./elementA/@ref=current(\\)/@id]/elementB/@ref][1]/spotLocation[1]/linearCoordinate/@measure | ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=//netRelation[./elementA/@ref=current(\\)/@id]/elementB/@ref][2]/spotLocation[1]/linearCoordinate/@measure)", o]
+
+                  
+  # ------------Link Meso NetElements to RINF Sections of Line--------------
+          
+  SB3-railml-meso-net-elements:
+    source:
+      - [data/norway-railml/SB3.railml~xpath, "//netElement[not(@length)]"]
+    s: 
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$(name/@name)"]
+        - [grel:p_array_a, "$(@id)"]
+    po:
+      - p: era:hasImplementation
+        o: 
+          - mapping: SB3-rinf-sections-of-line
+            condition:
+              - function: idlab-fn:listContainsElement
+                parameters:
+                  - [idlab-fn:str, $(FROM_KM), o]
+                  - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=//netRelation[./elementA/@ref=current(\\)/@id]/elementB/@ref][1]/spotLocation[1]/linearCoordinate/@measure | ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=//netRelation[./elementA/@ref=current(\\)/@id]/elementB/@ref][2]/spotLocation[1]/linearCoordinate/@measure)", s]
+              - function: idlab-fn:listContainsElement
+                parameters:
+                  - [idlab-fn:str, $(TO_KM), o]
+                  - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=//netRelation[./elementA/@ref=current(\\)/@id]/elementB/@ref][1]/spotLocation[1]/linearCoordinate/@measure | ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=//netRelation[./elementA/@ref=current(\\)/@id]/elementB/@ref][2]/spotLocation[1]/linearCoordinate/@measure)", s]

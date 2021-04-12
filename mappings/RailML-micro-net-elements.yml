@@ -1,0 +1,648 @@
+prefixes:
+  idlab-fn: "http://example.com/idlab/function/"
+  grel: "http://users.ugent.be/~bjdmeest/function/grel.ttl#"
+  rdfs: "http://www.w3.org/2000/01/rdf-schema#"
+  era: "http://era.europa.eu/ns#"
+  xsd: "http://www.w3.org/2001/XMLSchema#"
+  era-nv: "http://era.europa.eu/concepts/navigabilities#"
+
+mappings:
+
+# ------------Define Micro NetElements--------------
+
+  ARB-railml-micro-net-elements:
+    source:
+      - [data/norway-railml/ARB.railml~xpath, "//netElement[@length]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$((ancestor::netElements//elementCollectionUnordered/elementPart[@ref=current(\\)/@id]\\)/../../name/@name)"]
+        - [grel:p_array_a, $(@id)]
+    po:
+      - [a, era:NetElement]
+      - [era:length, $(@length), xsd:double]
+      - [era:startIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='0.0']/linearCoordinate/@measure)", xsd:double]
+      - [era:endIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='1.0']/linearCoordinate/@measure)", xsd:double]
+
+  BB-railml-micro-net-elements:
+    source:
+      - [data/norway-railml/BB.railml~xpath, "//netElement[@length]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$((ancestor::netElements//elementCollectionUnordered/elementPart[@ref=current(\\)/@id]\\)/../../name/@name)"]
+        - [grel:p_array_a, $(@id)]
+    po:
+      - [a, era:NetElement]
+      - [era:length, $(@length), xsd:double]
+      - [era:startIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='0.0']/linearCoordinate/@measure)", xsd:double]
+      - [era:endIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='1.0']/linearCoordinate/@measure)", xsd:double]
+
+
+  BRB-railml-micro-net-elements:
+    source:
+      - [data/norway-railml/BRB.railml~xpath, "//netElement[@length]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$((ancestor::netElements//elementCollectionUnordered/elementPart[@ref=current(\\)/@id]\\)/../../name/@name)"]
+        - [grel:p_array_a, $(@id)]
+    po:
+      - [a, era:NetElement]
+      - [era:length, $(@length), xsd:double]
+      - [era:startIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='0.0']/linearCoordinate/@measure)", xsd:double]
+      - [era:endIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='1.0']/linearCoordinate/@measure)", xsd:double]
+
+
+  DB1-railml-micro-net-elements:
+    source:
+      - [data/norway-railml/DB1.railml~xpath, "//netElement[@length]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$((ancestor::netElements//elementCollectionUnordered/elementPart[@ref=current(\\)/@id]\\)/../../name/@name)"]
+        - [grel:p_array_a, $(@id)]
+    po:
+      - [a, era:NetElement]
+      - [era:length, $(@length), xsd:double]
+      - [era:startIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='0.0']/linearCoordinate/@measure)", xsd:double]
+      - [era:endIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='1.0']/linearCoordinate/@measure)", xsd:double]
+
+
+  DB2-railml-micro-net-elements:
+    source:
+      - [data/norway-railml/DB2.railml~xpath, "//netElement[@length]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$((ancestor::netElements//elementCollectionUnordered/elementPart[@ref=current(\\)/@id]\\)/../../name/@name)"]
+        - [grel:p_array_a, $(@id)]
+    po:
+      - [a, era:NetElement]
+      - [era:length, $(@length), xsd:double]
+      - [era:startIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='0.0']/linearCoordinate/@measure)", xsd:double]
+      - [era:endIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='1.0']/linearCoordinate/@measure)", xsd:double]
+
+
+  DOB1-railml-micro-net-elements:
+    source:
+      - [data/norway-railml/DOB1.railml~xpath, "//netElement[@length]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$((ancestor::netElements//elementCollectionUnordered/elementPart[@ref=current(\\)/@id]\\)/../../name/@name)"]
+        - [grel:p_array_a, $(@id)]
+    po:
+      - [a, era:NetElement]
+      - [era:length, $(@length), xsd:double]
+      - [era:startIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='0.0']/linearCoordinate/@measure)", xsd:double]
+      - [era:endIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='1.0']/linearCoordinate/@measure)", xsd:double]
+
+
+  DOB2-railml-micro-net-elements:
+    source:
+      - [data/norway-railml/DOB2.railml~xpath, "//netElement[@length]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$((ancestor::netElements//elementCollectionUnordered/elementPart[@ref=current(\\)/@id]\\)/../../name/@name)"]
+        - [grel:p_array_a, $(@id)]
+    po:
+      - [a, era:NetElement]
+      - [era:length, $(@length), xsd:double]
+      - [era:startIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='0.0']/linearCoordinate/@measure)", xsd:double]
+      - [era:endIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='1.0']/linearCoordinate/@measure)", xsd:double]
+
+
+  DOB3-railml-micro-net-elements:
+    source:
+      - [data/norway-railml/DOB3.railml~xpath, "//netElement[@length]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$((ancestor::netElements//elementCollectionUnordered/elementPart[@ref=current(\\)/@id]\\)/../../name/@name)"]
+        - [grel:p_array_a, $(@id)]
+    po:
+      - [a, era:NetElement]
+      - [era:length, $(@length), xsd:double]
+      - [era:startIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='0.0']/linearCoordinate/@measure)", xsd:double]
+      - [era:endIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='1.0']/linearCoordinate/@measure)", xsd:double]
+
+
+  DOB4-railml-micro-net-elements:
+    source:
+      - [data/norway-railml/DOB4.railml~xpath, "//netElement[@length]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$((ancestor::netElements//elementCollectionUnordered/elementPart[@ref=current(\\)/@id]\\)/../../name/@name)"]
+        - [grel:p_array_a, $(@id)]
+    po:
+      - [a, era:NetElement]
+      - [era:length, $(@length), xsd:double]
+      - [era:startIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='0.0']/linearCoordinate/@measure)", xsd:double]
+      - [era:endIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='1.0']/linearCoordinate/@measure)", xsd:double]
+
+
+  FLB-railml-micro-net-elements:
+    source:
+      - [data/norway-railml/FLB.railml~xpath, "//netElement[@length]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$((ancestor::netElements//elementCollectionUnordered/elementPart[@ref=current(\\)/@id]\\)/../../name/@name)"]
+        - [grel:p_array_a, $(@id)]
+    po:
+      - [a, era:NetElement]
+      - [era:length, $(@length), xsd:double]
+      - [era:startIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='0.0']/linearCoordinate/@measure)", xsd:double]
+      - [era:endIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='1.0']/linearCoordinate/@measure)", xsd:double]
+
+  
+  GB-railml-micro-net-elements:
+    source:
+      - [data/norway-railml/GB.railml~xpath, "//netElement[@length]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$((ancestor::netElements//elementCollectionUnordered/elementPart[@ref=current(\\)/@id]\\)/../../name/@name)"]
+        - [grel:p_array_a, $(@id)]
+    po:
+      - [a, era:NetElement]
+      - [era:length, $(@length), xsd:double]
+      - [era:startIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='0.0']/linearCoordinate/@measure)", xsd:double]
+      - [era:endIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='1.0']/linearCoordinate/@measure)", xsd:double]
+
+
+  GMB1-railml-micro-net-elements:
+    source:
+      - [data/norway-railml/GMB1.railml~xpath, "//netElement[@length]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$((ancestor::netElements//elementCollectionUnordered/elementPart[@ref=current(\\)/@id]\\)/../../name/@name)"]
+        - [grel:p_array_a, $(@id)]
+    po:
+      - [a, era:NetElement]
+      - [era:length, $(@length), xsd:double]
+      - [era:startIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='0.0']/linearCoordinate/@measure)", xsd:double]
+      - [era:endIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='1.0']/linearCoordinate/@measure)", xsd:double]
+
+
+  GMB2-railml-micro-net-elements:
+    source:
+      - [data/norway-railml/GMB2.railml~xpath, "//netElement[@length]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$((ancestor::netElements//elementCollectionUnordered/elementPart[@ref=current(\\)/@id]\\)/../../name/@name)"]
+        - [grel:p_array_a, $(@id)]
+    po:
+      - [a, era:NetElement]
+      - [era:length, $(@length), xsd:double]
+      - [era:startIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='0.0']/linearCoordinate/@measure)", xsd:double]
+      - [era:endIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='1.0']/linearCoordinate/@measure)", xsd:double]
+
+
+  GMB3-railml-micro-net-elements:
+    source:
+      - [data/norway-railml/GMB3.railml~xpath, "//netElement[@length]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$((ancestor::netElements//elementCollectionUnordered/elementPart[@ref=current(\\)/@id]\\)/../../name/@name)"]
+        - [grel:p_array_a, $(@id)]
+    po:
+      - [a, era:NetElement]
+      - [era:length, $(@length), xsd:double]
+      - [era:startIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='0.0']/linearCoordinate/@measure)", xsd:double]
+      - [era:endIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='1.0']/linearCoordinate/@measure)", xsd:double]
+
+
+  GMB4-railml-micro-net-elements:
+    source:
+      - [data/norway-railml/GMB4.railml~xpath, "//netElement[@length]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$((ancestor::netElements//elementCollectionUnordered/elementPart[@ref=current(\\)/@id]\\)/../../name/@name)"]
+        - [grel:p_array_a, $(@id)]
+    po:
+      - [a, era:NetElement]
+      - [era:length, $(@length), xsd:double]
+      - [era:startIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='0.0']/linearCoordinate/@measure)", xsd:double]
+      - [era:endIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='1.0']/linearCoordinate/@measure)", xsd:double]
+
+
+  HB1-railml-micro-net-elements:
+    source:
+      - [data/norway-railml/HB1.railml~xpath, "//netElement[@length]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$((ancestor::netElements//elementCollectionUnordered/elementPart[@ref=current(\\)/@id]\\)/../../name/@name)"]
+        - [grel:p_array_a, $(@id)]
+    po:
+      - [a, era:NetElement]
+      - [era:length, $(@length), xsd:double]
+      - [era:startIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='0.0']/linearCoordinate/@measure)", xsd:double]
+      - [era:endIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='1.0']/linearCoordinate/@measure)", xsd:double]
+
+
+  HB2-railml-micro-net-elements:
+    source:
+      - [data/norway-railml/HB2.railml~xpath, "//netElement[@length]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$((ancestor::netElements//elementCollectionUnordered/elementPart[@ref=current(\\)/@id]\\)/../../name/@name)"]
+        - [grel:p_array_a, $(@id)]
+    po:
+      - [a, era:NetElement]
+      - [era:length, $(@length), xsd:double]
+      - [era:startIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='0.0']/linearCoordinate/@measure)", xsd:double]
+      - [era:endIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='1.0']/linearCoordinate/@measure)", xsd:double]
+
+
+  KB1-railml-micro-net-elements:
+    source:
+      - [data/norway-railml/KB1.railml~xpath, "//netElement[@length]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$((ancestor::netElements//elementCollectionUnordered/elementPart[@ref=current(\\)/@id]\\)/../../name/@name)"]
+        - [grel:p_array_a, $(@id)]
+    po:
+      - [a, era:NetElement]
+      - [era:length, $(@length), xsd:double]
+      - [era:startIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='0.0']/linearCoordinate/@measure)", xsd:double]
+      - [era:endIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='1.0']/linearCoordinate/@measure)", xsd:double]
+
+
+  KB2-railml-micro-net-elements:
+    source:
+      - [data/norway-railml/KB2.railml~xpath, "//netElement[@length]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$((ancestor::netElements//elementCollectionUnordered/elementPart[@ref=current(\\)/@id]\\)/../../name/@name)"]
+        - [grel:p_array_a, $(@id)]
+    po:
+      - [a, era:NetElement]
+      - [era:length, $(@length), xsd:double]
+      - [era:startIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='0.0']/linearCoordinate/@measure)", xsd:double]
+      - [era:endIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='1.0']/linearCoordinate/@measure)", xsd:double]
+
+
+  MB-railml-micro-net-elements:
+    source:
+      - [data/norway-railml/MB.railml~xpath, "//netElement[@length]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$((ancestor::netElements//elementCollectionUnordered/elementPart[@ref=current(\\)/@id]\\)/../../name/@name)"]
+        - [grel:p_array_a, $(@id)]
+    po:
+      - [a, era:NetElement]
+      - [era:length, $(@length), xsd:double]
+      - [era:startIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='0.0']/linearCoordinate/@measure)", xsd:double]
+      - [era:endIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='1.0']/linearCoordinate/@measure)", xsd:double]
+
+  
+  NB1-railml-micro-net-elements:
+    source:
+      - [data/norway-railml/NB1.railml~xpath, "//netElement[@length]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$((ancestor::netElements//elementCollectionUnordered/elementPart[@ref=current(\\)/@id]\\)/../../name/@name)"]
+        - [grel:p_array_a, $(@id)]
+    po:
+      - [a, era:NetElement]
+      - [era:length, $(@length), xsd:double]
+      - [era:startIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='0.0']/linearCoordinate/@measure)", xsd:double]
+      - [era:endIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='1.0']/linearCoordinate/@measure)", xsd:double]
+
+
+  NB2-railml-micro-net-elements:
+    source:
+      - [data/norway-railml/NB2.railml~xpath, "//netElement[@length]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$((ancestor::netElements//elementCollectionUnordered/elementPart[@ref=current(\\)/@id]\\)/../../name/@name)"]
+        - [grel:p_array_a, $(@id)]
+    po:
+      - [a, era:NetElement]
+      - [era:length, $(@length), xsd:double]
+      - [era:startIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='0.0']/linearCoordinate/@measure)", xsd:double]
+      - [era:endIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='1.0']/linearCoordinate/@measure)", xsd:double]
+
+
+  OB-railml-micro-net-elements:
+    source:
+      - [data/norway-railml/OB.railml~xpath, "//netElement[@length]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$((ancestor::netElements//elementCollectionUnordered/elementPart[@ref=current(\\)/@id]\\)/../../name/@name)"]
+        - [grel:p_array_a, $(@id)]
+    po:
+      - [a, era:NetElement]
+      - [era:length, $(@length), xsd:double]
+      - [era:startIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='0.0']/linearCoordinate/@measure)", xsd:double]
+      - [era:endIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='1.0']/linearCoordinate/@measure)", xsd:double]
+
+
+  OEB1-railml-micro-net-elements:
+    source:
+      - [data/norway-railml/OEB1.railml~xpath, "//netElement[@length]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$((ancestor::netElements//elementCollectionUnordered/elementPart[@ref=current(\\)/@id]\\)/../../name/@name)"]
+        - [grel:p_array_a, $(@id)]
+    po:
+      - [a, era:NetElement]
+      - [era:length, $(@length), xsd:double]
+      - [era:startIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='0.0']/linearCoordinate/@measure)", xsd:double]
+      - [era:endIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='1.0']/linearCoordinate/@measure)", xsd:double]
+
+
+  OEB2-railml-micro-net-elements:
+    source:
+      - [data/norway-railml/OEB2.railml~xpath, "//netElement[@length]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$((ancestor::netElements//elementCollectionUnordered/elementPart[@ref=current(\\)/@id]\\)/../../name/@name)"]
+        - [grel:p_array_a, $(@id)]
+    po:
+      - [a, era:NetElement]
+      - [era:length, $(@length), xsd:double]
+      - [era:startIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='0.0']/linearCoordinate/@measure)", xsd:double]
+      - [era:endIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='1.0']/linearCoordinate/@measure)", xsd:double]
+
+
+  OEB3-railml-micro-net-elements:
+    source:
+      - [data/norway-railml/OEB3.railml~xpath, "//netElement[@length]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$((ancestor::netElements//elementCollectionUnordered/elementPart[@ref=current(\\)/@id]\\)/../../name/@name)"]
+        - [grel:p_array_a, $(@id)]
+    po:
+      - [a, era:NetElement]
+      - [era:length, $(@length), xsd:double]
+      - [era:startIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='0.0']/linearCoordinate/@measure)", xsd:double]
+      - [era:endIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='1.0']/linearCoordinate/@measure)", xsd:double]
+
+
+  OEOEB-railml-micro-net-elements:
+    source:
+      - [data/norway-railml/OEOEB.railml~xpath, "//netElement[@length]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$((ancestor::netElements//elementCollectionUnordered/elementPart[@ref=current(\\)/@id]\\)/../../name/@name)"]
+        - [grel:p_array_a, $(@id)]
+    po:
+      - [a, era:NetElement]
+      - [era:length, $(@length), xsd:double]
+      - [era:startIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='0.0']/linearCoordinate/@measure)", xsd:double]
+      - [era:endIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='1.0']/linearCoordinate/@measure)", xsd:double]
+
+  OSL-railml-micro-net-elements:
+    source:
+      - [data/norway-railml/OSL.railml~xpath, "//netElement[@length]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$((ancestor::netElements//elementCollectionUnordered/elementPart[@ref=current(\\)/@id]\\)/../../name/@name)"]
+        - [grel:p_array_a, $(@id)]
+    po:
+      - [a, era:NetElement]
+      - [era:length, $(@length), xsd:double]
+      - [era:startIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='0.0']/linearCoordinate/@measure)", xsd:double]
+      - [era:endIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='1.0']/linearCoordinate/@measure)", xsd:double]
+
+
+  RAB-railml-micro-net-elements:
+    source:
+      - [data/norway-railml/RAB.railml~xpath, "//netElement[@length]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$((ancestor::netElements//elementCollectionUnordered/elementPart[@ref=current(\\)/@id]\\)/../../name/@name)"]
+        - [grel:p_array_a, $(@id)]
+    po:
+      - [a, era:NetElement]
+      - [era:length, $(@length), xsd:double]
+      - [era:startIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='0.0']/linearCoordinate/@measure)", xsd:double]
+      - [era:endIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='1.0']/linearCoordinate/@measure)", xsd:double]
+
+
+  RB-railml-micro-net-elements:
+    source:
+      - [data/norway-railml/RB.railml~xpath, "//netElement[@length]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$((ancestor::netElements//elementCollectionUnordered/elementPart[@ref=current(\\)/@id]\\)/../../name/@name)"]
+        - [grel:p_array_a, $(@id)]
+    po:
+      - [a, era:NetElement]
+      - [era:length, $(@length), xsd:double]
+      - [era:startIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='0.0']/linearCoordinate/@measure)", xsd:double]
+      - [era:endIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='1.0']/linearCoordinate/@measure)", xsd:double]
+
+
+  RHB-railml-micro-net-elements:
+    source:
+      - [data/norway-railml/RHB.railml~xpath, "//netElement[@length]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$((ancestor::netElements//elementCollectionUnordered/elementPart[@ref=current(\\)/@id]\\)/../../name/@name)"]
+        - [grel:p_array_a, $(@id)]
+    po:
+      - [a, era:NetElement]
+      - [era:length, $(@length), xsd:double]
+      - [era:startIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='0.0']/linearCoordinate/@measure)", xsd:double]
+      - [era:endIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='1.0']/linearCoordinate/@measure)", xsd:double]
+
+
+  RUB-railml-micro-net-elements:
+    source:
+      - [data/norway-railml/RUB.railml~xpath, "//netElement[@length]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$((ancestor::netElements//elementCollectionUnordered/elementPart[@ref=current(\\)/@id]\\)/../../name/@name)"]
+        - [grel:p_array_a, $(@id)]
+    po:
+      - [a, era:NetElement]
+      - [era:length, $(@length), xsd:double]
+      - [era:startIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='0.0']/linearCoordinate/@measure)", xsd:double]
+      - [era:endIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='1.0']/linearCoordinate/@measure)", xsd:double]
+
+
+  SB1-railml-micro-net-elements:
+    source:
+      - [data/norway-railml/SB1.railml~xpath, "//netElement[@length]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$((ancestor::netElements//elementCollectionUnordered/elementPart[@ref=current(\\)/@id]\\)/../../name/@name)"]
+        - [grel:p_array_a, $(@id)]
+    po:
+      - [a, era:NetElement]
+      - [era:length, $(@length), xsd:double]
+      - [era:startIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='0.0']/linearCoordinate/@measure)", xsd:double]
+      - [era:endIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='1.0']/linearCoordinate/@measure)", xsd:double]
+
+
+  SB2-railml-micro-net-elements:
+    source:
+      - [data/norway-railml/SB2.railml~xpath, "//netElement[@length]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$((ancestor::netElements//elementCollectionUnordered/elementPart[@ref=current(\\)/@id]\\)/../../name/@name)"]
+        - [grel:p_array_a, $(@id)]
+    po:
+      - [a, era:NetElement]
+      - [era:length, $(@length), xsd:double]
+      - [era:startIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='0.0']/linearCoordinate/@measure)", xsd:double]
+      - [era:endIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='1.0']/linearCoordinate/@measure)", xsd:double]
+
+
+  SB3-railml-micro-net-elements:
+    source:
+      - [data/norway-railml/SB3.railml~xpath, "//netElement[@length]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$((ancestor::netElements//elementCollectionUnordered/elementPart[@ref=current(\\)/@id]\\)/../../name/@name)"]
+        - [grel:p_array_a, $(@id)]
+    po:
+      - [a, era:NetElement]
+      - [era:length, $(@length), xsd:double]
+      - [era:startIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='0.0']/linearCoordinate/@measure)", xsd:double]
+      - [era:endIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='1.0']/linearCoordinate/@measure)", xsd:double]
+
+
+  SOB-railml-micro-net-elements:
+    source:
+      - [data/norway-railml/SOB.railml~xpath, "//netElement[@length]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$((ancestor::netElements//elementCollectionUnordered/elementPart[@ref=current(\\)/@id]\\)/../../name/@name)"]
+        - [grel:p_array_a, $(@id)]
+    po:
+      - [a, era:NetElement]
+      - [era:length, $(@length), xsd:double]
+      - [era:startIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='0.0']/linearCoordinate/@measure)", xsd:double]
+      - [era:endIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='1.0']/linearCoordinate/@measure)", xsd:double]
+
+
+  SPB-railml-micro-net-elements:
+    source:
+      - [data/norway-railml/SPB.railml~xpath, "//netElement[@length]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$((ancestor::netElements//elementCollectionUnordered/elementPart[@ref=current(\\)/@id]\\)/../../name/@name)"]
+        - [grel:p_array_a, $(@id)]
+    po:
+      - [a, era:NetElement]
+      - [era:length, $(@length), xsd:double]
+      - [era:startIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='0.0']/linearCoordinate/@measure)", xsd:double]
+      - [era:endIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='1.0']/linearCoordinate/@measure)", xsd:double]
+
+
+  TIB-railml-micro-net-elements:
+    source:
+      - [data/norway-railml/TIB.railml~xpath, "//netElement[@length]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$((ancestor::netElements//elementCollectionUnordered/elementPart[@ref=current(\\)/@id]\\)/../../name/@name)"]
+        - [grel:p_array_a, $(@id)]
+    po:
+      - [a, era:NetElement]
+      - [era:length, $(@length), xsd:double]
+      - [era:startIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='0.0']/linearCoordinate/@measure)", xsd:double]
+      - [era:endIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='1.0']/linearCoordinate/@measure)", xsd:double]
+
+
+  VB1-railml-micro-net-elements:
+    source:
+      - [data/norway-railml/VB1.railml~xpath, "//netElement[@length]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$((ancestor::netElements//elementCollectionUnordered/elementPart[@ref=current(\\)/@id]\\)/../../name/@name)"]
+        - [grel:p_array_a, $(@id)]
+    po:
+      - [a, era:NetElement]
+      - [era:length, $(@length), xsd:double]
+      - [era:startIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='0.0']/linearCoordinate/@measure)", xsd:double]
+      - [era:endIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='1.0']/linearCoordinate/@measure)", xsd:double]
+
+
+  VB2-railml-micro-net-elements:
+    source:
+      - [data/norway-railml/VB2.railml~xpath, "//netElement[@length]"]
+    s:
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$((ancestor::netElements//elementCollectionUnordered/elementPart[@ref=current(\\)/@id]\\)/../../name/@name)"]
+        - [grel:p_array_a, $(@id)]
+    po:
+      - [a, era:NetElement]
+      - [era:length, $(@length), xsd:double]
+      - [era:startIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='0.0']/linearCoordinate/@measure)", xsd:double]
+      - [era:endIntrinsicCoordinate, "$(associatedPositioningSystem/intrinsicCoordinate[@intrinsicCoord='1.0']/linearCoordinate/@measure)", xsd:double]

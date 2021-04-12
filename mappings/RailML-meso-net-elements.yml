@@ -1,0 +1,530 @@
+prefixes:
+  idlab-fn: "http://example.com/idlab/function/"
+  grel: "http://users.ugent.be/~bjdmeest/function/grel.ttl#"
+  rdfs: "http://www.w3.org/2000/01/rdf-schema#"
+  era: "http://era.europa.eu/ns#"
+  xsd: "http://www.w3.org/2001/XMLSchema#"
+  era-nv: "http://era.europa.eu/concepts/navigabilities#"
+
+mappings:
+
+  # ------------Define Meso NetElements--------------
+  ARB-railml-meso-net-elements:
+    source:
+      - [data/norway-railml/ARB.railml~xpath, "//netElement[not(@length)]"]
+    s: 
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$(name/@name)"]
+        - [grel:p_array_a, "$(@id)"]
+    po:
+      - [a, era:NetElement]
+      - [rdfs:label, $(name/@name)]
+
+  BB-railml-meso-net-elements:
+    source:
+      - [data/norway-railml/BB.railml~xpath, "//netElement[not(@length)]"]
+    s: 
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$(name/@name)"]
+        - [grel:p_array_a, "$(@id)"]
+    po:
+      - [a, era:NetElement]
+      - [rdfs:label, $(name/@name)]
+
+  BRB-railml-meso-net-elements:
+    source:
+      - [data/norway-railml/BRB.railml~xpath, "//netElement[not(@length)]"]
+    s: 
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$(name/@name)"]
+        - [grel:p_array_a, "$(@id)"]
+    po:
+      - [a, era:NetElement]
+      - [rdfs:label, $(name/@name)]
+
+  DB1-railml-meso-net-elements:
+    source:
+      - [data/norway-railml/DB1.railml~xpath, "//netElement[not(@length)]"]
+    s: 
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$(name/@name)"]
+        - [grel:p_array_a, "$(@id)"]
+    po:
+      - [a, era:NetElement]
+      - [rdfs:label, $(name/@name)]
+
+  DB2-railml-meso-net-elements:
+    source:
+      - [data/norway-railml/DB2.railml~xpath, "//netElement[not(@length)]"]
+    s: 
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$(name/@name)"]
+        - [grel:p_array_a, "$(@id)"]
+    po:
+      - [a, era:NetElement]
+      - [rdfs:label, $(name/@name)]
+
+  DOB1-railml-meso-net-elements:
+    source:
+      - [data/norway-railml/DOB1.railml~xpath, "//netElement[not(@length)]"]
+    s: 
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$(name/@name)"]
+        - [grel:p_array_a, "$(@id)"]
+    po:
+      - [a, era:NetElement]
+      - [rdfs:label, $(name/@name)]
+
+  DOB2-railml-meso-net-elements:
+    source:
+      - [data/norway-railml/DOB2.railml~xpath, "//netElement[not(@length)]"]
+    s: 
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$(name/@name)"]
+        - [grel:p_array_a, "$(@id)"]
+    po:
+      - [a, era:NetElement]
+      - [rdfs:label, $(name/@name)]
+
+  DOB3-railml-meso-net-elements:
+    source:
+      - [data/norway-railml/DOB3.railml~xpath, "//netElement[not(@length)]"]
+    s: 
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$(name/@name)"]
+        - [grel:p_array_a, "$(@id)"]
+    po:
+      - [a, era:NetElement]
+      - [rdfs:label, $(name/@name)]
+
+  DOB4-railml-meso-net-elements:
+    source:
+      - [data/norway-railml/DOB4.railml~xpath, "//netElement[not(@length)]"]
+    s: 
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$(name/@name)"]
+        - [grel:p_array_a, "$(@id)"]
+    po:
+      - [a, era:NetElement]
+      - [rdfs:label, $(name/@name)]
+
+  FLB-railml-meso-net-elements:
+    source:
+      - [data/norway-railml/FLB.railml~xpath, "//netElement[not(@length)]"]
+    s: 
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$(name/@name)"]
+        - [grel:p_array_a, "$(@id)"]
+    po:
+      - [a, era:NetElement]
+      - [rdfs:label, $(name/@name)]
+  
+  GB-railml-meso-net-elements:
+    source:
+      - [data/norway-railml/GB.railml~xpath, "//netElement[not(@length)]"]
+    s: 
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$(name/@name)"]
+        - [grel:p_array_a, "$(@id)"]
+    po:
+      - [a, era:NetElement]
+      - [rdfs:label, $(name/@name)]
+
+  GMB1-railml-meso-net-elements:
+    source:
+      - [data/norway-railml/GMB1.railml~xpath, "//netElement[not(@length)]"]
+    s: 
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$(name/@name)"]
+        - [grel:p_array_a, "$(@id)"]
+    po:
+      - [a, era:NetElement]
+      - [rdfs:label, $(name/@name)]
+
+  GMB2-railml-meso-net-elements:
+    source:
+      - [data/norway-railml/GMB2.railml~xpath, "//netElement[not(@length)]"]
+    s: 
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$(name/@name)"]
+        - [grel:p_array_a, "$(@id)"]
+    po:
+      - [a, era:NetElement]
+      - [rdfs:label, $(name/@name)]
+
+  GMB3-railml-meso-net-elements:
+    source:
+      - [data/norway-railml/GMB3.railml~xpath, "//netElement[not(@length)]"]
+    s: 
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$(name/@name)"]
+        - [grel:p_array_a, "$(@id)"]
+    po:
+      - [a, era:NetElement]
+      - [rdfs:label, $(name/@name)]
+
+  GMB4-railml-meso-net-elements:
+    source:
+      - [data/norway-railml/GMB4.railml~xpath, "//netElement[not(@length)]"]
+    s: 
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$(name/@name)"]
+        - [grel:p_array_a, "$(@id)"]
+    po:
+      - [a, era:NetElement]
+      - [rdfs:label, $(name/@name)]
+
+  HB1-railml-meso-net-elements:
+    source:
+      - [data/norway-railml/HB1.railml~xpath, "//netElement[not(@length)]"]
+    s: 
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$(name/@name)"]
+        - [grel:p_array_a, "$(@id)"]
+    po:
+      - [a, era:NetElement]
+      - [rdfs:label, $(name/@name)]
+
+  HB2-railml-meso-net-elements:
+    source:
+      - [data/norway-railml/HB2.railml~xpath, "//netElement[not(@length)]"]
+    s: 
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$(name/@name)"]
+        - [grel:p_array_a, "$(@id)"]
+    po:
+      - [a, era:NetElement]
+      - [rdfs:label, $(name/@name)]
+
+  KB1-railml-meso-net-elements:
+    source:
+      - [data/norway-railml/KB1.railml~xpath, "//netElement[not(@length)]"]
+    s: 
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$(name/@name)"]
+        - [grel:p_array_a, "$(@id)"]
+    po:
+      - [a, era:NetElement]
+      - [rdfs:label, $(name/@name)]
+
+  KB2-railml-meso-net-elements:
+    source:
+      - [data/norway-railml/KB2.railml~xpath, "//netElement[not(@length)]"]
+    s: 
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$(name/@name)"]
+        - [grel:p_array_a, "$(@id)"]
+    po:
+      - [a, era:NetElement]
+      - [rdfs:label, $(name/@name)]
+
+  MB-railml-meso-net-elements:
+    source:
+      - [data/norway-railml/MB.railml~xpath, "//netElement[not(@length)]"]
+    s: 
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$(name/@name)"]
+        - [grel:p_array_a, "$(@id)"]
+    po:
+      - [a, era:NetElement]
+      - [rdfs:label, $(name/@name)]
+  
+  NB1-railml-meso-net-elements:
+    source:
+      - [data/norway-railml/NB1.railml~xpath, "//netElement[not(@length)]"]
+    s: 
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$(name/@name)"]
+        - [grel:p_array_a, "$(@id)"]
+    po:
+      - [a, era:NetElement]
+      - [rdfs:label, $(name/@name)]
+
+  NB2-railml-meso-net-elements:
+    source:
+      - [data/norway-railml/NB2.railml~xpath, "//netElement[not(@length)]"]
+    s: 
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$(name/@name)"]
+        - [grel:p_array_a, "$(@id)"]
+    po:
+      - [a, era:NetElement]
+      - [rdfs:label, $(name/@name)]
+
+  OB-railml-meso-net-elements:
+    source:
+      - [data/norway-railml/OB.railml~xpath, "//netElement[not(@length)]"]
+    s: 
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$(name/@name)"]
+        - [grel:p_array_a, "$(@id)"]
+    po:
+      - [a, era:NetElement]
+      - [rdfs:label, $(name/@name)]
+
+  OEB1-railml-meso-net-elements:
+    source:
+      - [data/norway-railml/OEB1.railml~xpath, "//netElement[not(@length)]"]
+    s: 
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$(name/@name)"]
+        - [grel:p_array_a, "$(@id)"]
+    po:
+      - [a, era:NetElement]
+      - [rdfs:label, $(name/@name)]
+
+  OEB2-railml-meso-net-elements:
+    source:
+      - [data/norway-railml/OEB2.railml~xpath, "//netElement[not(@length)]"]
+    s: 
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$(name/@name)"]
+        - [grel:p_array_a, "$(@id)"]
+    po:
+      - [a, era:NetElement]
+      - [rdfs:label, $(name/@name)]
+
+  OEB3-railml-meso-net-elements:
+    source:
+      - [data/norway-railml/OEB3.railml~xpath, "//netElement[not(@length)]"]
+    s: 
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$(name/@name)"]
+        - [grel:p_array_a, "$(@id)"]
+    po:
+      - [a, era:NetElement]
+      - [rdfs:label, $(name/@name)]
+
+  OEOEB-railml-meso-net-elements:
+    source:
+      - [data/norway-railml/OEOEB.railml~xpath, "//netElement[not(@length)]"]
+    s: 
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$(name/@name)"]
+        - [grel:p_array_a, "$(@id)"]
+    po:
+      - [a, era:NetElement]
+      - [rdfs:label, $(name/@name)]
+
+  OSL-railml-meso-net-elements:
+    source:
+      - [data/norway-railml/OSL.railml~xpath, "//netElement[not(@length)]"]
+    s: 
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$(name/@name)"]
+        - [grel:p_array_a, "$(@id)"]
+    po:
+      - [a, era:NetElement]
+      - [rdfs:label, $(name/@name)]
+
+  RAB-railml-meso-net-elements:
+    source:
+      - [data/norway-railml/RAB.railml~xpath, "//netElement[not(@length)]"]
+    s: 
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$(name/@name)"]
+        - [grel:p_array_a, "$(@id)"]
+    po:
+      - [a, era:NetElement]
+      - [rdfs:label, $(name/@name)]
+
+  RB-railml-meso-net-elements:
+    source:
+      - [data/norway-railml/RB.railml~xpath, "//netElement[not(@length)]"]
+    s: 
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$(name/@name)"]
+        - [grel:p_array_a, "$(@id)"]
+    po:
+      - [a, era:NetElement]
+      - [rdfs:label, $(name/@name)]
+
+  RHB-railml-meso-net-elements:
+    source:
+      - [data/norway-railml/RHB.railml~xpath, "//netElement[not(@length)]"]
+    s: 
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$(name/@name)"]
+        - [grel:p_array_a, "$(@id)"]
+    po:
+      - [a, era:NetElement]
+      - [rdfs:label, $(name/@name)]
+
+  RUB-railml-meso-net-elements:
+    source:
+      - [data/norway-railml/RUB.railml~xpath, "//netElement[not(@length)]"]
+    s: 
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$(name/@name)"]
+        - [grel:p_array_a, "$(@id)"]
+    po:
+      - [a, era:NetElement]
+      - [rdfs:label, $(name/@name)]
+
+  SB1-railml-meso-net-elements:
+    source:
+      - [data/norway-railml/SB1.railml~xpath, "//netElement[not(@length)]"]
+    s: 
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$(name/@name)"]
+        - [grel:p_array_a, "$(@id)"]
+    po:
+      - [a, era:NetElement]
+      - [rdfs:label, $(name/@name)]
+
+  SB2-railml-meso-net-elements:
+    source:
+      - [data/norway-railml/SB2.railml~xpath, "//netElement[not(@length)]"]
+    s: 
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$(name/@name)"]
+        - [grel:p_array_a, "$(@id)"]
+    po:
+      - [a, era:NetElement]
+      - [rdfs:label, $(name/@name)]
+
+  SB3-railml-meso-net-elements:
+    source:
+      - [data/norway-railml/SB3.railml~xpath, "//netElement[not(@length)]"]
+    s: 
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$(name/@name)"]
+        - [grel:p_array_a, "$(@id)"]
+    po:
+      - [a, era:NetElement]
+      - [rdfs:label, $(name/@name)]
+
+  SOB-railml-meso-net-elements:
+    source:
+      - [data/norway-railml/SOB.railml~xpath, "//netElement[not(@length)]"]
+    s: 
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$(name/@name)"]
+        - [grel:p_array_a, "$(@id)"]
+    po:
+      - [a, era:NetElement]
+      - [rdfs:label, $(name/@name)]
+
+  SPB-railml-meso-net-elements:
+    source:
+      - [data/norway-railml/SPB.railml~xpath, "//netElement[not(@length)]"]
+    s: 
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$(name/@name)"]
+        - [grel:p_array_a, "$(@id)"]
+    po:
+      - [a, era:NetElement]
+      - [rdfs:label, $(name/@name)]
+
+  TIB-railml-meso-net-elements:
+    source:
+      - [data/norway-railml/TIB.railml~xpath, "//netElement[not(@length)]"]
+    s: 
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$(name/@name)"]
+        - [grel:p_array_a, "$(@id)"]
+    po:
+      - [a, era:NetElement]
+      - [rdfs:label, $(name/@name)]
+
+  VB1-railml-meso-net-elements:
+    source:
+      - [data/norway-railml/VB1.railml~xpath, "//netElement[not(@length)]"]
+    s: 
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$(name/@name)"]
+        - [grel:p_array_a, "$(@id)"]
+    po:
+      - [a, era:NetElement]
+      - [rdfs:label, $(name/@name)]
+
+  VB2-railml-meso-net-elements:
+    source:
+      - [data/norway-railml/VB2.railml~xpath, "//netElement[not(@length)]"]
+    s: 
+      function: grel:array_join
+      parameters:
+        - [grel:p_array_a, "http://era.europa.eu/topology/netElements#"]
+        - [grel:p_array_a, "$(name/@name)"]
+        - [grel:p_array_a, "$(@id)"]
+    po:
+      - [a, era:NetElement]
+      - [rdfs:label, $(name/@name)]

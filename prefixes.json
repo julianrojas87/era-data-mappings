@@ -33,5 +33,7 @@
     "era-tc": "http://era.europa.eu/concepts/thermal-capacity#",
     "era-tds": "http://era.europa.eu/concepts/train-detection#",
     "era-tpls": "http://era.europa.eu/concepts/train-protection-legacy-systems#",
-    "era-vehicle-types": "http://era.europa.eu/concepts/vehicle-types#"
+    "era-vehicle-types": "http://era.europa.eu/concepts/vehicle-types#",
+    "era-nv": "http://era.europa.eu/concepts/navigabilities#",
+    "era-pos": "http://era.europa.eu/concepts/relation-positions#"
 }
