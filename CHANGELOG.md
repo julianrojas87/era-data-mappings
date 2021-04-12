@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 ## [v2.0.0-alpha](https://github.com/julianrojas87/era-data-mappings/compare/v1.2.1...v2.0.0-alpha) (2021-04-12)
 
-### Raw Data: [ERA-KG-v2.0.0-alpha](https://drive.google.com/file/d/1KofPzYx2ovgAz85rLuO5J98SEs2BjWbO/view?usp=sharing)
+### Raw Data: [ERA-KG-v2.0.0-alpha](https://drive.google.com/file/d/1yCDOHc7AERsPNCgrqnPfPMEyrT6Z_U__/view?usp=sharing)
 
 ### Features and Bug Fixes
 
@@ -14,7 +14,7 @@ All notable changes to this project will be documented in this file.
 * Mappings for RailML signals
 * Mappings for micro and meso elements from RINF source
 * Aggregation of micro and meso elements
-* Mappings for era:SectioOfLine entities
+* Mappings for `era:SectionOfLine` entities
 * Mappings to link RINF OPs to RailML meso NetElements
 * Mappings to link RINF SoLs to RailML meso NetElements
 * Adjust internal connectivity table for creating proper URIs
