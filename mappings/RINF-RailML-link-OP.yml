@@ -33,244 +33,244 @@ mappings:
         o:
           - mapping: ARB-railml-meso-net-elements
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, $(Kilometer), s]
-                - [grel:valueParameter2, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
+                - [idlab-fn:str, $(Kilometer), s]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
           - mapping: BB-railml-meso-net-elements
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, $(Kilometer), s]
-                - [grel:valueParameter2, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
+                - [idlab-fn:str, $(Kilometer), s]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
           - mapping: BRB-railml-meso-net-elements
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, $(Kilometer), s]
-                - [grel:valueParameter2, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o] 
+                - [idlab-fn:str, $(Kilometer), s]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o] 
           - mapping: DB1-railml-meso-net-elements
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, $(Kilometer), s]
-                - [grel:valueParameter2, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
+                - [idlab-fn:str, $(Kilometer), s]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
           - mapping: DB2-railml-meso-net-elements
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, $(Kilometer), s]
-                - [grel:valueParameter2, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
+                - [idlab-fn:str, $(Kilometer), s]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
           - mapping: DOB1-railml-meso-net-elements
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, $(Kilometer), s]
-                - [grel:valueParameter2, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
+                - [idlab-fn:str, $(Kilometer), s]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
           - mapping: DOB2-railml-meso-net-elements
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, $(Kilometer), s]
-                - [grel:valueParameter2, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
+                - [idlab-fn:str, $(Kilometer), s]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
           - mapping: DOB3-railml-meso-net-elements
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, $(Kilometer), s]
-                - [grel:valueParameter2, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
+                - [idlab-fn:str, $(Kilometer), s]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
           - mapping: DOB4-railml-meso-net-elements
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, $(Kilometer), s]
-                - [grel:valueParameter2, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
+                - [idlab-fn:str, $(Kilometer), s]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
           - mapping: FLB-railml-meso-net-elements
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, $(Kilometer), s]
-                - [grel:valueParameter2, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
+                - [idlab-fn:str, $(Kilometer), s]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
           - mapping: GB-railml-meso-net-elements
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, $(Kilometer), s]
-                - [grel:valueParameter2, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
+                - [idlab-fn:str, $(Kilometer), s]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
           - mapping: GMB1-railml-meso-net-elements
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, $(Kilometer), s]
-                - [grel:valueParameter2, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
+                - [idlab-fn:str, $(Kilometer), s]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
           - mapping: GMB2-railml-meso-net-elements
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, $(Kilometer), s]
-                - [grel:valueParameter2, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
+                - [idlab-fn:str, $(Kilometer), s]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
           - mapping: GMB3-railml-meso-net-elements
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, $(Kilometer), s]
-                - [grel:valueParameter2, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
+                - [idlab-fn:str, $(Kilometer), s]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
           - mapping: GMB4-railml-meso-net-elements
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, $(Kilometer), s]
-                - [grel:valueParameter2, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
+                - [idlab-fn:str, $(Kilometer), s]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
           - mapping: HB1-railml-meso-net-elements
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, $(Kilometer), s]
-                - [grel:valueParameter2, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
+                - [idlab-fn:str, $(Kilometer), s]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
           - mapping: HB2-railml-meso-net-elements
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, $(Kilometer), s]
-                - [grel:valueParameter2, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
+                - [idlab-fn:str, $(Kilometer), s]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
           - mapping: KB1-railml-meso-net-elements
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, $(Kilometer), s]
-                - [grel:valueParameter2, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
+                - [idlab-fn:str, $(Kilometer), s]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
           - mapping: KB2-railml-meso-net-elements
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, $(Kilometer), s]
-                - [grel:valueParameter2, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
+                - [idlab-fn:str, $(Kilometer), s]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
           - mapping: MB-railml-meso-net-elements
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, $(Kilometer), s]
-                - [grel:valueParameter2, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
+                - [idlab-fn:str, $(Kilometer), s]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
           - mapping: NB1-railml-meso-net-elements
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, $(Kilometer), s]
-                - [grel:valueParameter2, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
+                - [idlab-fn:str, $(Kilometer), s]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
           - mapping: NB2-railml-meso-net-elements
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, $(Kilometer), s]
-                - [grel:valueParameter2, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
+                - [idlab-fn:str, $(Kilometer), s]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
           - mapping: OB-railml-meso-net-elements
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, $(Kilometer), s]
-                - [grel:valueParameter2, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
+                - [idlab-fn:str, $(Kilometer), s]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
           - mapping: OEB1-railml-meso-net-elements
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, $(Kilometer), s]
-                - [grel:valueParameter2, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
+                - [idlab-fn:str, $(Kilometer), s]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
           - mapping: OEB2-railml-meso-net-elements
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, $(Kilometer), s]
-                - [grel:valueParameter2, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
+                - [idlab-fn:str, $(Kilometer), s]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
           - mapping: OEB3-railml-meso-net-elements
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, $(Kilometer), s]
-                - [grel:valueParameter2, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
+                - [idlab-fn:str, $(Kilometer), s]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
           - mapping: OEOEB-railml-meso-net-elements
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, $(Kilometer), s]
-                - [grel:valueParameter2, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
+                - [idlab-fn:str, $(Kilometer), s]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
           - mapping: OSL-railml-meso-net-elements
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, $(Kilometer), s]
-                - [grel:valueParameter2, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
+                - [idlab-fn:str, $(Kilometer), s]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
           - mapping: RAB-railml-meso-net-elements
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, $(Kilometer), s]
-                - [grel:valueParameter2, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
+                - [idlab-fn:str, $(Kilometer), s]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
           - mapping: RB-railml-meso-net-elements
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, $(Kilometer), s]
-                - [grel:valueParameter2, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
+                - [idlab-fn:str, $(Kilometer), s]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
           - mapping: RHB-railml-meso-net-elements
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, $(Kilometer), s]
-                - [grel:valueParameter2, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
+                - [idlab-fn:str, $(Kilometer), s]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
           - mapping: RUB-railml-meso-net-elements
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, $(Kilometer), s]
-                - [grel:valueParameter2, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
+                - [idlab-fn:str, $(Kilometer), s]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
           - mapping: SB1-railml-meso-net-elements
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, $(Kilometer), s]
-                - [grel:valueParameter2, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
+                - [idlab-fn:str, $(Kilometer), s]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
           - mapping: SB2-railml-meso-net-elements
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, $(Kilometer), s]
-                - [grel:valueParameter2, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
+                - [idlab-fn:str, $(Kilometer), s]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
           - mapping: SB3-railml-meso-net-elements
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, $(Kilometer), s]
-                - [grel:valueParameter2, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
+                - [idlab-fn:str, $(Kilometer), s]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
           - mapping: SOB-railml-meso-net-elements
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, $(Kilometer), s]
-                - [grel:valueParameter2, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
+                - [idlab-fn:str, $(Kilometer), s]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
           - mapping: SPB-railml-meso-net-elements
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, $(Kilometer), s]
-                - [grel:valueParameter2, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
+                - [idlab-fn:str, $(Kilometer), s]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
           - mapping: TIB-railml-meso-net-elements
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, $(Kilometer), s]
-                - [grel:valueParameter2, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
+                - [idlab-fn:str, $(Kilometer), s]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
           - mapping: VB1-railml-meso-net-elements
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, $(Kilometer), s]
-                - [grel:valueParameter2, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
+                - [idlab-fn:str, $(Kilometer), s]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
           - mapping: VB2-railml-meso-net-elements
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, $(Kilometer), s]
-                - [grel:valueParameter2, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
+                - [idlab-fn:str, $(Kilometer), s]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[.//associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", o]
           
 
   # ------------Link Meso NetElements to RINF Operational Points--------------
@@ -289,10 +289,10 @@ mappings:
         o: 
           - mapping: rinf-operational-points
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
-                - [grel:valueParameter2, $(Kilometer), o]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
+                - [idlab-fn:str, $(Kilometer), o]
   
   BB-railml-meso-net-elements:
     source:
@@ -308,10 +308,10 @@ mappings:
         o: 
           - mapping: rinf-operational-points
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
-                - [grel:valueParameter2, $(Kilometer), o]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
+                - [idlab-fn:str, $(Kilometer), o]
   
   BRB-railml-meso-net-elements:
     source:
@@ -327,10 +327,10 @@ mappings:
         o: 
           - mapping: rinf-operational-points
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
-                - [grel:valueParameter2, $(Kilometer), o]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
+                - [idlab-fn:str, $(Kilometer), o]
 
   DB1-railml-meso-net-elements:
     source:
@@ -346,10 +346,10 @@ mappings:
         o: 
           - mapping: rinf-operational-points
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
-                - [grel:valueParameter2, $(Kilometer), o]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
+                - [idlab-fn:str, $(Kilometer), o]
 
   DB2-railml-meso-net-elements:
     source:
@@ -365,10 +365,10 @@ mappings:
         o: 
           - mapping: rinf-operational-points
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
-                - [grel:valueParameter2, $(Kilometer), o]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
+                - [idlab-fn:str, $(Kilometer), o]
   
   DOB1-railml-meso-net-elements:
     source:
@@ -384,10 +384,10 @@ mappings:
         o: 
           - mapping: rinf-operational-points
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
-                - [grel:valueParameter2, $(Kilometer), o]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
+                - [idlab-fn:str, $(Kilometer), o]
   
   DOB2-railml-meso-net-elements:
     source:
@@ -403,10 +403,10 @@ mappings:
         o: 
           - mapping: rinf-operational-points
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
-                - [grel:valueParameter2, $(Kilometer), o]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
+                - [idlab-fn:str, $(Kilometer), o]
   
   DOB3-railml-meso-net-elements:
     source:
@@ -422,10 +422,10 @@ mappings:
         o: 
           - mapping: rinf-operational-points
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
-                - [grel:valueParameter2, $(Kilometer), o]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
+                - [idlab-fn:str, $(Kilometer), o]
   
   DOB4-railml-meso-net-elements:
     source:
@@ -441,10 +441,10 @@ mappings:
         o: 
           - mapping: rinf-operational-points
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
-                - [grel:valueParameter2, $(Kilometer), o]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
+                - [idlab-fn:str, $(Kilometer), o]
   
   FLB-railml-meso-net-elements:
     source:
@@ -460,10 +460,10 @@ mappings:
         o: 
           - mapping: rinf-operational-points
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
-                - [grel:valueParameter2, $(Kilometer), o]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
+                - [idlab-fn:str, $(Kilometer), o]
   
   GB-railml-meso-net-elements:
     source:
@@ -479,10 +479,10 @@ mappings:
         o: 
           - mapping: rinf-operational-points
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
-                - [grel:valueParameter2, $(Kilometer), o]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
+                - [idlab-fn:str, $(Kilometer), o]
   
   GMB1-railml-meso-net-elements:
     source:
@@ -498,10 +498,10 @@ mappings:
         o: 
           - mapping: rinf-operational-points
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
-                - [grel:valueParameter2, $(Kilometer), o]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
+                - [idlab-fn:str, $(Kilometer), o]
   
   GMB2-railml-meso-net-elements:
     source:
@@ -517,10 +517,10 @@ mappings:
         o: 
           - mapping: rinf-operational-points
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
-                - [grel:valueParameter2, $(Kilometer), o]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
+                - [idlab-fn:str, $(Kilometer), o]
   
   GMB3-railml-meso-net-elements:
     source:
@@ -536,10 +536,10 @@ mappings:
         o: 
           - mapping: rinf-operational-points
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
-                - [grel:valueParameter2, $(Kilometer), o]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
+                - [idlab-fn:str, $(Kilometer), o]
   
   GMB4-railml-meso-net-elements:
     source:
@@ -555,10 +555,10 @@ mappings:
         o: 
           - mapping: rinf-operational-points
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
-                - [grel:valueParameter2, $(Kilometer), o]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
+                - [idlab-fn:str, $(Kilometer), o]
   
   HB1-railml-meso-net-elements:
     source:
@@ -574,10 +574,10 @@ mappings:
         o: 
           - mapping: rinf-operational-points
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
-                - [grel:valueParameter2, $(Kilometer), o]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
+                - [idlab-fn:str, $(Kilometer), o]
   
   HB2-railml-meso-net-elements:
     source:
@@ -593,10 +593,10 @@ mappings:
         o: 
           - mapping: rinf-operational-points
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
-                - [grel:valueParameter2, $(Kilometer), o]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
+                - [idlab-fn:str, $(Kilometer), o]
   
   KB1-railml-meso-net-elements:
     source:
@@ -612,10 +612,10 @@ mappings:
         o: 
           - mapping: rinf-operational-points
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
-                - [grel:valueParameter2, $(Kilometer), o]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
+                - [idlab-fn:str, $(Kilometer), o]
   
   KB2-railml-meso-net-elements:
     source:
@@ -631,10 +631,10 @@ mappings:
         o: 
           - mapping: rinf-operational-points
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
-                - [grel:valueParameter2, $(Kilometer), o]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
+                - [idlab-fn:str, $(Kilometer), o]
   
   MB-railml-meso-net-elements:
     source:
@@ -650,10 +650,10 @@ mappings:
         o: 
           - mapping: rinf-operational-points
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
-                - [grel:valueParameter2, $(Kilometer), o]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
+                - [idlab-fn:str, $(Kilometer), o]
   
   NB1-railml-meso-net-elements:
     source:
@@ -669,10 +669,10 @@ mappings:
         o: 
           - mapping: rinf-operational-points
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
-                - [grel:valueParameter2, $(Kilometer), o]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
+                - [idlab-fn:str, $(Kilometer), o]
   
   NB2-railml-meso-net-elements:
     source:
@@ -688,10 +688,10 @@ mappings:
         o: 
           - mapping: rinf-operational-points
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
-                - [grel:valueParameter2, $(Kilometer), o]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
+                - [idlab-fn:str, $(Kilometer), o]
   
   OB-railml-meso-net-elements:
     source:
@@ -707,10 +707,10 @@ mappings:
         o: 
           - mapping: rinf-operational-points
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
-                - [grel:valueParameter2, $(Kilometer), o]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
+                - [idlab-fn:str, $(Kilometer), o]
   
   OEB1-railml-meso-net-elements:
     source:
@@ -726,10 +726,10 @@ mappings:
         o: 
           - mapping: rinf-operational-points
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
-                - [grel:valueParameter2, $(Kilometer), o]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
+                - [idlab-fn:str, $(Kilometer), o]
   
   OEB2-railml-meso-net-elements:
     source:
@@ -745,10 +745,10 @@ mappings:
         o: 
           - mapping: rinf-operational-points
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
-                - [grel:valueParameter2, $(Kilometer), o]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
+                - [idlab-fn:str, $(Kilometer), o]
   
   OEB3-railml-meso-net-elements:
     source:
@@ -764,10 +764,10 @@ mappings:
         o: 
           - mapping: rinf-operational-points
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
-                - [grel:valueParameter2, $(Kilometer), o]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
+                - [idlab-fn:str, $(Kilometer), o]
   
   OEOEB-railml-meso-net-elements:
     source:
@@ -783,10 +783,10 @@ mappings:
         o: 
           - mapping: rinf-operational-points
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
-                - [grel:valueParameter2, $(Kilometer), o]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
+                - [idlab-fn:str, $(Kilometer), o]
   
   OSL-railml-meso-net-elements:
     source:
@@ -802,10 +802,10 @@ mappings:
         o: 
           - mapping: rinf-operational-points
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
-                - [grel:valueParameter2, $(Kilometer), o]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
+                - [idlab-fn:str, $(Kilometer), o]
   
   RAB-railml-meso-net-elements:
     source:
@@ -821,10 +821,10 @@ mappings:
         o: 
           - mapping: rinf-operational-points
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
-                - [grel:valueParameter2, $(Kilometer), o]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
+                - [idlab-fn:str, $(Kilometer), o]
   
   RB-railml-meso-net-elements:
     source:
@@ -840,10 +840,10 @@ mappings:
         o: 
           - mapping: rinf-operational-points
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
-                - [grel:valueParameter2, $(Kilometer), o]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
+                - [idlab-fn:str, $(Kilometer), o]
   
   RHB-railml-meso-net-elements:
     source:
@@ -859,10 +859,10 @@ mappings:
         o: 
           - mapping: rinf-operational-points
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
-                - [grel:valueParameter2, $(Kilometer), o]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
+                - [idlab-fn:str, $(Kilometer), o]
   
   RUB-railml-meso-net-elements:
     source:
@@ -878,10 +878,10 @@ mappings:
         o: 
           - mapping: rinf-operational-points
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
-                - [grel:valueParameter2, $(Kilometer), o]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
+                - [idlab-fn:str, $(Kilometer), o]
 
   SB1-railml-meso-net-elements:
     source:
@@ -897,10 +897,10 @@ mappings:
         o: 
           - mapping: rinf-operational-points
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
-                - [grel:valueParameter2, $(Kilometer), o]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
+                - [idlab-fn:str, $(Kilometer), o]
   
   SB2-railml-meso-net-elements:
     source:
@@ -916,10 +916,10 @@ mappings:
         o: 
           - mapping: rinf-operational-points
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
-                - [grel:valueParameter2, $(Kilometer), o]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
+                - [idlab-fn:str, $(Kilometer), o]
   
   SB3-railml-meso-net-elements:
     source:
@@ -935,10 +935,10 @@ mappings:
         o: 
           - mapping: rinf-operational-points
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
-                - [grel:valueParameter2, $(Kilometer), o]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
+                - [idlab-fn:str, $(Kilometer), o]
   
   SOB-railml-meso-net-elements:
     source:
@@ -954,10 +954,10 @@ mappings:
         o: 
           - mapping: rinf-operational-points
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
-                - [grel:valueParameter2, $(Kilometer), o]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
+                - [idlab-fn:str, $(Kilometer), o]
   
   SPB-railml-meso-net-elements:
     source:
@@ -973,10 +973,10 @@ mappings:
         o: 
           - mapping: rinf-operational-points
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
-                - [grel:valueParameter2, $(Kilometer), o]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
+                - [idlab-fn:str, $(Kilometer), o]
   
   TIB-railml-meso-net-elements:
     source:
@@ -992,10 +992,10 @@ mappings:
         o: 
           - mapping: rinf-operational-points
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
-                - [grel:valueParameter2, $(Kilometer), o]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
+                - [idlab-fn:str, $(Kilometer), o]
   
   VB1-railml-meso-net-elements:
     source:
@@ -1011,10 +1011,10 @@ mappings:
         o: 
           - mapping: rinf-operational-points
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
-                - [grel:valueParameter2, $(Kilometer), o]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
+                - [idlab-fn:str, $(Kilometer), o]
   
   VB2-railml-meso-net-elements:
     source:
@@ -1030,7 +1030,7 @@ mappings:
         o: 
           - mapping: rinf-operational-points
             condition:
-              function: idlab-fn:equal
+              function: idlab-fn:listContainsElement
               parameters:
-                - [grel:valueParameter, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
-                - [grel:valueParameter2, $(Kilometer), o]
+                - [idlab-fn:list, "$(ancestor::infrastructure//operationalPoint[./areaLocation/associatedNetElement/@netElementRef=current(\\)/@id]/spotLocation/linearCoordinate/@measure)", s]
+                - [idlab-fn:str, $(Kilometer), o]
