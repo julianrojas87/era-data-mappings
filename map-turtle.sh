@@ -47,7 +47,7 @@ mapRML() {
         echo "$file_path has already been mapped"
     else
         echo "Mapping '$file_path' and storing output in '$output_file'"
-        time java -Xmx4096m -cp rmlmapper-4.9.1.jar:mssql-jdbc-8.2.0.jre11.jar be.ugent.rml.cli.Main -s turtle -m $file_path > $output_file
+        time java -Xmx4096m -cp rmlmapper-4.10.0.jar:mssql-jdbc-8.2.0.jre11.jar be.ugent.rml.cli.Main -s turtle -m $file_path > $output_file
     fi
 }
 export -f mapRML
