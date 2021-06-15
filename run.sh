@@ -1,7 +1,6 @@
 #!/bin/bash
 
 # Replace config environment variables
-envsub ./mappings/ECCVR-RSRD-vehicles.yml
 envsub ./mappings/ERATV-manufacturers.yml
 envsub ./mappings/ERATV-vehicle-types.yml
 envsub ./mappings/RINF-ERATV-skos-concepts.yml
@@ -12,46 +11,6 @@ envsub ./mappings/RINF-meso-net-relations.yml
 envsub ./mappings/RINF-micro-net-elements.yml
 envsub ./mappings/RINF-micro-net-relations.yml
 envsub ./mappings/RINF-operational-points.yml
-envsub ./mappings/RINF-RailML-link-OP.yml
-envsub ./mappings/RINF-RailML-link-SOL-ARB.yml
-envsub ./mappings/RINF-RailML-link-SOL-BRB.yml
-envsub ./mappings/RINF-RailML-link-SOL-DB1.yml
-envsub ./mappings/RINF-RailML-link-SOL-DB2.yml
-envsub ./mappings/RINF-RailML-link-SOL-DOB1.yml
-envsub ./mappings/RINF-RailML-link-SOL-DOB2.yml
-envsub ./mappings/RINF-RailML-link-SOL-DOB3.yml
-envsub ./mappings/RINF-RailML-link-SOL-DOB4.yml
-envsub ./mappings/RINF-RailML-link-SOL-FLB.yml
-envsub ./mappings/RINF-RailML-link-SOL-GB.yml
-envsub ./mappings/RINF-RailML-link-SOL-GMB1.yml
-envsub ./mappings/RINF-RailML-link-SOL-GMB2.yml
-envsub ./mappings/RINF-RailML-link-SOL-GMB3.yml
-envsub ./mappings/RINF-RailML-link-SOL-GMB4.yml
-envsub ./mappings/RINF-RailML-link-SOL-HB1.yml
-envsub ./mappings/RINF-RailML-link-SOL-HB2.yml
-envsub ./mappings/RINF-RailML-link-SOL-KB1.yml
-envsub ./mappings/RINF-RailML-link-SOL-KB2.yml
-envsub ./mappings/RINF-RailML-link-SOL-MB.yml
-envsub ./mappings/RINF-RailML-link-SOL-NB1.yml
-envsub ./mappings/RINF-RailML-link-SOL-NB2.yml
-envsub ./mappings/RINF-RailML-link-SOL-OB.yml
-envsub ./mappings/RINF-RailML-link-SOL-OEB1.yml
-envsub ./mappings/RINF-RailML-link-SOL-OEB2.yml
-envsub ./mappings/RINF-RailML-link-SOL-OEB3.yml
-envsub ./mappings/RINF-RailML-link-SOL-OEOEB.yml
-envsub ./mappings/RINF-RailML-link-SOL-OSL.yml
-envsub ./mappings/RINF-RailML-link-SOL-RAB.yml
-envsub ./mappings/RINF-RailML-link-SOL-RB.yml
-envsub ./mappings/RINF-RailML-link-SOL-RHB.yml
-envsub ./mappings/RINF-RailML-link-SOL-RUB.yml
-envsub ./mappings/RINF-RailML-link-SOL-SB1.yml
-envsub ./mappings/RINF-RailML-link-SOL-SB2.yml
-envsub ./mappings/RINF-RailML-link-SOL-SB3.yml
-envsub ./mappings/RINF-RailML-link-SOL-SOB.yml
-envsub ./mappings/RINF-RailML-link-SOL-SPB.yml
-envsub ./mappings/RINF-RailML-link-SOL-TIB.yml
-envsub ./mappings/RINF-RailML-link-SOL-VB1.yml
-envsub ./mappings/RINF-RailML-link-SOL-VB2.yml
 envsub ./mappings/RINF-sections-of-line.yml
 envsub ./mappings/RINF-tunnels.yml
 

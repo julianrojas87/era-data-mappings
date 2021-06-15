@@ -206,6 +206,7 @@ mappings:
           parameters:
             - [grel:valueParameter, $(SubCategoryCode)]
             - [grel:valueParameter2, "73"]
+    graphs: ${NAMED_GRAPH}
   
   authorized-countries:
     sources:
@@ -225,7 +226,8 @@ mappings:
               parameters:
                 - [str1, $(Code)]
                 - [str2, $(code)]
-
+    graphs: ${NAMED_GRAPH}
+   
   eu-country:
     sources:
       - ["data/countries.csv~csv"]
@@ -244,6 +246,7 @@ mappings:
     s: http://era.europa.eu/vehicleTypes#$(TypeVersionNumber)
     po:
       - [era:staticAxleLoadWorkingOrder, $(ParameterValue), xsd:double]
+    graphs: ${NAMED_GRAPH}
 
   static-axle-load-under-normal-payload: # 4.5.3.2
     sources:
@@ -256,6 +259,7 @@ mappings:
     s: http://era.europa.eu/vehicleTypes#$(TypeVersionNumber)
     po:
       - [era:staticAxleLoadNormalPayload, $(ParameterValue), xsd:double]
+    graphs: ${NAMED_GRAPH}
 
   static-axle-load-under-exceptional-payload: # 4.5.3.3
     sources:
@@ -268,6 +272,7 @@ mappings:
     s: http://era.europa.eu/vehicleTypes#$(TypeVersionNumber)
     po:
       - [era:staticAxleLoadExceptionalPayload, $(ParameterValue), xsd:double]
+    graphs: ${NAMED_GRAPH}
 
   design-mass-in-working-order: # 4.5.2.1
     sources:
@@ -280,6 +285,7 @@ mappings:
     s: http://era.europa.eu/vehicleTypes#$(TypeVersionNumber)
     po:
       - [era:designMassWorkingOrder, $(ParameterValue), xsd:integer]
+    graphs: ${NAMED_GRAPH}
 
   design-mass-under-normal-payload: # 4.5.2.2
     sources:
@@ -292,6 +298,7 @@ mappings:
     s: http://era.europa.eu/vehicleTypes#$(TypeVersionNumber)
     po:
       - [era:designMassNormalPayload, $(ParameterValue), xsd:integer]
+    graphs: ${NAMED_GRAPH}
 
   design-mass-under-exceptional-payload: # 4.5.2.3
     sources:
@@ -304,6 +311,7 @@ mappings:
     s: http://era.europa.eu/vehicleTypes#$(TypeVersionNumber)
     po:
       - [era:designMassExceptionalPayload, $(ParameterValue), xsd:integer]
+    graphs: ${NAMED_GRAPH}
 
   maximum-design-speed: # 4.1.2.1
     sources:
@@ -316,6 +324,7 @@ mappings:
     s: http://era.europa.eu/vehicleTypes#$(TypeVersionNumber)
     po:
       - [era:maximumDesignSpeed, $(ParameterValue), xsd:integer]
+    graphs: ${NAMED_GRAPH}
 
   vehicle-length: # 4.8.1
     sources:
@@ -328,6 +337,7 @@ mappings:
     s: http://era.europa.eu/vehicleTypes#$(TypeVersionNumber)
     po:
       - [era:vehicleLength, $(ParameterValue), xsd:double]
+    graphs: ${NAMED_GRAPH}
 
   axle-spacing: # 4.5.3.4
     sources:
@@ -340,6 +350,7 @@ mappings:
     s: http://era.europa.eu/vehicleTypes#$(TypeVersionNumber)
     po:
       - [era:axleSpacing, era-ap:$(ParameterURI)~iri]
+    graphs: ${NAMED_GRAPH}
 
   permissible-payload: # 4.5.1
     sources:
@@ -352,6 +363,7 @@ mappings:
     s: http://era.europa.eu/vehicleTypes#$(TypeVersionNumber)
     po:
       - [era:permissiblePayload, $(ParameterValue)]
+    graphs: ${NAMED_GRAPH}
   
   # -----------------Gauging--------------------
 
@@ -379,6 +391,7 @@ mappings:
           parameters:
             - [grel:valueParameter, $(OtherURI)]
             - [grel:valueParameter2, ""]
+    graphs: ${NAMED_GRAPH}
 
   # -----------------Vertical radius--------------------
 
@@ -393,6 +406,7 @@ mappings:
     s: http://era.europa.eu/vehicleTypes#$(TypeVersionNumber)
     po:
       - [era:minimumConvexVerticalRadius, $(ParameterValue), xsd:integer]
+    graphs: ${NAMED_GRAPH}
 
   minimum-vertical-concave-radius: # 4.8.6
     sources:
@@ -405,6 +419,7 @@ mappings:
     s: http://era.europa.eu/vehicleTypes#$(TypeVersionNumber)
     po:
       - [era:minimumConcaveVerticalRadius, $(ParameterValue), xsd:integer]
+    graphs: ${NAMED_GRAPH}
 
   # -----------------Train detection systems--------------------
 
@@ -439,6 +454,7 @@ mappings:
           parameters:
             - [grel:valueParameter, $(ParameterValue)]
             - [grel:valueParameter2, "loops"]
+    graphs: ${NAMED_GRAPH}
 
   # -----------------Hot axle box detection--------------------
 
@@ -466,6 +482,7 @@ mappings:
           parameters:
             - [grel:valueParameter, $(OtherURI)]
             - [grel:valueParameter2, ""]
+    graphs: ${NAMED_GRAPH}
 
   # -----------------Running characteristics--------------------
 
@@ -480,6 +497,7 @@ mappings:
     s: http://era.europa.eu/vehicleTypes#$(TypeVersionNumber)
     po:
       - [era:maximumSpeedAndCantDeficiency, era-mscd:$(ParameterURI)~iri]
+    graphs: ${NAMED_GRAPH}
 
   rail-inclination: # 4.6.5
     sources:
@@ -505,6 +523,7 @@ mappings:
           parameters:
             - [grel:valueParameter, $(OtherURI)]
             - [grel:valueParameter2, ""]
+    graphs: ${NAMED_GRAPH}
 
   # -----------------Wheelset--------------------
 
@@ -519,6 +538,7 @@ mappings:
     s: http://era.europa.eu/vehicleTypes#$(TypeVersionNumber)
     po:
       - [era:wheelSetGauge, $(ParameterValue), xsd:integer]
+    graphs: ${NAMED_GRAPH}
 
   minimum-wheel-diameter: # 4.8.2
     sources:
@@ -531,6 +551,7 @@ mappings:
     s: http://era.europa.eu/vehicleTypes#$(TypeVersionNumber)
     po:
       - [era:minimumWheelDiameter, $(ParameterValue), xsd:integer]
+    graphs: ${NAMED_GRAPH}
   
   wheelset-gauge-changeover-facility: # 4.1.11
     sources:
@@ -556,6 +577,7 @@ mappings:
           parameters:
             - [grel:valueParameter, $(OtherURI)]
             - [grel:valueParameter2, ""]
+    graphs: ${NAMED_GRAPH}
 
   # -----------------Minimum curve--------------------
 
@@ -570,6 +592,7 @@ mappings:
     s: http://era.europa.eu/vehicleTypes#$(TypeVersionNumber)
     po:
       - [era:minimumHorizontalRadius, $(ParameterValue), xsd:integer]
+    graphs: ${NAMED_GRAPH}
 
   # -------------------Braking-----------------------
 
@@ -584,6 +607,7 @@ mappings:
     s: http://era.europa.eu/vehicleTypes#$(TypeVersionNumber)
     po:
       - [era:emergencyBrake, era-ebp:$(ParameterURI)~iri]
+    graphs: ${NAMED_GRAPH}
 
   brake-weight-percentage: # 4.7.6
     sources:
@@ -596,6 +620,7 @@ mappings:
     s: http://era.europa.eu/vehicleTypes#$(TypeVersionNumber)
     po:
       - [era:brakeWeightPercentage, era-bwp:$(ParameterURI)~iri]
+    graphs: ${NAMED_GRAPH}
 
   thermal-capacity-tsi-reference-case: # 4.7.2.1.1
     sources:
@@ -608,6 +633,7 @@ mappings:
     s: http://era.europa.eu/vehicleTypes#$(TypeVersionNumber)
     po:
       - [era:thermalCapacityTSIReference, era-tc:$(UriName)~iri]
+    graphs: ${NAMED_GRAPH}
 
   thermal-capacity-speed: # 4.7.2.1.2
     sources:
@@ -620,6 +646,7 @@ mappings:
     s: http://era.europa.eu/vehicleTypes#$(TypeVersionNumber)
     po:
       - [era:thermalCapacitySpeed, $(ParameterValue), xsd:double]
+    graphs: ${NAMED_GRAPH}
   
   thermal-capacity-gradient: # 4.7.2.1.3
     sources:
@@ -632,6 +659,7 @@ mappings:
     s: http://era.europa.eu/vehicleTypes#$(TypeVersionNumber)
     po:
       - [era:thermalCapacityGradient, $(ParameterValue), xsd:double]
+    graphs: ${NAMED_GRAPH}
 
   thermal-capacity-distance: # 4.7.2.1.4
     sources:
@@ -644,6 +672,7 @@ mappings:
     s: http://era.europa.eu/vehicleTypes#$(TypeVersionNumber)
     po:
       - [era:thermalCapacityDistance, $(ParameterValue), xsd:double]
+    graphs: ${NAMED_GRAPH}
   
   thermal-capacity-time: # 4.7.2.1.5
     sources:
@@ -656,6 +685,7 @@ mappings:
     s: http://era.europa.eu/vehicleTypes#$(TypeVersionNumber)
     po:
       - [era:thermalCapacityTime, $(ParameterValue), xsd:integer]
+    graphs: ${NAMED_GRAPH}
   
   parking-brake-maximum-gradient: # 4.7.3.3
     sources:
@@ -668,6 +698,7 @@ mappings:
     s: http://era.europa.eu/vehicleTypes#$(TypeVersionNumber)
     po:
       - [era:parkingBrakeMaximumGradient, $(ParameterValue), xsd:double]
+    graphs: ${NAMED_GRAPH}
   
   # -------------------Magnetic track brake-----------------------
 
@@ -699,6 +730,7 @@ mappings:
           parameters:
             - [grel:valueParameter, $(ParameterValue)]
             - [grel:valueParameter2, "False"]
+    graphs: ${NAMED_GRAPH}
 
   magnetic-brake-prevention: # 4.7.4.2.2
     sources:
@@ -728,6 +760,7 @@ mappings:
           parameters:
             - [grel:valueParameter, $(ParameterValue)]
             - [grel:valueParameter2, "False"]
+    graphs: ${NAMED_GRAPH}
   
   # -------------------Eddy current track brake-----------------------
 
@@ -759,6 +792,7 @@ mappings:
           parameters:
             - [grel:valueParameter, $(ParameterValue)]
             - [grel:valueParameter2, "False"]
+    graphs: ${NAMED_GRAPH}
 
   eddy-current-brake-prevention: # 4.7.4.1.2
     sources:
@@ -788,6 +822,7 @@ mappings:
           parameters:
             - [grel:valueParameter, $(ParameterValue)]
             - [grel:valueParameter2, "False"]
+    graphs: ${NAMED_GRAPH}
   
   # -------------------Weather conditions-----------------------
 
@@ -803,6 +838,7 @@ mappings:
     po:
       - [era:minimumTemperature, $(MinimumTemperature), xsd:integer]
       - [era:maximumTemperature, $(MaximumTemperature), xsd:integer]
+    graphs: ${NAMED_GRAPH}
   
   snow-ice-hail-conditions: # 4.3.3
     sources:
@@ -828,6 +864,7 @@ mappings:
           parameters:
             - [grel:valueParameter, $(OtherURI)]
             - [grel:valueParameter2, ""]
+    graphs: ${NAMED_GRAPH}
 
   # -------------------Voltages and frequencies-----------------------
 
@@ -855,6 +892,7 @@ mappings:
           parameters:
             - [grel:valueParameter, $(OtherURI)]
             - [grel:valueParameter2, ""]
+    graphs: ${NAMED_GRAPH}
 
   # -------------------Regenerative brake----------------------
 
@@ -886,6 +924,7 @@ mappings:
           parameters:
             - [grel:valueParameter, $(ParameterValue)]
             - [grel:valueParameter2, "False"]
+    graphs: ${NAMED_GRAPH}
 
   prevent-regenerative-break: # 4.7.4.3.2
     sources:
@@ -915,6 +954,7 @@ mappings:
           parameters:
             - [grel:valueParameter, $(ParameterValue)]
             - [grel:valueParameter2, "False"]
+    graphs: ${NAMED_GRAPH}
 
   # -------------------Current limitation----------------------
 
@@ -946,6 +986,7 @@ mappings:
           parameters:
             - [grel:valueParameter, $(ParameterValue)]
             - [grel:valueParameter2, "False"]
+    graphs: ${NAMED_GRAPH}
   
   # -------------------Pantograph----------------------
 
@@ -960,6 +1001,7 @@ mappings:
     s: http://era.europa.eu/vehicleTypes#$(TypeVersionNumber)
     po:
       - [era:maxCurrentStandstillPantograph, $(ParameterValue), xsd:double]
+    graphs: ${NAMED_GRAPH}
 
   wire-contact-height: # 4.10.5
     sources:
@@ -989,6 +1031,7 @@ mappings:
           parameters:
             - [grel:valueParameter, $(MinimumHeight)]
             - [grel:valueParameter2, ""]
+    graphs: ${NAMED_GRAPH}
 
   pantograph-head: # 4.10.6
     sources:
@@ -1001,6 +1044,7 @@ mappings:
     s: http://era.europa.eu/vehicleTypes#$(TypeVersionNumber)
     po:
       - [era:vehiclePantographHead, $(ParameterValue)]
+    graphs: ${NAMED_GRAPH}
 
   contact-strip-material: # 4.10.10
     sources:
@@ -1026,6 +1070,7 @@ mappings:
           parameters:
             - [grel:valueParameter, $(OtherURI)]
             - [grel:valueParameter2, ""]
+    graphs: ${NAMED_GRAPH}
 
   contact-force: # 4.10.15
     sources:
@@ -1038,6 +1083,7 @@ mappings:
     s: http://era.europa.eu/vehicleTypes#$(TypeVersionNumber)
     po:
       - [era:vehicleContactForce, $(ParameterValue), xsd:integer]
+    graphs: ${NAMED_GRAPH}
 
   pantograph-number: # 4.10.7
     sources:
@@ -1050,6 +1096,7 @@ mappings:
     s: http://era.europa.eu/vehicleTypes#$(TypeVersionNumber)
     po:
       - [era:numberOfPantographsInContactWithOCL, $(ParameterValue), xsd:integer]
+    graphs: ${NAMED_GRAPH}
   
   shortest-distance-between-pantographs: # 4.10.8
     sources:
@@ -1062,6 +1109,7 @@ mappings:
     s: http://era.europa.eu/vehicleTypes#$(TypeVersionNumber)
     po:
       - [era:shortestDistanceBetweenPantographsInContactWithOCL, $(ParameterValue), xsd:double]
+    graphs: ${NAMED_GRAPH}
 
   ocl-type: # 4.10.9
     sources:
@@ -1074,6 +1122,7 @@ mappings:
     s: http://era.europa.eu/vehicleTypes#$(TypeVersionNumber)
     po:
       - [era:oclType, $(ParameterValue)]
+    graphs: ${NAMED_GRAPH}
   
   automatic-dropping-device-fitted: # 4.10.11
     sources:
@@ -1103,6 +1152,7 @@ mappings:
           parameters:
             - [grel:valueParameter, $(ParameterValue)]
             - [grel:valueParameter2, "False"]
+    graphs: ${NAMED_GRAPH}
   
   # -------------------Tunnel----------------------
 
@@ -1151,6 +1201,7 @@ mappings:
           parameters:
             - [grel:valueParameter, $(ParameterValue)]
             - [grel:valueParameter2, "SRT TSI Freight Locomotive as defined in 4.2.10.1.2"]
+    graphs: ${NAMED_GRAPH}
 
   # -------------------Train length----------------------
   # 4.8.1 mapped among traffic load parameters
@@ -1181,6 +1232,7 @@ mappings:
           parameters:
             - [grel:valueParameter, $(OtherURI)]
             - [grel:valueParameter2, ""]
+    graphs: ${NAMED_GRAPH}
 
   # -----------------------ETCS--------------------------
 
@@ -1201,6 +1253,7 @@ mappings:
           parameters:
             - [grel:valueParameter, $(ParameterValue)]
             - [grel:valueParameter2, "Not applicable"]
+    graphs: ${NAMED_GRAPH}
 
   
   train-integrity: # 4.13.1.9 not sure about this parameter
@@ -1231,6 +1284,8 @@ mappings:
           parameters:
             - [grel:valueParameter, $(ParameterValue)]
             - [grel:valueParameter2, "False"]
+    graphs: ${NAMED_GRAPH}
+
   # -----------------------GSM-R--------------------------
 
   voice-gsm-r-home-network: # 4.13.2.10
@@ -1244,6 +1299,7 @@ mappings:
     s: http://era.europa.eu/vehicleTypes#$(TypeVersionNumber)
     po:
       - [era:voiceGSMRNetwork, era-gsmr:$(ParameterValue)~iri]
+    graphs: ${NAMED_GRAPH}
 
   data-gsm-r-home-network: # 4.13.2.11
     sources:
@@ -1256,6 +1312,7 @@ mappings:
     s: http://era.europa.eu/vehicleTypes#$(TypeVersionNumber)
     po:
       - [era:dataGSMRNetwork, era-gsmr:$(ParameterValue)~iri]
+    graphs: ${NAMED_GRAPH}
 
   group-555-support: # 4.13.2.12
     sources:
@@ -1285,6 +1342,7 @@ mappings:
           parameters:
             - [grel:valueParameter, $(ParameterValue)]
             - [grel:valueParameter2, "False"]
+    graphs: ${NAMED_GRAPH}
 
   voice-radio-compatible: # 4.13.2.5
     sources:
@@ -1303,6 +1361,7 @@ mappings:
           parameters:
             - [grel:valueParameter, $(ParameterValue)]
             - [grel:valueParameter2, "Not applicable"]
+    graphs: ${NAMED_GRAPH}
   
   data-radio-compatible: # 4.13.2.8
     sources:
@@ -1321,6 +1380,7 @@ mappings:
           parameters:
             - [grel:valueParameter, $(ParameterValue)]
             - [grel:valueParameter2, "Not applicable"]
+    graphs: ${NAMED_GRAPH}
   
   # -----------------------Class B--------------------------
 
@@ -1348,6 +1408,7 @@ mappings:
           parameters:
             - [grel:valueParameter, $(OtherURI)]
             - [grel:valueParameter2, ""]
+    graphs: ${NAMED_GRAPH}
 
   radio-legacy-system: # 4.13.2.3
     sources:
@@ -1373,5 +1434,6 @@ mappings:
           parameters:
             - [grel:valueParameter, $(OtherURI)]
             - [grel:valueParameter2, ""]
+    graphs: ${NAMED_GRAPH}
 
   

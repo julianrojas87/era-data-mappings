@@ -33,6 +33,7 @@ mappings:
       - [a, era:NetRelation]
       - [era:elementA, http://era.europa.eu/topology/netElements#$(FROM_NODE)~iri]
       - [era:elementB, http://era.europa.eu/topology/netElements#$(UICCode)_$(FROM_NODE)_$(TO_NODE)~iri]
+    graphs: ${NAMED_GRAPH}
 
 sol-end:
     sources:
@@ -47,3 +48,4 @@ sol-end:
       - [a, era:NetRelation]
       - [era:elementA, http://era.europa.eu/topology/netElements#$(UICCode)_$(FROM_NODE)_$(TO_NODE)~iri]
       - [era:elementB, http://era.europa.eu/topology/netElements#$(TO_NODE)~iri]
+    graphs: ${NAMED_GRAPH}

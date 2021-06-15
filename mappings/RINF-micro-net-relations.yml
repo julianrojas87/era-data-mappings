@@ -96,6 +96,7 @@ mappings:
           parameters:
             - [grel:valueParameter, "O"]
             - [grel:valueParameter2, "$(OUTGOING_DIRECTION)"]
+    graphs: ${NAMED_GRAPH}
 
   net-relations-in-out-2:
     sources:
@@ -171,6 +172,7 @@ mappings:
           parameters:
             - [grel:valueParameter, "O"]
             - [grel:valueParameter2, "$(OUTGOING_DIRECTION)"]
+    graphs: ${NAMED_GRAPH}
   
   net-relations-no-out-1:
     sources:
@@ -246,6 +248,7 @@ mappings:
             - [idlab-fn:str, "N,B"]
             - [idlab-fn:otherStr, "$(OUTGOING_DIRECTION)"]
             - [idlab-fn:delimiter, ","]
+    graphs: ${NAMED_GRAPH}
 
   net-relations-no-out-2:
     sources:
@@ -321,6 +324,7 @@ mappings:
             - [idlab-fn:str, "N,B"]
             - [idlab-fn:otherStr, "$(OUTGOING_DIRECTION)"]
             - [idlab-fn:delimiter, ","]
+    graphs: ${NAMED_GRAPH}
 
   net-relations-no-in-1:
     sources:
@@ -396,6 +400,7 @@ mappings:
           parameters:
             - [grel:valueParameter, "O"]
             - [grel:valueParameter2, "$(OUTGOING_DIRECTION)"]
+    graphs: ${NAMED_GRAPH}
 
   net-relations-no-in-2:
     sources:
@@ -471,6 +476,7 @@ mappings:
           parameters:
             - [grel:valueParameter, "O"]
             - [grel:valueParameter2, "$(OUTGOING_DIRECTION)"]
+    graphs: ${NAMED_GRAPH}
 
 
   # ----------------------Define Micro NetRelations for real net elements inside OPs---------------------
@@ -549,6 +555,7 @@ mappings:
           parameters:
             - [grel:valueParameter, "O"]
             - [grel:valueParameter2, "$(OUTGOING_DIRECTION)"]
+    graphs: ${NAMED_GRAPH}
 
   net-relations-connectivity-table-2:
     sources:
@@ -624,3 +631,4 @@ mappings:
           parameters:
             - [grel:valueParameter, "O"]
             - [grel:valueParameter2, "$(OUTGOING_DIRECTION)"]
+    graphs: ${NAMED_GRAPH}

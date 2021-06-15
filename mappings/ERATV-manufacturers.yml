@@ -51,3 +51,4 @@ mappings:
           parameters:
             - [grel:valueParameter, $(RegisteredBusinessNumber)]
             - [grel:valueParameter2, ""]
+    graphs: ${NAMED_GRAPH}

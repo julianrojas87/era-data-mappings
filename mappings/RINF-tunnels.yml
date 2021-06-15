@@ -25,7 +25,7 @@ mappings:
         credentials: *credentials
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
-        query: SELECT UICLines.UICCode, Tunnels.UUID AS TUNNEL_LABEL, REPLACE(Tunnels.UUID, ' ', '_') AS TUNNEL_URI, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, Tracks.UUID AS TRACK_ID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, ROUND((ABS(Tunnels.EndKm - Tunnels.StartKm) * 1000), 2) AS TunnelLength, Tunnels.StartLat, Tunnels.StartLong, Tunnels.EndLat, Tunnels.EndLong, MemberStates.Code FROM RINF.dbo.LineEdges, RINF.dbo.SectionOfLines, RINF.dbo.SOLTracks, RINF.dbo.TrackTunnels, RINF.dbo.Tracks, RINF.dbo.UICLines, RINF.dbo.Tunnels, RINF.dbo.MemberStateVersions, RINF.dbo.MemberStates WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SectionOfLines.ID = SOLTracks.SectionOfLineID AND SectionOfLines.UICLineID = UICLines.ID AND SectionOfLines.VersionID = UICLines.VersionID AND SectionOfLines.VersionID = SOLTracks.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID AND SOLTracks.TrackID = TrackTunnels.TrackID AND SOLTracks.VersionID = TrackTunnels.VersionID AND TrackTunnels.TunnelID = Tunnels.ID AND TrackTunnels.VersionID = Tunnels.VersionID AND Tunnels.VersionID = MemberStateVersions.ID AND MemberStateVersions.MemberStateID = MemberStates.ID AND Code != 'NO';
+        query: SELECT UICLines.UICCode, Tunnels.UUID AS TUNNEL_LABEL, REPLACE(Tunnels.UUID, ' ', '_') AS TUNNEL_URI, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, Tracks.UUID AS TRACK_ID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, ROUND((ABS(Tunnels.EndKm - Tunnels.StartKm) * 1000), 2) AS TunnelLength, Tunnels.StartLat, Tunnels.StartLong, Tunnels.EndLat, Tunnels.EndLong, MemberStates.Code FROM RINF.dbo.LineEdges, RINF.dbo.SectionOfLines, RINF.dbo.SOLTracks, RINF.dbo.TrackTunnels, RINF.dbo.Tracks, RINF.dbo.UICLines, RINF.dbo.Tunnels, RINF.dbo.MemberStateVersions, RINF.dbo.MemberStates WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SectionOfLines.ID = SOLTracks.SectionOfLineID AND SectionOfLines.UICLineID = UICLines.ID AND SectionOfLines.VersionID = UICLines.VersionID AND SectionOfLines.VersionID = SOLTracks.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID AND SOLTracks.TrackID = TrackTunnels.TrackID AND SOLTracks.VersionID = TrackTunnels.VersionID AND TrackTunnels.TunnelID = Tunnels.ID AND TrackTunnels.VersionID = Tunnels.VersionID AND Tunnels.VersionID = MemberStateVersions.ID AND MemberStateVersions.MemberStateID = MemberStates.ID;
     s: http://era.europa.eu/funtionalInfrastructure/tunnels#$(TUNNEL_URI)_$(StartLong)$(StartLat)_$(EndLong)$(EndLat)
     po:
       - [a, era:Tunnel]
@@ -42,6 +42,7 @@ mappings:
               parameters:
                 - [str1, $(Code)]
                 - [str2, $(code)]
+    graphs: ${NAMED_GRAPH}
   
   tunnel-reference:
     sources:
@@ -50,10 +51,11 @@ mappings:
         credentials: *credentials
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
-        query: SELECT UICLines.UICCode, Tunnels.UUID AS TUNNEL_LABEL, REPLACE(Tunnels.UUID, ' ', '_') AS TUNNEL_URI, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, Tracks.UUID AS TRACK_ID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, ROUND((ABS(Tunnels.EndKm - Tunnels.StartKm) * 1000), 2) AS TunnelLength, Tunnels.StartLat, Tunnels.StartLong, Tunnels.EndLat, Tunnels.EndLong, MemberStates.Code FROM RINF.dbo.LineEdges, RINF.dbo.SectionOfLines, RINF.dbo.SOLTracks, RINF.dbo.TrackTunnels, RINF.dbo.Tracks, RINF.dbo.UICLines, RINF.dbo.Tunnels, RINF.dbo.MemberStateVersions, RINF.dbo.MemberStates WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SectionOfLines.ID = SOLTracks.SectionOfLineID AND SectionOfLines.UICLineID = UICLines.ID AND SectionOfLines.VersionID = UICLines.VersionID AND SectionOfLines.VersionID = SOLTracks.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID AND SOLTracks.TrackID = TrackTunnels.TrackID AND SOLTracks.VersionID = TrackTunnels.VersionID AND TrackTunnels.TunnelID = Tunnels.ID AND TrackTunnels.VersionID = Tunnels.VersionID AND Tunnels.VersionID = MemberStateVersions.ID AND MemberStateVersions.MemberStateID = MemberStates.ID AND Code != 'NO';
+        query: SELECT UICLines.UICCode, Tunnels.UUID AS TUNNEL_LABEL, REPLACE(Tunnels.UUID, ' ', '_') AS TUNNEL_URI, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, Tracks.UUID AS TRACK_ID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, ROUND((ABS(Tunnels.EndKm - Tunnels.StartKm) * 1000), 2) AS TunnelLength, Tunnels.StartLat, Tunnels.StartLong, Tunnels.EndLat, Tunnels.EndLong, MemberStates.Code FROM RINF.dbo.LineEdges, RINF.dbo.SectionOfLines, RINF.dbo.SOLTracks, RINF.dbo.TrackTunnels, RINF.dbo.Tracks, RINF.dbo.UICLines, RINF.dbo.Tunnels, RINF.dbo.MemberStateVersions, RINF.dbo.MemberStates WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SectionOfLines.ID = SOLTracks.SectionOfLineID AND SectionOfLines.UICLineID = UICLines.ID AND SectionOfLines.VersionID = UICLines.VersionID AND SectionOfLines.VersionID = SOLTracks.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID AND SOLTracks.TrackID = TrackTunnels.TrackID AND SOLTracks.VersionID = TrackTunnels.VersionID AND TrackTunnels.TunnelID = Tunnels.ID AND TrackTunnels.VersionID = Tunnels.VersionID AND Tunnels.VersionID = MemberStateVersions.ID AND MemberStateVersions.MemberStateID = MemberStates.ID;
     s: http://era.europa.eu/topology/netElements#$(UICCode)_$(FROM_NODE)_$(TRACK_ID)_$(TO_NODE)
     po:
       - [era:passesThroughTunnel, http://era.europa.eu/funtionalInfrastructure/tunnels#$(TUNNEL_URI)_$(StartLong)$(StartLat)_$(EndLong)$(EndLat)~iri]
+    graphs: ${NAMED_GRAPH}
   
   start-location:
     sources:
@@ -70,6 +72,7 @@ mappings:
       - [wgs:lat, $(StartLat), xsd:double]
       - [wgs:long, $(StartLong), xsd:double]
       - [geosparql:asWKT, POINT ($(StartLong) $(StartLat)), geosparql:wktLiteral]
+    graphs: ${NAMED_GRAPH}
   
   end-location:
     sources:
@@ -86,6 +89,7 @@ mappings:
       - [wgs:lat, $(EndLat), xsd:double]
       - [wgs:long, $(EndLong), xsd:double]
       - [geosparql:asWKT, POINT ($(EndLong) $(EndLat)), geosparql:wktLiteral]
+    graphs: ${NAMED_GRAPH}
   
   eu-country:
     sources:
@@ -101,7 +105,7 @@ mappings:
         credentials: *credentials
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
-        query: SELECT REPLACE(Tunnels.UUID, ' ', '_') AS TUNNEL_URI, LookupValues.[Value], Tunnels.StartLat, Tunnels.StartLong, Tunnels.EndLat, Tunnels.EndLong, MemberStates.Code FROM RINF.dbo.TrackTunnels, RINF.dbo.Tunnels, RINF.dbo.TunnelParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues, RINF.dbo.MemberStateVersions, RINF.dbo.MemberStates WHERE TrackTunnels.TunnelID = Tunnels.ID AND TrackTunnels.VersionID = Tunnels.VersionID AND TunnelParameters.TunnelID = TrackTunnels.TunnelID AND TunnelParameters.VersionID = TrackTunnels.VersionID AND TunnelParameters.ParameterId = Parameters.ID AND Parameters.[Index] = '1.1.1.1.8.10' AND TunnelParameters.LookupValueID = LookupValues.ID AND Tunnels.VersionID = MemberStateVersions.ID AND MemberStateVersions.MemberStateID = MemberStates.ID AND MemberStates.Code != 'NO';
+        query: SELECT REPLACE(Tunnels.UUID, ' ', '_') AS TUNNEL_URI, LookupValues.[Value], Tunnels.StartLat, Tunnels.StartLong, Tunnels.EndLat, Tunnels.EndLong, MemberStates.Code FROM RINF.dbo.TrackTunnels, RINF.dbo.Tunnels, RINF.dbo.TunnelParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues, RINF.dbo.MemberStateVersions, RINF.dbo.MemberStates WHERE TrackTunnels.TunnelID = Tunnels.ID AND TrackTunnels.VersionID = Tunnels.VersionID AND TunnelParameters.TunnelID = TrackTunnels.TunnelID AND TunnelParameters.VersionID = TrackTunnels.VersionID AND TunnelParameters.ParameterId = Parameters.ID AND Parameters.[Index] = '1.1.1.1.8.10' AND TunnelParameters.LookupValueID = LookupValues.ID AND Tunnels.VersionID = MemberStateVersions.ID AND MemberStateVersions.MemberStateID = MemberStates.ID;
     s: http://era.europa.eu/funtionalInfrastructure/tunnels#$(TUNNEL_URI)_$(StartLong)$(StartLat)_$(EndLong)$(EndLat)
     po:
       - p: era:rollingStockFireCategory
@@ -125,6 +129,7 @@ mappings:
           parameters:
             - [grel:valueParameter, $(Value)]
             - [grel:valueParameter2, "none"]
+    graphs: ${NAMED_GRAPH}
 
 
   required-national-rolling-stock-fire-category: # 1.1.1.1.8.11 (no data!)
@@ -134,8 +139,8 @@ mappings:
         credentials: *credentials
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
-        query: SELECT REPLACE(Tunnels.UUID, ' ', '_') AS TUNNEL_URI, LookupValues.[Value], Tunnels.StartLat, Tunnels.StartLong, Tunnels.EndLat, Tunnels.EndLong, MemberStates.Code FROM RINF.dbo.TrackTunnels, RINF.dbo.Tunnels, RINF.dbo.TunnelParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues, RINF.dbo.MemberStateVersions, RINF.dbo.MemberStates WHERE TrackTunnels.TunnelID = Tunnels.ID AND TrackTunnels.VersionID = Tunnels.VersionID AND TunnelParameters.TunnelID = TrackTunnels.TunnelID AND TunnelParameters.VersionID = TrackTunnels.VersionID AND TunnelParameters.ParameterId = Parameters.ID AND Parameters.[Index] = '1.1.1.1.8.11' AND TunnelParameters.LookupValueID = LookupValues.ID AND Tunnels.VersionID = MemberStateVersions.ID AND MemberStateVersions.MemberStateID = MemberStates.ID AND MemberStates.Code != 'NO';
+        query: SELECT REPLACE(Tunnels.UUID, ' ', '_') AS TUNNEL_URI, LookupValues.[Value], Tunnels.StartLat, Tunnels.StartLong, Tunnels.EndLat, Tunnels.EndLong, MemberStates.Code FROM RINF.dbo.TrackTunnels, RINF.dbo.Tunnels, RINF.dbo.TunnelParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues, RINF.dbo.MemberStateVersions, RINF.dbo.MemberStates WHERE TrackTunnels.TunnelID = Tunnels.ID AND TrackTunnels.VersionID = Tunnels.VersionID AND TunnelParameters.TunnelID = TrackTunnels.TunnelID AND TunnelParameters.VersionID = TrackTunnels.VersionID AND TunnelParameters.ParameterId = Parameters.ID AND Parameters.[Index] = '1.1.1.1.8.11' AND TunnelParameters.LookupValueID = LookupValues.ID AND Tunnels.VersionID = MemberStateVersions.ID AND MemberStateVersions.MemberStateID = MemberStates.ID;
     s: http://era.europa.eu/funtionalInfrastructure/tunnels#$(TUNNEL_URI)_$(StartLong)$(StartLat)_$(EndLong)$(EndLat)
     po:
       - [era:nationalRollingStockFireCategory, $(Value)]
-            
+    graphs: ${NAMED_GRAPH}

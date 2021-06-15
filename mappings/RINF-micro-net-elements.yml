@@ -32,6 +32,7 @@ mappings:
       - [a, era:NetElement]
       - [rdfs:label, $(UUID)]
       - [era:length, $(Length), xsd:double]
+    graphs: ${NAMED_GRAPH}
 
   # ----------------------Define Micro NetElements from artificial internal links in operational points---------------------
 
@@ -49,6 +50,7 @@ mappings:
     po:
       - [a, era:NetElement]
       - [rdfs:label, "$(INCOMING_LINE)_$(INCOMING_REMOTE_OP)_$(INCOMING)_$(UOPID)_$(OUTGOING)_$(OUTGOING_REMOTE_OP)_$(OUTGOING_LINE)"]
+    graphs: ${NAMED_GRAPH}
       
   internal-node-link-no-out:
     sources:
@@ -62,6 +64,7 @@ mappings:
     po:
       - [a, era:NetElement]
       - [rdfs:label, "$(INCOMING_LINE)_$(INCOMING_REMOTE_OP)_$(INCOMING)_$(UOPID)_$(OUTGOING)_$(OUTGOING_REMOTE_OP)_$(OUTGOING_LINE)"]
+    graphs: ${NAMED_GRAPH}
 
   internal-node-link-no-in:
     sources:
@@ -75,6 +78,7 @@ mappings:
     po:
       - [a, era:NetElement]
       - [rdfs:label, "$(INCOMING_LINE)_$(INCOMING_REMOTE_OP)_$(INCOMING)_$(UOPID)_$(OUTGOING)_$(OUTGOING_REMOTE_OP)_$(OUTGOING_LINE)"]
+    graphs: ${NAMED_GRAPH}
   
   # ----------------------Define Micro NetElements from real internal links in operational points---------------------
 
@@ -92,3 +96,4 @@ mappings:
     po:
       - [a, era:NetElement]
       - [rdfs:label, $(INCOMING_LINE)_$(INCOMING_REMOTE_OP)_$(INCOMING)_$(UOPID)_$(OUTGOING)_$(OUTGOING_REMOTE_OP)_$(OUTGOING_LINE)]
+    graphs: ${NAMED_GRAPH}

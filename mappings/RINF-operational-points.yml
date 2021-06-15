@@ -65,6 +65,7 @@ mappings:
               parameters:
                 - [str1, $(Value)]
                 - [str2, $(label)]
+    graphs: ${NAMED_GRAPH}
   
   op-line-reference:
     sources:
@@ -77,6 +78,7 @@ mappings:
     s: http://era.europa.eu/functionalInfrastructure/operationalPoints#$(UOPID)
     po:
       - [era:lineReference, http://era.europa.eu/functionalInfrastructure/lineReferences#$(UICCode)_$(Kilometer)~iri]
+    graphs: ${NAMED_GRAPH}
   
   line-reference:
     sources:
@@ -91,6 +93,7 @@ mappings:
       - [a, era:LineReference]
       - [era:lineNationalId, http://era.europa.eu/functionalInfrastructure/lineNationalIds#$(UICCode)~iri]
       - [era:kilometer, $(Kilometer), xsd:double]
+    graphs: ${NAMED_GRAPH}
   
   location:
     sources:
@@ -107,6 +110,7 @@ mappings:
       - [wgs:lat, $(Latitude), xsd:double]
       - [wgs:long, $(Longitude), xsd:double]
       - [geosparql:asWKT, POINT ($(Longitude) $(Latitude)), geosparql:wktLiteral]
+    graphs: ${NAMED_GRAPH}
   
   op-type:
     sources:

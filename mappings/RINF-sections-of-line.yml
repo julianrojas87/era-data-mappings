@@ -59,6 +59,7 @@ mappings:
               parameters:
                 - [str1, $(Code)]
                 - [str2, $(code)]
+    graphs: ${NAMED_GRAPH}
   
   eu-country:
     sources:
@@ -79,6 +80,7 @@ mappings:
     s: http://era.europa.eu/functionalInfrastructure/sectionsOfLine#$(UICCode)_$(FROM_NODE)_$(TO_NODE)
     po:
       - [era:loadCapability, era-lc:$(ParameterValue)~iri]
+    graphs: ${NAMED_GRAPH}
 
   national-load-capability: # 1.1.1.1.2.4.1
     sources:
@@ -91,6 +93,7 @@ mappings:
     s: http://era.europa.eu/functionalInfrastructure/sectionsOfLine#$(UICCode)_$(FROM_NODE)_$(TO_NODE)
     po:
       - [era:nationalLoadCapability, $(ParameterValue)]
+    graphs: ${NAMED_GRAPH}
 
   hslm-compliance: # 1.1.1.1.2.4.2
     sources:
@@ -120,6 +123,7 @@ mappings:
           parameters:
             - [grel:valueParameter, $(ParameterValue)]
             - [grel:valueParameter2, "N"]
+    graphs: ${NAMED_GRAPH}
 
   structure-check-locations: # 1.1.1.1.2.4.3 (no data!)
     sources:
@@ -132,6 +136,7 @@ mappings:
     s: http://era.europa.eu/functionalInfrastructure/sectionsOfLine#$(UICCode)_$(FROM_NODE)_$(TO_NODE)
     po:
       - [era:structureCheckLocation, $(ParameterValue), xsd:double]
+    graphs: ${NAMED_GRAPH}
 
   compatibility-procedure-document: # 1.1.1.1.2.4.4 (no data!)
     sources:
@@ -144,6 +149,7 @@ mappings:
     s: http://era.europa.eu/functionalInfrastructure/sectionsOfLine#$(UICCode)_$(FROM_NODE)_$(TO_NODE)
     po:
       - [era:compatibilityProcedureDocument, $(ParameterValue)]
+    graphs: ${NAMED_GRAPH}
 
   # -----------------Gauging--------------------
 
@@ -158,6 +164,7 @@ mappings:
     s: http://era.europa.eu/functionalInfrastructure/sectionsOfLine#$(UICCode)_$(FROM_NODE)_$(TO_NODE)
     po:
       - [era:gaugingProfile, http://era.europa.eu/concepts/gaugings#$(ParameterValue)~iri]
+    graphs: ${NAMED_GRAPH}
 
   gauging-check-locations: # 1.1.1.1.3.1.2
     sources:
@@ -170,6 +177,7 @@ mappings:
     s: http://era.europa.eu/functionalInfrastructure/sectionsOfLine#$(UICCode)_$(FROM_NODE)_$(TO_NODE)
     po:
       - [era:gaugingCheckLocation, $(ParameterValue), xsd:double]
+    graphs: ${NAMED_GRAPH}
 
   gauging-transversal-document: # 1.1.1.1.3.1.3 (no data!)
     sources:
@@ -182,6 +190,7 @@ mappings:
     s: http://era.europa.eu/functionalInfrastructure/sectionsOfLine#$(UICCode)_$(FROM_NODE)_$(TO_NODE)
     po:
       - [era:gaugingTransversalDocument, $(ParameterValue)]
+    graphs: ${NAMED_GRAPH}
 
   # -----------------Vertical radius--------------------
 
@@ -196,6 +205,7 @@ mappings:
     s: http://era.europa.eu/functionalInfrastructure/sectionsOfLine#$(UICCode)_$(FROM_NODE)_$(TO_NODE)
     po:
       - [era:minimumVerticalRadius, $(ParameterValue)]
+    graphs: ${NAMED_GRAPH}
 
   # -----------------Train detection systems--------------------
 
@@ -210,6 +220,7 @@ mappings:
     s: http://era.europa.eu/functionalInfrastructure/sectionsOfLine#$(UICCode)_$(FROM_NODE)_$(TO_NODE)
     po:
       - [era:trainDetectionSystem, era-tds:$(ParameterValue)~iri]
+    graphs: ${NAMED_GRAPH}
 
   detection-system-specific-checks: # 1.1.1.3.7.1.2 (no data! even in RINF guide says waiting for proposal of MSs)
     sources:
@@ -222,6 +233,7 @@ mappings:
     s: http://era.europa.eu/functionalInfrastructure/sectionsOfLine#$(UICCode)_$(FROM_NODE)_$(TO_NODE)
     po:
       - [era:trainDetectionSystemSpecificCheck, $(ParameterValue)]
+    graphs: ${NAMED_GRAPH}
 
   french-detection-limitation: # 1.1.1.3.7.1.4
     sources:
@@ -234,6 +246,7 @@ mappings:
     s: http://era.europa.eu/functionalInfrastructure/sectionsOfLine#$(UICCode)_$(FROM_NODE)_$(TO_NODE)
     po:
       - [era:frenchTrainDetectionSystemLimitation, era-tds:$(ParameterValue)~iri]
+    graphs: ${NAMED_GRAPH}
 
   # -----------------Hot axle box detection--------------------
 
@@ -265,6 +278,7 @@ mappings:
           parameters:
             - [grel:valueParameter, $(ParameterValue)]
             - [grel:valueParameter2, "N"]
+    graphs: ${NAMED_GRAPH}
 
   hot-axle-box-detection-tsi-compliant: # 1.1.1.1.7.5
     sources:
@@ -294,6 +308,7 @@ mappings:
           parameters:
             - [grel:valueParameter, $(ParameterValue)]
             - [grel:valueParameter2, "N"]
+    graphs: ${NAMED_GRAPH}
 
   hot-axle-box-detector-identification: # 1.1.1.1.7.6 (no data! no explanation about data format in RINF's guide)
     sources:
@@ -306,6 +321,7 @@ mappings:
     s: http://era.europa.eu/functionalInfrastructure/sectionsOfLine#$(UICCode)_$(FROM_NODE)_$(TO_NODE)
     po:
       - [era:hotAxleBoxDetectorIdentification, $(ParameterValue)]
+    graphs: ${NAMED_GRAPH}
 
   hot-axle-box-detector-generation: # 1.1.1.1.7.7 (no data! no explanation about data format in RINF's guide)
     sources:
@@ -318,6 +334,7 @@ mappings:
     s: http://era.europa.eu/functionalInfrastructure/sectionsOfLine#$(UICCode)_$(FROM_NODE)_$(TO_NODE)
     po:
       - [era:hotAxleBoxDetectorGeneration, $(ParameterValue)]
+    graphs: ${NAMED_GRAPH}
 
   hot-axle-box-detector-location: # 1.1.1.1.7.8
     sources:
@@ -330,6 +347,7 @@ mappings:
     s: http://era.europa.eu/functionalInfrastructure/sectionsOfLine#$(UICCode)_$(FROM_NODE)_$(TO_NODE)
     po:
       - [era:hotAxleBoxDetectorLocation, $(ParameterValue), xsd:double]
+    graphs: ${NAMED_GRAPH}
 
   hot-axle-box-detector-direction: # 1.1.1.1.7.9 (no data!)
     sources:
@@ -342,6 +360,7 @@ mappings:
     s: http://era.europa.eu/functionalInfrastructure/sectionsOfLine#$(UICCode)_$(FROM_NODE)_$(TO_NODE)
     po:
       - [era:hotAxleBoxDetectorDirection, $(ParameterValue)]
+    graphs: ${NAMED_GRAPH}
 
   # -----------------Running characteristics--------------------
 
@@ -356,6 +375,7 @@ mappings:
     s: http://era.europa.eu/functionalInfrastructure/sectionsOfLine#$(UICCode)_$(FROM_NODE)_$(TO_NODE)
     po:
       - [era:cantDeficiency, $(ParameterValue)]
+    graphs: ${NAMED_GRAPH}
 
   maximum-permitted-speed: # 1.1.1.1.2.5
     sources:
@@ -368,6 +388,7 @@ mappings:
     s: http://era.europa.eu/functionalInfrastructure/sectionsOfLine#$(UICCode)_$(FROM_NODE)_$(TO_NODE)
     po:
       - [era:maximumPermittedSpeed, $(ParameterValue), xsd:integer]
+    graphs: ${NAMED_GRAPH}
 
   rail-inclination: # 1.1.1.1.4.3
     sources:
@@ -380,6 +401,7 @@ mappings:
     s: http://era.europa.eu/functionalInfrastructure/sectionsOfLine#$(UICCode)_$(FROM_NODE)_$(TO_NODE)
     po:
       - [era:railInclination, era-ri:1%2F$(ParameterValue)~iri]
+    graphs: ${NAMED_GRAPH}
 
   # -----------------Wheelset--------------------
 
@@ -402,6 +424,7 @@ mappings:
           parameters:
             - [grel:valueParameter, $(ParameterValue)]
             - [grel:valueParameter2, "other"]
+    graphs: ${NAMED_GRAPH}
 
   minimum-wheel-diameter: # 1.1.1.1.5.2
     sources:
@@ -414,6 +437,7 @@ mappings:
     s: http://era.europa.eu/functionalInfrastructure/sectionsOfLine#$(UICCode)_$(FROM_NODE)_$(TO_NODE)
     po:
       - [era:minimumWheelDiameter, $(ParameterValue), xsd:integer]
+    graphs: ${NAMED_GRAPH}
 
   # -----------------Minimum curve--------------------
 
@@ -428,6 +452,7 @@ mappings:
     s: http://era.europa.eu/functionalInfrastructure/sectionsOfLine#$(UICCode)_$(FROM_NODE)_$(TO_NODE)
     po:
       - [era:minimumHorizontalRadius, $(ParameterValue), xsd:integer]
+    graphs: ${NAMED_GRAPH}
 
   # -------------------Braking-----------------------
 
@@ -442,6 +467,7 @@ mappings:
     s: http://era.europa.eu/functionalInfrastructure/sectionsOfLine#$(UICCode)_$(FROM_NODE)_$(TO_NODE)
     po:
       - [era:maximumBrakingDistance, $(ParameterValue), xsd:integer]
+    graphs: ${NAMED_GRAPH}
 
   gradient-profile: # 1.1.1.1.3.6
     sources:
@@ -454,6 +480,7 @@ mappings:
     s: http://era.europa.eu/functionalInfrastructure/sectionsOfLine#$(UICCode)_$(FROM_NODE)_$(TO_NODE)
     po:
       - [era:gradientProfile, $(ParameterValue)]
+    graphs: ${NAMED_GRAPH}
 
   maximum-train-deceleration: # 1.1.1.1.6.1
     sources:
@@ -466,6 +493,7 @@ mappings:
     s: http://era.europa.eu/functionalInfrastructure/sectionsOfLine#$(UICCode)_$(FROM_NODE)_$(TO_NODE)
     po:
       - [era:maximumTrainDeceleration, $(ParameterValue), xsd:double]
+    graphs: ${NAMED_GRAPH}
 
   has-additional-braking-information: # 1.1.1.3.11.2
     sources:
@@ -495,6 +523,7 @@ mappings:
           parameters:
             - [grel:valueParameter, $(ParameterValue)]
             - [grel:valueParameter2, "N"]
+    graphs: ${NAMED_GRAPH}
 
   additional-braking-information-document: # 1.1.1.3.11.3
     sources:
@@ -507,6 +536,7 @@ mappings:
     s: http://era.europa.eu/functionalInfrastructure/sectionsOfLine#$(UICCode)_$(FROM_NODE)_$(TO_NODE)
     po:
       - [era:additionalBrakingInformationDocument, $(ParameterValue)]
+    graphs: ${NAMED_GRAPH}
 
   # -------------------Magnetic track brake-----------------------
 
@@ -565,6 +595,7 @@ mappings:
           parameters:
             - [grel:valueParameter, $(ParameterValue)]
             - [grel:valueParameter2, "allowed under conditions only for emergency brake"]
+    graphs: ${NAMED_GRAPH}
 
   magnetic-braking-conditions-document: # 1.1.1.1.6.5 (no data!)
     sources:
@@ -577,6 +608,7 @@ mappings:
     s: http://era.europa.eu/functionalInfrastructure/sectionsOfLine#$(UICCode)_$(FROM_NODE)_$(TO_NODE)
     po:
       - [era:magneticBrakingConditionsDocument, $(ParameterValue)]
+    graphs: ${NAMED_GRAPH}
 
 # -------------------Eddy current track brake-----------------------
 
@@ -635,6 +667,7 @@ mappings:
           parameters:
             - [grel:valueParameter, $(ParameterValue)]
             - [grel:valueParameter2, "allowed under conditions only for emergency brake"]
+    graphs: ${NAMED_GRAPH}
 
   eddy-current-braking-conditions-document: # 1.1.1.1.6.4 (no data!)
     sources:
@@ -647,6 +680,7 @@ mappings:
     s: http://era.europa.eu/functionalInfrastructure/sectionsOfLine#$(UICCode)_$(FROM_NODE)_$(TO_NODE)
     po:
       - [era:eddyCurrentBrakingConditionsDocument, $(ParameterValue)]
+    graphs: ${NAMED_GRAPH}
 
   # -------------------Weather conditions-----------------------
   
@@ -662,6 +696,7 @@ mappings:
     po:
       - [era:minimumTemperature, $(MinimumTemperature), xsd:integer]
       - [era:maximumTemperature, $(MaximumTemperature), xsd:integer]
+    graphs: ${NAMED_GRAPH}
 
   severe-weather-conditions: # 1.1.1.1.2.8
     sources:
@@ -691,6 +726,7 @@ mappings:
           parameters:
             - [grel:valueParameter, $(ParameterValue)]
             - [grel:valueParameter2, "N"]
+    graphs: ${NAMED_GRAPH}
   
   # -------------------Voltages and frequencies-----------------------
 
@@ -705,6 +741,7 @@ mappings:
     s: http://era.europa.eu/functionalInfrastructure/sectionsOfLine#$(UICCode)_$(FROM_NODE)_$(TO_NODE)
     po:
       - [era:contactLineSystem, era-cls:$(ParameterValue)~iri]
+    graphs: ${NAMED_GRAPH}
 
   energy-supply-system: # 1.1.1.2.2.1.2
     sources:
@@ -723,6 +760,7 @@ mappings:
           parameters:
             - [grel:valueParameter, $(ParameterValue)]
             - [grel:valueParameter2, "other"]
+    graphs: ${NAMED_GRAPH}
   
   energy-supply-system-tsi-compliant: # 1.1.1.2.2.1.2.1
     sources:
@@ -752,6 +790,7 @@ mappings:
           parameters:
             - [grel:valueParameter, $(ParameterValue)]
             - [grel:valueParameter2, "N"]
+    graphs: ${NAMED_GRAPH}
 
   umax2: # 1.1.1.2.2.1.3
     sources:
@@ -764,6 +803,7 @@ mappings:
     s: http://era.europa.eu/functionalInfrastructure/sectionsOfLine#$(UICCode)_$(FROM_NODE)_$(TO_NODE)
     po:
       - [era:umax2, $(ParameterValue)]
+    graphs: ${NAMED_GRAPH}
 
   # -------------------Regenerative brake----------------------
 
@@ -804,6 +844,7 @@ mappings:
           parameters:
             - [grel:valueParameter, $(ParameterValue)]
             - [grel:valueParameter2, "allowed under conditions"]
+    graphs: ${NAMED_GRAPH}
   
   # -------------------Current limitation----------------------
 
@@ -835,6 +876,7 @@ mappings:
           parameters:
             - [grel:valueParameter, $(ParameterValue)]
             - [grel:valueParameter2, "N"]
+    graphs: ${NAMED_GRAPH}
 
   # -------------------Pantograph----------------------
   
@@ -849,6 +891,7 @@ mappings:
     s: http://era.europa.eu/functionalInfrastructure/sectionsOfLine#$(UICCode)_$(FROM_NODE)_$(TO_NODE)
     po:
       - [era:maxCurrentStandstillPantograph, $(ParameterValue), xsd:double]
+    graphs: ${NAMED_GRAPH}
 
   maximum-wire-height: # 1.1.1.2.2.5
     sources:
@@ -861,6 +904,7 @@ mappings:
     s: http://era.europa.eu/functionalInfrastructure/sectionsOfLine#$(UICCode)_$(FROM_NODE)_$(TO_NODE)
     po:
       - [era:maximumContactWireHeight, $(ParameterValue), xsd:double]
+    graphs: ${NAMED_GRAPH}
 
   minimum-wire-height: # 1.1.1.2.2.6
     sources:
@@ -873,6 +917,7 @@ mappings:
     s: http://era.europa.eu/functionalInfrastructure/sectionsOfLine#$(UICCode)_$(FROM_NODE)_$(TO_NODE)
     po:
       - [era:minimumContactWireHeight, $(ParameterValue), xsd:double]
+    graphs: ${NAMED_GRAPH}
 
   pantograph-tsi-compliant: # 1.1.1.2.3.1
     sources:
@@ -885,6 +930,7 @@ mappings:
     s: http://era.europa.eu/functionalInfrastructure/sectionsOfLine#$(UICCode)_$(FROM_NODE)_$(TO_NODE)
     po:
       - [era:pantographHead, era-pth:$(ParameterValue)~iri]
+    graphs: ${NAMED_GRAPH}
   
   other-accepted-pantographs: # 1.1.1.2.3.2
     sources:
@@ -897,6 +943,7 @@ mappings:
     s: http://era.europa.eu/functionalInfrastructure/sectionsOfLine#$(UICCode)_$(FROM_NODE)_$(TO_NODE)
     po:
       - [era:pantographHead, era-pth:$(ParameterValue)~iri]
+    graphs: ${NAMED_GRAPH}
   
   contact-strip-material: # 1.1.1.2.3.4
     sources:
@@ -915,6 +962,7 @@ mappings:
           parameters:
             - [grel:valueParameter, $(ParameterValue)]
             - [grel:valueParameter2, "other"]
+    graphs: ${NAMED_GRAPH}
 
   contact-force: # 1.1.1.2.5.2
     sources:
@@ -927,6 +975,7 @@ mappings:
     s: http://era.europa.eu/functionalInfrastructure/sectionsOfLine#$(UICCode)_$(FROM_NODE)_$(TO_NODE)
     po:
       - [era:permittedContactForce, $(ParameterValue)]
+    graphs: ${NAMED_GRAPH}
   
   raised-pantograph-distance-speed: # 1.1.1.2.3.3
     sources:
@@ -939,6 +988,7 @@ mappings:
     s: http://era.europa.eu/functionalInfrastructure/sectionsOfLine#$(UICCode)_$(FROM_NODE)_$(TO_NODE)
     po:
       - [era:raisedPantographsDistanceAndSpeed, $(ParameterValue)]
+    graphs: ${NAMED_GRAPH}
   
   automatic-dropping-device-required: # 1.1.1.2.5.3
     sources:
@@ -968,6 +1018,7 @@ mappings:
           parameters:
             - [grel:valueParameter, $(ParameterValue)]
             - [grel:valueParameter2, "N"]
+    graphs: ${NAMED_GRAPH}
 
 
   # -------------------Tunnel----------------------
@@ -992,6 +1043,7 @@ mappings:
     s: http://era.europa.eu/functionalInfrastructure/sectionsOfLine#$(UICCode)_$(FROM_NODE)_$(TO_NODE)
     po:
       - [era:etcsSystemCompatibility, era-esc:$(ParameterValue)~iri]
+    graphs: ${NAMED_GRAPH}
 
   train-integrity-required: # 1.1.1.3.2.8 (no data!)
     sources:
@@ -1021,6 +1073,7 @@ mappings:
           parameters:
             - [grel:valueParameter, $(ParameterValue)]
             - [grel:valueParameter2, "N"]
+    graphs: ${NAMED_GRAPH}
 
   # -----------------------GSM-R--------------------------
 
@@ -1035,6 +1088,7 @@ mappings:
     s: http://era.europa.eu/functionalInfrastructure/sectionsOfLine#$(UICCode)_$(FROM_NODE)_$(TO_NODE)
     po:
       - [era:gsmrNetworkCoverage, era-gsmr:$(ParameterValue)~iri]
+    graphs: ${NAMED_GRAPH}
 
   group-555-support: # 1.1.1.3.3.4
     sources:
@@ -1064,6 +1118,7 @@ mappings:
           parameters:
             - [grel:valueParameter, $(ParameterValue)]
             - [grel:valueParameter2, "N"]
+    graphs: ${NAMED_GRAPH}
   
   voice-radio-compatible: # 1.1.1.3.3.9
     sources:
@@ -1076,6 +1131,7 @@ mappings:
     s: http://era.europa.eu/functionalInfrastructure/sectionsOfLine#$(UICCode)_$(FROM_NODE)_$(TO_NODE)
     po:
       - [era:voiceRadioCompatible, era-rsc:$(ParameterValue)~iri]
+    graphs: ${NAMED_GRAPH}
 
   data-radio-compatible: # 1.1.1.3.3.10
     sources:
@@ -1088,6 +1144,7 @@ mappings:
     s: http://era.europa.eu/functionalInfrastructure/sectionsOfLine#$(UICCode)_$(FROM_NODE)_$(TO_NODE)
     po:
       - [era:dataRadioCompatible, era-rsc:$(ParameterValue)~iri]
+    graphs: ${NAMED_GRAPH}
   
   # -----------------------Class B--------------------------
 
@@ -1102,6 +1159,7 @@ mappings:
     s: http://era.europa.eu/functionalInfrastructure/sectionsOfLine#$(UICCode)_$(FROM_NODE)_$(TO_NODE)
     po:
       - [era:protectionLegacySystem, era-tpls:$(ParameterValue)~iri]
+    graphs: ${NAMED_GRAPH}
 
   legacy-radio-system: # 1.1.1.3.6.1
     sources:
@@ -1127,6 +1185,7 @@ mappings:
           parameters:
             - [grel:valueParameter, $(ParameterValue)]
             - [grel:valueParameter2, "RETB_(voice)"]
+    graphs: ${NAMED_GRAPH}
 
   # ---------------------Noise (pilot 1.2)--------------------------
 
@@ -1158,3 +1217,4 @@ mappings:
           parameters:
             - [grel:valueParameter, $(ParameterValue)]
             - [grel:valueParameter2, "N"]
+    graphs: ${NAMED_GRAPH}

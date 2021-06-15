@@ -36,6 +36,8 @@ mappings:
               parameters:
                 - [str1, $(Code)]
                 - [str2, $(code)]
+    graphs: ${NAMED_GRAPH}
+    
   eu-country:
     sources:
       - ["data/countries.csv~csv"]
