@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [v2.0.0](https://github.com/julianrojas87/era-data-mappings/compare/v1.2.1...v2.0.0) (2021-04-12)
+## [v2.0.0](https://github.com/julianrojas87/era-data-mappings/compare/v1.2.1...v2.0.0) (2021-06-15)
 
 ### Raw Data: [ERA-KG-v2.0.0](https://cloud.ilabt.imec.be/index.php/s/PogwXPSr8yEkKmo)
 
