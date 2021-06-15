@@ -1,17 +1,18 @@
 #!/bin/bash
 
 # Replace config environment variables
-envsub ./mappings/internal-node-links-artificial.yml
-envsub ./mappings/line-national-ids.yml
-envsub ./mappings/manufacturers.yml
-envsub ./mappings/micro-links.yml
-envsub ./mappings/micro-nodes.yml
-envsub ./mappings/node-ports.yml
-envsub ./mappings/operational-points.yml
-envsub ./mappings/sol-tracks.yml
-envsub ./mappings/tunnels.yml
-envsub ./mappings/vehicle-types.yml
-envsub ./mappings/skos-concepts.yml
+envsub ./mappings/ERATV-manufacturers.yml
+envsub ./mappings/ERATV-vehicle-types.yml
+envsub ./mappings/RINF-ERATV-skos-concepts.yml
+envsub ./mappings/RINF-line-national-ids.yml
+envsub ./mappings/RINF-link-meso-micro.yml
+envsub ./mappings/RINF-meso-net-elements.yml
+envsub ./mappings/RINF-meso-net-relations.yml
+envsub ./mappings/RINF-micro-net-elements.yml
+envsub ./mappings/RINF-micro-net-relations.yml
+envsub ./mappings/RINF-operational-points.yml
+envsub ./mappings/RINF-sections-of-line.yml
+envsub ./mappings/RINF-tunnels.yml
 
 # Execute mapping process
 ./map-turtle.sh ${KG_VERSION}

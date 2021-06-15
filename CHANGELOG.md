@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file.
 
+## [v2.0.0](https://github.com/julianrojas87/era-data-mappings/compare/v1.2.1...v2.0.0) (2021-04-12)
+
+### Raw Data: [ERA-KG-v2.0.0](https://cloud.ilabt.imec.be/index.php/s/PogwXPSr8yEkKmo)
+
+### Features and Bug Fixes
+
+* Full mapping refactoring to adopt a topological model in following the [RailTopoModel](http://www.railtopomodel.org/en/download/irs30100-apr16-7594BCA1524E14224D0.html?file=files/download/RailTopoModel/180416_uic_irs30100.pdf)
+* Parallel mapping process based on GNU parallel
+* Mappings for micro and meso elements from RailML sources (moved to independent branch [railml-mappings](https://github.com/julianrojas87/era-data-mappings/tree/railml-mappings))
+* Mappings for RailML signals (moved to independent branch [railml-mappings](https://github.com/julianrojas87/era-data-mappings/tree/railml-mappings))
+* Mappings for micro and meso elements from RINF source
+* Aggregation of micro and meso elements
+* Mappings for `era:SectionOfLine` entities
+* Mappings to link RINF OPs to RailML meso NetElements (moved to independent branch [railml-mappings](https://github.com/julianrojas87/era-data-mappings/tree/railml-mappings))
+* Mappings to link RINF SoLs to RailML meso NetElements (moved to independent branch [railml-mappings](https://github.com/julianrojas87/era-data-mappings/tree/railml-mappings))
+* Adjust internal connectivity table for creating proper URIs
+* Removed ECVVR, RSRD and RailML sources and mappings (moved to independent branch [railml-mappings](https://github.com/julianrojas87/era-data-mappings/tree/railml-mappings))
+* Bump RML mapper to v4.10.0
+* Produce N-Quads formatted RDF by default
+* Allow to configure the named graph IRI via environment variable
+
 ## [v1.2.1](https://github.com/julianrojas87/era-data-mappings/compare/v1.2.0...v1.2.1) (2021-03-03)
 
 ### Raw Data: [ERA-KG-v1.2.1](https://drive.google.com/file/d/1KofPzYx2ovgAz85rLuO5J98SEs2BjWbO/view?usp=sharing)

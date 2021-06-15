@@ -40,20 +40,23 @@ parseYARRRML() {
 
 mapRML() {
     local file_path=$1
-    local output_file=$2
+    local file=${file_path##*/}
+    local output_file="knowledge-graph/${file%_rml*}.nq"
 
     if [ $(stat -c %s $output_file 2>/dev/null || echo -e 0) -gt 0 ]; then
         echo "$file_path has already been mapped"
     else
         echo "Mapping '$file_path' and storing output in '$output_file'"
-        time java -Xmx4096m -cp rmlmapper-4.9.1.jar:mssql-jdbc-8.2.0.jre11.jar be.ugent.rml.cli.Main -s turtle -m $file_path >$output_file
+        time java -Xmx4096m -cp rmlmapper-4.10.0.jar:mssql-jdbc-8.2.0.jre11.jar be.ugent.rml.cli.Main -m $file_path > $output_file
     fi
 }
+# Export the mapRML function so it can be seen by parallel
+export -f mapRML
 
 # Download the YARRML parser
 downloadYARRRML
 # Download the turtle file merge tool
-downloadTTLMerge
+# downloadTTLMerge
 
 # Parse YARRRML files to RML
 for f in ${mappings_directory}/*.yml; do
@@ -62,19 +65,24 @@ for f in ${mappings_directory}/*.yml; do
     parseYARRRML "$f" "${file%.*}" "ttl"
 done
 
-# Execute RML mappings
-for f in ${rml_directory}/*.ttl; do
-    file=${f##*/}
-    mapRML "${f}" "${output_directory}/${file%_rml*}.ttl"
-done
+# Execute RML mappings in parallel based on available cores
+ls ${rml_directory}/*.ttl | parallel -j+0 'mapRML {}'
+
+# Merge resulting RDF (nquads) files into one
+echo "Merging mapped ERA RDF files into a single file for version $1"
+find ${output_directory}/ -iname '*.nq' -not -name 'RINF-ERATV-skos-concepts.nq' -exec cat {} +> ${output_directory}/${knowledge_graph}$1.nq
+#cat ${output_directory}/* > ${output_directory}/${knowledge_graph}$1.nq
+echo "Compressing resulting RDF file"
+gzip ${output_directory}/${knowledge_graph}$1.nq
 
 # Merge resulting RDF (turtle) files into one
-if [ ! -d ${output_directory}/${knowledge_graph}$1.ttl.gz ]; then
-    echo "Merging mapped ERA RDF files into a single file for version $1"
-    ./ttl-merge/index.js -i ${output_directory} \
-        -e external/${output_directory}/skos-concepts.ttl \
-        -p prefixes.json >${output_directory}/${knowledge_graph}$1.ttl
-    echo "Compressing resulting RDF file"
-    gzip ${output_directory}/${knowledge_graph}$1.ttl
-fi
-echo "The ERA Knowledge Graph v$1 has created successfully and compressed into ${output_directory}/${knowledge_graph}$1.ttl.gz file!"
+#if [ ! -d ${output_directory}/${knowledge_graph}$1.ttl.gz ]; then
+#    echo "Merging mapped ERA RDF files into a single file for version $1"
+#    ./ttl-merge/index.js -i ${output_directory} \
+#        -e ${output_directory}/RINF-ERATV-skos-concepts.ttl \
+#        -p prefixes.json > ${knowledge_graph}$1.ttl
+#    mv ${knowledge_graph}$1.ttl ${output_directory}/${knowledge_graph}$1.ttl
+#    echo "Compressing resulting RDF file"
+#    gzip ${output_directory}/${knowledge_graph}$1.ttl
+#fi
+echo "The ERA Knowledge Graph v$1 has created successfully and compressed into ${output_directory}/${knowledge_graph}$1.nq.gz file!"

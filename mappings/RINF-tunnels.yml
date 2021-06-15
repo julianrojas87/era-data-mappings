@@ -1,0 +1,146 @@
+prefixes:
+  xsd: "http://www.w3.org/2001/XMLSchema#"
+  idlab-fn: "http://example.com/idlab/function/"
+  grel: "http://users.ugent.be/~bjdmeest/function/grel.ttl#"
+  wgs: "http://www.w3.org/2003/01/geo/wgs84_pos#"
+  geosparql: "http://www.opengis.net/ont/geosparql#"
+  rdfs: "http://www.w3.org/2000/01/rdf-schema#"
+  era: "http://era.europa.eu/ns#"
+  era-rsf: "http://era.europa.eu/concepts/rolling-stock-fire#"
+variables:
+  connection:
+    access: &host ${RINF_HOST}
+    type: &typeMSSQL mssql
+    credentials: &credentials
+      username: ${RINF_USER}
+      password: ${RINF_PWD}
+    queryFormulation: &queryFormulation sql2008
+    referenceFormulation: &referenceFormulation csv
+
+mappings:
+  tunnel:
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT UICLines.UICCode, Tunnels.UUID AS TUNNEL_LABEL, REPLACE(Tunnels.UUID, ' ', '_') AS TUNNEL_URI, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, Tracks.UUID AS TRACK_ID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, ROUND((ABS(Tunnels.EndKm - Tunnels.StartKm) * 1000), 2) AS TunnelLength, Tunnels.StartLat, Tunnels.StartLong, Tunnels.EndLat, Tunnels.EndLong, MemberStates.Code FROM RINF.dbo.LineEdges, RINF.dbo.SectionOfLines, RINF.dbo.SOLTracks, RINF.dbo.TrackTunnels, RINF.dbo.Tracks, RINF.dbo.UICLines, RINF.dbo.Tunnels, RINF.dbo.MemberStateVersions, RINF.dbo.MemberStates WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SectionOfLines.ID = SOLTracks.SectionOfLineID AND SectionOfLines.UICLineID = UICLines.ID AND SectionOfLines.VersionID = UICLines.VersionID AND SectionOfLines.VersionID = SOLTracks.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID AND SOLTracks.TrackID = TrackTunnels.TrackID AND SOLTracks.VersionID = TrackTunnels.VersionID AND TrackTunnels.TunnelID = Tunnels.ID AND TrackTunnels.VersionID = Tunnels.VersionID AND Tunnels.VersionID = MemberStateVersions.ID AND MemberStateVersions.MemberStateID = MemberStates.ID;
+    s: http://era.europa.eu/funtionalInfrastructure/tunnels#$(TUNNEL_URI)_$(StartLong)$(StartLat)_$(EndLong)$(EndLat)
+    po:
+      - [a, era:Tunnel]
+      - [rdfs:label, $(TUNNEL_LABEL)]
+      - [era:length, $(TunnelLength)]
+      - [era:startLocation, http://era.europa.eu/location#GEO/$(StartLong)/$(StartLat)~iri]
+      - [era:endLocation, http://era.europa.eu/location#GEO/$(EndLong)/$(EndLat)~iri]
+      - [era:netElement, http://era.europa.eu/topology/netElements#$(UICCode)_$(FROM_NODE)_$(TRACK_ID)_$(TO_NODE)~iri]
+      - p: era:inCountry
+        o:
+          - mapping: eu-country
+            condition:
+              function: equal
+              parameters:
+                - [str1, $(Code)]
+                - [str2, $(code)]
+    graphs: ${NAMED_GRAPH}
+  
+  tunnel-reference:
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT UICLines.UICCode, Tunnels.UUID AS TUNNEL_LABEL, REPLACE(Tunnels.UUID, ' ', '_') AS TUNNEL_URI, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, Tracks.UUID AS TRACK_ID, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, ROUND((ABS(Tunnels.EndKm - Tunnels.StartKm) * 1000), 2) AS TunnelLength, Tunnels.StartLat, Tunnels.StartLong, Tunnels.EndLat, Tunnels.EndLong, MemberStates.Code FROM RINF.dbo.LineEdges, RINF.dbo.SectionOfLines, RINF.dbo.SOLTracks, RINF.dbo.TrackTunnels, RINF.dbo.Tracks, RINF.dbo.UICLines, RINF.dbo.Tunnels, RINF.dbo.MemberStateVersions, RINF.dbo.MemberStates WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SectionOfLines.ID = SOLTracks.SectionOfLineID AND SectionOfLines.UICLineID = UICLines.ID AND SectionOfLines.VersionID = UICLines.VersionID AND SectionOfLines.VersionID = SOLTracks.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID AND SOLTracks.TrackID = TrackTunnels.TrackID AND SOLTracks.VersionID = TrackTunnels.VersionID AND TrackTunnels.TunnelID = Tunnels.ID AND TrackTunnels.VersionID = Tunnels.VersionID AND Tunnels.VersionID = MemberStateVersions.ID AND MemberStateVersions.MemberStateID = MemberStates.ID;
+    s: http://era.europa.eu/topology/netElements#$(UICCode)_$(FROM_NODE)_$(TRACK_ID)_$(TO_NODE)
+    po:
+      - [era:passesThroughTunnel, http://era.europa.eu/funtionalInfrastructure/tunnels#$(TUNNEL_URI)_$(StartLong)$(StartLat)_$(EndLong)$(EndLat)~iri]
+    graphs: ${NAMED_GRAPH}
+  
+  start-location:
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT Tunnels.StartLat, Tunnels.StartLong FROM RINF.dbo.SectionOfLines, RINF.dbo.SOLTracks, RINF.dbo.TrackTunnels, RINF.dbo.Tunnels WHERE SectionOfLines.ID = SOLTracks.SectionOfLineID AND SectionOfLines.VersionID = SOLTracks.VersionID AND SOLTracks.TrackID = TrackTunnels.TrackID AND SOLTracks.VersionID = TrackTunnels.VersionID AND TrackTunnels.TunnelID = Tunnels.ID AND TrackTunnels.VersionID = Tunnels.VersionID;
+    s: http://era.europa.eu/location#GEO/$(StartLong)/$(StartLat)
+    po:
+      - [a, wgs:Point]
+      - [a, geosparql:Geometry]
+      - [wgs:lat, $(StartLat), xsd:double]
+      - [wgs:long, $(StartLong), xsd:double]
+      - [geosparql:asWKT, POINT ($(StartLong) $(StartLat)), geosparql:wktLiteral]
+    graphs: ${NAMED_GRAPH}
+  
+  end-location:
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT Tunnels.EndLat, Tunnels.EndLong FROM RINF.dbo.SectionOfLines, RINF.dbo.SOLTracks, RINF.dbo.TrackTunnels, RINF.dbo.Tunnels WHERE SectionOfLines.ID = SOLTracks.SectionOfLineID AND SectionOfLines.VersionID = SOLTracks.VersionID AND SOLTracks.TrackID = TrackTunnels.TrackID AND SOLTracks.VersionID = TrackTunnels.VersionID AND TrackTunnels.TunnelID = Tunnels.ID AND TrackTunnels.VersionID = Tunnels.VersionID;
+    s: http://era.europa.eu/location#GEO/$(EndLong)/$(EndLat)
+    po:
+      - [a, wgs:Point]
+      - [a, geosparql:Geometry]
+      - [wgs:lat, $(EndLat), xsd:double]
+      - [wgs:long, $(EndLong), xsd:double]
+      - [geosparql:asWKT, POINT ($(EndLong) $(EndLat)), geosparql:wktLiteral]
+    graphs: ${NAMED_GRAPH}
+  
+  eu-country:
+    sources:
+      - ["data/countries.csv~csv"]
+    s: $(eu)
+
+  # -------------------Tunnel----------------------
+
+  required-rolling-stock-fire-category: # 1.1.1.1.8.10
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT REPLACE(Tunnels.UUID, ' ', '_') AS TUNNEL_URI, LookupValues.[Value], Tunnels.StartLat, Tunnels.StartLong, Tunnels.EndLat, Tunnels.EndLong, MemberStates.Code FROM RINF.dbo.TrackTunnels, RINF.dbo.Tunnels, RINF.dbo.TunnelParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues, RINF.dbo.MemberStateVersions, RINF.dbo.MemberStates WHERE TrackTunnels.TunnelID = Tunnels.ID AND TrackTunnels.VersionID = Tunnels.VersionID AND TunnelParameters.TunnelID = TrackTunnels.TunnelID AND TunnelParameters.VersionID = TrackTunnels.VersionID AND TunnelParameters.ParameterId = Parameters.ID AND Parameters.[Index] = '1.1.1.1.8.10' AND TunnelParameters.LookupValueID = LookupValues.ID AND Tunnels.VersionID = MemberStateVersions.ID AND MemberStateVersions.MemberStateID = MemberStates.ID;
+    s: http://era.europa.eu/funtionalInfrastructure/tunnels#$(TUNNEL_URI)_$(StartLong)$(StartLat)_$(EndLong)$(EndLat)
+    po:
+      - p: era:rollingStockFireCategory
+        o: era-rsf:a~iri
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(Value)]
+            - [grel:valueParameter2, "A"]
+      - p: era:rollingStockFireCategory
+        o: era-rsf:b~iri
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(Value)]
+            - [grel:valueParameter2, "B"]
+      - p: era:rollingStockFireCategory
+        o: era-rsf:none~iri
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(Value)]
+            - [grel:valueParameter2, "none"]
+    graphs: ${NAMED_GRAPH}
+
+
+  required-national-rolling-stock-fire-category: # 1.1.1.1.8.11 (no data!)
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT REPLACE(Tunnels.UUID, ' ', '_') AS TUNNEL_URI, LookupValues.[Value], Tunnels.StartLat, Tunnels.StartLong, Tunnels.EndLat, Tunnels.EndLong, MemberStates.Code FROM RINF.dbo.TrackTunnels, RINF.dbo.Tunnels, RINF.dbo.TunnelParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues, RINF.dbo.MemberStateVersions, RINF.dbo.MemberStates WHERE TrackTunnels.TunnelID = Tunnels.ID AND TrackTunnels.VersionID = Tunnels.VersionID AND TunnelParameters.TunnelID = TrackTunnels.TunnelID AND TunnelParameters.VersionID = TrackTunnels.VersionID AND TunnelParameters.ParameterId = Parameters.ID AND Parameters.[Index] = '1.1.1.1.8.11' AND TunnelParameters.LookupValueID = LookupValues.ID AND Tunnels.VersionID = MemberStateVersions.ID AND MemberStateVersions.MemberStateID = MemberStates.ID;
+    s: http://era.europa.eu/funtionalInfrastructure/tunnels#$(TUNNEL_URI)_$(StartLong)$(StartLat)_$(EndLong)$(EndLat)
+    po:
+      - [era:nationalRollingStockFireCategory, $(Value)]
+    graphs: ${NAMED_GRAPH}

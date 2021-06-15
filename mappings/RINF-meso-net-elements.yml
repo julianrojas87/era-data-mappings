@@ -1,0 +1,53 @@
+prefixes:
+  xsd: "http://www.w3.org/2001/XMLSchema#"
+  idlab-fn: "http://example.com/idlab/function/"
+  grel: "http://users.ugent.be/~bjdmeest/function/grel.ttl#"
+  rdfs: "http://www.w3.org/2000/01/rdf-schema#"
+  eu-country: "http://publications.europa.eu/resource/authority/country/"
+  era: "http://era.europa.eu/ns#"
+
+variables:
+  connection:
+    access: &host ${RINF_HOST}
+    type: &typeMSSQL mssql
+    credentials: &credentials
+      username: ${RINF_USER}
+      password: ${RINF_PWD}
+    queryFormulation: &queryFormulation sql2008
+    referenceFormulation: &referenceFormulation csv
+
+mappings:
+
+  # ----------------------Define Meso NetElements from Operational Points---------------------
+
+  operational-point:
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT TRIM(UOPID) AS UOPID, TRIM(OperationalPoints.Name) AS OPName FROM RINF.dbo.OperationalPoints, RINF.dbo.MemberStates, RINF.dbo.MemberStateVersions WHERE OperationalPoints.VersionID = MemberStateVersions.ID AND MemberStateVersions.MemberStateID = MemberStates.ID;
+    s: http://era.europa.eu/topology/netElements#$(UOPID)
+    po:
+      - [a, era:NetElement]
+      - [rdfs:label, $(OPName)]
+      - [era:hasImplementation, http://era.europa.eu/funtionalInfrastructure/operationalPoints#$(UOPID)~iri]
+    graphs: ${NAMED_GRAPH}
+
+  # ----------------------Define Meso NetElements from Sections of Line---------------------
+
+  sections-of-line:
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT UICLines.UICCode, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE FROM RINF.dbo.LineEdges, RINF.dbo.SectionOfLines, RINF.dbo.UICLines, RINF.dbo.MemberStateVersions, RINF.dbo.MemberStates WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SectionOfLines.UICLineID = UICLines.ID AND SectionOfLines.VersionID = UICLines.VersionID AND SectionOfLines.VersionID = MemberStateVersions.ID AND MemberStateVersions.MemberStateID = MemberStates.ID;
+    s: http://era.europa.eu/topology/netElements#$(UICCode)_$(FROM_NODE)_$(TO_NODE)
+    po:
+      - [a, era:NetElement]
+      - [rdfs:label, $(UICCode)_$(FROM_NODE)_$(TO_NODE)]
+      - [era:hasImplementation, http://era.europa.eu/functionalInfrastructure/sectionsOfLine#$(UICCode)_$(FROM_NODE)_$(TO_NODE)~iri]
+    graphs: ${NAMED_GRAPH}

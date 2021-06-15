@@ -1,0 +1,99 @@
+prefixes:
+  xsd: "http://www.w3.org/2001/XMLSchema#"
+  idlab-fn: "http://example.com/idlab/function/"
+  grel: "http://users.ugent.be/~bjdmeest/function/grel.ttl#"
+  rdfs: "http://www.w3.org/2000/01/rdf-schema#"
+  eu-country: "http://publications.europa.eu/resource/authority/country/"
+  era: "http://era.europa.eu/ns#"
+
+variables:
+  connection:
+    access: &host ${RINF_HOST}
+    type: &typeMSSQL mssql
+    credentials: &credentials
+      username: ${RINF_USER}
+      password: ${RINF_PWD}
+    queryFormulation: &queryFormulation sql2008
+    referenceFormulation: &referenceFormulation csv
+
+mappings:
+
+  # ----------------------Define Micro NetElements from SOLTracks---------------------
+  sol-tracks:
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT Tracks.UUID, (SectionOfLines.Length * 1000) AS Length, UICLines.UICCode, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.UICLines, RINF.dbo.MemberStateVersions, RINF.dbo.MemberStates WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SectionOfLines.IsFuturePlanning = 0 AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID AND SectionOfLines.UICLineID = UICLines.ID AND SectionOfLines.VersionID = UICLines.VersionID AND Tracks.VersionID = MemberStateVersions.ID AND MemberStateVersions.MemberStateID = MemberStates.ID;
+    s: http://era.europa.eu/topology/netElements#$(UICCode)_$(FROM_NODE)_$(UUID)_$(TO_NODE)
+    po:
+      - [a, era:NetElement]
+      - [rdfs:label, $(UUID)]
+      - [era:length, $(Length), xsd:double]
+    graphs: ${NAMED_GRAPH}
+
+  # ----------------------Define Micro NetElements from artificial internal links in operational points---------------------
+
+  # NOTE: Artificial internal node links are based on full connectivity assumption
+
+  internal-node-link-in-out:
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT UICLines2.UICCode AS INCOMING_LINE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE LineNodes.OperationalPointID = OperationalPoints.ID AND LineNodes.ID = LineEdges2.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS INCOMING_REMOTE_OP, Tracks2.VersionID AS INVersion, Tracks2.UUID AS INCOMING, LookupValues2.[Value] AS INCOMING_DIRECTION, TRIM(OP2.UOPID) AS UOPID, Tracks1.VersionID AS OUTVersion, Tracks1.UUID AS OUTGOING, LookupValues1.[Value] AS OUTGOING_DIRECTION, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE LineNodes.OperationalPointID = OperationalPoints.ID AND LineNodes.ID = LineEdges1.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS OUTGOING_REMOTE_OP, UICLines1.UICCode AS OUTGOING_LINE FROM RINF.dbo.Tracks AS Tracks2, RINF.dbo.SOLTracks AS SOLTracks2, RINF.dbo.SectionOfLines AS SectionOfLines2, RINF.dbo.LookupValues AS LookupValues2, RINF.dbo.UICLines AS UICLines2, RINF.dbo.Tracks AS Tracks1, RINF.dbo.SOLTracks AS SOLTracks1, RINF.dbo.SectionOfLines AS SectionOfLines1, RINF.dbo.LookupValues AS LookupValues1, RINF.dbo.UICLines AS UICLines1, RINF.dbo.LineEdges AS LineEdges2, RINF.dbo.LineEdges AS LineEdges1, RINF.dbo.LineNodes AS LineNodes1, RINF.dbo.LineNodes AS LineNodes2, RINF.dbo.OperationalPoints AS OP1, RINF.dbo.OperationalPoints AS OP2, RINF.dbo.LookupValues, RINF.dbo.MemberStateVersions, RINF.dbo.MemberStates WHERE Tracks2.ID = SOLTracks2.TrackID AND Tracks2.VersionID = SOLTracks2.VersionID AND SOLTracks2.Direction = LookupValues2.ID AND SOLTracks2.SectionOfLineID = SectionOfLines2.ID AND SOLTracks2.VersionID = SectionOfLines2.VersionID AND SectionOfLines2.UICLineID = UICLines2.ID AND SectionOfLines2.VersionID = UICLines2.VersionID AND SectionOfLines2.LineEdgeID = LineEdges2.ID AND Tracks2.VersionID = LineEdges2.VersionID AND Tracks1.ID = SOLTracks1.TrackID AND Tracks1.VersionID = SOLTracks1.VersionID AND SOLTracks1.Direction = LookupValues1.ID AND SOLTracks1.SectionOfLineID = SectionOfLines1.ID AND SOLTracks1.VersionID = SectionOfLines1.VersionID AND SectionOfLines1.UICLineID = UICLines1.ID AND SectionOfLines1.VersionID = UICLines1.VersionID AND SectionOfLines1.LineEdgeID = LineEdges1.ID AND Tracks1.VersionID = LineEdges1.VersionID AND LineEdges2.LineNodeEndID = LineNodes2.ID AND LineEdges2.VersionID = LineNodes2.VersionID AND LineEdges1.LineNodeStartID = LineNodes1.ID AND LineEdges1.VersionID = LineNodes1.VersionID AND LineEdges1.ID != LineEdges2.ID AND LineNodes2.OperationalPointID = OP2.ID AND LineNodes1.OperationalPointID = OP1.ID AND LineNodes2.VersionID = OP2.VersionID AND LineNodes1.VersionID = OP1.VersionID AND SectionOfLines2.VersionID = MemberStateVersions.ID AND MemberStateVersions.MemberStateID = MemberStates.ID AND OP2.UOPID = OP1.UOPID AND OP1.[Type] = LookupValues.ID AND OP2.[Type] = LookupValues.ID AND OP1.UOPID NOT IN ('NLBHV', 'NLBKLA', 'NLBKP', 'NLBLOA', 'NLDB', 'NLDLD', 'NLHMLA', 'NLMAS', 'NLUT', 'NLUTZA', 'NLVTN');
+    s: http://era.europa.eu/topology/netElements#$(INCOMING_LINE)_$(INCOMING_REMOTE_OP)_$(INCOMING)_$(UOPID)_$(OUTGOING)_$(OUTGOING_REMOTE_OP)_$(OUTGOING_LINE)
+    po:
+      - [a, era:NetElement]
+      - [rdfs:label, "$(INCOMING_LINE)_$(INCOMING_REMOTE_OP)_$(INCOMING)_$(UOPID)_$(OUTGOING)_$(OUTGOING_REMOTE_OP)_$(OUTGOING_LINE)"]
+    graphs: ${NAMED_GRAPH}
+      
+  internal-node-link-no-out:
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT UICLines2.UICCode AS INCOMING_LINE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE LineNodes.OperationalPointID = OperationalPoints.ID AND LineNodes.ID = LineEdges2.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS INCOMING_REMOTE_OP, Tracks2.UUID AS INCOMING, LookupValues2.[Value] AS INCOMING_DIRECTION, TRIM(OP2.UOPID) AS UOPID, Tracks1.UUID AS OUTGOING, LookupValues1.[Value] AS OUTGOING_DIRECTION, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE LineNodes.OperationalPointID = OperationalPoints.ID AND LineNodes.ID = LineEdges1.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS OUTGOING_REMOTE_OP, UICLines1.UICCode AS OUTGOING_LINE FROM RINF.dbo.Tracks AS Tracks2, RINF.dbo.SOLTracks AS SOLTracks2, RINF.dbo.SectionOfLines AS SectionOfLines2, RINF.dbo.LookupValues AS LookupValues2, RINF.dbo.UICLines AS UICLines2, RINF.dbo.Tracks AS Tracks1, RINF.dbo.SOLTracks AS SOLTracks1, RINF.dbo.SectionOfLines AS SectionOfLines1, RINF.dbo.LookupValues AS LookupValues1, RINF.dbo.UICLines AS UICLines1, RINF.dbo.LineEdges AS LineEdges2, RINF.dbo.LineEdges AS LineEdges1, RINF.dbo.LineNodes AS LineNodes1, RINF.dbo.LineNodes AS LineNodes2, RINF.dbo.OperationalPoints AS OP1, RINF.dbo.OperationalPoints AS OP2, RINF.dbo.LookupValues, RINF.dbo.MemberStateVersions, RINF.dbo.MemberStates WHERE Tracks2.ID = SOLTracks2.TrackID AND Tracks2.VersionID = SOLTracks2.VersionID AND SOLTracks2.Direction = LookupValues2.ID AND SOLTracks2.SectionOfLineID = SectionOfLines2.ID AND SectionOfLines2.UICLineID = UICLines2.ID AND SectionOfLines2.VersionID = UICLines2.VersionID AND SectionOfLines2.LineEdgeID = LineEdges2.ID AND Tracks2.VersionID = LineEdges2.VersionID AND Tracks1.ID = SOLTracks1.TrackID AND SOLTracks1.SectionOfLineID = SectionOfLines1.ID AND SectionOfLines1.UICLineID = UICLines1.ID AND SectionOfLines1.VersionID = UICLines1.VersionID AND SectionOfLines1.LineEdgeID = LineEdges1.ID AND Tracks1.VersionID = LineEdges1.VersionID AND Tracks1.VersionID = SOLTracks1.VersionID AND SOLTracks1.Direction = LookupValues1.ID AND Tracks2.ID != Tracks1.ID AND LineEdges2.LineNodeEndID = LineNodes2.ID AND LineEdges2.VersionID = LineNodes2.VersionID AND LineEdges1.LineNodeEndID = LineNodes1.ID AND LineEdges1.VersionID = LineNodes1.VersionID AND LineNodes2.OperationalPointID = OP2.ID AND LineNodes1.OperationalPointID = OP1.ID AND LineNodes2.VersionID = OP2.VersionID AND LineNodes1.VersionID = OP1.VersionID AND SectionOfLines2.VersionID = MemberStateVersions.ID AND MemberStateVersions.MemberStateID = MemberStates.ID AND OP2.UOPID = OP1.UOPID AND OP1.[Type] = LookupValues.ID AND OP2.[Type] = LookupValues.ID AND OP1.UOPID NOT IN ('NLBHV', 'NLBKLA', 'NLBKP', 'NLBLOA', 'NLDB', 'NLDLD', 'NLHMLA', 'NLMAS', 'NLUT', 'NLUTZA', 'NLVTN');
+    s: http://era.europa.eu/topology/netElements#$(INCOMING_LINE)_$(INCOMING_REMOTE_OP)_$(INCOMING)_$(UOPID)_$(OUTGOING)_$(OUTGOING_REMOTE_OP)_$(OUTGOING_LINE)
+    po:
+      - [a, era:NetElement]
+      - [rdfs:label, "$(INCOMING_LINE)_$(INCOMING_REMOTE_OP)_$(INCOMING)_$(UOPID)_$(OUTGOING)_$(OUTGOING_REMOTE_OP)_$(OUTGOING_LINE)"]
+    graphs: ${NAMED_GRAPH}
+
+  internal-node-link-no-in:
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT UICLines2.UICCode AS INCOMING_LINE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE LineNodes.OperationalPointID = OperationalPoints.ID AND LineNodes.ID = LineEdges2.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS INCOMING_REMOTE_OP, Tracks2.UUID AS INCOMING, LookupValues2.[Value] AS INCOMING_DIRECTION, TRIM(OP2.UOPID) AS UOPID, Tracks1.UUID AS OUTGOING, LookupValues1.[Value] AS OUTGOING_DIRECTION, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE LineNodes.OperationalPointID = OperationalPoints.ID AND LineNodes.ID = LineEdges1.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS OUTGOING_REMOTE_OP, UICLines1.UICCode AS OUTGOING_LINE FROM RINF.dbo.Tracks AS Tracks2, RINF.dbo.SOLTracks AS SOLTracks2, RINF.dbo.SectionOfLines AS SectionOfLines2, RINF.dbo.LookupValues AS LookupValues2, RINF.dbo.UICLines AS UICLines2, RINF.dbo.Tracks AS Tracks1, RINF.dbo.SOLTracks AS SOLTracks1, RINF.dbo.SectionOfLines AS SectionOfLines1, RINF.dbo.LookupValues AS LookupValues1, RINF.dbo.UICLines AS UICLines1, RINF.dbo.LineEdges AS LineEdges2, RINF.dbo.LineEdges AS LineEdges1, RINF.dbo.LineNodes AS LineNodes1, RINF.dbo.LineNodes AS LineNodes2, RINF.dbo.OperationalPoints AS OP1, RINF.dbo.OperationalPoints AS OP2, RINF.dbo.LookupValues, RINF.dbo.MemberStateVersions, RINF.dbo.MemberStates WHERE Tracks2.ID = SOLTracks2.TrackID AND Tracks2.VersionID = SOLTracks2.VersionID AND SOLTracks2.Direction = LookupValues2.ID AND SOLTracks2.SectionOfLineID = SectionOfLines2.ID AND SectionOfLines2.UICLineID = UICLines2.ID AND SectionOfLines2.VersionID = UICLines2.VersionID AND SectionOfLines2.LineEdgeID = LineEdges2.ID AND Tracks2.VersionID = LineEdges2.VersionID AND Tracks1.ID = SOLTracks1.TrackID AND Tracks1.VersionID = SOLTracks1.VersionID AND SOLTracks1.Direction = LookupValues1.ID AND SOLTracks1.SectionOfLineID = SectionOfLines1.ID AND SectionOfLines1.UICLineID = UICLines1.ID AND SectionOfLines1.VersionID = UICLines1.VersionID AND SectionOfLines1.LineEdgeID = LineEdges1.ID AND Tracks1.VersionID = LineEdges1.VersionID AND Tracks2.ID != Tracks1.ID AND LineEdges2.LineNodeStartID = LineNodes2.ID AND LineEdges2.VersionID = LineNodes2.VersionID AND LineEdges1.LineNodeStartID = LineNodes1.ID AND LineEdges1.VersionID = LineNodes1.VersionID AND LineNodes2.OperationalPointID = OP2.ID AND LineNodes1.OperationalPointID = OP1.ID AND LineNodes2.VersionID = OP2.VersionID AND LineNodes1.VersionID = OP1.VersionID AND SectionOfLines2.VersionID = MemberStateVersions.ID AND MemberStateVersions.MemberStateID = MemberStates.ID AND OP2.UOPID = OP1.UOPID AND OP1.[Type] = LookupValues.ID AND OP2.[Type] = LookupValues.ID AND OP1.UOPID NOT IN ('NLBHV', 'NLBKLA', 'NLBKP', 'NLBLOA', 'NLDB', 'NLDLD', 'NLHMLA', 'NLMAS', 'NLUT', 'NLUTZA', 'NLVTN');
+    s: http://era.europa.eu/topology/netElements#$(INCOMING_LINE)_$(INCOMING_REMOTE_OP)_$(INCOMING)_$(UOPID)_$(OUTGOING)_$(OUTGOING_REMOTE_OP)_$(OUTGOING_LINE)
+    po:
+      - [a, era:NetElement]
+      - [rdfs:label, "$(INCOMING_LINE)_$(INCOMING_REMOTE_OP)_$(INCOMING)_$(UOPID)_$(OUTGOING)_$(OUTGOING_REMOTE_OP)_$(OUTGOING_LINE)"]
+    graphs: ${NAMED_GRAPH}
+  
+  # ----------------------Define Micro NetElements from real internal links in operational points---------------------
+
+  # NOTE: Real internal node links based on external connectivity table ###
+  
+  internal-node-link-connectivity-table:
+    sources:
+      - ["data/op_internal_connectivity.csv~csv"]
+    s: http://era.europa.eu/topology/netElements#$(INCOMING_LINE)_$(INCOMING_REMOTE_OP)_$(INCOMING)_$(UOPID)_$(OUTGOING)_$(OUTGOING_REMOTE_OP)_$(OUTGOING_LINE)
+    condition:
+      function: idlab-fn:equal
+      parameters:
+        - [grel:valueParameter, $(Connected)]
+        - [grel:valueParameter2, "YES"]
+    po:
+      - [a, era:NetElement]
+      - [rdfs:label, $(INCOMING_LINE)_$(INCOMING_REMOTE_OP)_$(INCOMING)_$(UOPID)_$(OUTGOING)_$(OUTGOING_REMOTE_OP)_$(OUTGOING_LINE)]
+    graphs: ${NAMED_GRAPH}
