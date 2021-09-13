@@ -1,0 +1,11 @@
+############## TODO:
+
+  # ------------Define <stopLocation>s and link to correspondent micro <netElement>s--------------
+
+  #railml-stop-locations:
+  #  sources:
+  #    - [data/norway-railml/RUB.railml~xpath, ""]
+
+  # ------------Define <switchIS>s and link to correspondent micro <netElement>s--------------
+
+  # ------------Link NetElements across RailML files via <border> elements --------------

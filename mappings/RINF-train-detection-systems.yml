@@ -1,0 +1,408 @@
+prefixes:
+  idlab-fn: "http://example.com/idlab/function/"
+  grel: "http://users.ugent.be/~bjdmeest/function/grel.ttl#"
+  rdfs: "http://www.w3.org/2000/01/rdf-schema#"
+  xsd: "http://www.w3.org/2001/XMLSchema#"
+  era: "http://data.europa.eu/949/"
+  era-tds: "http://data.europa.eu/949/concepts/train-detection/"
+  era-tdssc: "http://data.europa.eu/949/concepts/train-detection-specific-checks/"
+  era-malvc: "http://data.europa.eu/949/concepts/min-axle-loads-per-vehicle-category/"
+  era-mas: "http://data.europa.eu/949/concepts/max-amount-sandings/"
+  era-tsi: "http://data.europa.eu/949/concepts/tsi-compliances/"
+
+variables:
+  connection: 
+    access: &host ${RINF_HOST}
+    type: &typeMSSQL mssql
+    credentials: &credentials
+      username: ${RINF_USER}
+      password: ${RINF_PWD}
+    queryFormulation: &queryFormulation sql2008 
+    referenceFormulation: &referenceFormulation csv
+
+mappings:
+  train-detection-system: # 1.1.1.3.7.1.1
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT UICLines.UICCode, Tracks.UUID, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, REPLACE(LookupValues.[Value], ' ', '_') AS ParameterValue, TrackParameters.[Set] AS GroupSet FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.Tracks, RINF.dbo.SectionOfLines, RINF.dbo.UICLines, RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SectionOfLines.UICLineID = UICLines.ID AND SectionOfLines.VersionID = UICLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.1.1.3.7.1.1') AND TrackParameters.[Set] IS NOT NULL AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID;
+    s: http://data.europa.eu/949/functionalInfrastructure/trainDetectionSystems/$(UICCode)_$(FROM_NODE)_$(UUID)_$(TO_NODE)_$(GroupSet)
+    po:
+      - [a, era:TrainDetectionSystem]
+      - [era:trainDetectionSystemType, era-tds:$(ParameterValue)~iri]
+    graph: ${NAMED_GRAPH}
+  
+  detection-system-specific-checks: # 1.1.1.3.7.1.2
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT UICLines.UICCode, Tracks.UUID, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, REPLACE(LookupValues.[Value], ' ', '_') AS ParameterValue, TrackParameters.[Set] AS GroupSet FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.Tracks, RINF.dbo.SectionOfLines, RINF.dbo.UICLines, RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SectionOfLines.UICLineID = UICLines.ID AND SectionOfLines.VersionID = UICLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.1.1.3.7.1.2') AND TrackParameters.[Set] IS NOT NULL AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID;
+    s: http://data.europa.eu/949/functionalInfrastructure/trainDetectionSystems/$(UICCode)_$(FROM_NODE)_$(UUID)_$(TO_NODE)_$(GroupSet)
+    po:
+      - [era:trainDetectionSystemSpecificCheck, era-tdssc:$(ParameterValue)]
+    graph: ${NAMED_GRAPH}
+  
+  max-distance-tsi-compliant: # 1.1.1.3.7.2.1
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT UICLines.UICCode, Tracks.UUID, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, REPLACE(LookupValues.[Value], ' ', '_') AS ParameterValue, TrackParameters.[Set] AS GroupSet FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.Tracks, RINF.dbo.SectionOfLines, RINF.dbo.UICLines, RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SectionOfLines.UICLineID = UICLines.ID AND SectionOfLines.VersionID = UICLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.1.1.3.7.2.1') AND TrackParameters.[Set] IS NOT NULL AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID;
+    s: http://data.europa.eu/949/functionalInfrastructure/trainDetectionSystems/$(UICCode)_$(FROM_NODE)_$(UUID)_$(TO_NODE)_$(GroupSet)
+    po:
+      - [era:tsiCompliantMaxDistConsecutiveAxles, era-tsi:$(ParameterValue)~iri]
+    graph: ${NAMED_GRAPH}
+  
+  max-distance-consecutive-axles: # 1.1.1.3.7.2.2
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT UICLines.UICCode, Tracks.UUID, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, TrackParameters.Value AS ParameterValue, TrackParameters.[Set] AS GroupSet FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.Tracks, RINF.dbo.SectionOfLines, RINF.dbo.UICLines, RINF.dbo.TrackParameters, RINF.dbo.Parameters WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SectionOfLines.UICLineID = UICLines.ID AND SectionOfLines.VersionID = UICLines.VersionID AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND SOLTracks.VersionID = TrackParameters.VersionID AND TrackParameters.ParameterID = Parameters.ID AND TrackParameters.[Value] IS NOT NULL AND Parameters.[Index] IN ('1.1.1.3.7.2.2') AND TrackParameters.[Set] IS NOT NULL AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID;
+    s: http://data.europa.eu/949/functionalInfrastructure/trainDetectionSystems/$(UICCode)_$(FROM_NODE)_$(UUID)_$(TO_NODE)_$(GroupSet)
+    po:
+      - [era:maxDistConsecutiveAxles, $(ParameterValue), xsd:integer]
+    graph: ${NAMED_GRAPH}
+
+  min-distance-consecutive-axles: # 1.1.1.3.7.3
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT UICLines.UICCode, Tracks.UUID, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, TrackParameters.Value AS ParameterValue, TrackParameters.[Set] AS GroupSet FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.Tracks, RINF.dbo.SectionOfLines, RINF.dbo.UICLines, RINF.dbo.TrackParameters, RINF.dbo.Parameters WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SectionOfLines.UICLineID = UICLines.ID AND SectionOfLines.VersionID = UICLines.VersionID AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND SOLTracks.VersionID = TrackParameters.VersionID AND TrackParameters.ParameterID = Parameters.ID AND TrackParameters.[Value] IS NOT NULL AND Parameters.[Index] IN ('1.1.1.3.7.3') AND TrackParameters.[Set] IS NOT NULL AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID;
+    s: http://data.europa.eu/949/functionalInfrastructure/trainDetectionSystems/$(UICCode)_$(FROM_NODE)_$(UUID)_$(TO_NODE)_$(GroupSet)
+    po:
+      - [era:minDistConsecutiveAxles, $(ParameterValue), xsd:integer]
+    graph: ${NAMED_GRAPH}
+  
+  minimum-distance-first-last-axle: # 1.1.1.3.7.4
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT UICLines.UICCode, Tracks.UUID, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, TrackParameters.Value AS ParameterValue, TrackParameters.[Set] AS GroupSet FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.Tracks, RINF.dbo.SectionOfLines, RINF.dbo.UICLines, RINF.dbo.TrackParameters, RINF.dbo.Parameters WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SectionOfLines.UICLineID = UICLines.ID AND SectionOfLines.VersionID = UICLines.VersionID AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND SOLTracks.VersionID = TrackParameters.VersionID AND TrackParameters.ParameterID = Parameters.ID AND TrackParameters.[Value] IS NOT NULL AND Parameters.[Index] IN ('1.1.1.3.7.4') AND TrackParameters.[Set] IS NOT NULL AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID;
+    s: http://data.europa.eu/949/functionalInfrastructure/trainDetectionSystems/$(UICCode)_$(FROM_NODE)_$(UUID)_$(TO_NODE)_$(GroupSet)
+    po:
+      - [era:minDistFirstLastAxle, $(ParameterValue), xsd:integer]
+    graph: ${NAMED_GRAPH}
+
+  maximum-distance-end-train-first-axle: # 1.1.1.3.7.5
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT UICLines.UICCode, Tracks.UUID, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, TrackParameters.Value AS ParameterValue, TrackParameters.[Set] AS GroupSet FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.Tracks, RINF.dbo.SectionOfLines, RINF.dbo.UICLines, RINF.dbo.TrackParameters, RINF.dbo.Parameters WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SectionOfLines.UICLineID = UICLines.ID AND SectionOfLines.VersionID = UICLines.VersionID AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND SOLTracks.VersionID = TrackParameters.VersionID AND TrackParameters.ParameterID = Parameters.ID AND TrackParameters.[Value] IS NOT NULL AND Parameters.[Index] IN ('1.1.1.3.7.5') AND TrackParameters.[Set] IS NOT NULL AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID;
+    s: http://data.europa.eu/949/functionalInfrastructure/trainDetectionSystems/$(UICCode)_$(FROM_NODE)_$(UUID)_$(TO_NODE)_$(GroupSet)
+    po:
+      - [era:maxDistEndTrainFirstAxle, $(ParameterValue), xsd:integer]
+    graph: ${NAMED_GRAPH}
+  
+  minimum-rim-width: # 1.1.1.3.7.6
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT UICLines.UICCode, Tracks.UUID, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, TrackParameters.Value AS ParameterValue, TrackParameters.[Set] AS GroupSet FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.Tracks, RINF.dbo.SectionOfLines, RINF.dbo.UICLines, RINF.dbo.TrackParameters, RINF.dbo.Parameters WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SectionOfLines.UICLineID = UICLines.ID AND SectionOfLines.VersionID = UICLines.VersionID AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND SOLTracks.VersionID = TrackParameters.VersionID AND TrackParameters.ParameterID = Parameters.ID AND TrackParameters.[Value] IS NOT NULL AND Parameters.[Index] IN ('1.1.1.3.7.6') AND TrackParameters.[Set] IS NOT NULL AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID;
+    s: http://data.europa.eu/949/functionalInfrastructure/trainDetectionSystems/$(UICCode)_$(FROM_NODE)_$(UUID)_$(TO_NODE)_$(GroupSet)
+    po:
+      - [era:minRimWidth, $(ParameterValue), xsd:double]
+    graph: ${NAMED_GRAPH}
+
+  minimum-wheel-diameter: # 1.1.1.3.7.7
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT UICLines.UICCode, Tracks.UUID, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, TrackParameters.Value AS ParameterValue, TrackParameters.[Set] AS GroupSet FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.Tracks, RINF.dbo.SectionOfLines, RINF.dbo.UICLines, RINF.dbo.TrackParameters, RINF.dbo.Parameters WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SectionOfLines.UICLineID = UICLines.ID AND SectionOfLines.VersionID = UICLines.VersionID AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND SOLTracks.VersionID = TrackParameters.VersionID AND TrackParameters.ParameterID = Parameters.ID AND TrackParameters.[Value] IS NOT NULL AND Parameters.[Index] IN ('1.1.1.3.7.7') AND TrackParameters.[Set] IS NOT NULL AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID;
+    s: http://data.europa.eu/949/functionalInfrastructure/trainDetectionSystems/$(UICCode)_$(FROM_NODE)_$(UUID)_$(TO_NODE)_$(GroupSet)
+    po:
+      - [era:minWheelDiameter, $(ParameterValue), xsd:integer]
+    graph: ${NAMED_GRAPH}
+
+  minimum-flange-thickness: # 1.1.1.3.7.8
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT UICLines.UICCode, Tracks.UUID, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, TrackParameters.Value AS ParameterValue, TrackParameters.[Set] AS GroupSet FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.Tracks, RINF.dbo.SectionOfLines, RINF.dbo.UICLines, RINF.dbo.TrackParameters, RINF.dbo.Parameters WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SectionOfLines.UICLineID = UICLines.ID AND SectionOfLines.VersionID = UICLines.VersionID AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND SOLTracks.VersionID = TrackParameters.VersionID AND TrackParameters.ParameterID = Parameters.ID AND TrackParameters.[Value] IS NOT NULL AND Parameters.[Index] IN ('1.1.1.3.7.8') AND TrackParameters.[Set] IS NOT NULL AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID;
+    s: http://data.europa.eu/949/functionalInfrastructure/trainDetectionSystems/$(UICCode)_$(FROM_NODE)_$(UUID)_$(TO_NODE)_$(GroupSet)
+    po:
+      - [era:minFlangeThickness, $(ParameterValue), xsd:double]
+    graph: ${NAMED_GRAPH}
+
+  minimum-flange-height: # 1.1.1.3.7.9
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT UICLines.UICCode, Tracks.UUID, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, TrackParameters.Value AS ParameterValue, TrackParameters.[Set] AS GroupSet FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.Tracks, RINF.dbo.SectionOfLines, RINF.dbo.UICLines, RINF.dbo.TrackParameters, RINF.dbo.Parameters WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SectionOfLines.UICLineID = UICLines.ID AND SectionOfLines.VersionID = UICLines.VersionID AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND SOLTracks.VersionID = TrackParameters.VersionID AND TrackParameters.ParameterID = Parameters.ID AND TrackParameters.[Value] IS NOT NULL AND Parameters.[Index] IN ('1.1.1.3.7.9') AND TrackParameters.[Set] IS NOT NULL AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID;
+    s: http://data.europa.eu/949/functionalInfrastructure/trainDetectionSystems/$(UICCode)_$(FROM_NODE)_$(UUID)_$(TO_NODE)_$(GroupSet)
+    po:
+      - [era:minFlangeHeight, $(ParameterValue), xsd:double]
+    graph: ${NAMED_GRAPH}
+
+  maximum-flange-height: # 1.1.1.3.7.10
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT UICLines.UICCode, Tracks.UUID, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, TrackParameters.Value AS ParameterValue, TrackParameters.[Set] AS GroupSet FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.Tracks, RINF.dbo.SectionOfLines, RINF.dbo.UICLines, RINF.dbo.TrackParameters, RINF.dbo.Parameters WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SectionOfLines.UICLineID = UICLines.ID AND SectionOfLines.VersionID = UICLines.VersionID AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND SOLTracks.VersionID = TrackParameters.VersionID AND TrackParameters.ParameterID = Parameters.ID AND TrackParameters.[Value] IS NOT NULL AND Parameters.[Index] IN ('1.1.1.3.7.10') AND TrackParameters.[Set] IS NOT NULL AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID;
+    s: http://data.europa.eu/949/functionalInfrastructure/trainDetectionSystems/$(UICCode)_$(FROM_NODE)_$(UUID)_$(TO_NODE)_$(GroupSet)
+    po:
+      - [era:maxFlangeHeight, $(ParameterValue), xsd:double]
+    graph: ${NAMED_GRAPH}
+  
+  minimum-axle-load: # 1.1.1.3.7.11
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT UICLines.UICCode, Tracks.UUID, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, TrackParameters.Value AS ParameterValue, TrackParameters.[Set] AS GroupSet FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.Tracks, RINF.dbo.SectionOfLines, RINF.dbo.UICLines, RINF.dbo.TrackParameters, RINF.dbo.Parameters WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SectionOfLines.UICLineID = UICLines.ID AND SectionOfLines.VersionID = UICLines.VersionID AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND SOLTracks.VersionID = TrackParameters.VersionID AND TrackParameters.ParameterID = Parameters.ID AND TrackParameters.[Value] IS NOT NULL AND Parameters.[Index] IN ('1.1.1.3.7.11') AND TrackParameters.[Set] IS NOT NULL AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID;
+    s: http://data.europa.eu/949/functionalInfrastructure/trainDetectionSystems/$(UICCode)_$(FROM_NODE)_$(UUID)_$(TO_NODE)_$(GroupSet)
+    po:
+      - [era:minAxleLoad, $(ParameterValue), xsd:double]
+    graph: ${NAMED_GRAPH}
+  
+  min-axle-loads-vehicle-category: # 1.1.1.3.7.11.1
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT UICLines.UICCode, Tracks.UUID, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, REPLACE(TrackParameters.Value, ' ', '_') AS ParameterValue, TrackParameters.[Set] AS GroupSet FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.Tracks, RINF.dbo.SectionOfLines, RINF.dbo.UICLines, RINF.dbo.TrackParameters, RINF.dbo.Parameters WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SectionOfLines.UICLineID = UICLines.ID AND SectionOfLines.VersionID = UICLines.VersionID AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND SOLTracks.VersionID = TrackParameters.VersionID AND TrackParameters.ParameterID = Parameters.ID AND TrackParameters.[Value] IS NOT NULL AND Parameters.[Index] IN ('1.1.1.3.7.11.1') AND TrackParameters.[Set] IS NOT NULL AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID;
+    s: http://data.europa.eu/949/functionalInfrastructure/trainDetectionSystems/$(UICCode)_$(FROM_NODE)_$(UUID)_$(TO_NODE)_$(GroupSet)
+    po:
+      - [era:minAxleLoadVehicleCategory, era-malvc:$(ParameterValue)~iri]
+    graph: ${NAMED_GRAPH}
+  
+  metal-free-space-tsi-compliant: # 1.1.1.3.7.12
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT UICLines.UICCode, Tracks.UUID, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, REPLACE(LookupValues.[Value], ' ', '_') AS ParameterValue, TrackParameters.[Set] AS GroupSet FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.Tracks, RINF.dbo.SectionOfLines, RINF.dbo.UICLines, RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SectionOfLines.UICLineID = UICLines.ID AND SectionOfLines.VersionID = UICLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.1.1.3.7.12') AND TrackParameters.[Set] IS NOT NULL AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID;
+    s: http://data.europa.eu/949/functionalInfrastructure/trainDetectionSystems/$(UICCode)_$(FROM_NODE)_$(UUID)_$(TO_NODE)_$(GroupSet)
+    po:
+      - [era:tsiCompliantMetalFreeSpace, era-tsi:$(ParameterValue)~iri]
+    graph: ${NAMED_GRAPH}
+  
+  metal-construction-tsi-compliant: # 1.1.1.3.7.13
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT UICLines.UICCode, Tracks.UUID, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, REPLACE(LookupValues.[Value], ' ', '_') AS ParameterValue, TrackParameters.[Set] AS GroupSet FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.Tracks, RINF.dbo.SectionOfLines, RINF.dbo.UICLines, RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SectionOfLines.UICLineID = UICLines.ID AND SectionOfLines.VersionID = UICLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.1.1.3.7.13') AND TrackParameters.[Set] IS NOT NULL AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID;
+    s: http://data.europa.eu/949/functionalInfrastructure/trainDetectionSystems/$(UICCode)_$(FROM_NODE)_$(UUID)_$(TO_NODE)_$(GroupSet)
+    po:
+      - [era:tsiCompliantMetalConstruction, era-tsi:$(ParameterValue)~iri]
+    graph: ${NAMED_GRAPH}
+  
+  ferromagnetic-wheel-tsi-compliant: # 1.1.1.3.7.14
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT UICLines.UICCode, Tracks.UUID, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, REPLACE(LookupValues.[Value], ' ', '_') AS ParameterValue, TrackParameters.[Set] AS GroupSet FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.Tracks, RINF.dbo.SectionOfLines, RINF.dbo.UICLines, RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SectionOfLines.UICLineID = UICLines.ID AND SectionOfLines.VersionID = UICLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.1.1.3.7.14') AND TrackParameters.[Set] IS NOT NULL AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID;
+    s: http://data.europa.eu/949/functionalInfrastructure/trainDetectionSystems/$(UICCode)_$(FROM_NODE)_$(UUID)_$(TO_NODE)_$(GroupSet)
+    po:
+      - [era:tsiCompliantFerromagneticWheel, era-tsi:$(ParameterValue)~iri]
+    graph: ${NAMED_GRAPH}
+  
+  max-impedance-wheelset-tsi-compliant: # 1.1.1.3.7.15.1
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT UICLines.UICCode, Tracks.UUID, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, REPLACE(LookupValues.[Value], ' ', '_') AS ParameterValue, TrackParameters.[Set] AS GroupSet FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.Tracks, RINF.dbo.SectionOfLines, RINF.dbo.UICLines, RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SectionOfLines.UICLineID = UICLines.ID AND SectionOfLines.VersionID = UICLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.1.1.3.7.15.1') AND TrackParameters.[Set] IS NOT NULL AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID;
+    s: http://data.europa.eu/949/functionalInfrastructure/trainDetectionSystems/$(UICCode)_$(FROM_NODE)_$(UUID)_$(TO_NODE)_$(GroupSet)
+    po:
+      - [era:tsiCompliantMaxImpedanceWheelset, era-tsi:$(ParameterValue)~iri]
+    graph: ${NAMED_GRAPH}
+
+  maximum-impedance-wheelset: # 1.1.1.3.7.15.2
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT UICLines.UICCode, Tracks.UUID, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, TrackParameters.Value AS ParameterValue, TrackParameters.[Set] AS GroupSet FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.Tracks, RINF.dbo.SectionOfLines, RINF.dbo.UICLines, RINF.dbo.TrackParameters, RINF.dbo.Parameters WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SectionOfLines.UICLineID = UICLines.ID AND SectionOfLines.VersionID = UICLines.VersionID AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND SOLTracks.VersionID = TrackParameters.VersionID AND TrackParameters.ParameterID = Parameters.ID AND TrackParameters.[Value] IS NOT NULL AND Parameters.[Index] IN ('1.1.1.3.7.15.2') AND TrackParameters.[Set] IS NOT NULL AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID;
+    s: http://data.europa.eu/949/functionalInfrastructure/sectionsOfLine/$(UICCode)_$(FROM_NODE)_$(TO_NODE)
+    po:
+      - [era:maxImpedanceWheelset, $(ParameterValue), xsd:double]
+    graph: ${NAMED_GRAPH}
+  
+  sanding-tsi-compliant: # 1.1.1.3.7.16
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT UICLines.UICCode, Tracks.UUID, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, REPLACE(LookupValues.[Value], ' ', '_') AS ParameterValue, TrackParameters.[Set] AS GroupSet FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.Tracks, RINF.dbo.SectionOfLines, RINF.dbo.UICLines, RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SectionOfLines.UICLineID = UICLines.ID AND SectionOfLines.VersionID = UICLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.1.1.3.7.16') AND TrackParameters.[Set] IS NOT NULL AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID;
+    s: http://data.europa.eu/949/functionalInfrastructure/trainDetectionSystems/$(UICCode)_$(FROM_NODE)_$(UUID)_$(TO_NODE)_$(GroupSet)
+    po:
+     - [era:tsiCompliantSanding, era-tsi:$(ParameterValue)~iri]
+    graph: ${NAMED_GRAPH}
+
+  maximum-sanding-output: # 1.1.1.3.7.17
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT UICLines.UICCode, Tracks.UUID, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, REPLACE(LookupValues.[Value], ' ', '_') AS ParameterValue, TrackParameters.[Set] AS GroupSet FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.Tracks, RINF.dbo.SectionOfLines, RINF.dbo.UICLines, RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SectionOfLines.UICLineID = UICLines.ID AND SectionOfLines.VersionID = UICLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.1.1.3.7.17') AND TrackParameters.[Set] IS NOT NULL AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID;
+    s: http://data.europa.eu/949/functionalInfrastructure/trainDetectionSystems/$(UICCode)_$(FROM_NODE)_$(UUID)_$(TO_NODE)_$(GroupSet)
+    po:
+      - [era:maxSandingOutput, era-mas:$(ParameterValue)~iri]
+    graph: ${NAMED_GRAPH}
+  
+  sand-driver-override: # 1.1.1.3.7.18
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT UICLines.UICCode,(SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, LookupValues.[Value] AS ParameterValue, TrackParameters.[Set] AS GroupSet FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.Tracks, RINF.dbo.SectionOfLines, RINF.dbo.UICLines, RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SectionOfLines.UICLineID = UICLines.ID AND SectionOfLines.VersionID = UICLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.1.1.3.7.18') AND TrackParameters.[Set] IS NOT NULL AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND LookupValues.ID is not null AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID;
+    s: http://data.europa.eu/949/functionalInfrastructure/trainDetectionSystems/$(UICCode)_$(FROM_NODE)_$(UUID)_$(TO_NODE)_$(GroupSet)
+    po:
+      - p: era:requiredSandingOverride
+        o:
+          value: "true"
+          datatype: "xsd:boolean"
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(ParameterValue)]
+            - [grel:valueParameter2, "Y"]
+      - p: era:requiredSandingOverride
+        o:
+          value: "false"
+          datatype: "xsd:boolean"
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(ParameterValue)]
+            - [grel:valueParameter2, "N"]
+    graph: ${NAMED_GRAPH}
+
+  sand-characteristics-tsi-compliant: # 1.1.1.3.7.19
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT UICLines.UICCode, Tracks.UUID, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, REPLACE(LookupValues.[Value], ' ', '_') AS ParameterValue, TrackParameters.[Set] AS GroupSet FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.Tracks, RINF.dbo.SectionOfLines, RINF.dbo.UICLines, RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SectionOfLines.UICLineID = UICLines.ID AND SectionOfLines.VersionID = UICLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.1.1.3.7.19') AND TrackParameters.[Set] IS NOT NULL AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID;
+    s: http://data.europa.eu/949/functionalInfrastructure/trainDetectionSystems/$(UICCode)_$(FROM_NODE)_$(UUID)_$(TO_NODE)_$(GroupSet)
+    po:
+      - [era:tsiCompliantSandCharacteristics, era-tsi:$(ParameterValue)~iri]
+    graph: ${NAMED_GRAPH}
+  
+  flange-lube-rules: # 1.1.1.3.7.20
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT UICLines.UICCode,(SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, LookupValues.[Value] AS ParameterValue, TrackParameters.[Set] AS GroupSet FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.Tracks, RINF.dbo.SectionOfLines, RINF.dbo.UICLines, RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SectionOfLines.UICLineID = UICLines.ID AND SectionOfLines.VersionID = UICLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.1.1.3.7.20') AND TrackParameters.[Set] IS NOT NULL AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND LookupValues.ID is not null AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID;
+    s: http://data.europa.eu/949/functionalInfrastructure/trainDetectionSystems/$(UICCode)_$(FROM_NODE)_$(UUID)_$(TO_NODE)_$(GroupSet)
+    po:
+      - p: era:flangeLubeRules
+        o:
+          value: "true"
+          datatype: "xsd:boolean"
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(ParameterValue)]
+            - [grel:valueParameter2, "Y"]
+      - p: era:flangeLubeRules
+        o:
+          value: "false"
+          datatype: "xsd:boolean"
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(ParameterValue)]
+            - [grel:valueParameter2, "N"]
+    graph: ${NAMED_GRAPH}
+
+  composite-brake-blocks-tsi-compliant: # 1.1.1.3.7.21
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT UICLines.UICCode, Tracks.UUID, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, REPLACE(LookupValues.[Value], ' ', '_') AS ParameterValue, TrackParameters.[Set] AS GroupSet FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.Tracks, RINF.dbo.SectionOfLines, RINF.dbo.UICLines, RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SectionOfLines.UICLineID = UICLines.ID AND SectionOfLines.VersionID = UICLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.1.1.3.7.21') AND TrackParameters.[Set] IS NOT NULL AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID;
+    s: http://data.europa.eu/949/functionalInfrastructure/trainDetectionSystems/$(UICCode)_$(FROM_NODE)_$(UUID)_$(TO_NODE)_$(GroupSet)
+    po:
+      - [era:tsiCompliantCompositeBrakeBlocks, era-tsi:$(ParameterValue)~iri]
+    graph: ${NAMED_GRAPH}
+
+  shunt-devices-tsi-compliant: # 1.1.1.3.7.22
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT UICLines.UICCode, Tracks.UUID, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, REPLACE(LookupValues.[Value], ' ', '_') AS ParameterValue, TrackParameters.[Set] AS GroupSet FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.Tracks, RINF.dbo.SectionOfLines, RINF.dbo.UICLines, RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SectionOfLines.UICLineID = UICLines.ID AND SectionOfLines.VersionID = UICLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.1.1.3.7.22') AND TrackParameters.[Set] IS NOT NULL AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID;
+    s: http://data.europa.eu/949/functionalInfrastructure/trainDetectionSystems/$(UICCode)_$(FROM_NODE)_$(UUID)_$(TO_NODE)_$(GroupSet)
+    po:
+      - [era:tsiCompliantShuntDevices, era-tsi:$(ParameterValue)~iri]
+    graph: ${NAMED_GRAPH}
+  
+  rst-shunt-impedance-tsi-compliant: # 1.1.1.3.7.23
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT UICLines.UICCode, Tracks.UUID, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, REPLACE(LookupValues.[Value], ' ', '_') AS ParameterValue, TrackParameters.[Set] AS GroupSet FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.Tracks, RINF.dbo.SectionOfLines, RINF.dbo.UICLines, RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SectionOfLines.UICLineID = UICLines.ID AND SectionOfLines.VersionID = UICLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.1.1.3.7.23') AND TrackParameters.[Set] IS NOT NULL AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID;
+    s: http://data.europa.eu/949/functionalInfrastructure/trainDetectionSystems/$(UICCode)_$(FROM_NODE)_$(UUID)_$(TO_NODE)_$(GroupSet)
+    po:
+      - [era:tsiCompliantRSTShuntImpedance, era-tsi:$(ParameterValue)~iri]
+    graph: ${NAMED_GRAPH}

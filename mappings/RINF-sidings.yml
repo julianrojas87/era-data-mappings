@@ -1,0 +1,343 @@
+prefixes:
+  idlab-fn: "http://example.com/idlab/function/"
+  grel: "http://users.ugent.be/~bjdmeest/function/grel.ttl#"
+  rdfs: "http://www.w3.org/2000/01/rdf-schema#"
+  xsd: "http://www.w3.org/2001/XMLSchema#"
+  era: "http://data.europa.eu/949/"
+  era-tenclass: "http://data.europa.eu/949/concepts/ten-classifications/"
+
+variables:
+  connection: 
+    access: &host ${RINF_HOST}
+    type: &typeMSSQL mssql
+    credentials: &credentials
+      username: ${RINF_USER}
+      password: ${RINF_PWD}
+    queryFormulation: &queryFormulation sql2008 
+    referenceFormulation: &referenceFormulation csv
+
+mappings:
+  siding:
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT LTRIM(RTRIM(OperationalPoints.UOPID)) AS UOPID, Sidings.UUID, Sidings.IMCode FROM RINF.dbo.Sidings, RINF.dbo.OperationalPoints WHERE Sidings.OperationalPointID = OperationalPoints.ID AND Sidings.VersionID = OperationalPoints.VersionID AND OperationalPoints.IsFuturePlanning = 0;
+    s: http://data.europa.eu/949/functionalInfrastructure/sidings/$(UOPID)_$(UUID)
+    po:
+      - [a, era:Siding]
+      - [rdfs:label, $(UOPID)_$(UUID)]
+      - [era:imCode, $(IMCode)] # 1.2.2.0.0.1
+      - [era:sidingId, $(UUID)] # 1.2.2.0.0.2
+    graph: ${NAMED_GRAPH}
+
+  link-siding-to-operational-point:
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT LTRIM(RTRIM(OperationalPoints.UOPID)) AS UOPID, Sidings.UUID, Sidings.IMCode FROM RINF.dbo.Sidings, RINF.dbo.OperationalPoints WHERE Sidings.OperationalPointID = OperationalPoints.ID AND Sidings.VersionID = OperationalPoints.VersionID AND OperationalPoints.IsFuturePlanning = 0;
+    s: http://data.europa.eu/949/functionalInfrastructure/operationalPoints/$(UOPID)
+    po:
+      - [era:siding, http://data.europa.eu/949/functionalInfrastructure/sidings/$(UOPID)_$(UUID)~iri]
+    graph: ${NAMED_GRAPH}
+
+  # ------------ Generic information --------------
+
+  ten-class: # 1.2.2.0.0.3
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT LTRIM(RTRIM(OperationalPoints.UOPID)) AS UOPID, Sidings.UUID, REPLACE(LookupValues.[Value], ' ', '_') AS ParameterValue FROM RINF.dbo.SidingParameters, RINF.dbo.Parameters, RINF.dbo.Sidings, RINF.dbo.OperationalPoints, RINF.dbo.LookupValues WHERE Sidings.OperationalPointID = OperationalPoints.ID AND Sidings.VersionID = OperationalPoints.VersionID AND Sidings.ID = SidingParameters.SidingID AND Sidings.VersionID = SidingParameters.VersionID AND SidingParameters.ParameterId = Parameters.ID AND SidingParameters.LookupValueID IS NOT NULL AND SidingParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.2.2.0.0.3') AND OperationalPoints.IsFuturePlanning = 0;
+    s: http://data.europa.eu/949/functionalInfrastructure/sidings/$(UOPID)_$(UUID)
+    po:
+      - [era:tenClassification, era-tenclass:$(ParameterValue)~iri]
+    graph: ${NAMED_GRAPH}
+
+  # ------------ Declarations of verification for siding --------------
+
+  ec-verification: # 1.2.2.0.1.1
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT LTRIM(RTRIM(OperationalPoints.UOPID)) AS UOPID, Sidings.UUID, SidingParameters.[Value] AS ParameterValue FROM RINF.dbo.SidingParameters, RINF.dbo.Parameters, RINF.dbo.Sidings, RINF.dbo.OperationalPoints WHERE Sidings.OperationalPointID = OperationalPoints.ID AND Sidings.VersionID = OperationalPoints.VersionID AND Sidings.ID = SidingParameters.SidingID AND Sidings.VersionID = SidingParameters.VersionID AND SidingParameters.ParameterId = Parameters.ID AND SidingParameters.[Value] IS NOT NULL AND Parameters.[Index] IN ('1.2.2.0.1.1') AND OperationalPoints.IsFuturePlanning = 0;
+    s: http://data.europa.eu/949/functionalInfrastructure/sidings/$(UOPID)_$(UUID)
+    po:
+      - [era:verificationINF, $(ParameterValue)]
+    graph: ${NAMED_GRAPH}
+  
+  ei-demonstration: # 1.2.2.0.1.2
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT LTRIM(RTRIM(OperationalPoints.UOPID)) AS UOPID, Sidings.UUID, SidingParameters.[Value] AS ParameterValue FROM RINF.dbo.SidingParameters, RINF.dbo.Parameters, RINF.dbo.Sidings, RINF.dbo.OperationalPoints WHERE Sidings.OperationalPointID = OperationalPoints.ID AND Sidings.VersionID = OperationalPoints.VersionID AND Sidings.ID = SidingParameters.SidingID AND Sidings.VersionID = SidingParameters.VersionID AND SidingParameters.ParameterId = Parameters.ID AND SidingParameters.[Value] IS NOT NULL AND Parameters.[Index] IN ('1.2.2.0.1.2') AND OperationalPoints.IsFuturePlanning = 0;
+    s: http://data.europa.eu/949/functionalInfrastructure/sidings/$(UOPID)_$(UUID)
+    po:
+      - [era:demonstrationINF, $(ParameterValue)]
+    graph: ${NAMED_GRAPH}
+
+  # ------------ Performance parameters --------------
+
+  siding-length: # 1.2.2.0.2.1
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT LTRIM(RTRIM(OperationalPoints.UOPID)) AS UOPID, Sidings.UUID, SidingParameters.[Value] AS ParameterValue FROM RINF.dbo.SidingParameters, RINF.dbo.Parameters, RINF.dbo.Sidings, RINF.dbo.OperationalPoints WHERE Sidings.OperationalPointID = OperationalPoints.ID AND Sidings.VersionID = OperationalPoints.VersionID AND Sidings.ID = SidingParameters.SidingID AND Sidings.VersionID = SidingParameters.VersionID AND SidingParameters.ParameterId = Parameters.ID AND SidingParameters.[Value] IS NOT NULL AND Parameters.[Index] IN ('1.2.2.0.2.1') AND OperationalPoints.IsFuturePlanning = 0;
+    s: http://data.europa.eu/949/functionalInfrastructure/sidings/$(UOPID)_$(UUID)
+    po:
+      - [era:length, $(ParameterValue), xsd:double]
+    graph: ${NAMED_GRAPH}
+
+  # ------------ Line layout --------------
+
+  siding-gradient: # 1.2.2.0.3.1
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT LTRIM(RTRIM(OperationalPoints.UOPID)) AS UOPID, Sidings.UUID, SidingParameters.[Value] AS ParameterValue FROM RINF.dbo.SidingParameters, RINF.dbo.Parameters, RINF.dbo.Sidings, RINF.dbo.OperationalPoints WHERE Sidings.OperationalPointID = OperationalPoints.ID AND Sidings.VersionID = OperationalPoints.VersionID AND Sidings.ID = SidingParameters.SidingID AND Sidings.VersionID = SidingParameters.VersionID AND SidingParameters.ParameterId = Parameters.ID AND SidingParameters.[Value] IS NOT NULL AND Parameters.[Index] IN ('1.2.2.0.3.1') AND OperationalPoints.IsFuturePlanning = 0;
+    s: http://data.europa.eu/949/functionalInfrastructure/sidings/$(UOPID)_$(UUID)
+    po:
+      - [era:gradient, $(ParameterValue), xsd:double]
+    graph: ${NAMED_GRAPH}
+  
+  min-radius-horizontal: # 1.2.2.0.3.2
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT LTRIM(RTRIM(OperationalPoints.UOPID)) AS UOPID, Sidings.UUID, SidingParameters.[Value] AS ParameterValue FROM RINF.dbo.SidingParameters, RINF.dbo.Parameters, RINF.dbo.Sidings, RINF.dbo.OperationalPoints WHERE Sidings.OperationalPointID = OperationalPoints.ID AND Sidings.VersionID = OperationalPoints.VersionID AND Sidings.ID = SidingParameters.SidingID AND Sidings.VersionID = SidingParameters.VersionID AND SidingParameters.ParameterId = Parameters.ID AND SidingParameters.[Value] IS NOT NULL AND Parameters.[Index] IN ('1.2.2.0.3.2') AND OperationalPoints.IsFuturePlanning = 0;
+    s: http://data.europa.eu/949/functionalInfrastructure/sidings/$(UOPID)_$(UUID)
+    po:
+      - [era:minimumHorizontalRadius, $(ParameterValue), xsd:double]
+    graph: ${NAMED_GRAPH}
+  
+  min-radius-vertical: # 1.2.2.0.3.3
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT LTRIM(RTRIM(OperationalPoints.UOPID)) AS UOPID, Sidings.UUID, SidingParameters.[Value] AS ParameterValue FROM RINF.dbo.SidingParameters, RINF.dbo.Parameters, RINF.dbo.Sidings, RINF.dbo.OperationalPoints WHERE Sidings.OperationalPointID = OperationalPoints.ID AND Sidings.VersionID = OperationalPoints.VersionID AND Sidings.ID = SidingParameters.SidingID AND Sidings.VersionID = SidingParameters.VersionID AND SidingParameters.ParameterId = Parameters.ID AND SidingParameters.[Value] IS NOT NULL AND Parameters.[Index] IN ('1.2.2.0.3.3') AND OperationalPoints.IsFuturePlanning = 0;
+    s: http://data.europa.eu/949/functionalInfrastructure/sidings/$(UOPID)_$(UUID)
+    po:
+      - [era:minimumVerticalRadius, $(ParameterValue)]
+    graph: ${NAMED_GRAPH}
+  
+  # ------------ TS / Fixed installations for servicing trains --------------
+
+  toilet-discharge: # 1.2.2.0.4.1
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT LTRIM(RTRIM(OperationalPoints.UOPID)) AS UOPID, Sidings.UUID, REPLACE(LookupValues.[Value], ' ', '_') AS ParameterValue FROM RINF.dbo.SidingParameters, RINF.dbo.Parameters, RINF.dbo.Sidings, RINF.dbo.OperationalPoints, RINF.dbo.LookupValues WHERE Sidings.OperationalPointID = OperationalPoints.ID AND Sidings.VersionID = OperationalPoints.VersionID AND Sidings.ID = SidingParameters.SidingID AND Sidings.VersionID = SidingParameters.VersionID AND SidingParameters.ParameterId = Parameters.ID AND SidingParameters.LookupValueID IS NOT NULL AND SidingParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.2.2.0.4.1') AND OperationalPoints.IsFuturePlanning = 0;
+    s: http://data.europa.eu/949/functionalInfrastructure/sidings/$(UOPID)_$(UUID)
+    po:
+      - p: era:hasToiletDischarge
+        o:
+          value: "true"
+          datatype: xsd:boolean
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(ParameterValue)]
+            - [grel:valueParameter2, "Y"]
+      - p: era:hasToiletDischarge
+        o:
+          value: "false"
+          datatype: xsd:boolean
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(ParameterValue)]
+            - [grel:valueParameter2, "N"]
+    graph: ${NAMED_GRAPH}
+  
+  external-cleaning: # 1.2.2.0.4.2
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT LTRIM(RTRIM(OperationalPoints.UOPID)) AS UOPID, Sidings.UUID, REPLACE(LookupValues.[Value], ' ', '_') AS ParameterValue FROM RINF.dbo.SidingParameters, RINF.dbo.Parameters, RINF.dbo.Sidings, RINF.dbo.OperationalPoints, RINF.dbo.LookupValues WHERE Sidings.OperationalPointID = OperationalPoints.ID AND Sidings.VersionID = OperationalPoints.VersionID AND Sidings.ID = SidingParameters.SidingID AND Sidings.VersionID = SidingParameters.VersionID AND SidingParameters.ParameterId = Parameters.ID AND SidingParameters.LookupValueID IS NOT NULL AND SidingParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.2.2.0.4.2') AND OperationalPoints.IsFuturePlanning = 0;
+    s: http://data.europa.eu/949/functionalInfrastructure/sidings/$(UOPID)_$(UUID)
+    po:
+      - p: era:hasExternalCleaning
+        o:
+          value: "true"
+          datatype: xsd:boolean
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(ParameterValue)]
+            - [grel:valueParameter2, "Y"]
+      - p: era:hasExternalCleaning
+        o:
+          value: "false"
+          datatype: xsd:boolean
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(ParameterValue)]
+            - [grel:valueParameter2, "N"]
+    graph: ${NAMED_GRAPH}
+  
+  water-restocking: # 1.2.2.0.4.3
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT LTRIM(RTRIM(OperationalPoints.UOPID)) AS UOPID, Sidings.UUID, REPLACE(LookupValues.[Value], ' ', '_') AS ParameterValue FROM RINF.dbo.SidingParameters, RINF.dbo.Parameters, RINF.dbo.Sidings, RINF.dbo.OperationalPoints, RINF.dbo.LookupValues WHERE Sidings.OperationalPointID = OperationalPoints.ID AND Sidings.VersionID = OperationalPoints.VersionID AND Sidings.ID = SidingParameters.SidingID AND Sidings.VersionID = SidingParameters.VersionID AND SidingParameters.ParameterId = Parameters.ID AND SidingParameters.LookupValueID IS NOT NULL AND SidingParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.2.2.0.4.3') AND OperationalPoints.IsFuturePlanning = 0;
+    s: http://data.europa.eu/949/functionalInfrastructure/sidings/$(UOPID)_$(UUID)
+    po:
+      - p: era:hasWaterRestocking
+        o:
+          value: "true"
+          datatype: xsd:boolean
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(ParameterValue)]
+            - [grel:valueParameter2, "Y"]
+      - p: era:hasWaterRestocking
+        o:
+          value: "false"
+          datatype: xsd:boolean
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(ParameterValue)]
+            - [grel:valueParameter2, "N"]
+    graph: ${NAMED_GRAPH}
+  
+  refuelling: # 1.2.2.0.4.4
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT LTRIM(RTRIM(OperationalPoints.UOPID)) AS UOPID, Sidings.UUID, REPLACE(LookupValues.[Value], ' ', '_') AS ParameterValue FROM RINF.dbo.SidingParameters, RINF.dbo.Parameters, RINF.dbo.Sidings, RINF.dbo.OperationalPoints, RINF.dbo.LookupValues WHERE Sidings.OperationalPointID = OperationalPoints.ID AND Sidings.VersionID = OperationalPoints.VersionID AND Sidings.ID = SidingParameters.SidingID AND Sidings.VersionID = SidingParameters.VersionID AND SidingParameters.ParameterId = Parameters.ID AND SidingParameters.LookupValueID IS NOT NULL AND SidingParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.2.2.0.4.4') AND OperationalPoints.IsFuturePlanning = 0;
+    s: http://data.europa.eu/949/functionalInfrastructure/sidings/$(UOPID)_$(UUID)
+    po:
+      - p: era:hasRefuelling
+        o:
+          value: "true"
+          datatype: xsd:boolean
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(ParameterValue)]
+            - [grel:valueParameter2, "Y"]
+      - p: era:hasRefuelling
+        o:
+          value: "false"
+          datatype: xsd:boolean
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(ParameterValue)]
+            - [grel:valueParameter2, "N"]
+    graph: ${NAMED_GRAPH}
+  
+  sand-restocking: # 1.2.2.0.4.5
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT LTRIM(RTRIM(OperationalPoints.UOPID)) AS UOPID, Sidings.UUID, REPLACE(LookupValues.[Value], ' ', '_') AS ParameterValue FROM RINF.dbo.SidingParameters, RINF.dbo.Parameters, RINF.dbo.Sidings, RINF.dbo.OperationalPoints, RINF.dbo.LookupValues WHERE Sidings.OperationalPointID = OperationalPoints.ID AND Sidings.VersionID = OperationalPoints.VersionID AND Sidings.ID = SidingParameters.SidingID AND Sidings.VersionID = SidingParameters.VersionID AND SidingParameters.ParameterId = Parameters.ID AND SidingParameters.LookupValueID IS NOT NULL AND SidingParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.2.2.0.4.5') AND OperationalPoints.IsFuturePlanning = 0;
+    s: http://data.europa.eu/949/functionalInfrastructure/sidings/$(UOPID)_$(UUID)
+    po:
+      - p: era:hasSandRestocking
+        o:
+          value: "true"
+          datatype: xsd:boolean
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(ParameterValue)]
+            - [grel:valueParameter2, "Y"]
+      - p: era:hasSandRestocking
+        o:
+          value: "false"
+          datatype: xsd:boolean
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(ParameterValue)]
+            - [grel:valueParameter2, "N"]
+    graph: ${NAMED_GRAPH}
+
+  electric-shore-supply: # 1.2.2.0.4.6
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT LTRIM(RTRIM(OperationalPoints.UOPID)) AS UOPID, Sidings.UUID, REPLACE(LookupValues.[Value], ' ', '_') AS ParameterValue FROM RINF.dbo.SidingParameters, RINF.dbo.Parameters, RINF.dbo.Sidings, RINF.dbo.OperationalPoints, RINF.dbo.LookupValues WHERE Sidings.OperationalPointID = OperationalPoints.ID AND Sidings.VersionID = OperationalPoints.VersionID AND Sidings.ID = SidingParameters.SidingID AND Sidings.VersionID = SidingParameters.VersionID AND SidingParameters.ParameterId = Parameters.ID AND SidingParameters.LookupValueID IS NOT NULL AND SidingParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.2.2.0.4.6') AND OperationalPoints.IsFuturePlanning = 0;
+    s: http://data.europa.eu/949/functionalInfrastructure/sidings/$(UOPID)_$(UUID)
+    po:
+      - p: era:hasElectricShoreSupply
+        o:
+          value: "true"
+          datatype: xsd:boolean
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(ParameterValue)]
+            - [grel:valueParameter2, "Y"]
+      - p: era:hasElectricShoreSupply
+        o:
+          value: "false"
+          datatype: xsd:boolean
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(ParameterValue)]
+            - [grel:valueParameter2, "N"]
+    graph: ${NAMED_GRAPH}
+  
+  # ------------ Contact line system --------------
+  
+  max-standstill-current: # 1.2.2.0.6.1
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT LTRIM(RTRIM(OperationalPoints.UOPID)) AS UOPID, Sidings.UUID, SidingParameters.[Value] AS ParameterValue FROM RINF.dbo.SidingParameters, RINF.dbo.Parameters, RINF.dbo.Sidings, RINF.dbo.OperationalPoints WHERE Sidings.OperationalPointID = OperationalPoints.ID AND Sidings.VersionID = OperationalPoints.VersionID AND Sidings.ID = SidingParameters.SidingID AND Sidings.VersionID = SidingParameters.VersionID AND SidingParameters.ParameterId = Parameters.ID AND SidingParameters.[Value] IS NOT NULL AND Parameters.[Index] IN ('1.2.2.0.6.1') AND OperationalPoints.IsFuturePlanning = 0;
+    s: http://data.europa.eu/949/functionalInfrastructure/sidings/$(UOPID)_$(UUID)
+    po:
+      - [era:maxCurrentStandstillPantograph, $(ParameterValue), xsd:double]
+    graph: ${NAMED_GRAPH}

@@ -1,0 +1,58 @@
+prefixes:
+  era: "http://data.europa.eu/949/"
+
+variables:
+  connection: 
+    access: &host ${RINF_HOST}
+    type: &typeMSSQL mssql
+    credentials: &credentials
+      username: ${RINF_USER}
+      password: ${RINF_PWD}
+    queryFormulation: &queryFormulation sql2008 
+    referenceFormulation: &referenceFormulation csv
+
+mappings:
+  op-tracks-not-applicable:
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT LTRIM(RTRIM(OperationalPoints.UOPID)) AS UOPID, Tracks.UUID, Parameters.[Index] AS PropertyIndex FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.OPTracks, RINF.dbo.Tracks, RINF.dbo.OperationalPoints WHERE OPTracks.TrackID = Tracks.ID AND OPTracks.VersionID = Tracks.VersionID AND OPTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.IsApplicable = 2 AND OPTracks.OperationalPointID = OperationalPoints.ID AND OPTracks.VersionID = OperationalPoints.VersionID;
+    s: http://data.europa.eu/949/functionalInfrastructure/tracks/$(UOPID)_$(UUID)
+    po:
+      - p: era:notApplicable
+        o:
+          - mapping: index-predicates
+            condition:
+              function: equal
+              parameters:
+                - [str1, $(PropertyIndex)]
+                - [str2, $(index)]
+    graph: ${NAMED_GRAPH}
+
+  op-tracks-not-yet-available:
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT LTRIM(RTRIM(OperationalPoints.UOPID)) AS UOPID, Tracks.UUID, Parameters.[Index] AS PropertyIndex FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.OPTracks, RINF.dbo.Tracks, RINF.dbo.OperationalPoints WHERE OPTracks.TrackID = Tracks.ID AND OPTracks.VersionID = Tracks.VersionID AND OPTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.IsApplicable = 4 AND OPTracks.OperationalPointID = OperationalPoints.ID AND OPTracks.VersionID = OperationalPoints.VersionID;
+    s: http://data.europa.eu/949/functionalInfrastructure/tracks/$(UOPID)_$(UUID)
+    po:
+      - p: era:notYetAvailable
+        o:
+          - mapping: index-predicates
+            condition:
+              function: equal
+              parameters:
+                - [str1, $(PropertyIndex)]
+                - [str2, $(index)]
+    graph: ${NAMED_GRAPH}
+  
+  index-predicates:
+    sources:
+      - ["data/index_predicate_mappings.csv~csv"]
+    s: $(predicate)

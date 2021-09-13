@@ -4,27 +4,50 @@ prefixes:
   skos: "http://www.w3.org/2004/02/skos/core#"
   idlab-fn: "http://example.com/idlab/function/"
   grel: "http://users.ugent.be/~bjdmeest/function/grel.ttl#"
-  era: "http://era.europa.eu/ns#"
-  era-lc: "http://era.europa.eu/concepts/load-capabilities#"
-  era-gaugings: "http://era.europa.eu/concepts/gaugings#"
-  era-ap: "http://era.europa.eu/concepts/axle-positions#"
-  era-tds: "http://era.europa.eu/concepts/train-detection#"
-  era-am: "http://era.europa.eu/concepts/axle-monitoring#"
-  era-mscd: "http://era.europa.eu/concepts/max-speed-cant-deficiency#"
-  era-ri: "http://era.europa.eu/concepts/rail-inclinations#"
-  era-gcf: "http://era.europa.eu/concepts/gauge-changeover-facilities#"
-  era-ebp: "http://era.europa.eu/concepts/emergency-braking-profiles#"
-  era-bwp: "http://era.europa.eu/concepts/brake-weight-percentages#"
-  era-tc: "http://era.europa.eu/concepts/thermal-capacity#"
-  era-ic: "http://era.europa.eu/concepts/ice-conditions#"
-  era-cls: "http://era.europa.eu/concepts/contact-line-systems#"
-  era-ess: "http://era.europa.eu/concepts/energy-supply-systems#"
-  era-pth: "http://era.europa.eu/concepts/pantograph-heads#"
-  era-csm: "http://era.europa.eu/concepts/contact-strip-materials#"
-  era-ph: "http://era.europa.eu/concepts/platform-heights#"
-  era-gsmr: "http://era.europa.eu/concepts/gsmr-networks#"
-  era-tpls: "http://era.europa.eu/concepts/train-protection-legacy-systems#"
-  era-lrs: "http://era.europa.eu/concepts/legacy-radio-systems#"
+  era: "http://data.europa.eu/949/"
+  era-sn: "http://data.europa.eu/949/concepts/sol-natures/"
+  era-lc: "http://data.europa.eu/949/concepts/load-capabilities/"
+  era-gaugings: "http://data.europa.eu/949/concepts/gaugings/"
+  era-ntg: "http://data.europa.eu/949/concepts/nominal-track-gauges/"
+  era-tds: "http://data.europa.eu/949/concepts/train-detection/"
+  era-tdssc: "http://data.europa.eu/949/concepts/train-detection-specific-checks/"
+  era-malvc: "http://data.europa.eu/949/concepts/min-axle-loads-per-vehicle-category/"
+  era-mas: "http://data.europa.eu/949/concepts/max-amount-sandings/"
+  era-am: "http://data.europa.eu/949/concepts/axle-monitoring/"
+  era-ri: "http://data.europa.eu/949/concepts/rail-inclinations/"
+  era-gcf: "http://data.europa.eu/949/concepts/gauge-changeover-facilities/"
+  era-tc: "http://data.europa.eu/949/concepts/thermal-capacity/"
+  era-ic: "http://data.europa.eu/949/concepts/ice-conditions/"
+  era-cls: "http://data.europa.eu/949/concepts/contact-line-systems/"
+  era-ess: "http://data.europa.eu/949/concepts/energy-supply-systems/"
+  era-pth: "http://data.europa.eu/949/concepts/pantograph-heads/"
+  era-csm: "http://data.europa.eu/949/concepts/contact-strip-materials/"
+  era-ph: "http://data.europa.eu/949/concepts/platform-heights/"
+  era-gsmrev: "http://data.europa.eu/949/concepts/gsm-r-equipment-version#"
+  era-gsmr: "http://data.europa.eu/949/concepts/gsmr-networks/"
+  era-gsmrv: "http://data.europa.eu/949/concepts/gsmr-versions/"
+  era-gsmrnumactivemob: "http://data.europa.eu/949/concepts/gsmr-number-active-mobiles/"
+  era-gsmroptfunc: "http://data.europa.eu/949/concepts/gsmr-optional-functions/"
+  era-gsmrrdc: "http://data.europa.eu/949/concepts/gsm-r-radio-data-communication/"
+  era-tenclass: "http://data.europa.eu/949/concepts/ten-classifications/"
+  era-linecat: "http://data.europa.eu/949/concepts/line-category/"
+  era-pnsb: "http://data.europa.eu/949/concepts/profile-num-swap-bodies/"
+  era-pnst: "http://data.europa.eu/949/concepts/profile-num-semi-trailers/"
+  era-fc: "http://data.europa.eu/949/concepts/freight-corridor/"
+  era-etcslevel: "http://data.europa.eu/949/concepts/etcs-levels/"
+  era-etcsinfill: "http://data.europa.eu/949/concepts/etcs-infills/"
+  era-etcsbaseline: "http://data.europa.eu/949/concepts/etcs-baselines/"
+  era-etcsmvers: "http://data.europa.eu/949/concepts/etcs-m-versions/"
+  era-tpls: "http://data.europa.eu/949/concepts/train-protection-legacy-systems/"
+  era-lrs: "http://data.europa.eu/949/concepts/legacy-radio-systems/"
+  era-etcssituation: "http://data.europa.eu/949/concepts/etcs-situation/"
+  era-opcw: "http://data.europa.eu/949/concepts/other-protection-control-warning/"
+  era-esc: "http://data.europa.eu/949/concepts/etcs-system-compatibilities/"
+  era-rsc: "http://data.europa.eu/949/concepts/radio-system-compatibilities/"
+  era-bpt: "http://data.europa.eu/949/concepts/brake-parking-type/"
+  era-ect: "http://data.europa.eu/949/concepts/end-coupling-type/"
+  era-eeobl: "http://data.europa.eu/949/concepts/etcs-equipment-on-board-level/"
+  
 variables:
   connection: 
     accessRinf: &hostRinf ${RINF_HOST}
@@ -40,6 +63,20 @@ variables:
     referenceFormulation: &referenceFormulation csv
 
 mappings:
+  sol-natures:
+    sources:
+      - access: *hostRinf
+        type: *typeMSSQL
+        credentials: *credentialsRinf
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT DISTINCT LookupValues.[Value] AS Label, REPLACE(LookupValues.[Value], ' ', '_') AS Value FROM RINF.dbo.LookupValues, RINF.dbo.SectionOfLines WHERE SectionOfLines.SOLNature = LookupValues.ID;
+    s: era-sn:$(Value)
+    po:
+      - [a, skos:Concept]
+      - [skos:inScheme, era-sn:SoLNatures~iri]
+      - [skos:prefLabel, $(Label)]
+
   load-capability:
     sources:
       - access: *hostRinf
@@ -48,9 +85,10 @@ mappings:
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT CONCAT(LookupValues.[Value], '-' , TrackParameters.Value) AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.LookupValues WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.1.1.1.2.4') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
-    s: http://era.europa.eu/concepts/load-capabilities#$(ParameterValue)
+    s: era-lc:$(ParameterValue)
     po:
-      - [a, era-lc:LoadCapability]
+      - [a, skos:Concept]
+      - [skos:inScheme, era-lc:LoadCapabilities~iri]
       - [skos:prefLabel, $(ParameterValue)]
 
   gauging-profile-rinf:
@@ -61,9 +99,10 @@ mappings:
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT LookupValues.[Value] FROM RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE Parameters.[Index] IN ('1.1.1.1.3.1.1') AND Parameters.ID = LookupValues.ParameterId;
-    s: http://era.europa.eu/concepts/gaugings#$(Value)
+    s: era-gaugings:$(Value)
     po:
-      - [a, era-gaugings:GaugingProfile]
+      - [a, skos:Concept]
+      - [skos:inScheme, era-gaugings:GaugingProfiles~iri]
       - [skos:prefLabel, $(Value)]
 
   gauging-profile-eratv:
@@ -74,22 +113,16 @@ mappings:
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId) AS ParameterValue, RegistrationParameters.OtherValue, REPLACE((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId), ' ', '_') AS ParameterURI, REPLACE(RegistrationParameters.OtherValue, ' ', '_') AS OtherURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.2.1'));
-    s: http://era.europa.eu/concepts/gaugings#$(ParameterURI)
+    s: era-gaugings:$(ParameterURI)
+    condition:
+      function: idlab-fn:equal
+      parameters:
+        - [grel:valueParameter, $(OtherValue)]
+        - [grel:valueParameter2, ""]
     po:
-      - p: a 
-        o: era-gaugings:GaugingProfile
-        condition:
-          function: idlab-fn:equal
-          parameters:
-            - [grel:valueParameter, $(OtherValue)]
-            - [grel:valueParameter2, ""]
-      - p: skos:prefLabel
-        o: $(ParameterValue)
-        condition:
-          function: idlab-fn:equal
-          parameters:
-            - [grel:valueParameter, $(OtherValue)]
-            - [grel:valueParameter2, ""]
+      - [a, skos:Concept]
+      - [skos:inScheme, era-gaugings:GaugingProfiles~iri]
+      - [skos:prefLabel, $(ParameterValue)]
   
   other-gauging-profile-eratv:
     sources:
@@ -99,35 +132,44 @@ mappings:
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId) AS ParameterValue, RegistrationParameters.OtherValue, REPLACE((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId), ' ', '_') AS ParameterURI, REPLACE(RegistrationParameters.OtherValue, ' ', '_') AS OtherURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.2.1'));
-    s: http://era.europa.eu/concepts/gaugings#$(OtherURI)
+    s: era-gaugings:$(OtherURI)
+    condition:
+      function: idlab-fn:notEqual
+      parameters:
+        - [grel:valueParameter, $(OtherValue)]
+        - [grel:valueParameter2, ""]
     po:
-      - p: a 
-        o: era-gaugings:GaugingProfile
-        condition:
-          function: idlab-fn:notEqual
-          parameters:
-            - [grel:valueParameter, $(OtherValue)]
-            - [grel:valueParameter2, ""]
-      - p: skos:prefLabel
-        o: $(OtherValue)
-        condition:
-          function: idlab-fn:notEqual
-          parameters:
-            - [grel:valueParameter, $(OtherValue)]
-            - [grel:valueParameter2, ""]
-  
-  axle-positions:
+      - [a, skos:Concept]
+      - [skos:inScheme, era-gaugings:GaugingProfiles~iri]
+      - [skos:prefLabel, $(OtherValue)]
+
+  other-other-gauging-profile-eratv:
     sources:
       - access: *hostEratv
         type: *typeMSSQL
         credentials: *credentialsEratv
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
-        query: SELECT DISTINCT RegistrationParameters.Value AS ParameterValue, REPLACE(RegistrationParameters.Value, ' ', '_') AS ParameterURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.5.3.4'));
-    s: http://era.europa.eu/concepts/axle-positions#$(ParameterURI)
+        query: SELECT DISTINCT (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId) AS ParameterValue, REPLACE((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId), ' ', '_') AS ParameterURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.2.2'));
+    s: era-gaugings:$(ParameterURI)
     po:
-      - [a, era-ap:AxlePosition]
+      - [a, skos:Concept]
+      - [skos:inScheme, era-gaugings:GaugingProfiles~iri]
       - [skos:prefLabel, $(ParameterValue)]
+
+  nominal-track-gauges:
+    sources:
+      - access: *hostRinf
+        type: *typeMSSQL
+        credentials: *credentialsRinf
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT LookupValues.[Value] FROM RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE Parameters.[Index] IN ('1.1.1.1.4.1') AND Parameters.ID = LookupValues.ParameterId;
+    s: era-ntg:$(Value)
+    po:
+      - [a, skos:Concept]
+      - [skos:inScheme, era-ntg:NominalTrackGauges~iri]
+      - [skos:prefLabel, $(Value)]
   
   train-detection-system:
     sources:
@@ -137,10 +179,81 @@ mappings:
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT LookupValues.[Value] AS Label, REPLACE(LookupValues.[Value], ' ', '_') AS Value FROM RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE Parameters.[Index] IN ('1.1.1.3.7.1.1') AND Parameters.ID = LookupValues.ParameterId;
-    s: http://era.europa.eu/concepts/train-detection#$(Value)
+    s: era-tds:$(Value)
     po:
-      - [a, era-tds:TrainDetectionSystem]
+      - [a, skos:Concept]
+      - [skos:inScheme, era-tds:TrainDetectionSystems~iri]
       - [skos:prefLabel, $(Label)]
+
+  train-detection-system-specific-checks:
+    sources:
+      - access: *hostRinf
+        type: *typeMSSQL
+        credentials: *credentialsRinf
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT LookupValues.[Value] AS Label, REPLACE(LookupValues.[Value], ' ', '_') AS Value FROM RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE Parameters.[Index] IN ('1.1.1.3.7.1.2') AND Parameters.ID = LookupValues.ParameterId;
+    s: era-tdssc:$(Value)
+    po:
+      - [a, skos:Concept]
+      - [skos:inScheme, era-tdssc:TrainDetectionSystemsSpecificChecks~iri]
+      - [skos:prefLabel, $(Label)]
+  
+  min-axle-loads-vehicle-category:
+    sources:
+      - access: *hostRinf
+        type: *typeMSSQL
+        credentials: *credentialsRinf
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT DISTINCT TrackParameters.[Value] AS Label, REPLACE(TrackParameters.[Value], ' ', '_') AS Value FROM RINF.dbo.Parameters, RINF.dbo.TrackParameters WHERE Parameters.[Index] IN ('1.1.1.3.7.11.1') AND Parameters.ID = TrackParameters.ParameterID AND TrackParameters.[Value] IS NOT NULL;
+    s: era-malvc:$(Value)
+    po:
+      - [a, skos:Concept]
+      - [skos:inScheme, era-malvc:MinAxleLoadsPerVehicleCategory~iri]
+      - [skos:prefLabel, $(Label)]
+
+  max-amount-sandings:
+    sources:
+      - access: *hostRinf
+        type: *typeMSSQL
+        credentials: *credentialsRinf
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT LookupValues.[Value] AS Label, REPLACE(LookupValues.[Value], ' ', '_') AS Value FROM RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE Parameters.[Index] IN ('1.1.1.3.7.17') AND Parameters.ID = LookupValues.ParameterId;
+    s: era-mas:$(Value)
+    po:
+      - [a, skos:Concept]
+      - [skos:inScheme, era-mas:MaxAmountSandings~iri]
+      - [skos:prefLabel, $(Label)]
+   
+  end-coupling-type:
+    sources:
+      - access: *hostEratv
+        type: *typeMSSQL
+        credentials: *credentialsEratv
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT DISTINCT (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId) AS ParameterValue, REPLACE((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId), ' ', '_') AS ParameterURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.9.1'));
+    s: era-ect:$(ParameterURI)
+    po:
+      - [a, skos:Concept]
+      - [skos:inScheme, era-ect:EndCouplingType~iri]
+      - [skos:prefLabel, $(ParameterValue)]
+
+  other-end-coupling-type:
+    sources:
+      - access: *hostEratv
+        type: *typeMSSQL
+        credentials: *credentialsEratv
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT DISTINCT LTRIM(RTRIM((RegistrationParameters.OtherValue))) AS OtherValue, REPLACE(LTRIM(RTRIM((RegistrationParameters.OtherValue))), ' ', '_') AS OtherURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.9.1')) AND RegistrationParameters.OtherValue IS NOT NULL;
+    s: era-ect:$(OtherURI)
+    po:
+      - [a, skos:Concept]
+      - [skos:inScheme, era-ect:EndCouplingType~iri]
+      - [skos:prefLabel, $(OtherValue)]
   
   axle-bearing-monitoring:
     sources:
@@ -150,22 +263,16 @@ mappings:
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId) AS ParameterValue, RegistrationParameters.OtherValue, REPLACE((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId), ' ', '_') AS ParameterURI, REPLACE(RegistrationParameters.OtherValue, ' ', '_') AS OtherURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.9.2'));
-    s: http://era.europa.eu/concepts/axle-monitoring#$(ParameterURI)
+    s: era-am:$(ParameterURI)
+    condition:
+      function: idlab-fn:equal
+      parameters:
+        - [grel:valueParameter, $(OtherValue)]
+        - [grel:valueParameter2, ""]
     po:
-      - p: a 
-        o: era-am:AxleBearingMonitoring
-        condition:
-          function: idlab-fn:equal
-          parameters:
-            - [grel:valueParameter, $(OtherValue)]
-            - [grel:valueParameter2, ""]
-      - p: skos:prefLabel
-        o: $(ParameterValue)
-        condition:
-          function: idlab-fn:equal
-          parameters:
-            - [grel:valueParameter, $(OtherValue)]
-            - [grel:valueParameter2, ""]
+      - [a, skos:Concept]
+      - [skos:inScheme, era-am:AxleBearingMonitoring~iri]
+      - [skos:prefLabel, $(ParameterValue)]
   
   other-axle-bearing-monitoring:
     sources:
@@ -175,29 +282,16 @@ mappings:
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId) AS ParameterValue, RegistrationParameters.OtherValue, REPLACE((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId), ' ', '_') AS ParameterURI, REPLACE(RegistrationParameters.OtherValue, ' ', '_') AS OtherURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.9.2'));
-    s: http://era.europa.eu/concepts/axle-monitoring#$(OtherURI)
+    s: era-am:$(OtherURI)
+    condition:
+      function: idlab-fn:notEqual
+      parameters:
+          - [grel:valueParameter, $(OtherValue)]
+          - [grel:valueParameter2, ""]
     po:
-      - [a, era-am:AxleBearingMonitoring]
-      - p: skos:prefLabel
-        o: $(OtherValue)
-        condition:
-          function: idlab-fn:notEqual
-          parameters:
-              - [grel:valueParameter, $(OtherValue)]
-              - [grel:valueParameter2, ""]
-  
-  max-speed-cant-deficiency:
-    sources:
-      - access: *hostEratv
-        type: *typeMSSQL
-        credentials: *credentialsEratv
-        queryFormulation: *queryFormulation
-        referenceFormulation: *referenceFormulation
-        query: SELECT DISTINCT RegistrationParameters.Value AS ParameterValue, REPLACE(RegistrationParameters.Value, ' ', '_') AS ParameterURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.6.4'));
-    s: http://era.europa.eu/concepts/max-speed-cant-deficiency#$(ParameterURI)
-    po:
-      - [a, era-mscd:MaxSpeedCantDeficiency]
-      - [skos:prefLabel, $(ParameterValue)]
+      - [a, skos:Concept]
+      - [skos:inScheme, era-am:AxleBearingMonitoring~iri]
+      - [skos:prefLabel, $(OtherValue)]
 
   rail-inclinations-eratv:
     sources:
@@ -207,22 +301,16 @@ mappings:
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId) AS ParameterValue, RegistrationParameters.OtherValue, REPLACE((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId), ' ', '_') AS ParameterURI, REPLACE(RegistrationParameters.OtherValue, ' ', '_') AS OtherURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.6.5'));
-    s: http://era.europa.eu/concepts/rail-inclinations#$(ParameterURI)
+    s: era-ri:$(ParameterURI)
+    condition:
+      function: idlab-fn:equal
+      parameters:
+        - [grel:valueParameter, $(OtherValue)]
+        - [grel:valueParameter2, ""]
     po:
-      - p: a 
-        o: era-ri:RailInclination
-        condition:
-          function: idlab-fn:equal
-          parameters:
-            - [grel:valueParameter, $(OtherValue)]
-            - [grel:valueParameter2, ""]
-      - p: skos:prefLabel
-        o: $(ParameterValue)
-        condition:
-          function: idlab-fn:equal
-          parameters:
-            - [grel:valueParameter, $(OtherValue)]
-            - [grel:valueParameter2, ""]
+      - [a, skos:Concept]
+      - [skos:inScheme, era-ri:RailInclinations~iri]
+      - [skos:prefLabel, $(ParameterValue)]
   
   rail-inclinations-rinf:
     sources:
@@ -234,7 +322,8 @@ mappings:
         query: SELECT DISTINCT TrackParameters.Value AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.1.4.3') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
     s: era-ri:1%2F$(ParameterValue)
     po:
-      - [a, era-ri:RailInclination]
+      - [a, skos:Concept]
+      - [skos:inScheme, era-ri:RailInclinations~iri]
       - [skos:prefLabel, "1/$(ParameterValue)"]
       
   other-rail-inclinations:
@@ -245,16 +334,16 @@ mappings:
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId) AS ParameterValue, RegistrationParameters.OtherValue, REPLACE((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId), ' ', '_') AS ParameterURI, REPLACE(RegistrationParameters.OtherValue, ' ', '_') AS OtherURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.6.5'));
-    s: http://era.europa.eu/concepts/rail-inclinations#$(OtherURI)
+    s: era-ri:$(OtherURI)
+    condition:
+      function: idlab-fn:notEqual
+      parameters:
+          - [grel:valueParameter, $(OtherValue)]
+          - [grel:valueParameter2, ""]
     po:
-      - [a, era-ri:RailInclination]
-      - p: skos:prefLabel
-        o: $(OtherValue)
-        condition:
-          function: idlab-fn:notEqual
-          parameters:
-              - [grel:valueParameter, $(OtherValue)]
-              - [grel:valueParameter2, ""]
+      - [a, skos:Concept]
+      - [skos:inScheme, era-ri:RailInclinations~iri]
+      - [skos:prefLabel, $(OtherValue)]
 
   gauge-changeover-facilities-eratv:
     sources:
@@ -264,22 +353,16 @@ mappings:
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId) AS ParameterValue, RegistrationParameters.OtherValue, REPLACE((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId), ' ', '_') AS ParameterURI, REPLACE(RegistrationParameters.OtherValue, ' ', '_') AS OtherURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.1.11'));
-    s: http://era.europa.eu/concepts/gauge-changeover-facilities#$(ParameterURI)
+    s: era-gcf:$(ParameterURI)
+    condition:
+      function: idlab-fn:equal
+      parameters:
+        - [grel:valueParameter, $(OtherValue)]
+        - [grel:valueParameter2, ""]
     po:
-      - p: a 
-        o: era-gcf:GaugeChangeoverFacility
-        condition:
-          function: idlab-fn:equal
-          parameters:
-            - [grel:valueParameter, $(OtherValue)]
-            - [grel:valueParameter2, ""]
-      - p: skos:prefLabel
-        o: $(ParameterValue)
-        condition:
-          function: idlab-fn:equal
-          parameters:
-            - [grel:valueParameter, $(OtherValue)]
-            - [grel:valueParameter2, ""]
+      - [a, skos:Concept]
+      - [skos:inScheme, era-gcf:GaugeChangeoverFacilities~iri]
+      - [skos:prefLabel, $(ParameterValue)]
 
   other-gauge-changeover-facilities:
     sources:
@@ -289,41 +372,29 @@ mappings:
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId) AS ParameterValue, RegistrationParameters.OtherValue, REPLACE((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId), ' ', '_') AS ParameterURI, REPLACE(RegistrationParameters.OtherValue, ' ', '_') AS OtherURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.1.11'));
-    s: http://era.europa.eu/concepts/gauge-changeover-facilities#$(OtherURI)
+    s: era-gcf:$(OtherURI)
+    condition:
+      function: idlab-fn:notEqual
+      parameters:
+          - [grel:valueParameter, $(OtherValue)]
+          - [grel:valueParameter2, ""]
     po:
-      - [a, era-gcf:GaugeChangeoverFacility]
-      - p: skos:prefLabel
-        o: $(OtherValue)
-        condition:
-          function: idlab-fn:notEqual
-          parameters:
-              - [grel:valueParameter, $(OtherValue)]
-              - [grel:valueParameter2, ""]
-  
-  emergency-braking-profiles:
+      - [a, skos:Concept]
+      - [skos:inScheme, era-gcf:GaugeChangeoverFacilities~iri]
+      - [skos:prefLabel, $(OtherValue)]
+
+  brake-parking-type: # 4.7.3.2
     sources:
       - access: *hostEratv
         type: *typeMSSQL
         credentials: *credentialsEratv
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
-        query: SELECT DISTINCT RegistrationParameters.Value AS ParameterValue, REPLACE(RegistrationParameters.Value, ' ', '_') AS ParameterURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.7.5'));
-    s: http://era.europa.eu/concepts/emergency-braking-profiles#$(ParameterURI)
+        query: SELECT DISTINCT CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue) ,(SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue, REPLACE(CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue) , (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)), ' ', '_') AS ParameterURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.7.3.2')); 
+    s: era-bpt:$(ParameterURI)
     po:
-      - [a, era-ebp:EmergencyBrakingProfile]
-      - [skos:prefLabel, $(ParameterValue)]
-  
-  brake-weight-percentages:
-    sources:
-      - access: *hostEratv
-        type: *typeMSSQL
-        credentials: *credentialsEratv
-        queryFormulation: *queryFormulation
-        referenceFormulation: *referenceFormulation
-        query: SELECT DISTINCT RegistrationParameters.Value AS ParameterValue, REPLACE(RegistrationParameters.Value, ' ', '_') AS ParameterURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.7.6'));
-    s: http://era.europa.eu/concepts/brake-weight-percentages#$(ParameterURI)
-    po:
-      - [a, era-bwp:BrakeWeightPercentage]
+      - [a, skos:Concept]
+      - [skos:inScheme, era-bpt:BrakeParkingType~iri]
       - [skos:prefLabel, $(ParameterValue)]
 
   thermal-capacity-tsi:
@@ -334,9 +405,10 @@ mappings:
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue, REPLACE(CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)), ' ', '_') AS UriName FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.7.2.1.1'));
-    s: http://era.europa.eu/concepts/thermal-capacity#$(UriName)
+    s: era-tc:$(UriName)
     po:
-      - [a, era-tc:ThermalCapacityTSIReference]
+      - [a, skos:Concept]
+      - [skos:inScheme, era-tc:ThermalCapacityTSIReferences~iri]
       - [skos:prefLabel, $(ParameterValue)]
   
   snow-ice-hail-conditions:
@@ -347,23 +419,17 @@ mappings:
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId) AS ParameterValue, RegistrationParameters.OtherValue, REPLACE((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId), ' ', '_') AS ParameterURI, REPLACE(RegistrationParameters.OtherValue, ' ', '_') AS OtherURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.3.3'));
-    s: http://era.europa.eu/concepts/ice-conditions#$(ParameterURI)
+    s: era-ic:$(ParameterURI)
+    condition:
+      function: idlab-fn:equal
+      parameters:
+        - [grel:valueParameter, $(OtherValue)]
+        - [grel:valueParameter2, ""]
     po:
-      - p: a 
-        o: era-ic:IceCondition
-        condition:
-          function: idlab-fn:equal
-          parameters:
-            - [grel:valueParameter, $(OtherValue)]
-            - [grel:valueParameter2, ""]
-      - p: skos:prefLabel
-        o: $(ParameterValue)
-        condition:
-          function: idlab-fn:equal
-          parameters:
-            - [grel:valueParameter, $(OtherValue)]
-            - [grel:valueParameter2, ""]
-  
+      - [a, skos:Concept]
+      - [skos:inScheme, era-ic:IceConditions~iri]
+      - [skos:prefLabel, $(ParameterValue)]
+        
   other-snow-ice-hail-conditions:
     sources:
       - access: *hostEratv
@@ -372,16 +438,17 @@ mappings:
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId) AS ParameterValue, RegistrationParameters.OtherValue, REPLACE((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId), ' ', '_') AS ParameterURI, REPLACE(RegistrationParameters.OtherValue, ' ', '_') AS OtherURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.3.3'));
-    s: http://era.europa.eu/concepts/ice-conditions#$(OtherURI)
+    s: era-ic:$(OtherURI)
+    condition:
+      function: idlab-fn:notEqual
+      parameters:
+          - [grel:valueParameter, $(OtherValue)]
+          - [grel:valueParameter2, ""]
     po:
-      - [a, era-ic:IceCondition]
-      - p: skos:prefLabel
-        o: $(OtherValue)
-        condition:
-          function: idlab-fn:notEqual
-          parameters:
-              - [grel:valueParameter, $(OtherValue)]
-              - [grel:valueParameter2, ""]
+      - [a, skos:Concept]
+      - [skos:inScheme, era-ic:IceConditions~iri]
+      - [skos:prefLabel, $(OtherValue)]
+        
   
   contact-line-systems:
     sources:
@@ -391,9 +458,10 @@ mappings:
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue, REPLACE(CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, ''), ' ', '_') AS UriName FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.2.2.1.1') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
-    s: http://era.europa.eu/concepts/contact-line-systems#$(UriName)
+    s: era-cls:$(UriName)
     po:
-      - [a, era-cls:ContactLineSystem]
+      - [a, skos:Concept]
+      - [skos:inScheme, era-cls:ContactLineSystems~iri]
       - [skos:prefLabel, $(ParameterValue)]
   
   energy-supply-systems-eratv:
@@ -404,22 +472,17 @@ mappings:
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId) AS ParameterValue, RegistrationParameters.OtherValue, REPLACE((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId), ' ', '_') AS ParameterURI, REPLACE(RegistrationParameters.OtherValue, ' ', '_') AS OtherURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.10.1'));
-    s: http://era.europa.eu/concepts/energy-supply-systems#$(ParameterURI)
+    s: era-ess:$(ParameterURI)
+    condition:
+      function: idlab-fn:equal
+      parameters:
+        - [grel:valueParameter, $(OtherValue)]
+        - [grel:valueParameter2, ""]
     po:
-      - p: a 
-        o: era-ess:EnergySupplySystem
-        condition:
-          function: idlab-fn:equal
-          parameters:
-            - [grel:valueParameter, $(OtherValue)]
-            - [grel:valueParameter2, ""]
-      - p: skos:prefLabel
-        o: $(ParameterValue)
-        condition:
-          function: idlab-fn:equal
-          parameters:
-            - [grel:valueParameter, $(OtherValue)]
-            - [grel:valueParameter2, ""]
+      - [a, skos:Concept]
+      - [skos:inScheme, era-ess:EnergySupplySystems~iri]
+      - [skos:prefLabel, $(ParameterValue)]
+
   
   energy-supply-systems-rinf:
     sources:
@@ -429,22 +492,17 @@ mappings:
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT (SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID) AS ParameterValue, REPLACE((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), ' ', '_') AS ParameterURI FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.2.2.1.2') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
-    s: http://era.europa.eu/concepts/energy-supply-systems#$(ParameterURI)
+    s: era-ess:$(ParameterURI)
+    condition:
+      function: idlab-fn:notEqual
+      parameters:
+        - [grel:valueParameter, $(ParameterValue)]
+        - [grel:valueParameter2, "other"]
     po:
-      - p: a 
-        o: era-ess:EnergySupplySystem
-        condition:
-          function: idlab-fn:notEqual
-          parameters:
-            - [grel:valueParameter, $(ParameterValue)]
-            - [grel:valueParameter2, "other"]
-      - p: skos:prefLabel
-        o: $(ParameterValue)
-        condition:
-          function: idlab-fn:notEqual
-          parameters:
-            - [grel:valueParameter, $(ParameterValue)]
-            - [grel:valueParameter2, "other"]
+      - [a, skos:Concept]
+      - [skos:inScheme, era-ess:EnergySupplySystems~iri]
+      - [skos:prefLabel, $(ParameterValue)]
+
       
   other-energy-supply-systems-eratv:
     sources:
@@ -454,16 +512,17 @@ mappings:
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId) AS ParameterValue, RegistrationParameters.OtherValue, REPLACE((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId), ' ', '_') AS ParameterURI, REPLACE(RegistrationParameters.OtherValue, ' ', '_') AS OtherURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.10.1'));
-    s: http://era.europa.eu/concepts/energy-supply-systems#$(OtherURI)
+    s: era-ess:$(OtherURI)
+    condition:
+      function: idlab-fn:notEqual
+      parameters:
+          - [grel:valueParameter, $(OtherValue)]
+          - [grel:valueParameter2, ""]
     po:
-      - [a, era-ess:EnergySupplySystem]
-      - p: skos:prefLabel
-        o: $(OtherValue)
-        condition:
-          function: idlab-fn:notEqual
-          parameters:
-              - [grel:valueParameter, $(OtherValue)]
-              - [grel:valueParameter2, ""]
+      - [a, skos:Concept]
+      - [skos:inScheme, era-ess:EnergySupplySystems~iri]
+      - [skos:prefLabel, $(OtherValue)]
+        
   
   tsi-pantograph-heads:
     sources:
@@ -475,7 +534,8 @@ mappings:
         query: SELECT DISTINCT CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue, REPLACE(CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, ''), ' ', '_') AS UriName FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.2.3.1') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
     s: era-pth:$(UriName)
     po:
-      - [a, era-pth:PantographHead]
+      - [a, skos:Concept]
+      - [skos:inScheme, era-pth:PantographHeads~iri]
       - [skos:prefLabel, $(ParameterValue)]
       - [era:tsiCompliant, "true", xsd:boolean]
   
@@ -489,7 +549,8 @@ mappings:
         query: SELECT DISTINCT CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue, REPLACE(CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, ''), ' ', '_') AS UriName FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.2.3.2') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
     s: era-pth:$(UriName)
     po:
-      - [a, era-pth:PantographHead]
+      - [a, skos:Concept]
+      - [skos:inScheme, era-pth:PantographHeads~iri]
       - [skos:prefLabel, $(ParameterValue)]
       - [era:tsiCompliant, "false", xsd:boolean]
   
@@ -501,23 +562,17 @@ mappings:
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId) AS ParameterValue, RegistrationParameters.OtherValue, REPLACE(LOWER((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)), ' ', '_') AS ParameterURI, REPLACE(RegistrationParameters.OtherValue, ' ', '_') AS OtherURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.10.10'));
-    s: http://era.europa.eu/concepts/contact-strip-materials#$(ParameterURI)
+    s: era-csm:$(ParameterURI)
+    condition:
+      function: idlab-fn:equal
+      parameters:
+        - [grel:valueParameter, $(OtherValue)]
+        - [grel:valueParameter2, ""]
     po:
-      - p: a 
-        o: era-csm:ContactStripMaterial
-        condition:
-          function: idlab-fn:equal
-          parameters:
-            - [grel:valueParameter, $(OtherValue)]
-            - [grel:valueParameter2, ""]
-      - p: skos:prefLabel
-        o: $(ParameterValue)
-        condition:
-          function: idlab-fn:equal
-          parameters:
-            - [grel:valueParameter, $(OtherValue)]
-            - [grel:valueParameter2, ""]
-  
+      - [a, skos:Concept]
+      - [skos:inScheme, era-csm:ContactStripMaterials~iri]
+      - [skos:prefLabel, $(ParameterValue)]
+
   contact-strip-materials-rinf:
     sources:
       - access: *hostRinf
@@ -526,22 +581,11 @@ mappings:
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT (SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID) AS ParameterValue, REPLACE((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), ' ', '_') AS ParameterURI FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.2.3.4') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
-    s: http://era.europa.eu/concepts/contact-strip-materials#$(ParameterURI)
+    s: era-csm:$(ParameterURI)
     po:
-      - p: a 
-        o: era-csm:ContactStripMaterial
-        condition:
-          function: idlab-fn:notEqual
-          parameters:
-            - [grel:valueParameter, $(ParameterValue)]
-            - [grel:valueParameter2, "other"]
-      - p: skos:prefLabel
-        o: $(ParameterValue)
-        condition:
-          function: idlab-fn:notEqual
-          parameters:
-            - [grel:valueParameter, $(ParameterValue)]
-            - [grel:valueParameter2, "other"]
+      - [a, skos:Concept]
+      - [skos:inScheme, era-csm:ContactStripMaterials~iri]
+      - [skos:prefLabel, $(ParameterValue)]
       
   other-contact-strip-materials-eratv:
     sources:
@@ -551,17 +595,17 @@ mappings:
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId) AS ParameterValue, RegistrationParameters.OtherValue, REPLACE((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId), ' ', '_') AS ParameterURI, REPLACE(RegistrationParameters.OtherValue, ' ', '_') AS OtherURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.10.10'));
-    s: http://era.europa.eu/concepts/contact-strip-materials#$(OtherURI)
+    s: era-csm:$(OtherURI)
+    condition:
+      function: idlab-fn:notEqual
+      parameters:
+          - [grel:valueParameter, $(OtherValue)]
+          - [grel:valueParameter2, ""]
     po:
-      - [a, era-csm:ContactStripMaterial]
-      - p: skos:prefLabel
-        o: $(OtherValue)
-        condition:
-          function: idlab-fn:notEqual
-          parameters:
-              - [grel:valueParameter, $(OtherValue)]
-              - [grel:valueParameter2, ""]
-  
+      - [a, skos:Concept]
+      - [skos:inScheme, era-csm:ContactStripMaterials~iri]
+      - [skos:prefLabel, $(OtherValue)]
+        
   platform-heights-eratv:
     sources:
       - access: *hostEratv
@@ -569,23 +613,17 @@ mappings:
         credentials: *credentialsEratv
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
-        query: SELECT DISTINCT SUBSTRING(TRIM((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)), 1, 3) AS ParameterValue, RegistrationParameters.OtherValue, REPLACE(RegistrationParameters.OtherValue, ' ', '_') AS OtherURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.12.3.1'));
-    s: http://era.europa.eu/concepts/platform-heights#$(ParameterValue)
+        query: SELECT DISTINCT SUBSTRING(LTRIM(RTRIM((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId))), 1, 3) AS ParameterValue, RegistrationParameters.OtherValue, REPLACE(RegistrationParameters.OtherValue, ' ', '_') AS OtherURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.12.3.1'));
+    s: era-ph:$(ParameterValue)
+    condition:
+      function: idlab-fn:equal
+      parameters:
+        - [grel:valueParameter, $(OtherValue)]
+        - [grel:valueParameter2, ""]
     po:
-      - p: a 
-        o: era-ph:PlatformHeight
-        condition:
-          function: idlab-fn:equal
-          parameters:
-            - [grel:valueParameter, $(OtherValue)]
-            - [grel:valueParameter2, ""]
-      - p: skos:prefLabel
-        o: $(ParameterValue)
-        condition:
-          function: idlab-fn:equal
-          parameters:
-            - [grel:valueParameter, $(OtherValue)]
-            - [grel:valueParameter2, ""]
+      - [a, skos:Concept]
+      - [skos:inScheme, era-ph:PlatformHeights~iri]
+      - [skos:prefLabel, $(ParameterValue)]
 
   platform-heights-rinf:
     sources:
@@ -595,22 +633,16 @@ mappings:
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT LookupValues.[Value] AS ParameterValue FROM RINF.dbo.Parameters, RINF.dbo.PlatformParameters, RINF.dbo.LookupValues WHERE PlatformParameters.ParameterID = Parameters.ID AND PlatformParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.2.1.0.6.5');
-    s: http://era.europa.eu/concepts/platform-heights#$(ParameterValue)
+    s: era-ph:$(ParameterValue)
+    condition:
+      function: idlab-fn:notEqual
+      parameters:
+        - [grel:valueParameter, $(ParameterValue)]
+        - [grel:valueParameter2, "other"]
     po:
-      - p: a 
-        o: era-ph:PlatformHeight
-        condition:
-          function: idlab-fn:notEqual
-          parameters:
-            - [grel:valueParameter, $(ParameterValue)]
-            - [grel:valueParameter2, "other"]
-      - p: skos:prefLabel
-        o: $(ParameterValue)
-        condition:
-          function: idlab-fn:notEqual
-          parameters:
-            - [grel:valueParameter, $(ParameterValue)]
-            - [grel:valueParameter2, "other"]
+      - [a, skos:Concept]
+      - [skos:inScheme, era-ph:PlatformHeights~iri]
+      - [skos:prefLabel, $(ParameterValue)]
   
   other-platform-heights-eratv:
     sources:
@@ -619,19 +651,19 @@ mappings:
         credentials: *credentialsEratv
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
-        query: SELECT DISTINCT SUBSTRING(TRIM((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)), 1, 3) AS ParameterValue, RegistrationParameters.OtherValue, REPLACE(RegistrationParameters.OtherValue, ' ', '_') AS OtherURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.12.3.1'));
-    s: http://era.europa.eu/concepts/platform-heights#$(OtherURI)
+        query: SELECT DISTINCT SUBSTRING(LTRIM(RTRIM((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId))), 1, 3) AS ParameterValue, RegistrationParameters.OtherValue, REPLACE(RegistrationParameters.OtherValue, ' ', '_') AS OtherURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.12.3.1'));
+    s: era-ph:$(OtherURI)
+    condition:
+      function: idlab-fn:notEqual
+      parameters:
+          - [grel:valueParameter, $(OtherValue)]
+          - [grel:valueParameter2, ""]
     po:
-      - [a, era-ph:PlatformHeight]
-      - p: skos:prefLabel
-        o: $(OtherValue)
-        condition:
-          function: idlab-fn:notEqual
-          parameters:
-              - [grel:valueParameter, $(OtherValue)]
-              - [grel:valueParameter2, ""]
-  
-  gsm-r-networks:
+      - [a, skos:Concept]
+      - [skos:inScheme, era-ph:PlatformHeights~iri]
+      - [skos:prefLabel, $(OtherValue)]
+
+  gsm-r-equipment-version-rinf:
     sources:
       - access: *hostRinf
         type: *typeMSSQL
@@ -639,9 +671,108 @@ mappings:
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue, REPLACE(CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, ''), ' ', '_') AS ParameterURI FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.3.3.5') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
-    s: http://era.europa.eu/concepts/gsmr-networks#$(ParameterURI)
+    s: era-gsmrev:$(ParameterURI)
     po:
-      - [a, era-gsmr:GSMRNetwork]
+      - [a, skos:Concept]
+      - [skos:inScheme, era-gsmrev:GSMREquipmentVersion~iri]
+      - [skos:prefLabel, $(ParameterValue)]
+
+  gsm-r-equipment-version-eratv:
+    sources:
+      - access: *hostEratv
+        type: *typeMSSQL
+        credentials: *credentialsEratv
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT DISTINCT REPLACE((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId), ' ', '_') AS ParameterURI,  (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.13.2.1')) AND VehicleTypes.TypeVersionNumber IS NOT NULL AND VehicleTypes.TypeVersionNumber != '';
+    s: era-gsmrev:$(ParameterURI)
+    po:
+      - [a, skos:Concept]
+      - [skos:inScheme, era-gsmrev:GSMREquipmentVersion~iri]
+      - [skos:prefLabel, $(ParameterValue)]
+
+  gsm-r-radio-data-communication:
+    sources:
+      - access: *hostEratv
+        type: *typeMSSQL
+        credentials: *credentialsEratv
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT DISTINCT (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId) AS ParameterValue, replace((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId), ' ','_') AS ParameterURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.13.2.7'));
+    s: era-gsmrrdc:$(ParameterURI)
+    po:
+      - [a, skos:Concept]
+      - [skos:inScheme, era-gsmrrdc:GSMRRadioDataCommunications~iri]
+      - [skos:prefLabel, $(ParameterValue)]
+
+  gsm-r-networks-rinf:
+    sources:
+      - access: *hostRinf
+        type: *typeMSSQL
+        credentials: *credentialsRinf
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT DISTINCT CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue, REPLACE(CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, ''), ' ', '_') AS ParameterURI FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.3.3.5') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: era-gsmr:$(ParameterURI)
+    po:
+      - [a, skos:Concept]
+      - [skos:inScheme, era-gsmr:GSMRNetworks~iri]
+      - [skos:prefLabel, $(ParameterValue)]
+
+  gsm-r-networks-eratv:
+    sources:
+      - access: *hostEratv
+        type: *typeMSSQL
+        credentials: *credentialsEratv
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT DISTINCT REPLACE((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId), ' ', '_') AS ParameterURI, (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.13.2.10', '4.13.2.11')) AND VehicleTypes.TypeVersionNumber IS NOT NULL AND VehicleTypes.TypeVersionNumber != '';
+    s: era-gsmr:$(ParameterURI)
+    po:
+      - [a, skos:Concept]
+      - [skos:inScheme, era-gsmr:GSMRNetworks~iri]
+      - [skos:prefLabel, $(ParameterValue)]
+  
+  gsm-r-versions:
+    sources:
+      - access: *hostRinf
+        type: *typeMSSQL
+        credentials: *credentialsRinf
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT DISTINCT CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue, REPLACE(CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, ''), ' ', '_') AS ParameterURI FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.3.3.1') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: era-gsmrv:$(ParameterURI)
+    po:
+      - [a, skos:Concept]
+      - [skos:inScheme, era-gsmrv:GSMRVersions~iri]
+      - [skos:prefLabel, $(ParameterValue)]
+  
+  gsm-r-number-active-mobiles:
+    sources:
+      - access: *hostRinf
+        type: *typeMSSQL
+        credentials: *credentialsRinf
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT DISTINCT CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue, REPLACE(CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, ''), ' ', '_') AS ParameterURI FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.3.3.2') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: era-gsmrnumactivemob:$(ParameterURI)
+    po:
+      - [a, skos:Concept]
+      - [skos:inScheme, era-gsmrnumactivemob:NumberActiveMobiles~iri]
+      - [skos:prefLabel, $(ParameterValue)]
+  
+  gsm-r-optional-functions:
+    sources:
+      - access: *hostRinf
+        type: *typeMSSQL
+        credentials: *credentialsRinf
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT DISTINCT CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue, REPLACE(CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, ''), ' ', '_') AS ParameterURI FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.3.3.3') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: era-gsmroptfunc:$(ParameterURI)
+    po:
+      - [a, skos:Concept]
+      - [skos:inScheme, era-gsmroptfunc:OptionalFunctions~iri]
       - [skos:prefLabel, $(ParameterValue)]
   
   train-protection-legacy-systems-rinf:
@@ -652,11 +783,209 @@ mappings:
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue, REPLACE(CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, ''), ' ', '_') AS ParameterURI FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.3.5.3') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
-    s: http://era.europa.eu/concepts/train-protection-legacy-systems#$(ParameterURI)
+    s: era-tpls:$(ParameterURI)
     po:
-      - [a, era-tpls:TrainProtectionLegacySystem]
+      - [a, skos:Concept]
+      - [skos:inScheme, era-tpls:TrainProtectionLegacySystems~iri]
       - [skos:prefLabel, $(ParameterValue)]
+
+  ten-classification-of-platform:
+    sources:
+      - access: *hostRinf
+        type: *typeMSSQL
+        credentials: *credentialsRinf
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: select result.item as ParameterValue, replace(item, ' ', '_') as ParameterURI from (SELECT distinct RINF.dbo.LookupValues.Value as item FROM RINF.dbo.Parameters, RINF.dbo.PlatformParameters, RINF.dbo.LookupValues WHERE PlatformParameters.ParameterID = Parameters.ID and PlatformParameters.LookupValueID = LookupValues.ID and Parameters.[Index] IN ('1.2.1.0.6.3')) as result;
+    s: era-tenclass:$(ParameterURI)
+    po:
+      - [a, skos:Concept]
+      - [skos:inScheme, era-tenclass:TENClassifications~iri]
+      - [skos:prefLabel, $(ParameterValue)] 
+
+  line-category:
+    sources:
+      - access: *hostRinf
+        type: *typeMSSQL
+        credentials: *credentialsRinf
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT DISTINCT CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue, REPLACE(CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, ''), ' ', '_') AS ParameterURI FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.1.2.2') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: era-linecat:$(ParameterURI)
+    po:
+      - [a, skos:Concept]
+      - [skos:inScheme, era-linecat:LineCategories~iri]
+      - [skos:prefLabel, $(ParameterValue)] 
+   
+  freight-corridor:
+    sources:
+      - access: *hostRinf
+        type: *typeMSSQL
+        credentials: *credentialsRinf
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT LookupValues.[Value] as ParameterValue, REPLACE(LTRIM(RTRIM(LookupValues.[Value])), ' ', '_') as ParameterURI FROM RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE Parameters.[Index] IN ('1.1.1.1.2.3') AND Parameters.ID = LookupValues.ParameterId;
+    s: era-fc:$(ParameterURI)
+    po:
+      - [a, skos:Concept]
+      - [skos:inScheme, era-fc:FreightCorridors~iri]
+      - [skos:prefLabel, $(ParameterValue)]
+
+  profile-number-swap-bodies:
+    sources:
+      - access: *hostRinf
+        type: *typeMSSQL
+        credentials: *credentialsRinf
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: select distinct LTRIM(RTRIM([Value])) as ParameterValue, replace(LTRIM(RTRIM([Value])), ' ', '_') as ParameterURI from rinf.dbo.parameters, rinf.dbo.LookupValues where LookupValues.ParameterId = Parameters.ID and Parameters.[Index] = '1.1.1.1.3.4'
+    s: era-pnsb:$(ParameterURI)
+    po:
+      - [a, skos:Concept]
+      - [skos:inScheme, era-pnsb:ProfileNumbersSwapBodies~iri]
+      - [skos:prefLabel, $(ParameterValue)] 
+
+  profile-number-semi-trailers:
+    sources:
+      - access: *hostRinf
+        type: *typeMSSQL
+        credentials: *credentialsRinf
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: select distinct LTRIM(RTRIM([Value])) as ParameterValue, replace(LTRIM(RTRIM([Value])), ' ', '_') as ParameterURI from rinf.dbo.parameters, rinf.dbo.LookupValues where LookupValues.ParameterId = Parameters.ID and Parameters.[Index] = '1.1.1.1.3.5'
+    s: era-pnst:$(ParameterURI)
+    po:
+      - [a, skos:Concept]
+      - [skos:inScheme, era-pnst:ProfileNumbersSemiTrailers~iri]
+      - [skos:prefLabel, $(ParameterValue)] 
   
+  etcs-equipment-on-board-level:
+    sources:
+      - access: *hostRinf
+        type: *typeMSSQL
+        credentials: *credentialsRinf
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT DISTINCT REPLACE((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId), ' ', '_') as ParameterURI, (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.13.1.1'));
+    s: era-eeobl:$(ParameterURI)
+    po:
+      - [a, skos:Concept]
+      - [skos:inScheme, era-eeobl:ETCSEquipmentLevels~iri]
+      - [skos:prefLabel, $(ParameterValue)]
+
+  etcs-level:
+    sources:
+      - access: *hostRinf
+        type: *typeMSSQL
+        credentials: *credentialsRinf
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: select distinct REPLACE(LTRIM(RTRIM(LookupValues.[Value])), ' ', '_') AS ParameterURI, LTRIM(RTRIM(LookupValues.[Value])) AS ParameterValue from rinf.dbo.LookupValues, rinf.dbo.Parameters where LookupValues.ParameterId = Parameters.ID and Parameters.[Index] = '1.1.1.3.2.1'
+    s: era-etcslevel:$(ParameterURI)
+    po:
+      - [a, skos:Concept]
+      - [skos:inScheme, era-etcslevel:ETCSLevels~iri]
+      - [skos:prefLabel, $(ParameterValue)]
+
+  etcs-baseline-rinf:
+    sources:
+      - access: *hostRinf
+        type: *typeMSSQL
+        credentials: *credentialsRinf
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: select distinct REPLACE(LTRIM(RTRIM(LookupValues.[Value])), ' ', '_') AS ParameterURI, LTRIM(RTRIM(LookupValues.[Value])) AS ParameterValue from rinf.dbo.LookupValues, rinf.dbo.Parameters where LookupValues.ParameterId = Parameters.ID and Parameters.[Index] = '1.1.1.3.2.2'
+    s: era-etcsbaseline:$(ParameterURI)
+    po:
+      - [a, skos:Concept]
+      - [skos:inScheme, era-etcsbaseline:ETCSBaselines~iri]
+      - [skos:prefLabel, $(ParameterValue)]
+
+  etcs-baseline-eratv:
+    sources:
+      - access: *hostEratv
+        type: *typeMSSQL
+        credentials: *credentialsEratv
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT DISTINCT (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.13.1.2'));
+    s: era-etcsbaseline:$(ParameterValue)
+    po:
+      - [a, skos:Concept]
+      - [skos:inScheme, era-etcsbaseline:ETCSBaselines~iri]
+      - [skos:prefLabel, $(ParameterValue)]
+
+  etcs-infill-rinf:
+    sources:
+      - access: *hostRinf
+        type: *typeMSSQL
+        credentials: *credentialsRinf
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: select distinct REPLACE(LTRIM(RTRIM(LookupValues.[Value])), ' ', '_') AS ParameterURI, LTRIM(RTRIM(LookupValues.[Value])) AS ParameterValue from rinf.dbo.LookupValues, rinf.dbo.Parameters where LookupValues.ParameterId = Parameters.ID and Parameters.[Index] = '1.1.1.3.2.4'
+    s: era-etcsinfill:$(ParameterURI)
+    po:
+      - [a, skos:Concept]
+      - [skos:inScheme, era-etcsinfill:ETCSInfills~iri]
+      - [skos:prefLabel, $(ParameterValue)]
+
+  etcs-infill-eratv:
+    sources:
+      - access: *hostEratv
+        type: *typeMSSQL
+        credentials: *credentialsEratv
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT DISTINCT (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.13.1.3'));
+    s: era-etcsinfill:$(ParameterValue)
+    po:
+      - [a, skos:Concept]
+      - [skos:inScheme, era-etcsinfill:ETCSInfills~iri]
+      - [skos:prefLabel, $(ParameterValue)]
+      
+  etcs-m-version:
+    sources:
+      - access: *hostRinf
+        type: *typeMSSQL
+        credentials: *credentialsRinf
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: select distinct REPLACE(LTRIM(RTRIM(LookupValues.[Value])), ' ', '_') AS ParameterURI, LTRIM(RTRIM(LookupValues.[Value])) AS ParameterValue from rinf.dbo.LookupValues, rinf.dbo.Parameters where LookupValues.ParameterId = Parameters.ID and Parameters.[Index] = '1.1.1.3.2.10'
+    s: era-etcsmvers:$(ParameterURI)
+    po:
+      - [a, skos:Concept]
+      - [skos:inScheme, era-etcsmvers:ETCSMVersions~iri]
+      - [skos:prefLabel, $(ParameterValue)]
+      
+  etcs-situations:
+    sources:
+      - access: *hostRinf
+        type: *typeMSSQL
+        credentials: *credentialsRinf
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT DISTINCT CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue, REPLACE(CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, ''), ' ', '_') AS ParameterURI FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.3.10.1') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: era-etcssituation:$(ParameterURI)
+    po:
+      - [a, skos:Concept]
+      - [skos:inScheme, era-etcssituation:ETCSSituations~iri]
+      - [skos:prefLabel, $(ParameterValue)]
+      
+  other-protection-control-warning:
+    sources:
+      - access: *hostRinf
+        type: *typeMSSQL
+        credentials: *credentialsRinf
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT DISTINCT CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue, REPLACE(CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, ''), ' ', '_') AS ParameterURI FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.3.10.2') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: era-opcw:$(ParameterURI)
+    po:
+      - [a, skos:Concept]
+      - [skos:inScheme, era-opcw:OtherProtectionControlWarnings~iri]
+      - [skos:prefLabel, $(ParameterValue)]
+
+
   train-protection-legacy-systems-eratv:
     sources:
       - access: *hostEratv
@@ -665,22 +994,17 @@ mappings:
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId) AS ParameterValue, RegistrationParameters.OtherValue, REPLACE((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId), ' ', '_') AS ParameterURI, REPLACE(RegistrationParameters.OtherValue, ' ', '_') AS OtherURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.13.1.5'));
-    s: http://era.europa.eu/concepts/train-protection-legacy-systems#$(ParameterURI)
+    s: era-tpls:$(ParameterURI)
+    condition:
+      function: idlab-fn:equal
+      parameters:
+        - [grel:valueParameter, $(OtherValue)]
+        - [grel:valueParameter2, ""]
     po:
-      - p: a 
-        o: era-tpls:TrainProtectionLegacySystem
-        condition:
-          function: idlab-fn:equal
-          parameters:
-            - [grel:valueParameter, $(OtherValue)]
-            - [grel:valueParameter2, ""]
-      - p: skos:prefLabel
-        o: $(ParameterValue)
-        condition:
-          function: idlab-fn:equal
-          parameters:
-            - [grel:valueParameter, $(OtherValue)]
-            - [grel:valueParameter2, ""]
+      - [a, skos:Concept]
+      - [skos:inScheme, era-tpls:TrainProtectionLegacySystems~iri]
+      - [skos:prefLabel, $(ParameterValue)]
+
     
   other-train-protection-legacy-systems:
     sources:
@@ -690,16 +1014,16 @@ mappings:
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId) AS ParameterValue, RegistrationParameters.OtherValue, REPLACE((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId), ' ', '_') AS ParameterURI, REPLACE(RegistrationParameters.OtherValue, ' ', '_') AS OtherURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.13.1.5'));
-    s: http://era.europa.eu/concepts/train-protection-legacy-systems#$(OtherURI)
+    s: era-tpls:$(OtherURI)
+    condition:
+      function: idlab-fn:notEqual
+      parameters:
+          - [grel:valueParameter, $(OtherValue)]
+          - [grel:valueParameter2, ""]
     po:
-      - [a, era-tpls:TrainProtectionLegacySystem]
-      - p: skos:prefLabel
-        o: $(OtherValue)
-        condition:
-          function: idlab-fn:notEqual
-          parameters:
-              - [grel:valueParameter, $(OtherValue)]
-              - [grel:valueParameter2, ""]
+      - [a, skos:Concept]
+      - [skos:inScheme, era-tpls:TrainProtectionLegacySystems~iri]
+      - [skos:prefLabel, $(OtherValue)]
   
   legacy-radio-systems-rinf:
     sources:
@@ -709,36 +1033,11 @@ mappings:
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue, REPLACE(CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, ''), ' ', '_') AS ParameterURI FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.3.6.1') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
-    s: http://era.europa.eu/concepts/legacy-radio-systems#$(ParameterURI)
+    s: era-lrs:$(ParameterURI)
     po:
-      - p: a 
-        o: era-lrs:LegacyRadioSystem
-        condition:
-          function: idlab-fn:equal
-          parameters:
-            - [grel:valueParameter, $(ParameterURI)]
-            - [grel:valueParameter2, "Analogue_Radio_Germany_-_UIC_751"]
-      - p: a 
-        o: era-lrs:LegacyRadioSystem
-        condition:
-          function: idlab-fn:equal
-          parameters:
-            - [grel:valueParameter, $(ParameterURI)]
-            - [grel:valueParameter2, "RETB_(voice)"]
-      - p: skos:prefLabel 
-        o: $(ParameterValue)
-        condition:
-          function: idlab-fn:equal
-          parameters:
-            - [grel:valueParameter, $(ParameterURI)]
-            - [grel:valueParameter2, "Analogue_Radio_Germany_-_UIC_751"]
-      - p: skos:prefLabel 
-        o: $(ParameterValue)
-        condition:
-          function: idlab-fn:equal
-          parameters:
-            - [grel:valueParameter, $(ParameterURI)]
-            - [grel:valueParameter2, "RETB_(voice)"]
+      - [a, skos:Concept]
+      - [skos:inScheme, era-lrs:LegacyRadioSystems~iri]
+      - [skos:prefLabel, $(ParameterValue)]
   
   legacy-radio-systems-eratv:
     sources:
@@ -748,22 +1047,16 @@ mappings:
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId) AS ParameterValue, RegistrationParameters.OtherValue, REPLACE((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId), ' ', '_') AS ParameterURI, REPLACE(RegistrationParameters.OtherValue, ' ', '_') AS OtherURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.13.2.3'));
-    s: http://era.europa.eu/concepts/legacy-radio-systems#$(ParameterURI)
+    s: era-lrs:$(ParameterURI)
+    condition:
+      function: idlab-fn:equal
+      parameters:
+        - [grel:valueParameter, $(OtherValue)]
+        - [grel:valueParameter2, ""]
     po:
-      - p: a 
-        o: era-lrs:LegacyRadioSystem
-        condition:
-          function: idlab-fn:equal
-          parameters:
-            - [grel:valueParameter, $(OtherValue)]
-            - [grel:valueParameter2, ""]
-      - p: skos:prefLabel
-        o: $(ParameterValue)
-        condition:
-          function: idlab-fn:equal
-          parameters:
-            - [grel:valueParameter, $(OtherValue)]
-            - [grel:valueParameter2, ""]
+      - [a, skos:Concept]
+      - [skos:inScheme, era-lrs:LegacyRadioSystems~iri]
+      - [skos:prefLabel, $(ParameterValue)]
     
   other-legacy-radio-systems:
     sources:
@@ -773,13 +1066,69 @@ mappings:
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
         query: SELECT DISTINCT (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId) AS ParameterValue, RegistrationParameters.OtherValue, REPLACE((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId), ' ', '_') AS ParameterURI, REPLACE(RegistrationParameters.OtherValue, ' ', '_') AS OtherURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.13.1.5'));
-    s: http://era.europa.eu/concepts/legacy-radio-systems#$(OtherURI)
+    s: era-lrs:$(OtherURI)
+    condition:
+      function: idlab-fn:notEqual
+      parameters:
+          - [grel:valueParameter, $(OtherValue)]
+          - [grel:valueParameter2, ""]
     po:
-      - [a, era-lrs:LegacyRadioSystem]
-      - p: skos:prefLabel
-        o: $(OtherValue)
-        condition:
-          function: idlab-fn:notEqual
-          parameters:
-              - [grel:valueParameter, $(OtherValue)]
-              - [grel:valueParameter2, ""]
+      - [a, skos:Concept]
+      - [skos:inScheme, era-lrs:LegacyRadioSystems~iri]
+      - [skos:prefLabel, $(OtherValue)]
+
+  etcs-system-compatibility-eratv:
+    sources:
+      - access: *hostEratv
+        type: *typeMSSQL
+        credentials: *credentialsEratv
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT DISTINCT (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId) AS ParameterValue, RegistrationParameters.OtherValue, REPLACE((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId), ' ', '_') AS ParameterURI, REPLACE(RegistrationParameters.OtherValue, ' ', '_') AS OtherURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.13.1.8'));
+    s: era-esc:$(ParameterURI)
+    po:
+      - [a, skos:Concept]
+      - [skos:inScheme, era-esc:ETCSSystemCompatibilities~iri]
+      - [skos:prefLabel, $(ParameterValue)]
+
+  etcs-system-compatibility-rinf:
+    sources:
+      - access: *hostRinf
+        type: *typeMSSQL
+        credentials: *credentialsRinf
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT DISTINCT CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue, REPLACE(CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, ''), ' ', '_') AS ParameterURI FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.3.2.9') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: era-esc:$(ParameterURI)
+    po:
+      - [a, skos:Concept]
+      - [skos:inScheme, era-esc:ETCSSystemCompatibilities~iri]
+      - [skos:prefLabel, $(ParameterValue)]
+
+  radio-system-compatibility-eratv:
+    sources:
+      - access: *hostEratv
+        type: *typeMSSQL
+        credentials: *credentialsEratv
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT DISTINCT (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId) AS ParameterValue, RegistrationParameters.OtherValue, REPLACE((SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId), ' ', '_') AS ParameterURI, REPLACE(RegistrationParameters.OtherValue, ' ', '_') AS OtherURI FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.13.2.5', '4.13.2.8'));
+    s: era-rsc:$(ParameterURI)
+    po:
+      - [a, skos:Concept]
+      - [skos:inScheme, era-rsc:RadioSystemCompatibilities~iri]
+      - [skos:prefLabel, $(ParameterValue)]
+
+  radio-system-compatibility-rinf:
+    sources:
+      - access: *hostRinf
+        type: *typeMSSQL
+        credentials: *credentialsRinf
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT DISTINCT CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, '') AS ParameterValue, REPLACE(CONCAT((SELECT LookupValues.[Value] FROM RINF.dbo.LookupValues WHERE LookupValues.ID = TrackParameters.LookupValueID), TrackParameters.Value, ''), ' ', '_') AS ParameterURI FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines WHERE SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND (TrackParameters.[Value] IS NOT NULL OR TrackParameters.LookupValueID IS NOT NULL) AND "Index" IN ('1.1.1.3.3.9', '1.1.1.3.3.10') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: era-rsc:$(ParameterURI)
+    po:
+      - [a, skos:Concept]
+      - [skos:inScheme, era-rsc:RadioSystemCompatibilities~iri]
+      - [skos:prefLabel, $(ParameterValue)]

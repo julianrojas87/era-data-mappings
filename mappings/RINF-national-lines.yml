@@ -1,0 +1,73 @@
+prefixes:
+  idlab-fn: "http://example.com/idlab/function/"
+  grel: "http://users.ugent.be/~bjdmeest/function/grel.ttl#"
+  eu-country: "http://publications.europa.eu/resource/authority/country/"
+  rdfs: "http://www.w3.org/2000/01/rdf-schema#"
+  era: "http://data.europa.eu/949/"
+  xsd: "http://www.w3.org/2001/XMLSchema#"
+  era-linecat: "http://data.europa.eu/949/concepts/line-category/"
+  era-fc: "http://data.europa.eu/949/concepts/freight-corridor/"
+  
+variables:
+  connection: 
+    access: &host ${RINF_HOST}
+    type: &typeMSSQL mssql
+    credentials: &credentials
+      username: ${RINF_USER}
+      password: ${RINF_PWD}
+    queryFormulation: &queryFormulation sql2008 
+    referenceFormulation: &referenceFormulation csv
+
+mappings:
+  line-national-ids:
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT DISTINCT UICLines.UICCode, MemberStates.Code FROM RINF.dbo.UICLines, RINF.dbo.MemberStates, RINF.dbo.MemberStateVersions WHERE UICLines.VersionID = MemberStateVersions.ID AND MemberStateVersions.MemberStateID = MemberStates.ID;
+    s: http://data.europa.eu/949/functionalInfrastructure/nationalLines/$(UICCode)
+    po:
+      - [a, era:NationalRailwayLine]
+      - [rdfs:label, $(UICCode)]
+      - p: era:inCountry
+        o:
+          - mapping: eu-country
+            condition:
+              function: equal
+              parameters:
+                - [str1, $(Code)]
+                - [str2, $(code)]
+    graph: ${NAMED_GRAPH}
+    
+  eu-country:
+    sources:
+      - ["data/countries.csv~csv"]
+    s: $(eu)
+
+  line-categories: # 1.1.1.1.2.2
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT DISTINCT UICLines.UICCode, LookupValues.[Value] AS ParameterValue FROM RINF.dbo.UICLines, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE SectionOfLines.UICLineID = UICLines.ID AND SectionOfLines.VersionID = UICLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.1.1.1.2.2') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://data.europa.eu/949/functionalInfrastructure/nationalLines/$(UICCode)
+    po:
+      - [era:lineCategory, era-linecat:$(ParameterValue)~iri]
+    graph: ${NAMED_GRAPH}
+
+  freight-corridor: # 1.1.1.1.2.3
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT DISTINCT UICLines.UICCode, REPLACE(LTRIM(RTRIM(LookupValues.[Value])), ' ', '_') AS ParameterValue FROM RINF.dbo.UICLines, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE SectionOfLines.UICLineID = UICLines.ID AND SectionOfLines.VersionID = UICLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.1.1.1.2.3') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
+    s: http://data.europa.eu/949/functionalInfrastructure/nationalLines/$(UICCode)
+    po:
+      - [era:freightCorridor, era-fc:$(ParameterValue)~iri]
+    graph: ${NAMED_GRAPH}

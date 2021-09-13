@@ -1,0 +1,130 @@
+prefixes:
+  idlab-fn: "http://example.com/idlab/function/"
+  grel: "http://users.ugent.be/~bjdmeest/function/grel.ttl#"
+  rdfs: "http://www.w3.org/2000/01/rdf-schema#"
+  xsd: "http://www.w3.org/2001/XMLSchema#"
+  era: "http://data.europa.eu/949/"
+  era-tenclass: "http://data.europa.eu/949/concepts/ten-classifications/"
+  era-ph: "http://data.europa.eu/949/concepts/platform-heights/"
+
+variables:
+  connection:
+    access: &host ${RINF_HOST}
+    type: &typeMSSQL mssql
+    credentials: &credentials
+      username: ${RINF_USER}
+      password: ${RINF_PWD}
+    queryFormulation: &queryFormulation sql2008
+    referenceFormulation: &referenceFormulation csv
+
+mappings:
+  platform:
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT LTRIM(RTRIM(OperationalPoints.UOPID)) AS UOPID, Tracks.UUID AS TRACK_ID, Platforms.UUID, Platforms.IMCode FROM RINF.dbo.Platforms, RINF.dbo.Tracks, RINF.dbo.OPTracks, RINF.dbo.OperationalPoints WHERE Platforms.TrackID = OPTracks.TrackID AND Platforms.VersionID = OPTracks.VersionID AND OPTracks.TrackID = Tracks.ID AND OPTracks.VersionID = Tracks.VersionID AND OPTracks.OperationalPointID = OperationalPoints.ID AND OPTracks.VersionID = OperationalPoints.VersionID AND OperationalPoints.IsFuturePlanning = 0;
+    s: http://data.europa.eu/949/funtionalInfrastructure/platforms/$(UOPID)_$(UUID)
+    po:
+      - [a, era:Platform]
+      - [rdfs:label, $(UOPID)_$(UUID)] 
+      - [era:imCode, $(IMCode)] # 1.2.1.0.6.1
+      - [era:platformId, $(UUID)] # 1.2.1.0.6.2
+    graph: ${NAMED_GRAPH}
+  
+  platform-reference:
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT LTRIM(RTRIM(OperationalPoints.UOPID)) AS UOPID, Tracks.UUID AS TRACK_ID, Platforms.UUID FROM RINF.dbo.Platforms, RINF.dbo.Tracks, RINF.dbo.OPTracks, RINF.dbo.OperationalPoints WHERE Platforms.TrackID = OPTracks.TrackID AND Platforms.VersionID = OPTracks.VersionID AND OPTracks.TrackID = Tracks.ID AND OPTracks.VersionID = Tracks.VersionID AND OPTracks.OperationalPointID = OperationalPoints.ID AND OPTracks.VersionID = OperationalPoints.VersionID AND OperationalPoints.IsFuturePlanning = 0;
+    s: http://data.europa.eu/949/functionalInfrastructure/tracks/$(UOPID)_$(TRACK_ID)
+    po:
+      - [era:platform, http://data.europa.eu/949/funtionalInfrastructure/platforms/$(UOPID)_$(UUID)~iri]
+    graph: ${NAMED_GRAPH}
+  
+  ten-class: # 1.2.1.0.6.3
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT Platforms.UUID, LTRIM(RTRIM(OperationalPoints.UOPID)) AS UOPID, REPLACE(LookupValues.[Value], ' ', '_') AS ParameterValue FROM RINF.dbo.Platforms, RINF.dbo.PlatformParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues, RINF.dbo.OPTracks, RINF.dbo.OperationalPoints WHERE Platforms.TrackID = OPTracks.TrackID AND Platforms.VersionID = OPTracks.VersionID AND OPTracks.OperationalPointID = OperationalPoints.ID AND OPTracks.VersionID = OperationalPoints.VersionID AND PlatformParameters.PlatformID = Platforms.ID AND Platforms.IsFuturePlanning = 0 AND PlatformParameters.VersionID = Platforms.VersionID AND PlatformParameters.LookupValueID = LookupValues.ID AND PlatformParameters.ParameterID = Parameters.ID AND Parameters.[Index] IN ('1.2.1.0.6.3');
+    s: http://data.europa.eu/949/funtionalInfrastructure/platforms/$(UOPID)_$(UUID)
+    po:
+      - [era:tenClassification, era-tenclass:$(ParameterValue)~iri]
+    graph: ${NAMED_GRAPH}
+
+  platform-length: # 1.2.1.0.6.4
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT Platforms.IMCode, LTRIM(RTRIM(OperationalPoints.UOPID)) AS UOPID, Platforms.UUID, PlatformParameters.[Value] FROM RINF.dbo.Platforms, RINF.dbo.PlatformParameters, RINF.dbo.Parameters, RINF.dbo.OPTracks, RINF.dbo.OperationalPoints WHERE Platforms.IsFuturePlanning = 0 AND PlatformParameters.PlatformID = Platforms.ID AND PlatformParameters.VersionID = Platforms.VersionID AND PlatformParameters.ParameterID = Parameters.ID AND Platforms.TrackID = OPTracks.TrackID and Platforms.VersionID = OPTracks.VersionID and OPTracks.OperationalPointID = OperationalPoints.ID AND OPTracks.VersionID = OperationalPoints.VersionID AND Parameters.[Index] = '1.2.1.0.6.4' AND PlatformParameters.[Value] is not null
+    s: http://data.europa.eu/949/funtionalInfrastructure/platforms/$(UOPID)_$(UUID)
+    po:
+      - [era:length, $(Value), xsd:double]
+    graph: ${NAMED_GRAPH}
+
+  platform-height: # 1.2.1.0.6.5
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT Platforms.UUID, LTRIM(RTRIM(OperationalPoints.UOPID)) AS UOPID, LookupValues.[Value] AS ParameterValue FROM RINF.dbo.Platforms, RINF.dbo.PlatformParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues, RINF.dbo.OPTracks, RINF.dbo.OperationalPoints WHERE Platforms.TrackID = OPTracks.TrackID AND Platforms.VersionID = OPTracks.VersionID AND OPTracks.OperationalPointID = OperationalPoints.ID AND OPTracks.VersionID = OperationalPoints.VersionID AND PlatformParameters.PlatformID = Platforms.ID AND Platforms.IsFuturePlanning = 0 AND PlatformParameters.VersionID = Platforms.VersionID AND PlatformParameters.LookupValueID = LookupValues.ID AND PlatformParameters.ParameterID = Parameters.ID AND Parameters.[Index] IN ('1.2.1.0.6.5');
+    s: http://data.europa.eu/949/funtionalInfrastructure/platforms/$(UOPID)_$(UUID)
+    po:
+      - [era:platformHeight, era-ph:$(ParameterValue)~iri]
+    graph: ${NAMED_GRAPH}
+  
+  assistance-starting-train: # 1.2.1.0.6.6
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT Platforms.UUID, LTRIM(RTRIM(OperationalPoints.UOPID)) AS UOPID, LookupValues.[Value] AS ParameterValue FROM RINF.dbo.Platforms, RINF.dbo.PlatformParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues, RINF.dbo.OPTracks, RINF.dbo.OperationalPoints WHERE Platforms.TrackID = OPTracks.TrackID AND Platforms.VersionID = OPTracks.VersionID AND OPTracks.OperationalPointID = OperationalPoints.ID AND OPTracks.VersionID = OperationalPoints.VersionID AND PlatformParameters.PlatformID = Platforms.ID AND Platforms.IsFuturePlanning = 0 AND PlatformParameters.VersionID = Platforms.VersionID AND PlatformParameters.LookupValueID = LookupValues.ID AND PlatformParameters.ParameterID = Parameters.ID AND Parameters.[Index] IN ('1.2.1.0.6.6');
+    s: http://data.europa.eu/949/funtionalInfrastructure/platforms/$(UOPID)_$(UUID)
+    po:
+      - p: era:assistanceStartingTrain
+        o:
+          value: "true"
+          datatype: xsd:boolean
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(ParameterValue)]
+            - [grel:valueParameter2, "Y"]
+      - p: era:assistanceStartingTrain
+        o:
+          value: "false"
+          datatype: xsd:boolean
+        condition:
+          function: idlab-fn:equal
+          parameters:
+            - [grel:valueParameter, $(ParameterValue)]
+            - [grel:valueParameter2, "N"]
+    graph: ${NAMED_GRAPH}
+
+  area-boarding-aid: # 1.2.1.0.6.7
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT Platforms.IMCode, LTRIM(RTRIM(OperationalPoints.UOPID)) AS UOPID, Platforms.UUID, PlatformParameters.[Value] FROM RINF.dbo.Platforms, RINF.dbo.PlatformParameters, RINF.dbo.Parameters, RINF.dbo.OPTracks, RINF.dbo.OperationalPoints WHERE Platforms.IsFuturePlanning = 0 AND PlatformParameters.PlatformID = Platforms.ID AND PlatformParameters.VersionID = Platforms.VersionID AND PlatformParameters.ParameterID = Parameters.ID AND Platforms.TrackID = OPTracks.TrackID and Platforms.VersionID = OPTracks.VersionID and OPTracks.OperationalPointID = OperationalPoints.ID AND OPTracks.VersionID = OperationalPoints.VersionID AND Parameters.[Index] = '1.2.1.0.6.7' AND PlatformParameters.[Value] is not null
+    s: http://data.europa.eu/949/funtionalInfrastructure/platforms/$(UOPID)_$(UUID)
+    po:
+      - [era:areaBoardingAid, $(Value), xsd:integer]
+    graph: ${NAMED_GRAPH}
