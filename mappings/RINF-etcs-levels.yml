@@ -1,0 +1,46 @@
+prefixes:
+  idlab-fn: "http://example.com/idlab/function/"
+  grel: "http://users.ugent.be/~bjdmeest/function/grel.ttl#"
+  rdfs: "http://www.w3.org/2000/01/rdf-schema#"
+  era: "http://data.europa.eu/949/"
+  xsd: "http://www.w3.org/2001/XMLSchema#"
+  era-etcslevel: "http://data.europa.eu/949/concepts/etcs-levels/"
+  era-etcsbaseline: "http://data.europa.eu/949/concepts/etcs-baselines/"
+
+variables:
+  connection: 
+    access: &host ${RINF_HOST}
+    type: &typeMSSQL mssql
+    credentials: &credentials
+      username: ${RINF_USER}
+      password: ${RINF_PWD}
+    queryFormulation: &queryFormulation sql2008 
+    referenceFormulation: &referenceFormulation csv
+
+mappings:
+  etcs-level: # 1.1.1.3.2.1 points to SET parameter-based entity
+    sources: 
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT UICLines.UICCode, Tracks.UUID, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, LookupValues.[Value] AS ParameterValue, TrackParameters.[Set] AS GroupSet FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.Tracks, RINF.dbo.SectionOfLines, RINF.dbo.UICLines, RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SectionOfLines.UICLineID = UICLines.ID AND SectionOfLines.VersionID = UICLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.1.1.3.2.1') AND TrackParameters.[Set] IS NOT NULL AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND LookupValues.ID is not null AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID;
+    s: http://data.europa.eu/949/functionalInfrastructure/etcsLevels/$(UICCode)_$(FROM_NODE)_$(UUID)_$(TO_NODE)_$(GroupSet)
+    po:
+      - [a, era:ETCSLevel]
+      - [era:etcsLevelType, era-etcslevel:$(ParameterValue)~iri]
+    graph: ${NAMED_GRAPH}
+  
+  etcs-baseline: # 1.1.1.3.2.2
+    sources: 
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT UICLines.UICCode, Tracks.UUID, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, REPLACE(TRIM(LookupValues.[Value]), ' ', '_') AS ParameterValue, TrackParameters.[Set] AS GroupSet FROM RINF.dbo.LineEdges, RINF.dbo.Tracks, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.UICLines, RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SectionOfLines.UICLineID = UICLines.ID AND SectionOfLines.VersionID = UICLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.1.1.3.2.2') AND TrackParameters.[Set] IS NOT NULL AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND LookupValues.ID is not null AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID;
+    s: http://data.europa.eu/949/functionalInfrastructure/etcsLevels/$(UICCode)_$(FROM_NODE)_$(UUID)_$(TO_NODE)_$(GroupSet)
+    po:
+      - [era:etcsBaseline, era-etcsbaseline:$(ParameterValue)~iri]
+    graph: ${NAMED_GRAPH}

@@ -42,12 +42,19 @@ mapRML() {
     local file_path=$1
     local file=${file_path##*/}
     local output_file="knowledge-graph/${file%_rml*}.nq"
+    local format="nquads"
 
     if [ $(stat -c %s $output_file 2>/dev/null || echo -e 0) -gt 0 ]; then
         echo "$file_path has already been mapped"
     else
+        # Map SKOS terms to turtle
+        if [ "${file%_rml*}" = "RINF-ERATV-skos-concepts" ]; then
+            format="turtle"
+            output_file="knowledge-graph/RINF-ERATV-skos-concepts.ttl"
+        fi
+        # Map the rest to N-Quads
         echo "Mapping '$file_path' and storing output in '$output_file'"
-        time java -Xmx4096m -cp rmlmapper-4.10.0.jar:mssql-jdbc-8.2.0.jre11.jar be.ugent.rml.cli.Main -m $file_path > $output_file
+        time java -Xmx4096m -cp rmlmapper-4.10.0.jar:mssql-jdbc-8.2.0.jre11.jar be.ugent.rml.cli.Main -s $format -m $file_path > $output_file
     fi
 }
 # Export the mapRML function so it can be seen by parallel
@@ -70,7 +77,7 @@ ls ${rml_directory}/*.ttl | parallel -j+0 'mapRML {}'
 
 # Merge resulting RDF (nquads) files into one
 echo "Merging mapped ERA RDF files into a single file for version $1"
-find ${output_directory}/ -iname '*.nq' -not -name 'RINF-ERATV-skos-concepts.nq' -exec cat {} +> ${output_directory}/${knowledge_graph}$1.nq
+find ${output_directory}/ -iname '*.nq' -exec cat {} +> ${output_directory}/${knowledge_graph}$1.nq
 #cat ${output_directory}/* > ${output_directory}/${knowledge_graph}$1.nq
 echo "Compressing resulting RDF file"
 gzip ${output_directory}/${knowledge_graph}$1.nq

@@ -2,7 +2,50 @@
 
 All notable changes to this project will be documented in this file.
 
-## [v2.0.0](https://github.com/julianrojas87/era-data-mappings/compare/v1.2.1...v2.0.0) (2021-06-15)
+## [v2.3.0](https://git.fpfis.eu/datateam/ERA/era-data-mappings/-/releases/v2.3.0) (2021-09-13)
+
+### Raw Data: [ERA-KG-v2.3.0](https://cloud.ilabt.imec.be/index.php/s/gtz9RjQ5fGMB4TQ)
+
+### Features and Bug Fixes
+
+* Fix for #33
+* Fix for #34
+* Add local ID predicates for platforms, tunnels and sidings
+* Add name predicate for Operational Points
+* Fix prefixes URIs
+
+## [v2.2.0](https://git.fpfis.eu/datateam/ERA/era-data-mappings/-/releases/v2.2.0) (2021-09-01)
+
+### Raw Data: [ERA-KG-v2.2.0](https://cloud.ilabt.imec.be/index.php/s/DyaZpqkrJpfPz73)
+
+### Features and Bug Fixes
+
+* annotations of RINF and ERATV property codes
+* cleanup of unnecessary reference dataset mappings
+* adjust remianing TRIM SQL functions
+* fully map ERATV properties
+* full refactoring to use new official URI http://data.europa.eu/949/
+* Add missing rdf:type mapping for train detection systems
+* Comment labels to SoL properties
+* Adjust mappings for verification and demonstration params
+* Corrected various errors
+* Added mappings for nominal track gauges concepts
+* Added full mappings for OPTracks
+* Added mappings for OPTracks tunnels and properties
+* Added full mappings for Sidings
+* Added mappings for Siding tunnels and properties
+* Added OP missing parameters
+* Adjusted SoL mappings
+* Adjusted Platforms mappings
+* added mappings for SoL natures
+* mappings for complete set of SoL parameters
+* adjust all TSI compliance mappings
+* added mappings for skos concept schemes era-tdssc, era-malvc and era-mas
+* removed skos concept scheme era-minwidhtrim
+* added all mappings for SET-based properties
+* added various properties for SoLs, Tunnels and National Lines
+
+## [v2.0.0](https://git.fpfis.eu/datateam/ERA/era-data-mappings/-/releases#v2.0.0) (2021-04-12)
 
 ### Raw Data: [ERA-KG-v2.0.0](https://cloud.ilabt.imec.be/index.php/s/PogwXPSr8yEkKmo)
 

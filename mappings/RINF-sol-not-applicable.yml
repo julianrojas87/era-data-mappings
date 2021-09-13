@@ -1,0 +1,38 @@
+prefixes:
+  era: "http://data.europa.eu/949/"
+
+variables:
+  connection: 
+    access: &host ${RINF_HOST}
+    type: &typeMSSQL mssql
+    credentials: &credentials
+      username: ${RINF_USER}
+      password: ${RINF_PWD}
+    queryFormulation: &queryFormulation sql2008 
+    referenceFormulation: &referenceFormulation csv
+
+mappings:
+  sol-tracks-not-applicable:
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT UICLines.UICCode, Tracks.UUID,(SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT TRIM(UOPID) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, Parameters.[Index] AS PropertyIndex FROM RINF.dbo.LineEdges, RINF.dbo.Tracks, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.UICLines, RINF.dbo.TrackParameters, RINF.dbo.Parameters WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SectionOfLines.UICLineID = UICLines.ID AND SectionOfLines.VersionID = UICLines.VersionID AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND SOLTracks.VersionID = TrackParameters.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID AND TrackParameters.ParameterID = Parameters.ID AND TrackParameters.IsApplicable = 2;
+    s: http://data.europa.eu/949/functionalInfrastructure/tracks/$(UICCode)_$(FROM_NODE)_$(UUID)_$(TO_NODE)
+    po:
+      - p: era:notApplicable
+        o:
+          - mapping: index-predicates
+            condition:
+              function: equal
+              parameters:
+                - [str1, $(PropertyIndex)]
+                - [str2, $(index)]
+    graph: ${NAMED_GRAPH}
+
+  index-predicates:
+    sources:
+      - ["data/index_predicate_mappings.csv~csv"]
+    s: $(predicate)

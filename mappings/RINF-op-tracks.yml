@@ -1,0 +1,150 @@
+prefixes:
+  idlab-fn: "http://example.com/idlab/function/"
+  grel: "http://users.ugent.be/~bjdmeest/function/grel.ttl#"
+  rdfs: "http://www.w3.org/2000/01/rdf-schema#"
+  era: "http://data.europa.eu/949/"
+  xsd: "http://www.w3.org/2001/XMLSchema#"
+  era-tenclass: "http://data.europa.eu/949/concepts/ten-classifications/"
+  era-gaugings: "http://data.europa.eu/949/concepts/gaugings/"
+  era-ntg: "http://data.europa.eu/949/concepts/nominal-track-gauges/"
+
+variables:
+  connection: 
+    access: &host ${RINF_HOST}
+    type: &typeMSSQL mssql
+    credentials: &credentials
+      username: ${RINF_USER}
+      password: ${RINF_PWD}
+    queryFormulation: &queryFormulation sql2008 
+    referenceFormulation: &referenceFormulation csv
+
+mappings:
+  op-track:
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT LTRIM(RTRIM(OperationalPoints.UOPID)) AS UOPID, Tracks.UUID, OPTracks.IMCode FROM RINF.dbo.OPTracks, RINF.dbo.Tracks, RINF.dbo.OperationalPoints WHERE OPTracks.TrackID = Tracks.ID AND OPTracks.VersionID = Tracks.VersionID AND OPTracks.OperationalPointID = OperationalPoints.ID AND OPTracks.VersionID = OperationalPoints.VersionID AND OperationalPoints.IsFuturePlanning = 0;
+    s: http://data.europa.eu/949/functionalInfrastructure/tracks/$(UOPID)_$(UUID)
+    po:
+      - [a, era:Track]
+      - [rdfs:label, $(UOPID)_$(UUID)]
+      - [era:imCode, $(IMCode)] # 1.2.1.0.0.1
+      - [era:trackId, $(UUID)] # 1.2.1.0.0.2
+    graph: ${NAMED_GRAPH}
+
+  link-track-to-operational-point:
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT LTRIM(RTRIM(OperationalPoints.UOPID)) AS UOPID, Tracks.UUID, OPTracks.IMCode FROM RINF.dbo.OPTracks, RINF.dbo.Tracks, RINF.dbo.OperationalPoints WHERE OPTracks.TrackID = Tracks.ID AND OPTracks.VersionID = Tracks.VersionID AND OPTracks.OperationalPointID = OperationalPoints.ID AND OPTracks.VersionID = OperationalPoints.VersionID AND OperationalPoints.IsFuturePlanning = 0;
+    s: http://data.europa.eu/949/functionalInfrastructure/operationalPoints/$(UOPID)
+    po:
+      - [era:track, http://data.europa.eu/949/functionalInfrastructure/tracks/$(UOPID)_$(UUID)~iri]
+    graph: ${NAMED_GRAPH}
+  
+  # ------------ Declarations of verification for track --------------
+
+  ec-verification: # 1.2.1.0.1.1
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT LTRIM(RTRIM(OperationalPoints.UOPID)) AS UOPID, Tracks.UUID, LookupValues.[Value] AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.OPTracks, RINF.dbo.Tracks, RINF.dbo.OperationalPoints, RINF.dbo.LookupValues WHERE OPTracks.TrackID = Tracks.ID AND OPTracks.VersionID = Tracks.VersionID AND OPTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID IS NOT NULL AND TrackParameters.LookupValueID = LookupValues.ID AND "Index" IN ('1.2.1.0.1.1') AND OPTracks.OperationalPointID = OperationalPoints.ID AND OPTracks.VersionID = OperationalPoints.VersionID;
+    s: http://data.europa.eu/949/functionalInfrastructure/tracks/$(UOPID)_$(UUID)
+    po:
+      - [era:verificationINF, $(ParameterValue)]
+    graph: ${NAMED_GRAPH}
+  
+  ei-demonstration: # 1.2.1.0.1.2
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT LTRIM(RTRIM(OperationalPoints.UOPID)) AS UOPID, Tracks.UUID, LookupValues.[Value] AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.OPTracks, RINF.dbo.Tracks, RINF.dbo.OperationalPoints, RINF.dbo.LookupValues WHERE OPTracks.TrackID = Tracks.ID AND OPTracks.VersionID = Tracks.VersionID AND OPTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID IS NOT NULL AND TrackParameters.LookupValueID = LookupValues.ID AND "Index" IN ('1.2.1.0.2.2') AND OPTracks.OperationalPointID = OperationalPoints.ID AND OPTracks.VersionID = OperationalPoints.VersionID;
+    s: http://data.europa.eu/949/functionalInfrastructure/tracks/$(UOPID)_$(UUID)
+    po:
+      - [era:demonstrationINF, $(ParameterValue)]
+    graph: ${NAMED_GRAPH}
+
+  # ------------ Performance parameters --------------
+
+  ten-class: # 1.2.1.0.2.1
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT LTRIM(RTRIM(OperationalPoints.UOPID)) AS UOPID, Tracks.UUID, REPLACE(LTRIM(RTRIM(LookupValues.[Value])), ' ', '_') AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.OPTracks, RINF.dbo.Tracks, RINF.dbo.OperationalPoints, RINF.dbo.LookupValues WHERE OPTracks.TrackID = Tracks.ID AND OPTracks.VersionID = Tracks.VersionID AND OPTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID IS NOT NULL AND TrackParameters.LookupValueID = LookupValues.ID AND "Index" IN ('1.2.1.0.2.1') AND OPTracks.OperationalPointID = OperationalPoints.ID AND OPTracks.VersionID = OperationalPoints.VersionID;
+    s: http://data.europa.eu/949/functionalInfrastructure/tracks/$(UOPID)_$(UUID)
+    po:
+      - [era:tenClassification, era-tenclass:$(ParameterValue)~iri]
+    graph: ${NAMED_GRAPH}
+
+  # ------------ Line layout --------------
+
+  gauging: # 1.2.1.0.3.4
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT LTRIM(RTRIM(OperationalPoints.UOPID)) AS UOPID, Tracks.UUID, LookupValues.[Value] AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.OPTracks, RINF.dbo.Tracks, RINF.dbo.OperationalPoints, RINF.dbo.LookupValues WHERE OPTracks.TrackID = Tracks.ID AND OPTracks.VersionID = Tracks.VersionID AND OPTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID IS NOT NULL AND TrackParameters.LookupValueID = LookupValues.ID AND "Index" IN ('1.2.1.0.3.4') AND OPTracks.OperationalPointID = OperationalPoints.ID AND OPTracks.VersionID = OperationalPoints.VersionID;
+    s: http://data.europa.eu/949/functionalInfrastructure/tracks/$(UOPID)_$(UUID)
+    po:
+      - [era:gaugingProfile, era-gaugings:$(ParameterValue)~iri]
+    graph: ${NAMED_GRAPH}
+  
+  gauging-check-locations: # 1.2.1.0.3.5
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT LTRIM(RTRIM(OperationalPoints.UOPID)) AS UOPID, Tracks.UUID, TrackParameters.[Value] AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.OPTracks, RINF.dbo.Tracks, RINF.dbo.OperationalPoints WHERE OPTracks.TrackID = Tracks.ID AND OPTracks.VersionID = Tracks.VersionID AND OPTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.[Value] IS NOT NULL AND "Index" IN ('1.2.1.0.3.5') AND OPTracks.OperationalPointID = OperationalPoints.ID AND OPTracks.VersionID = OperationalPoints.VersionID;
+    s: http://data.europa.eu/949/functionalInfrastructure/tracks/$(UOPID)_$(UUID)
+    po:
+      - [era:gaugingCheckLocation, $(ParameterValue)]
+    graph: ${NAMED_GRAPH}
+
+  gauging-transversal-document: # 1.2.1.0.3.6
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT LTRIM(RTRIM(OperationalPoints.UOPID)) AS UOPID, Tracks.UUID, TrackParameters.[Value] AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.OPTracks, RINF.dbo.Tracks, RINF.dbo.OperationalPoints WHERE OPTracks.TrackID = Tracks.ID AND OPTracks.VersionID = Tracks.VersionID AND OPTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.[Value] IS NOT NULL AND "Index" IN ('1.2.1.0.3.6') AND OPTracks.OperationalPointID = OperationalPoints.ID AND OPTracks.VersionID = OperationalPoints.VersionID;
+    s: http://data.europa.eu/949/functionalInfrastructure/tracks/$(UOPID)_$(UUID)
+    po:
+      - [era:gaugingTransversalDocument, $(ParameterValue)]
+    graph: ${NAMED_GRAPH}
+
+  # ------------Track parameters --------------
+
+  nominal-track-gauge: # 1.2.1.0.4.1
+    sources:
+      - access: *host
+        type: *typeMSSQL
+        credentials: *credentials
+        queryFormulation: *queryFormulation
+        referenceFormulation: *referenceFormulation
+        query: SELECT LTRIM(RTRIM(OperationalPoints.UOPID)) AS UOPID, Tracks.UUID, LookupValues.[Value] AS ParameterValue FROM RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.OPTracks, RINF.dbo.Tracks, RINF.dbo.OperationalPoints, RINF.dbo.LookupValues WHERE OPTracks.TrackID = Tracks.ID AND OPTracks.VersionID = Tracks.VersionID AND OPTracks.TrackID = TrackParameters.TrackID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID IS NOT NULL AND TrackParameters.LookupValueID = LookupValues.ID AND "Index" IN ('1.2.1.0.4.1') AND OPTracks.OperationalPointID = OperationalPoints.ID AND OPTracks.VersionID = OperationalPoints.VersionID;
+    s: http://data.europa.eu/949/functionalInfrastructure/tracks/$(UOPID)_$(UUID)
+    po:
+      - [era:wheelSetGauge, era-ntg:$(ParameterValue)~iri]
+    graph: ${NAMED_GRAPH}
+  
+  
