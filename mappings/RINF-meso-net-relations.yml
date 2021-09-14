@@ -27,7 +27,7 @@ mappings:
         credentials: *credentials
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
-        query: SELECT Tracks.UUID, (SectionOfLines.Length * 1000) AS Length, UICLines.UICCode, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.UICLines, RINF.dbo.MemberStateVersions, RINF.dbo.MemberStates WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SectionOfLines.IsFuturePlanning = 0 AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID AND SectionOfLines.UICLineID = UICLines.ID AND SectionOfLines.VersionID = UICLines.VersionID AND Tracks.VersionID = MemberStateVersions.ID AND MemberStateVersions.MemberStateID = MemberStates.ID;
+        query: SELECT DISTINCT UICLines.UICCode, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.UICLines WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SectionOfLines.IsFuturePlanning = 0 AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SectionOfLines.UICLineID = UICLines.ID AND SectionOfLines.VersionID = UICLines.VersionID;
     s: http://data.europa.eu/949/topology/netRelations/$(FROM_NODE)_$(UICCode)_$(FROM_NODE)_$(TO_NODE)
     po:
       - [a, era:NetRelation]
@@ -35,14 +35,14 @@ mappings:
       - [era:elementB, http://data.europa.eu/949/topology/netElements/$(UICCode)_$(FROM_NODE)_$(TO_NODE)~iri]
     graph: ${NAMED_GRAPH}
 
-sol-end:
+  sol-end:
     sources:
       - access: *host
         type: *typeMSSQL
         credentials: *credentials
         queryFormulation: *queryFormulation
         referenceFormulation: *referenceFormulation
-        query: SELECT Tracks.UUID, (SectionOfLines.Length * 1000) AS Length, UICLines.UICCode, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.Tracks, RINF.dbo.UICLines, RINF.dbo.MemberStateVersions, RINF.dbo.MemberStates WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SectionOfLines.IsFuturePlanning = 0 AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID AND SectionOfLines.UICLineID = UICLines.ID AND SectionOfLines.VersionID = UICLines.VersionID AND Tracks.VersionID = MemberStateVersions.ID AND MemberStateVersions.MemberStateID = MemberStates.ID;
+        query: SELECT DISTINCT UICLines.UICCode, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.SectionOfLines, RINF.dbo.UICLines WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SectionOfLines.IsFuturePlanning = 0 AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID AND SectionOfLines.UICLineID = UICLines.ID AND SectionOfLines.VersionID = UICLines.VersionID;
     s: http://data.europa.eu/949/topology/netRelations/$(UICCode)_$(FROM_NODE)_$(TO_NODE)_$(TO_NODE)
     po:
       - [a, era:NetRelation]
