@@ -1648,7 +1648,7 @@ mappings:
         query: SELECT VehicleTypes.TypeVersionNumber, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.10.8')) AND VehicleTypes.TypeVersionNumber IS NOT NULL AND VehicleTypes.TypeVersionNumber != '';
     s: http://data.europa.eu/949/vehicleTypes#$(TypeVersionNumber)
     po:
-      - [era:shortestDistanceBetweenPantographsInContactWithOCL, $(ParameterValue), xsd:double]
+      - [era:shortestDistanceBetweenPantographsInContactWithOCL, $(ParameterValue)]
     graph: ${NAMED_GRAPH}
 
   ocl-type: # 4.10.9
@@ -1902,7 +1902,7 @@ mappings:
         query: SELECT VehicleTypes.TypeVersionNumber, CONCAT(CONCAT(RegistrationParameters.Value, RegistrationParameters.OtherValue), (SELECT "Name" FROM ERATV.dbo.ReferenceListValues WHERE ReferenceListValues.ID=RegistrationParameters.ReferenceListValueId)) AS ParameterValue FROM ERATV.dbo.VehicleTypes, ERATV.dbo.RegistrationParameters, ERATV.dbo.Parameters WHERE VehicleTypes.ID = RegistrationParameters.VehicleTypesId AND RegistrationParameters.ParametersId = Parameters.ID AND (Parameters.Code IN ('4.12.1.3')) AND VehicleTypes.TypeVersionNumber IS NOT NULL AND VehicleTypes.TypeVersionNumber != '';
     s: http://data.europa.eu/949/vehicleTypes#$(TypeVersionNumber)
     po:
-      - [era:sleepingPlaces, $(ParameterValue), xsd:integer]
+      - [era:sleepingPlaces, $(ParameterValue)]
     graph: ${NAMED_GRAPH}
 
   priority-seats: # 4.12.2.1

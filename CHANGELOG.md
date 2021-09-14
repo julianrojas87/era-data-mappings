@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 ## [v2.3.0](https://git.fpfis.eu/datateam/ERA/era-data-mappings/-/releases/v2.3.0) (2021-09-13)
 
-### Raw Data: [ERA-KG-v2.3.0](https://cloud.ilabt.imec.be/index.php/s/QZWsp8KazPRYmHe)
+### Raw Data: [ERA-KG-v2.3.0](https://cloud.ilabt.imec.be/index.php/s/WSPAM63monfYmaK)
 
 ### Features and Bug Fixes
 
