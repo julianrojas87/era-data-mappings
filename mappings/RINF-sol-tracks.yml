@@ -543,7 +543,7 @@ mappings:
         query: SELECT UICLines.UICCode, Tracks.UUID, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeStartID AND OperationalPoints.VersionID=LineNodes.VersionID) AS FROM_NODE, (SELECT LTRIM(RTRIM(UOPID)) FROM RINF.dbo.OperationalPoints, RINF.dbo.LineNodes WHERE OperationalPointID=OperationalPoints.ID AND LineNodes.ID=LineEdges.LineNodeEndID AND OperationalPoints.VersionID=LineNodes.VersionID) AS TO_NODE, REPLACE(LookupValues.[Value], ' ', '_') AS ParameterValue FROM RINF.dbo.LineEdges, RINF.dbo.SOLTracks, RINF.dbo.Tracks, RINF.dbo.SectionOfLines, RINF.dbo.UICLines, RINF.dbo.TrackParameters, RINF.dbo.Parameters, RINF.dbo.LookupValues WHERE LineEdges.ID = SectionOfLines.LineEdgeID AND LineEdges.VersionID = SectionOfLines.VersionID AND SectionOfLines.UICLineID = UICLines.ID AND SectionOfLines.VersionID = UICLines.VersionID AND SOLTracks.TrackID = TrackParameters.TrackID AND SOLTracks.TrackID = Tracks.ID AND SOLTracks.VersionID = Tracks.VersionID AND TrackParameters.ParameterId = Parameters.ID AND TrackParameters.LookupValueID = LookupValues.ID AND Parameters.[Index] IN ('1.1.1.1.6.3') AND SOLTracks.SectionOfLineID = SectionOfLines.ID AND SOLTracks.VersionID = SectionOfLines.VersionID;
     s: http://data.europa.eu/949/functionalInfrastructure/tracks/$(UICCode)_$(FROM_NODE)_$(UUID)_$(TO_NODE)
     po:
-      - [era:magneticBraking, era-mb:$(ParameterValue)]
+      - [era:magneticBraking, era-mb:$(ParameterValue)~iri]
     graph: ${NAMED_GRAPH}
 
   eddy-current-braking-conditions-document: # 1.1.1.1.6.4
